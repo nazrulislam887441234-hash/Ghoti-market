@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghoti Market Place</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://i.ibb.co/27wykyRH/20260425-143935.png">
+    <style>
+        :root { --primary: #1a2a3a; --accent: #00a8ff; --danger: #ff4757; --bg: #f1f2f6; }
+        body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg); margin: 0; padding-bottom: 90px; -webkit-tap-highlight-color: transparent; }
+
+        /* Header & Search */
+        header { background: var(--primary); padding: 15px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px; }
+        .search-container { background: white; border-radius: 50px; display: flex; align-items: center; padding: 2px 15px; transition: 0.3s; border: 2px solid transparent; flex-grow: 1; }
+        .search-container:focus-within { border-color: var(--accent); }
+        .search-container input { border: none; outline: none; width: 100%; padding: 10px; font-size: 16px; background: transparent; }
+        .search-container i { color: #aaa; }
+        
+        /* সাপোর্ট বাটন স্টাইল */
+        .support-btn { background: rgba(255,255,255,0.1); color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 20px; transition: 0.3s; }
+        .support-btn:active { background: var(--accent); }
+
+        .banner-wrapper { width: 100%; height: 200px; background: #e0e0e0; margin-top: 0; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; scrollbar-width: none; }
+        .banner-wrapper::-webkit-scrollbar { display: none; }
+        .banner-img { min-width: 100%; height: 200px; object-fit: cover; scroll-snap-align: start; }
+
+        .ad-box { width: 95%; margin: 15px auto; min-height: 50px; background: #fff; border-radius: 8px; overflow: hidden; text-align: center; display: block; }
+
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 12px; }
+        .p-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-decoration: none; color: inherit; transition: 0.2s; position: relative; display: flex; flex-direction: column; }
+        .p-card:active { transform: scale(0.96); }
+        
+        .img-box { position: relative; width: 100%; padding-top: 100%; background: #eee; overflow: hidden; }
+        .img-box img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+
+        .p-info { padding: 12px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .p-info h3 { margin: 0; font-size: 15px; color: #2d3436; line-height: 1.4; height: 42px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .price-row { margin-top: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .price-row b { color: var(--danger); font-size: 17px; }
+        .p-shop { font-size: 11px; color: #636e72; background: #f1f2f6; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-top: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .fab { position: fixed; bottom: 20px; right: 20px; width: 55px; height: 55px; background: linear-gradient(135deg, var(--accent), #00d2ff); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 6px 20px rgba(0,168,255,0.4); border: none; cursor: pointer; z-index: 1000; }
+
+        .skeleton { background: #eee; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="কি খুঁজছেন? (যেমন: পাঞ্জাবি)" onkeyup="liveSearch()">
+        </div>
+        <a href="contact.html" class="support-btn" title="সাপোর্ট">
+            <i class="fas fa-headset"></i>
+        </a>
+    </header>
+
+    <div class="banner-wrapper" id="bannerContainer">
+        <div class="banner-img skeleton"></div>
+    </div>
+
+    <div class="ad-box" id="homeAds"></div>
+
+    <div class="grid" id="productGrid">
+        <div class="p-card skeleton" style="height: 250px;"></div>
+        <div class="p-card skeleton" style="height: 250px;"></div>
+    </div>
+
+    <button class="fab" onclick="location.href='signup.html'"><i class="fas fa-plus"></i></button>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = { 
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
+            authDomain: "ghotimarket.firebaseapp.com", 
+            projectId: "ghotimarket", 
+            storageBucket: "ghotimarket.firebasestorage.app", 
+            messagingSenderId: "481257644093", 
+            appId: "1:481257644093:web:0dfc3699d6b3c86afeca54" 
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        onSnapshot(query(collection(db, "banners"), orderBy("createdAt", "desc")), snap => {
+            let h = ""; 
+            snap.forEach(d => {
+                h += `<img src="${d.data().url}" class="banner-img" loading="lazy">`;
+            });
+            document.getElementById('bannerContainer').innerHTML = h || '<div class="banner-img" style="background:#ccc; display:flex; align-items:center; justify-content:center;">No Banner Available</div>';
+        });
+
+        onSnapshot(collection(db, "ghoti_ads"), snap => {
+            let homeAdHtml = "";
+            snap.forEach(d => {
+                const ad = d.data();
+                if(ad.expiry && Date.now() > ad.expiry) return;
+                if(ad.type === 'home_ads') {
+                    homeAdHtml += `<div class="ad-item">${ad.code}</div>`;
+                }
+            });
+            const homeAdBox = document.getElementById('homeAds');
+            homeAdBox.innerHTML = homeAdHtml;
+            homeAdBox.querySelectorAll('script').forEach(oldScript => {
+                const newScript = document.createElement('script');
+                Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
+        });
+
+        window.liveSearch = () => {
+            const term = document.getElementById('searchInput').value.toLowerCase().trim();
+            renderProducts(term);
+        };
+
+        function renderProducts(term = "") {
+            onSnapshot(query(collection(db, "products"), orderBy("createdAt", "desc")), snap => {
+                let html = "";
+                snap.forEach(d => {
+                    const p = d.data();
+                    
+                    // --- কিওয়ার্ড এবং নাম অনুযায়ী সার্চ লজিক ---
+                    const matchesName = p.name.toLowerCase().includes(term);
+                    // কিওয়ার্ড ফিল্ড যদি স্ট্রিং বা অ্যারে হয় তবে সেটা চেক করা
+                    const keywords = p.keywords ? (Array.isArray(p.keywords) ? p.keywords.join(" ").toLowerCase() : p.keywords.toLowerCase()) : "";
+                    const matchesKeyword = keywords.includes(term);
+
+                    if(p.active && (matchesName || matchesKeyword)) {
+                        html += `
+                        <a href="product.html?id=${d.id}" class="p-card">
+                            <div class="img-box">
+                                <img src="${p.images[0]}" alt="${p.name}" loading="lazy">
+                            </div>
+                            <div class="p-info">
+                                <h3>${p.name}</h3>
+                                <div class="price-row">
+                                    <b>৳ ${p.price}</b>
+                                    <i class="fas fa-chevron-right" style="color:#ccc; font-size:12px;"></i>
+                                </div>
+                                <span class="p-shop"><i class="fas fa-store"></i> ${p.shopName}</span>
+                            </div>
+                        </a>`;
+                    }
+                });
+                document.getElementById('productGrid').innerHTML = html || '<p style="grid-column:1/3; text-align:center; padding:20px;">কোনো পণ্য পাওয়া যায়নি!</p>';
+            });
+        }
+        
+        renderProducts();
+    </script>
+</body>
+</html>
