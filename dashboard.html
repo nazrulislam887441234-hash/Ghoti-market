@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Ghoti Market</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #2c3e50; --accent: #3498db; --success: #2ecc71; --danger: #e74c3c; --orange: #f39c12; --white: #ffffff; }
+        body { font-family: 'Hind Siliguri', sans-serif; background: #f8f9fa; margin: 0; padding-bottom: 100px; }
+        
+        /* Header Support Button Style */
+        .header { background: var(--primary); color: white; padding: 40px 20px; text-align: center; border-radius: 0 0 30px 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; }
+        .support-link { position: absolute; top: 20px; right: 20px; color: white; background: rgba(255,255,255,0.1); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 18px; transition: 0.3s; }
+        .support-link:active { background: var(--accent); }
+
+        .header h2 { margin: 0; font-size: 28px; }
+        .header p { opacity: 0.8; margin-top: 5px; font-size: 14px; }
+
+        .stats-grid { display: grid; grid-template-columns: 1fr; gap: 15px; padding: 20px; margin-top: -30px; }
+        .stat-card { background: white; padding: 25px; border-radius: 20px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .stat-card i { font-size: 35px; color: var(--accent); margin-bottom: 10px; }
+        .stat-card h3 { margin: 0; font-size: 30px; color: #333; }
+        .stat-card p { margin: 5px 0 0; color: #777; font-weight: 600; }
+
+        .promo-container { padding: 0 20px; margin-bottom: 20px; }
+        .promo-btn { 
+            background: linear-gradient(135deg, var(--orange), #e67e22); 
+            color: white; 
+            width: 100%; 
+            padding: 18px; 
+            border-radius: 15px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 12px; 
+            text-decoration: none; 
+            font-size: 18px; 
+            font-weight: 600; 
+            box-shadow: 0 6px 15px rgba(243,156,18,0.3); 
+            border: none;
+            transition: 0.3s;
+        }
+        .promo-btn:active { transform: scale(0.96); }
+
+        .section-title { padding: 0 20px; font-size: 20px; color: var(--primary); display: flex; justify-content: space-between; align-items: center; }
+        .product-list { padding: 0 20px; }
+        .product-item { background: white; margin-bottom: 15px; padding: 15px; border-radius: 15px; display: flex; align-items: center; gap: 15px; box-shadow: 0 5px 10px rgba(0,0,0,0.03); }
+        .product-item img { width: 70px; height: 70px; border-radius: 12px; object-fit: cover; background: #eee; }
+        .p-info { flex: 1; }
+        .p-info h4 { margin: 0; font-size: 17px; color: #333; }
+        .p-info p { margin: 3px 0 0; color: var(--danger); font-weight: bold; }
+        
+        .p-actions { display: flex; gap: 10px; }
+        .p-actions button { border: none; padding: 10px; border-radius: 10px; cursor: pointer; font-size: 16px; transition: 0.2s; }
+        .edit-btn { background: #e3f2fd; color: var(--accent); }
+        .del-btn { background: #ffebee; color: var(--danger); }
+
+        .fab { position: fixed; bottom: 30px; right: 30px; width: 70px; height: 70px; border-radius: 50%; background: var(--success); color: white; border: none; font-size: 30px; box-shadow: 0 10px 25px rgba(46,204,113,0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 1000; }
+        .empty { text-align: center; padding: 50px 20px; color: #999; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="contact.html" class="support-link" title="সাপোর্ট">
+            <i class="fas fa-headset"></i>
+        </a>
+        <h2 id="sName">লোড হচ্ছে...</h2>
+        <p>UID: <span id="uidDisplay">...</span></p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <i class="fas fa-box-open"></i>
+            <h3 id="pCount">0</h3>
+            <p>মোট পণ্য</p>
+        </div>
+    </div>
+
+    <div class="promo-container">
+        <a href="promotion.html" class="promo-btn">
+            <i class="fas fa-bullhorn"></i> পণ্য প্রমোশন করুন
+        </a>
+    </div>
+
+    <div class="section-title">
+        <h3>আপনার পণ্যসমূহ</h3>
+    </div>
+
+    <div id="productList" class="product-list"></div>
+
+    <button class="fab" onclick="checkLock()">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, query, where, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = { 
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
+            authDomain: "ghotimarket.firebaseapp.com",
+            projectId: "ghotimarket" 
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUserId = "";
+
+        onAuthStateChanged(auth, async user => {
+            if(user) {
+                currentUserId = user.uid;
+                document.getElementById('uidDisplay').innerText = user.uid;
+                const userSnap = await getDoc(doc(db, "users", user.uid));
+                if(userSnap.exists()) {
+                    document.getElementById('sName').innerText = userSnap.data().shopName;
+                }
+                loadMyProducts(user.uid);
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+
+        function loadMyProducts(uid) {
+            const q = query(collection(db, "products"), where("sellerId", "==", uid));
+            onSnapshot(q, (snapshot) => {
+                const listDiv = document.getElementById('productList');
+                const countH3 = document.getElementById('pCount');
+                countH3.innerText = snapshot.size;
+
+                if(snapshot.empty) {
+                    listDiv.innerHTML = `<div class="empty"><i class="fas fa-folder-open"></i><p>কোনো পণ্য যোগ করেননি!</p></div>`;
+                    return;
+                }
+
+                let html = "";
+                snapshot.forEach(d => {
+                    const p = d.data();
+                    html += `
+                        <div class="product-item">
+                            <img src="${p.images[0]}" alt="product">
+                            <div class="p-info">
+                                <h4>${p.name}</h4>
+                                <p>৳ ${p.price}</p>
+                            </div>
+                            <div class="p-actions">
+                                <button class="edit-btn" onclick="editProduct('${d.id}')"><i class="fas fa-edit"></i></button>
+                                <button class="del-btn" onclick="deleteProduct('${d.id}')"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+                listDiv.innerHTML = html;
+            });
+        }
+
+        window.editProduct = (id) => {
+            window.location.href = `upload.html?edit=${id}`;
+        }
+
+        window.deleteProduct = async (id) => {
+            if(confirm("আপনি কি নিশ্চিতভাবে এই পণ্যটি ডিলিট করতে চান?")) {
+                try {
+                    await deleteDoc(doc(db, "products", id));
+                    alert("পণ্যটি মুছে ফেলা হয়েছে।");
+                } catch (err) {
+                    alert("ডিলিট করতে সমস্যা হয়েছে!");
+                }
+            }
+        }
+
+        window.checkLock = async () => {
+            const snap = await getDoc(doc(db, "users", currentUserId));
+            const data = snap.data();
+            if(!data.profileUnlockedUntil || data.profileUnlockedUntil < Date.now()) {
+                window.location.href = "locked.html";
+            } else {
+                window.location.href = "upload.html";
+            }
+        }
+    </script>
+</body>
+</html>
