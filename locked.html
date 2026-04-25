@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Locked | Ghoti Market</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #2c3e50; --danger: #e74c3c; --accent: #3498db; }
+        body { 
+            font-family: 'Hind Siliguri', sans-serif; 
+            background: #f4f7f6; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .lock-container {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            border-top: 5px solid var(--danger);
+        }
+
+        .lock-icon {
+            font-size: 60px;
+            color: var(--danger);
+            background: #ffebee;
+            width: 100px;
+            height: 100px;
+            line-height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            animation: shake 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes shake {
+            0% { transform: rotate(-5deg); }
+            100% { transform: rotate(5deg); }
+        }
+
+        h1 { font-size: 24px; color: #333; margin: 0 0 10px; }
+        p { color: #666; line-height: 1.6; font-size: 15px; }
+
+        .pricing-box {
+            background: #f8f9fa;
+            border: 2px dashed #ddd;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 25px 0;
+        }
+
+        .pricing-box h3 { margin: 0; font-size: 14px; color: #777; text-transform: uppercase; letter-spacing: 1px; }
+        .pricing-box .price { font-size: 32px; font-weight: 600; color: var(--primary); margin: 5px 0; }
+        .pricing-box .price span { font-size: 16px; color: #999; }
+
+        .wa-btn {
+            background: #25d366;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 18px;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(37,211,102,0.3);
+        }
+
+        .wa-btn:hover { background: #1ebe57; transform: translateY(-2px); }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover { color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <div class="lock-container">
+        <div class="lock-icon">
+            <i class="fas fa-lock"></i>
+        </div>
+        <h1>প্রোফাইল লক করা আছে!</h1>
+        <p>আপনার পণ্যের প্রমোশন এবং সেলার ড্যাশবোর্ড সচল রাখতে অ্যাকাউন্টটি আনলক করা প্রয়োজন।</p>
+
+        <div class="pricing-box">
+            <h3>সাবস্ক্রিপশন ফি</h3>
+            <div class="price">৳ ৫০০ <span>/মাসিক</span></div>
+        </div>
+
+        <a href="https://wa.me/8801316487435?text=Hello Nazrul Bhai, I want to unlock my account on Ghoti Market." class="wa-btn">
+            <i class="fab fa-whatsapp"></i> সরাসরি যোগাযোগ করুন
+        </a>
+
+        <button class="back-btn" onclick="history.back()">
+            <i class="fas fa-arrow-left"></i> পরে চেষ্টা করবো
+        </button>
+    </div>
+
+</body>
+</html>
