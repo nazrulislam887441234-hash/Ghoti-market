@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: sans-serif; margin: 0; background: #f9f9f9; padding-bottom: 80px; }
+        .back-nav { padding: 15px; background: white; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: sticky; top:0; z-index: 100; }
+        .slider { width: 100%; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; background: #eee; height: 350px; }
+        .slider img { width: 100%; flex-shrink: 0; scroll-snap-align: start; object-fit: contain; }
+        .content { padding: 20px; background: white; border-radius: 25px 25px 0 0; margin-top: -25px; position: relative; min-height: 300px; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); }
+        .price { color: #e74c3c; font-size: 26px; font-weight: bold; margin: 10px 0; }
+        .desc { color: #444; line-height: 1.7; margin: 15px 0; white-space: pre-line; }
+        .meta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; }
+        .tag { background: #f0f2f5; padding: 6px 15px; border-radius: 20px; font-size: 13px; color: #555; }
+        
+        /* অ্যাড সেকশন ডিজাইন */
+        .ad-container { margin: 20px 0; padding: 10px; background: #fff; text-align: center; border-top: 1px solid #eee; min-height: 50px; }
+        .ad-label { font-size: 10px; color: #ccc; margin-bottom: 5px; display: block; text-transform: uppercase; }
+
+        .order-btn { position: fixed; bottom: 15px; left: 15px; right: 15px; background: #25d366; color: white; text-align: center; padding: 15px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 18px; box-shadow: 0 4px 15px rgba(37,211,102,0.3); z-index: 99; }
+        .share-btn { float: right; color: #3498db; cursor: pointer; background: #f0f8ff; padding: 8px 15px; border-radius: 10px; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="back-nav" onclick="history.back()"><i class="fas fa-arrow-left"></i> ফিরে যান</div>
+    
+    <div class="slider" id="imgSlider"></div>
+    
+    <div class="content">
+        <div class="share-btn" onclick="copyLink()"><i class="fas fa-share-alt"></i> Share</div>
+        <h2 id="pName" style="margin-top: 0;">Loading...</h2>
+        <div class="price" id="pPrice"></div>
+        
+        <div class="meta" id="pMeta"></div>
+        <div id="pShop" style="font-weight: 600; color: #2c3e50; margin-bottom: 10px;"></div>
+        
+        <p class="desc" id="pDesc"></p>
+
+        <div class="ad-container" id="productAds">
+            <span class="ad-label">Advertisement</span>
+            <div id="adContent"></div>
+        </div>
+    </div>
+
+    <a href="#" class="order-btn" id="waBtn"><i class="fab fa-whatsapp"></i> সরাসরি অর্ডার করুন</a>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const app = initializeApp({ 
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
+            authDomain: "ghotimarket.firebaseapp.com",
+            projectId: "ghotimarket" 
+        });
+        const db = getFirestore(app);
+        const urlParams = new URLSearchParams(window.location.search);
+        const pId = urlParams.get('id');
+
+        async function loadProduct() {
+            if(!pId) return;
+            const snap = await getDoc(doc(db, "products", pId));
+            if(!snap.exists()) {
+                alert("পণ্যটি খুঁজে পাওয়া যায়নি!");
+                return;
+            }
+            const p = snap.data();
+            document.getElementById('pName').innerText = p.name;
+            document.getElementById('pPrice').innerText = "৳ " + p.price;
+            document.getElementById('pDesc').innerText = p.description;
+            document.getElementById('pShop').innerHTML = `<i class="fas fa-store"></i> শপ: ${p.shopName}`;
+            
+            let imgH = ""; 
+            p.images.forEach(i => imgH += `<img src="${i}" alt="product">`);
+            document.getElementById('imgSlider').innerHTML = imgH;
+
+            if(p.size) document.getElementById('pMeta').innerHTML += `<span class="tag">Size: ${p.size}</span>`;
+            if(p.color) document.getElementById('pMeta').innerHTML += `<span class="tag">Color: ${p.color}</span>`;
+
+            document.getElementById('waBtn').href = `https://wa.me/88${p.whatsapp}?text=আমি এই পণ্যটি অর্ডার করতে চাই। %0Aপণ্য: ${p.name} %0Aলিংক: ${window.location.href}`;
+        }
+
+        // --- অ্যাড লোড করার লজিক ---
+        function loadProductAds() {
+            onSnapshot(collection(db, "ghoti_ads"), snap => {
+                let adHtml = "";
+                snap.forEach(d => {
+                    const ad = d.data();
+                    // শুধুমাত্র product_ads টাইপের এবং মেয়াদ থাকা অ্যাডগুলো দেখাবে
+                    if(ad.type === 'product_ads') {
+                        if(!ad.expiry || ad.expiry > Date.now()) {
+                            adHtml += `<div style="margin-bottom:15px;">${ad.code}</div>`;
+                        }
+                    }
+                });
+                
+                const adBox = document.getElementById('adContent');
+                adBox.innerHTML = adHtml;
+
+                // অ্যাড এর ভেতর যদি স্ক্রিপ্ট থাকে তবে তা রান করানোর জন্য:
+                adBox.querySelectorAll('script').forEach(oldScript => {
+                    const newScript = document.createElement('script');
+                    Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+            });
+        }
+
+        window.copyLink = () => { 
+            navigator.clipboard.writeText(window.location.href); 
+            alert("লিংক কপি হয়েছে! এখন শেয়ার করতে পারেন।"); 
+        }
+
+        loadProduct();
+        loadProductAds(); // অ্যাড লোড ফাংশন কল করা হলো
+    </script>
+</body>
+</html>
