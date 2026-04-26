@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ghoti Market </title>
+    <title>Ghoti Market</title>
     <meta name="title" content="Ghoti Market - আপনার কেনা-বেচার বিশ্বস্ত ঠিকানা">
     <meta name="description" content="ঘটি মার্কেট প্লেস (Ghoti Market) এ সাশ্রয়ী মূল্যে সেরা মানের পাঞ্জাবি, প্যান্ট এবং নিত্যপ্রয়োজনীয় পণ্য কিনুন। ছাতক ও সুনামগঞ্জের সেরা অনলাইন শপিং অভিজ্ঞতা।">
     <meta name="keywords" content="ghoti market, ghotimarket, ghoti market place, ঘটি মার্কেট, অনলাইন শপিং, কেনাবেচা, পাঞ্জাবি, পাঞ্জাবি কালেকশন, নতুন পাঞ্জাবি, ছেলেদের পোশাক, প্যান্ট, জিন্স প্যান্ট, shart, ti-shart, jouta, ghori, mobile accessories, electronics, gadget, laptop, computer, online bazar, paikari bazar, khuchra bikroy, e-commerce bangladesh, sulov mullo, sera offer, discount, ghore bose kenakata, cash on delivery, druto delivery, online shop, amanat shop, chhatak bazar, sunamganj shopping, sylhet online shop, nirapod kenakata, bishwasher bazar, sashroyee shopping, panjabi design 2026, premium panjabi, cotton panjabi, formal pant, gabardine pant, polo shirt, ladies dress, three piece, saree, cosmetics, rupchorcha, health care, ghor sajanor janish, kitchen item, bike accessories, helmet, smart watch, headphone, bluetooth speaker, power bank, charger, memory card, pendrive, mouse, keyboard, router, cc camera, gaming pc, gaming mouse, monitor, printer, scanner, software, web design, app development, graphic design, youtube marketing, digital marketing, seo service, ghoti market app, ghoti market website, Ghoti Market Chhatak, Sunamganj Online Store, Bangladesh Marketplace, Sell products online, Buy products online, Best E-commerce site, Trending fashion, Gadget shop BD, Clothing brand, Trusted online seller, Fast shipping, Low price shop, Quality products, Ghoti Market Shop, Online store Bangladesh">
@@ -24,7 +24,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" type="image/png" sizes="32x32" href="https://i.ibb.co/27wykyRH/20260425-143935.png">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Ghoti Market",
+  "url": "https://www.ghotimarket.com/",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://www.ghotimarket.com/?search={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Ghoti Market",
+  "url": "https://www.ghotimarket.com/",
+  "logo": "https://i.ibb.co/27wykyRH/20260425-143935.png"
+}
+</script>
+<link rel="apple-touch-icon" href="https://i.ibb.co/27wykyRH/20260425-143935.png">
+<link rel="shortcut icon" href="https://i.ibb.co/27wykyRH/20260425-143935.png">
    <style>
         :root { --primary: #1a2a3a; --accent: #00a8ff; --danger: #ff4757; --bg: #f1f2f6; --success: #2ecc71; }
         body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg); margin: 0; padding-bottom: 100px; -webkit-tap-highlight-color: transparent; }
@@ -46,9 +70,31 @@
 
         .ad-box { width: 95%; margin: 15px auto; min-height: 50px; background: #fff; border-radius: 8px; overflow: hidden; text-align: center; display: block; }
 
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 12px; }
+        /* --- Grid System Fix (Mobile, Tablet, Desktop) --- */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); /* মোবাইলে ২টা */
+            gap: 12px; 
+            padding: 12px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
+
+        @media (min-width: 600px) {
+            .grid { grid-template-columns: repeat(3, 1fr); } /* ট্যাবলেটে ৩টা */
+        }
+
+        @media (min-width: 900px) {
+            .grid { grid-template-columns: repeat(4, 1fr); } /* ছোট ল্যাপটপে ৪টা */
+        }
+
+        @media (min-width: 1200px) {
+            .grid { grid-template-columns: repeat(5, 1fr); } /* বড় ডেক্সটপে ৫টা */
+        }
+
         .p-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-decoration: none; color: inherit; transition: 0.2s; position: relative; display: flex; flex-direction: column; }
         .p-card:active { transform: scale(0.96); }
+        .p-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         
         .img-box { position: relative; width: 100%; padding-top: 100%; background: #eee; overflow: hidden; }
         .img-box img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -91,6 +137,8 @@
     <div class="grid" id="productGrid">
         <div class="p-card skeleton" style="height: 250px;"></div>
         <div class="p-card skeleton" style="height: 250px;"></div>
+        <div class="p-card skeleton" style="height: 250px;"></div>
+        <div class="p-card skeleton" style="height: 250px;"></div>
     </div>
 
     <div class="legal-footer">
@@ -128,7 +176,6 @@
             const container = document.getElementById('bannerContainer');
             container.innerHTML = h || '<div class="banner-img" style="background:#ccc; display:flex; align-items:center; justify-content:center;">No Banner Available</div>';
             
-            // Start Auto Swipe
             if(snap.size > 1) {
                 clearInterval(bannerInterval);
                 bannerInterval = setInterval(() => {
@@ -137,7 +184,7 @@
                     } else {
                         container.scrollBy({ left: container.clientWidth, behavior: 'smooth' });
                     }
-                }, 5000); // 5 Seconds
+                }, 5000);
             }
         });
 
@@ -191,7 +238,7 @@
                         </a>`;
                     }
                 });
-                document.getElementById('productGrid').innerHTML = html || '<p style="grid-column:1/3; text-align:center; padding:20px;">কোনো পণ্য পাওয়া যায়নি!</p>';
+                document.getElementById('productGrid').innerHTML = html || '<p style="grid-column:1/5; text-align:center; padding:20px;">কোনো পণ্য পাওয়া যায়নি!</p>';
             });
         }
         renderProducts();
