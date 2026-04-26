@@ -107,32 +107,34 @@
         let keywords = [];
         let userData = null;
 
-        // --- সিকিউরিটি চেক লজিক ---
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const userSnap = await getDoc(doc(db, "users", user.uid));
                 userData = userSnap.data();
-
-                // যদি আনলক টাইম বর্তমান সময়ের চেয়ে কম হয়, তবে লক পেইজে পাঠাও
                 if (!userData || userData.profileUnlockedUntil < Date.now()) {
                     window.location.href = "locked.html";
                 } else {
-                    document.getElementById('lock-screen').style.display = 'none'; // সব ঠিক থাকলে ফর্ম দেখাও
+                    document.getElementById('lock-screen').style.display = 'none';
                 }
             } else {
                 window.location.href = "login.html";
             }
         });
 
-        // ইমেজ প্রিভিউ এবং সাইজ চেক
+        // ইমেজ প্রিভিউ এবং ২ এমবি সাইজ চেক
         window.previewImg = (input, viewId, boxId) => {
             const file = input.files[0];
+            const maxSizeBytes = 2 * 1024 * 1024; // 2MB
+
             if (file) {
-                if (file.size > 2 * 1024 * 1024) {
-                    alert("ছবির সাইজ ২ এমবি এর বেশি!");
-                    input.value = "";
+                if (file.size > maxSizeBytes) {
+                    alert("দুঃখিত! এই ছবিটির সাইজ ২ এমবি-র চেয়ে বেশি। দয়া করে ছোট সাইজের ছবি দিন।");
+                    input.value = ""; // ফাইল রিসেট
+                    document.getElementById(viewId).style.display = 'none'; // আগের ছবি থাকলে মুছে দাও
+                    document.getElementById(boxId).style.border = '2px dashed #ccc'; // বর্ডার ফিরিয়ে আনো
                     return;
                 }
+
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     document.getElementById(viewId).src = e.target.result;
@@ -163,22 +165,27 @@
             renderKeywords();
         };
 
-        // মেইন আপলোড ফাংশন
         window.uploadProduct = async () => {
             const btn = document.getElementById('upBtn');
             const name = document.getElementById('pName').value;
             const price = document.getElementById('pPrice').value;
             const desc = document.getElementById('pDesc').value;
             const f1 = document.getElementById('img1').files[0];
+            const f2 = document.getElementById('img2').files[0];
 
             if (!name || !price || !f1) return alert("নাম, দাম এবং অন্তত ১টি ছবি দিন!");
+
+            // আপলোডের আগেও শেষবারের মতো সাইজ চেক
+            if (f1.size > 2 * 1024 * 1024 || (f2 && f2.size > 2 * 1024 * 1024)) {
+                return alert("ছবির সাইজ ২ এমবি-র বেশি হওয়ার কারণে আপলোড সম্ভব নয়!");
+            }
 
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> আপলোড হচ্ছে...';
 
             try {
                 const imgUrls = [];
-                const files = [f1, document.getElementById('img2').files[0]];
+                const files = [f1, f2];
 
                 for (let file of files) {
                     if (file) {
@@ -186,7 +193,7 @@
                         formData.append("image", file);
                         const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, { method: "POST", body: formData });
                         const json = await res.json();
-                        imgUrls.push(json.data.url);
+                        if(json.success) imgUrls.push(json.data.url);
                     }
                 }
 
