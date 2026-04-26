@@ -23,8 +23,15 @@
         .nid-box input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
         .nid-box img { width: 100%; height: 100%; object-fit: cover; display: none; }
 
+        /* Payment Policy Style */
+        .policy-box { background: #fff5f5; border: 1px solid #fed7d7; padding: 12px; border-radius: 10px; margin: 15px 0; }
+        .policy-box p { font-size: 12px; color: #c53030; margin: 0; line-height: 1.5; }
+        .checkbox-group { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 15px; cursor: pointer; }
+        .checkbox-group input { width: 18px; height: 18px; margin-top: 3px; cursor: pointer; padding: 0; }
+        .checkbox-group label { font-size: 13px; color: #4a5568; cursor: pointer; line-height: 1.4; }
+
         .btn-continue { background: var(--success); color: white; border: none; width: 100%; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: 0 5px 15px rgba(46,204,113,0.3); transition: 0.3s; }
-        .btn-continue:disabled { background: #ccc; }
+        .btn-continue:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; }
         .btn-continue:active { transform: scale(0.98); }
 
         /* Login Redirect Section */
@@ -65,7 +72,16 @@
         <div class="nid-box" id="boxBack"><i class="fas fa-id-card"></i><span>পেছনের অংশ</span><img id="viewBack"><input type="file" id="nidBack" accept="image/*" onchange="previewNID(this, 'viewBack', 'boxBack')"></div>
     </div>
 
-    <button onclick="register()" id="regBtn" class="btn-continue">অ্যাকাউন্ট তৈরি করুন</button>
+    <div class="policy-box">
+        <p><strong>৫. পেমেন্ট নীতি:</strong> ঘটি মার্কেট শুধুমাত্র ক্যাশ অন ডেলিভারি (COD) সাপোর্ট করে। কোন ক্রেতা-বিক্রেতা যদি নিজ দায়িত্বে অগ্রিম লেনদেন করে এবং প্রতারিত হয়, তার জন্য ঘটি মার্কেট কর্তৃপক্ষ কোনভাবেই দায়ী থাকবে না।</p>
+    </div>
+
+    <div class="checkbox-group" onclick="toggleBtn()">
+        <input type="checkbox" id="policyCheck">
+        <label for="policyCheck">আমি পেমেন্ট নীতি মেনে নিচ্ছি এবং শর্তাবলীতে সম্মত আছি।</label>
+    </div>
+
+    <button onclick="register()" id="regBtn" class="btn-continue" disabled>অ্যাকাউন্ট তৈরি করুন</button>
 
     <div class="divider">আগে থেকেই অ্যাকাউন্ট আছে?</div>
     <button onclick="location.href='login.html'" class="btn-login-link">লগিন করুন</button>
@@ -81,6 +97,13 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const imgbbKey = "e1da51b6d309ac3a5a235b5088ebc334";
+
+// Checkbox Logic
+window.toggleBtn = () => {
+    const check = document.getElementById('policyCheck');
+    const btn = document.getElementById('regBtn');
+    btn.disabled = !check.checked;
+};
 
 window.previewNID = (input, viewId, boxId) => {
     const file = input.files[0];
@@ -102,7 +125,9 @@ window.register = async () => {
     const p = document.getElementById('pass').value.trim();
     const f1 = document.getElementById('nidFront').files[0];
     const f2 = document.getElementById('nidBack').files[0];
+    const isChecked = document.getElementById('policyCheck').checked;
 
+    if(!isChecked) return alert("দয়া করে পেমেন্ট নীতি গ্রহণ করুন!");
     if(!n || !s || !e || !p || !f1 || !f2) return alert("সবগুলো তথ্য এবং NID ছবি দিন!");
 
     const btn = document.getElementById('regBtn');
@@ -112,7 +137,6 @@ window.register = async () => {
         const userCredential = await createUserWithEmailAndPassword(auth, e, p);
         const user = userCredential.user;
 
-        // ImgBB Upload
         const upload = async (file) => {
             const fd = new FormData(); fd.append("image", file);
             const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, { method: "POST", body: fd });
