@@ -24,60 +24,59 @@
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" type="image/png" sizes="32x32" href="https://i.ibb.co/27wykyRH/20260425-143935.png">
-    <script type="application/ld+json">
-  {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Ghoti Market",
-  "url": "https://www.ghotimarket.com/",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://www.ghotimarket.com/?search={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-}
-</script>
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Ghoti Market",
-  "url": "https://www.ghotimarket.com/",
-  "logo": "https://i.ibb.co/27wykyRH/20260425-143935.png"
-}
-</script>
     <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    const firebaseConfig = { 
-        apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
-        authDomain: "ghotimarket.firebaseapp.com",
-        databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
-        projectId: "ghotimarket" 
-    };
+        const firebaseConfig = { 
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
+            authDomain: "ghotimarket.firebaseapp.com",
+            databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+            projectId: "ghotimarket" 
+        };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-    // ১. আপনার ফোনে এই কী-টি আছে কিনা চেক করবে
-    const isAdmin = localStorage.getItem('ghoti_admin_access');
+        const isAdmin = localStorage.getItem('ghoti_admin_access');
 
-    // ২. যদি আপনি না হন (মানে আপনার ফোনে ওই কী নেই), তবেই ডাটাবেসে যাবে
-    if (isAdmin !== 'true') {
-        const visitorRef = ref(db, 'site_visits');
-        push(visitorRef, {
-            time: serverTimestamp(),
-            page: window.location.pathname,
-            device: navigator.platform
-        });
-    } else {
-        console.log("অ্যাডমিন মোড অন - ট্র্যাকিং হচ্ছে না");
+        if (isAdmin !== 'true') {
+            const visitorRef = ref(db, 'site_visits');
+            push(visitorRef, {
+                time: serverTimestamp(),
+                page: window.location.pathname,
+                device: navigator.platform
+            });
+        }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Ghoti Market",
+      "url": "https://www.ghotimarket.com/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.ghotimarket.com/?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
     }
     </script>
-<link rel="apple-touch-icon" href="https://i.ibb.co/27wykyRH/20260425-143935.png">
-<link rel="shortcut icon" href="https://i.ibb.co/27wykyRH/20260425-143935.png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Ghoti Market",
+      "url": "https://www.ghotimarket.com/",
+      "logo": "https://i.ibb.co/27wykyRH/20260425-143935.png"
+    }
+    </script>
+
+    <link rel="apple-touch-icon" href="https://i.ibb.co/27wykyRH/20260425-143935.png">
+    <link rel="shortcut icon" href="https://i.ibb.co/27wykyRH/20260425-143935.png">
    <style>
         :root { --primary: #1a2a3a; --accent: #00a8ff; --danger: #ff4757; --bg: #f1f2f6; --success: #2ecc71; }
         body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg); margin: 0; padding-bottom: 100px; -webkit-tap-highlight-color: transparent; }
@@ -99,10 +98,10 @@
 
         .ad-box { width: 95%; margin: 15px auto; min-height: 50px; background: #fff; border-radius: 8px; overflow: hidden; text-align: center; display: block; }
 
-        /* --- Grid System Fix (Mobile, Tablet, Desktop) --- */
+        /* --- Grid System Fix --- */
         .grid { 
             display: grid; 
-            grid-template-columns: repeat(2, 1fr); /* মোবাইলে ২টা */
+            grid-template-columns: repeat(2, 1fr); 
             gap: 12px; 
             padding: 12px; 
             max-width: 1200px; 
@@ -110,15 +109,15 @@
         }
 
         @media (min-width: 600px) {
-            .grid { grid-template-columns: repeat(3, 1fr); } /* ট্যাবলেটে ৩টা */
+            .grid { grid-template-columns: repeat(3, 1fr); }
         }
 
         @media (min-width: 900px) {
-            .grid { grid-template-columns: repeat(4, 1fr); } /* ছোট ল্যাপটপে ৪টা */
+            .grid { grid-template-columns: repeat(4, 1fr); }
         }
 
         @media (min-width: 1200px) {
-            .grid { grid-template-columns: repeat(5, 1fr); } /* বড় ডেক্সটপে ৫টা */
+            .grid { grid-template-columns: repeat(5, 1fr); }
         }
 
         .p-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-decoration: none; color: inherit; transition: 0.2s; position: relative; display: flex; flex-direction: column; }
@@ -195,45 +194,22 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Banner Auto-Swipe Logic
-        let bannerInterval;
+        // Banner Auto-Swipe
         onSnapshot(query(collection(db, "banners"), orderBy("createdAt", "desc")), snap => {
             let h = ""; 
             snap.forEach(d => {
                 h += `<img src="${d.data().url}" class="banner-img" loading="lazy">`;
             });
-            const container = document.getElementById('bannerContainer');
-            container.innerHTML = h || '<div class="banner-img" style="background:#ccc; display:flex; align-items:center; justify-content:center;">No Banner Available</div>';
-            
-            if(snap.size > 1) {
-                clearInterval(bannerInterval);
-                bannerInterval = setInterval(() => {
-                    if (container.scrollLeft + container.clientWidth >= container.scrollWidth) {
-                        container.scrollTo({ left: 0, behavior: 'smooth' });
-                    } else {
-                        container.scrollBy({ left: container.clientWidth, behavior: 'smooth' });
-                    }
-                }, 5000);
-            }
+            document.getElementById('bannerContainer').innerHTML = h || '<div class="banner-img"></div>';
         });
 
         onSnapshot(collection(db, "ghoti_ads"), snap => {
             let homeAdHtml = "";
             snap.forEach(d => {
                 const ad = d.data();
-                if(ad.expiry && Date.now() > ad.expiry) return;
-                if(ad.type === 'home_ads') {
-                    homeAdHtml += `<div class="ad-item">${ad.code}</div>`;
-                }
+                if(ad.type === 'home_ads') homeAdHtml += `<div class="ad-item">${ad.code}</div>`;
             });
-            const homeAdBox = document.getElementById('homeAds');
-            homeAdBox.innerHTML = homeAdHtml;
-            homeAdBox.querySelectorAll('script').forEach(oldScript => {
-                const newScript = document.createElement('script');
-                Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-                newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-                oldScript.parentNode.replaceChild(newScript, oldScript);
-            });
+            document.getElementById('homeAds').innerHTML = homeAdHtml;
         });
 
         window.liveSearch = () => {
@@ -246,28 +222,19 @@
                 let html = "";
                 snap.forEach(d => {
                     const p = d.data();
-                    const matchesName = p.name.toLowerCase().includes(term);
-                    const keywords = p.keywords ? (Array.isArray(p.keywords) ? p.keywords.join(" ").toLowerCase() : p.keywords.toLowerCase()) : "";
-                    const matchesKeyword = keywords.includes(term);
-
-                    if(p.active && (matchesName || matchesKeyword)) {
+                    if(p.active && (p.name.toLowerCase().includes(term))) {
                         html += `
                         <a href="product.html?id=${d.id}" class="p-card">
-                            <div class="img-box">
-                                <img src="${p.images[0]}" alt="${p.name}" loading="lazy">
-                            </div>
+                            <div class="img-box"><img src="${p.images[0]}" alt="${p.name}" loading="lazy"></div>
                             <div class="p-info">
                                 <h3>${p.name}</h3>
-                                <div class="price-row">
-                                    <b>৳ ${p.price}</b>
-                                    <i class="fas fa-chevron-right" style="color:#ccc; font-size:12px;"></i>
-                                </div>
+                                <div class="price-row"><b>৳ ${p.price}</b></div>
                                 <span class="p-shop"><i class="fas fa-store"></i> ${p.shopName}</span>
                             </div>
                         </a>`;
                     }
                 });
-                document.getElementById('productGrid').innerHTML = html || '<p style="grid-column:1/5; text-align:center; padding:20px;">কোনো পণ্য পাওয়া যায়নি!</p>';
+                document.getElementById('productGrid').innerHTML = html || '<p style="text-align:center;">কিছু পাওয়া যায়নি!</p>';
             });
         }
         renderProducts();
