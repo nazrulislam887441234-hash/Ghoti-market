@@ -62,7 +62,7 @@
     <header>
         <div class="search-container">
             <i class="fas fa-search" style="color: #aaa;"></i>
-            <input type="text" id="searchInput" placeholder="কি খুঁজছেন?" onkeyup="liveSearch()">
+            <input type="text" id="searchInput" placeholder="কি খুঁজছেন? (যেমন: পাঞ্জাবি)" onkeyup="liveSearch()">
         </div>
         <a href="contact.html" class="support-btn"><i class="fas fa-headset"></i></a>
     </header>
@@ -158,16 +158,16 @@
                 const nameMatch = p.name.toLowerCase().includes(term);
                 const keywordMatch = p.keywords ? (Array.isArray(p.keywords) ? p.keywords.join(" ").toLowerCase().includes(term) : p.keywords.toLowerCase().includes(term)) : false;
 
-                // ইমেজ অ্যারের প্রথমটি নিতে p.images[0] নিশ্চিত করা হয়েছে
                 if (p.active && (nameMatch || keywordMatch)) {
-                    const imgSrc = (p.images && p.images.length > 0) ? p.images[0] : '';
+                    // ইমেজ ইউআরএল চেক করা হচ্ছে
+                    const imgSrc = p.imageUrl || (p.images && p.images.length > 0 ? p.images[0] : 'https://via.placeholder.com/150');
                     html += `
                     <a href="product.html?id=${p.id}" class="p-card">
-                        <div class="img-box"><img src="${imgSrc}" loading="lazy"></div>
+                        <div class="img-box"><img src="${imgSrc}" loading="lazy" alt="${p.name}"></div>
                         <div class="p-info">
                             <h3>${p.name}</h3>
                             <div class="price-row"><b>৳ ${p.price}</b></div>
-                            <span class="p-shop"><i class="fas fa-store"></i> ${p.shopName}</span>
+                            <span class="p-shop"><i class="fas fa-store"></i> ${p.shopName || 'Ghoti Market'}</span>
                         </div>
                     </a>`;
                 }
