@@ -109,7 +109,7 @@
                 const bannerSnap = await getDocs(query(collection(db, "banners"), orderBy("createdAt", "desc")));
                 let bannerHtml = "";
                 bannerSnap.forEach(doc => {
-                    bannerHtml += `<img src="${doc.data().url}" class="banner-img" loading="lazy">`;
+                    bannerHtml += `<img src="${doc.data().url}" class="banner-img" loading="eager">`;
                 });
                 const container = document.getElementById('bannerContainer');
                 container.innerHTML = bannerHtml || '<div class="banner-img"></div>';
@@ -159,11 +159,19 @@
                 const keywordMatch = p.keywords ? (Array.isArray(p.keywords) ? p.keywords.join(" ").toLowerCase().includes(term) : p.keywords.toLowerCase().includes(term)) : false;
 
                 if (p.active && (nameMatch || keywordMatch)) {
-                    // ইমেজ ইউআরএল চেক করা হচ্ছে
-                    const imgSrc = p.imageUrl || (p.images && p.images.length > 0 ? p.images[0] : 'https://via.placeholder.com/150');
+                    // ব্রাউজারের জন্য ইমেজ সোর্স লজিক আপডেট
+                    let imgSrc = "";
+                    if (p.images && Array.isArray(p.images) && p.images.length > 0) {
+                        imgSrc = p.images[0];
+                    } else if (p.imageUrl) {
+                        imgSrc = p.imageUrl;
+                    } else {
+                        imgSrc = 'https://i.ibb.co/vzPRY87/placeholder.png'; // ব্যাকআপ ইমেজ
+                    }
+
                     html += `
                     <a href="product.html?id=${p.id}" class="p-card">
-                        <div class="img-box"><img src="${imgSrc}" loading="lazy" alt="${p.name}"></div>
+                        <div class="img-box"><img src="${imgSrc}" loading="lazy" alt="${p.name}" onerror="this.src='https://i.ibb.co/vzPRY87/placeholder.png'"></div>
                         <div class="p-info">
                             <h3>${p.name}</h3>
                             <div class="price-row"><b>৳ ${p.price}</b></div>
