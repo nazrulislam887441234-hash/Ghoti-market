@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Seller App | Ghoti Market</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #2ecc71;
+            --bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            margin-top: 50px;
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .app-logo {
+            width: 80px;
+            height: 80px;
+            background: var(--success);
+            color: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 20px rgba(46,204,113,0.3);
+        }
+
+        h1 { color: var(--primary); margin: 0; font-size: 24px; }
+        p.subtitle { color: #777; margin: 10px 0 25px; font-size: 14px; }
+
+        .dl-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: var(--success);
+            color: white;
+            text-decoration: none;
+            padding: 18px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 18px;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(46,204,113,0.2);
+            border: none;
+            width: 100%;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        .dl-btn:hover { background: #27ae60; transform: translateY(-2px); }
+        .dl-btn:active { transform: scale(0.97); }
+
+        .instruction-box {
+            text-align: left;
+            margin-top: 35px;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px dashed #ddd;
+        }
+
+        .instruction-box h3 {
+            margin-top: 0;
+            font-size: 18px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+
+        .step i {
+            background: white;
+            color: var(--accent);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 14px;
+        }
+
+        .step p { margin: 0; font-size: 14px; color: #555; line-height: 1.4; }
+
+        .footer {
+            margin-top: 30px;
+            color: #aaa;
+            font-size: 12px;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="app-logo">
+            <i class="fas fa-store"></i>
+        </div>
+        <h1>ঘটি মার্কেট সেলার অ্যাপ</h1>
+        <p class="subtitle">অফিসিয়াল অ্যান্ড্রয়েড অ্যাপ্লিকেশন (v1.0.1)</p>
+
+        <a href="https://github.com/nazrulislam887441234-hash/Ghoti-market/raw/main/GHOTI%20MARKET%20SELLER.apk" class="dl-btn">
+            <i class="fas fa-cloud-download-alt"></i> অ্যাপটি ডাউনলোড করুন
+        </a>
+
+        <div class="instruction-box">
+            <h3><i class="fas fa-info-circle"></i> ইনস্টল করার নিয়ম:</h3>
+            
+            <div class="step">
+                <i class="fas fa-1"></i>
+                <p>ডাউনলোড বাটনে ক্লিক করার পর <b>"Download Anyway"</b> লেখা আসলে সেখানে ক্লিক করুন।</p>
+            </div>
+
+            <div class="step">
+                <i class="fas fa-2"></i>
+                <p>ডাউনলোড শেষ হলে ফাইলটি ওপেন করুন এবং <b>"Install"</b> বাটনে ক্লিক করুন।</p>
+            </div>
+
+            <div class="step">
+                <i class="fas fa-3"></i>
+                <p>যদি <b>"Blocked by Play Protect"</b> দেখায়, তবে <b>"Install Anyway"</b>-তে ক্লিক করুন।</p>
+            </div>
+
+            <div class="step">
+                <i class="fas fa-4"></i>
+                <p>ইনস্টল হয়ে গেলে অ্যাপটি ওপেন করে আপনার সেলার একাউন্টে লগইন করুন।</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2026 Ghoti Market | All Rights Reserved
+    </div>
+
+</body>
+</html>
