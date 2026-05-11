@@ -72,8 +72,11 @@
             cursor: pointer;
         }
 
-        .dl-btn:hover { background: #27ae60; transform: translateY(-2px); }
-        .dl-btn:active { transform: scale(0.97); }
+        .dl-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
 
         .instruction-box {
             text-align: left;
@@ -84,44 +87,22 @@
             border: 1px dashed #ddd;
         }
 
-        .instruction-box h3 {
-            margin-top: 0;
-            font-size: 18px;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .instruction-box h3 { margin-top: 0; font-size: 18px; color: var(--primary); display: flex; align-items: center; gap: 10px; }
 
-        .step {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-            align-items: flex-start;
-        }
-
+        .step { display: flex; gap: 15px; margin-bottom: 15px; align-items: flex-start; }
         .step i {
-            background: white;
-            color: var(--accent);
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            font-size: 14px;
+            background: white; color: var(--accent); width: 30px; height: 30px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); font-size: 14px;
         }
-
         .step p { margin: 0; font-size: 14px; color: #555; line-height: 1.4; }
 
-        .footer {
-            margin-top: 30px;
-            color: #aaa;
-            font-size: 12px;
-            padding-bottom: 20px;
-        }
+        .footer { margin-top: 30px; color: #aaa; font-size: 12px; padding-bottom: 20px; }
+
+        /* ডাউনলোড প্রগ্রেস বার */
+        #progress-cont { display: none; margin-top: 15px; text-align: left; }
+        .bar-bg { background: #eee; height: 10px; border-radius: 5px; overflow: hidden; }
+        .bar-fill { background: var(--success); height: 100%; width: 0%; transition: 0.1s; }
     </style>
 </head>
 <body>
@@ -133,38 +114,91 @@
         <h1>ঘটি মার্কেট সেলার অ্যাপ</h1>
         <p class="subtitle">অফিসিয়াল অ্যান্ড্রয়েড অ্যাপ্লিকেশন (v1.0.1)</p>
 
-        <a href="https://github.com/nazrulislam887441234-hash/Ghoti-market/raw/main/GHOTI%20MARKET%20SELLER.apk" class="dl-btn">
+        <button id="downloadBtn" class="dl-btn" onclick="startDownload()">
             <i class="fas fa-cloud-download-alt"></i> অ্যাপটি ডাউনলোড করুন
-        </a>
+        </button>
+
+        <div id="progress-cont">
+            <p id="status-text" style="font-size: 12px; margin-bottom: 5px; color: #555;">প্রস্তুত হচ্ছে...</p>
+            <div class="bar-bg">
+                <div id="bar-fill" class="bar-fill"></div>
+            </div>
+        </div>
 
         <div class="instruction-box">
             <h3><i class="fas fa-info-circle"></i> ইনস্টল করার নিয়ম:</h3>
-            
             <div class="step">
                 <i class="fas fa-1"></i>
-                <p>ডাউনলোড বাটনে ক্লিক করার পর <b>"Download Anyway"</b> লেখা আসলে সেখানে ক্লিক করুন।</p>
+                <p>ডাউনলোড বাটনে ক্লিক করুন। ব্রাউজারে <b>"Download Anyway"</b> চাইলে পারমিশন দিন।</p>
             </div>
-
             <div class="step">
                 <i class="fas fa-2"></i>
-                <p>ডাউনলোড শেষ হলে ফাইলটি ওপেন করুন এবং <b>"Install"</b> বাটনে ক্লিক করুন।</p>
+                <p>ডাউনলোড শেষ হলে ফাইলটি ওপেন করে <b>"Install"</b> বাটনে ক্লিক করুন।</p>
             </div>
-
             <div class="step">
                 <i class="fas fa-3"></i>
-                <p>যদি <b>"Blocked by Play Protect"</b> দেখায়, তবে <b>"Install Anyway"</b>-তে ক্লিক করুন।</p>
-            </div>
-
-            <div class="step">
-                <i class="fas fa-4"></i>
-                <p>ইনস্টল হয়ে গেলে অ্যাপটি ওপেন করে আপনার সেলার একাউন্টে লগইন করুন।</p>
+                <p>যদি <b>"Blocked by Play Protect"</b> ওয়ার্নিং আসে, তবে নিচের <b>"Install Anyway"</b>-তে ক্লিক করুন।</p>
             </div>
         </div>
     </div>
 
-    <div class="footer">
-        © 2026 Ghoti Market | All Rights Reserved
-    </div>
+    <div class="footer">© 2026 Ghoti Market | All Rights Reserved</div>
 
+    <script>
+        async function startDownload() {
+            const fileUrl = "https://github.com/nazrulislam887441234-hash/Ghoti-market/raw/main/GHOTI%20MARKET%20SELLER.apk";
+            const btn = document.getElementById('downloadBtn');
+            const progCont = document.getElementById('progress-cont');
+            const barFill = document.getElementById('bar-fill');
+            const statusText = document.getElementById('status-text');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ডাউনলোড শুরু হচ্ছে...';
+            progCont.style.display = 'block';
+
+            try {
+                const response = await fetch(fileUrl);
+                if (!response.ok) throw new Error('Download failed');
+
+                const reader = response.body.getReader();
+                const contentLength = +response.headers.get('Content-Length');
+                
+                let receivedLength = 0;
+                let chunks = [];
+
+                while(true) {
+                    const {done, value} = await reader.read();
+                    if (done) break;
+                    chunks.push(value);
+                    receivedLength += value.length;
+                    
+                    if (contentLength) {
+                        let step = Math.round((receivedLength / contentLength) * 100);
+                        barFill.style.width = step + '%';
+                        statusText.innerText = `ডাউনলোড হচ্ছে: ${step}%`;
+                    }
+                }
+
+                const blob = new Blob(chunks);
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'Ghoti_Market_Seller.apk';
+                document.body.appendChild(a);
+                a.click();
+                
+                window.URL.revokeObjectURL(url);
+                statusText.innerText = "ডাউনলোড সফল হয়েছে!";
+                btn.innerHTML = '<i class="fas fa-check-circle"></i> আবার ডাউনলোড করুন';
+                btn.disabled = false;
+
+            } catch (error) {
+                console.error(error);
+                alert("দুঃখিত, ডাউনলোড ব্যর্থ হয়েছে। সরাসরি লিঙ্কে চেষ্টা করুন।");
+                window.location.href = fileUrl; // ফেইল করলে সরাসরি রিডাইরেক্ট হবে
+            }
+        }
+    </script>
 </body>
 </html>
