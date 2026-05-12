@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download Seller App | Ghoti Market</title>
+    <title>Ghoti Market Seller App</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -36,21 +36,18 @@
         }
 
         .app-logo {
-            width: 80px;
-            height: 80px;
-            background: var(--success);
-            color: white;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
+            width: 100px;
+            height: 100px;
             margin: 0 auto 20px;
-            box-shadow: 0 8px 20px rgba(46,204,113,0.3);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
+        .app-logo img { width: 100%; height: 100%; object-fit: cover; }
 
+        h2 { color: #777; font-size: 14px; margin-bottom: 5px; letter-spacing: 1px; }
         h1 { color: var(--primary); margin: 0; font-size: 24px; }
-        p.subtitle { color: #777; margin: 10px 0 25px; font-size: 14px; }
+        p.subtitle { color: #999; margin: 10px 0 25px; font-size: 13px; }
 
         .dl-btn {
             display: flex;
@@ -72,11 +69,8 @@
             cursor: pointer;
         }
 
-        .dl-btn:disabled {
-            background: #95a5a6;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
+        .dl-btn:hover { background: #27ae60; transform: translateY(-2px); }
+        .dl-btn:active { transform: scale(0.97); }
 
         .instruction-box {
             text-align: left;
@@ -88,7 +82,6 @@
         }
 
         .instruction-box h3 { margin-top: 0; font-size: 18px; color: var(--primary); display: flex; align-items: center; gap: 10px; }
-
         .step { display: flex; gap: 15px; margin-bottom: 15px; align-items: flex-start; }
         .step i {
             background: white; color: var(--accent); width: 30px; height: 30px;
@@ -98,107 +91,41 @@
         .step p { margin: 0; font-size: 14px; color: #555; line-height: 1.4; }
 
         .footer { margin-top: 30px; color: #aaa; font-size: 12px; padding-bottom: 20px; }
-
-        /* ডাউনলোড প্রগ্রেস বার */
-        #progress-cont { display: none; margin-top: 15px; text-align: left; }
-        .bar-bg { background: #eee; height: 10px; border-radius: 5px; overflow: hidden; }
-        .bar-fill { background: var(--success); height: 100%; width: 0%; transition: 0.1s; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <div class="app-logo">
-            <i class="fas fa-store"></i>
+            <img src="https://moral-magenta-jql3g1sv3r.edgeone.app/1811-Photoroom.png" alt="Ghoti Market Logo">
         </div>
+        
+        <h2>GHOTI MARKET SELLER APK</h2>
         <h1>ঘটি মার্কেট সেলার অ্যাপ</h1>
         <p class="subtitle">অফিসিয়াল অ্যান্ড্রয়েড অ্যাপ্লিকেশন (v1.0.1)</p>
 
-        <button id="downloadBtn" class="dl-btn" onclick="startDownload()">
-            <i class="fas fa-cloud-download-alt"></i> অ্যাপটি ডাউনলোড করুন
-        </button>
-
-        <div id="progress-cont">
-            <p id="status-text" style="font-size: 12px; margin-bottom: 5px; color: #555;">প্রস্তুত হচ্ছে...</p>
-            <div class="bar-bg">
-                <div id="bar-fill" class="bar-fill"></div>
-            </div>
-        </div>
+        <a href="https://github.com/nazrulislam887441234-hash/Ghoti-market/blob/main/GHOTI%20MARKET%20SELLER-1.apk?raw=true" class="dl-btn">
+            <i class="fas fa-download"></i> অ্যাপটি ডাউনলোড করুন
+        </a>
 
         <div class="instruction-box">
             <h3><i class="fas fa-info-circle"></i> ইনস্টল করার নিয়ম:</h3>
             <div class="step">
                 <i class="fas fa-1"></i>
-                <p>ডাউনলোড বাটনে ক্লিক করুন। ব্রাউজারে <b>"Download Anyway"</b> চাইলে পারমিশন দিন।</p>
+                <p>ডাউনলোড শুরু হলে ব্রাউজার থেকে <b>"File might be harmful"</b> ওয়ার্নিং আসলে <b>"Download anyway"</b> দিন।</p>
             </div>
             <div class="step">
                 <i class="fas fa-2"></i>
-                <p>ডাউনলোড শেষ হলে ফাইলটি ওপেন করে <b>"Install"</b> বাটনে ক্লিক করুন।</p>
+                <p>ডাউনলোড শেষ হলে ফাইলটির উপর ক্লিক করুন এবং <b>"Install"</b> বাটনে ক্লিক করুন।</p>
             </div>
             <div class="step">
                 <i class="fas fa-3"></i>
-                <p>যদি <b>"Blocked by Play Protect"</b> ওয়ার্নিং আসে, তবে নিচের <b>"Install Anyway"</b>-তে ক্লিক করুন।</p>
+                <p>যদি <b>"Blocked by Play Protect"</b> দেখায়, তবে <b>"Scan"</b> করে নিন অথবা <b>"More details"</b> এ গিয়ে <b>"Install anyway"</b> দিন।</p>
             </div>
         </div>
     </div>
 
     <div class="footer">© 2026 Ghoti Market | All Rights Reserved</div>
 
-    <script>
-        async function startDownload() {
-            const fileUrl = "https://github.com/nazrulislam887441234-hash/Ghoti-market/raw/main/GHOTI%20MARKET%20SELLER.apk";
-            const btn = document.getElementById('downloadBtn');
-            const progCont = document.getElementById('progress-cont');
-            const barFill = document.getElementById('bar-fill');
-            const statusText = document.getElementById('status-text');
-
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ডাউনলোড শুরু হচ্ছে...';
-            progCont.style.display = 'block';
-
-            try {
-                const response = await fetch(fileUrl);
-                if (!response.ok) throw new Error('Download failed');
-
-                const reader = response.body.getReader();
-                const contentLength = +response.headers.get('Content-Length');
-                
-                let receivedLength = 0;
-                let chunks = [];
-
-                while(true) {
-                    const {done, value} = await reader.read();
-                    if (done) break;
-                    chunks.push(value);
-                    receivedLength += value.length;
-                    
-                    if (contentLength) {
-                        let step = Math.round((receivedLength / contentLength) * 100);
-                        barFill.style.width = step + '%';
-                        statusText.innerText = `ডাউনলোড হচ্ছে: ${step}%`;
-                    }
-                }
-
-                const blob = new Blob(chunks);
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url;
-                a.download = 'Ghoti_Market_Seller.apk';
-                document.body.appendChild(a);
-                a.click();
-                
-                window.URL.revokeObjectURL(url);
-                statusText.innerText = "ডাউনলোড সফল হয়েছে!";
-                btn.innerHTML = '<i class="fas fa-check-circle"></i> আবার ডাউনলোড করুন';
-                btn.disabled = false;
-
-            } catch (error) {
-                console.error(error);
-                alert("দুঃখিত, ডাউনলোড ব্যর্থ হয়েছে। সরাসরি লিঙ্কে চেষ্টা করুন।");
-                window.location.href = fileUrl; // ফেইল করলে সরাসরি রিডাইরেক্ট হবে
-            }
-        }
-    </script>
 </body>
 </html>
