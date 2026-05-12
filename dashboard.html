@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --primary: #2c3e50; --accent: #3498db; --success: #2ecc71; --danger: #e74c3c; --orange: #f39c12; --white: #ffffff; }
+        :root { --primary: #2c3e50; --accent: #3498db; --success: #2ecc71; --danger: #e74c3c; --orange: #f39c12; --purple: #9b59b6; --white: #ffffff; }
         body { font-family: 'Hind Siliguri', sans-serif; background: #f8f9fa; margin: 0; padding-bottom: 100px; }
         
         .header { background: var(--primary); color: white; padding: 40px 20px; text-align: center; border-radius: 0 0 30px 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; }
@@ -22,12 +22,15 @@
         .stat-card { background: white; padding: 25px; border-radius: 20px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
         
         .action-container { padding: 0 20px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-        .btn-wide { width: 100%; padding: 15px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; font-size: 16px; font-weight: 600; border: none; transition: 0.3s; color: white; }
+        .btn-wide { width: 100%; padding: 15px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; font-size: 16px; font-weight: 600; border: none; transition: 0.3s; color: white; box-sizing: border-box; }
+        
+        /* Buttons Colors */
         .promo-btn { background: linear-gradient(135deg, var(--orange), #e67e22); box-shadow: 0 6px 15px rgba(243,156,18,0.3); }
         .shop-btn { background: var(--accent); box-shadow: 0 6px 15px rgba(52,152,219,0.3); }
+        .app-btn { background: var(--success); box-shadow: 0 6px 15px rgba(46,204,113,0.3); }
+        
         .btn-wide:active { transform: scale(0.96); }
 
-        /* Search Bar Style */
         .search-container { padding: 0 20px; margin-bottom: 15px; }
         .search-box { background: white; padding: 12px 20px; border-radius: 12px; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
         .search-box input { border: none; outline: none; width: 100%; font-family: inherit; font-size: 16px; margin-left: 10px; }
@@ -69,6 +72,9 @@
     </div>
 
     <div class="action-container">
+        <a href="seller-apk.html" target="_blank" class="btn-wide app-btn">
+            <i class="fas fa-download"></i> সেলার অ্যাপ ডাউনলোড করুন
+        </a>
         <a href="promotion.html" class="btn-wide promo-btn">
             <i class="fas fa-bullhorn"></i> পণ্য প্রমোশন করুন
         </a>
