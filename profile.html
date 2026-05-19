@@ -9,23 +9,51 @@
         :root { --primary: #1a2a3a; --bg: #f1f2f6; --accent: #00a8ff; --success: #25d366; --danger: #ff4757; }
         body { font-family: sans-serif; background: var(--bg); margin: 0; padding-bottom: 100px; }
         
-        .profile-header { background: var(--primary); color: white; padding: 40px 20px; text-align: center; border-radius: 0 0 30px 30px; position: relative; }
-        .shop-icon { width: 80px; height: 80px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: var(--primary); font-size: 35px; border: 4px solid var(--accent); }
-        .profile-header h1 { margin: 0; font-size: 22px; }
-        .back-btn { position: absolute; top: 20px; left: 20px; color: white; font-size: 20px; text-decoration: none; }
+        /* প্রফেশনাল ব্যানার ও লগো ডিজাইন (16:9 Ratio for Banner) */
+        .profile-container { position: relative; background: var(--primary); border-radius: 0 0 30px 30px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        
+        .banner-box { 
+            position: relative; 
+            width: 100%; 
+            padding-top: 56.25%; /* 16:9 Aspect Ratio (YouTube Thumbnail Size) */
+            background: linear-gradient(135deg, #2c3e50, #1a2a3a); 
+        }
+        .banner-box img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
+        
+        .profile-info-box { position: relative; text-align: center; padding: 0 20px 30px; margin-top: -50px; z-index: 5; }
+        
+        .shop-icon { 
+            width: 100px; 
+            height: 100px; 
+            background: white; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin: 0 auto 15px; 
+            color: var(--primary); 
+            font-size: 40px; 
+            border: 4px solid var(--accent); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        .shop-icon img { width: 100%; height: 100%; object-fit: cover; display: none; }
+        
+        .profile-info-box h1 { margin: 0; font-size: 24px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
+        .back-btn { position: absolute; top: 20px; left: 20px; color: white; font-size: 20px; text-decoration: none; z-index: 10; background: rgba(0,0,0,0.4); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
         /* Shop Status Style */
-        .status-tag { display: inline-block; margin-top: 8px; padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: bold; text-transform: uppercase; }
+        .status-tag { display: inline-block; margin-top: 10px; padding: 5px 15px; border-radius: 50px; font-size: 12px; font-weight: bold; text-transform: uppercase; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         .verified { background: var(--success); color: white; }
         .unverified { background: var(--danger); color: white; }
 
-        .policy-card { background: white; margin: 15px; padding: 15px; border-radius: 15px; border-left: 5px solid #e74c3c; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .policy-card { background: white; margin: 20px 15px; padding: 15px; border-radius: 15px; border-left: 5px solid #e74c3c; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .policy-card p { font-size: 12px; color: #444; margin: 0 0 10px; line-height: 1.5; }
         .check-area { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
         .check-area input { width: 18px; height: 18px; cursor: pointer; }
         .check-area label { font-size: 13px; color: #1a2a3a; font-weight: bold; cursor: pointer; }
 
-        .section-title { padding: 10px 15px 5px; font-weight: bold; color: #555; }
+        .section-title { padding: 10px 15px 5px; font-weight: bold; color: #555; font-size: 18px; }
         
         /* Responsive Grid Fix */
         .grid { 
@@ -53,11 +81,21 @@
 </head>
 <body>
 
-    <div class="profile-header">
+    <div class="profile-container">
         <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <div class="shop-icon"><i class="fas fa-store"></i></div>
-        <h1 id="shopName">Loading Shop...</h1>
-        <div id="shopStatusArea"></div>
+        
+        <div class="banner-box" id="bannerBox">
+            <img id="shopBannerImg" src="" alt="Shop Banner">
+        </div>
+        
+        <div class="profile-info-box">
+            <div class="shop-icon" id="logoBox">
+                <i class="fas fa-store" id="defaultLogoIcon"></i>
+                <img id="shopLogoImg" src="" alt="Shop Logo">
+            </div>
+            <h1 id="shopName">Loading Shop...</h1>
+            <div id="shopStatusArea"></div>
+        </div>
     </div>
 
     <div class="policy-card">
@@ -84,7 +122,6 @@
         });
         const db = getFirestore(app);
 
-        // ইউআইডি গেট করার লজিক (প্যারামিটার অথবা পাথ থেকে)
         const urlPath = window.location.pathname.split('/');
         const sId = new URLSearchParams(window.location.search).get('sellerId') || urlPath[urlPath.length - 1];
 
@@ -102,6 +139,19 @@
             if(userSnap.exists()){
                 const userData = userSnap.data();
                 document.getElementById('shopName').innerText = userData.shopName || "Ghoti Market Shop";
+                
+                // ১. লগো সেট করার লজিক (imgbb লিঙ্ক থাকলে দেখাবে)
+                if(userData.shopLogo) {
+                    document.getElementById('shopLogoImg').src = userData.shopLogo;
+                    document.getElementById('shopLogoImg').style.display = 'block';
+                    document.getElementById('defaultLogoIcon').style.display = 'none';
+                }
+
+                // ২. ব্যানার সেট করার লজিক (imgbb লিঙ্ক থাকলে দেখাবে)
+                if(userData.shopBanner) {
+                    document.getElementById('shopBannerImg').src = userData.shopBanner;
+                    document.getElementById('shopBannerImg').style.display = 'block';
+                }
                 
                 // শপ স্ট্যাটাস চেক
                 const statusArea = document.getElementById('shopStatusArea');
