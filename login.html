@@ -1,157 +1,96 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login | Ghoti Market</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         :root { --primary: #2c3e50; --accent: #3498db; --bg: #f4f7f6; }
-        body {
-            font-family: 'Hind Siliguri', sans-serif;
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; margin: 0; background: linear-gradient(135deg, #2c3e50, #4ca1af); padding: 20px;
-        }
-        .box {
-            background: white; padding: 40px 30px; border-radius: 20px;
-            width: 100%; max-width: 360px; text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2); box-sizing: border-box;
-        }
+        body { font-family: 'Hind Siliguri', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: linear-gradient(135deg, #2c3e50, #4ca1af); padding: 20px; }
+        .box { background: white; padding: 40px 30px; border-radius: 20px; width: 100%; max-width: 360px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.2); box-sizing: border-box; }
         .logo-icon { font-size: 50px; color: var(--accent); margin-bottom: 15px; }
         h2 { margin: 0 0 10px; color: #333; font-size: 24px; }
-        p.sub-text { color: #777; font-size: 14px; margin-bottom: 25px; }
         .input-group { position: relative; margin-bottom: 15px; text-align: left; }
         .input-group i { position: absolute; left: 15px; top: 14px; color: #aaa; }
-        input {
-            width: 100%; padding: 12px 15px 12px 45px; border: 1px solid #ddd;
-            border-radius: 10px; box-sizing: border-box; outline: none; font-size: 16px; transition: 0.3s;
-        }
-        input:focus { border-color: var(--accent); box-shadow: 0 0 8px rgba(52,152,219,0.2); }
-        button.main-btn {
-            background: var(--accent); color: white; border: none; width: 100%;
-            padding: 14px; border-radius: 10px; cursor: pointer; font-size: 16px;
-            font-weight: 600; transition: 0.3s; margin-top: 10px;
-        }
-        button.main-btn:disabled { background: #ccc; cursor: not-allowed; }
-        .linkBtn { background: none; color: var(--accent); border: none; margin-top: 15px; cursor: pointer; font-size: 14px; }
-        .footer-text { margin-top: 25px; font-size: 14px; color: #555; }
-        .footer-text a { color: var(--accent); text-decoration: none; font-weight: 600; }
-        /* স্ক্রিন লোডিং ওভারলে */
-        #pageLoader {
-            position: fixed; inset: 0; background: white; 
-            display: flex; justify-content: center; align-items: center; z-index: 9999;
-        }
+        input { width: 100%; padding: 12px 15px 12px 45px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; outline: none; font-size: 16px; }
+        .g-recaptcha { margin: 15px 0; display: flex; justify-content: center; transform: scale(0.9); }
+        button.main-btn { background: var(--accent); color: white; border: none; width: 100%; padding: 14px; border-radius: 10px; cursor: pointer; font-weight: 600; margin-top: 10px; }
+        .linkBtn { background: none; color: var(--accent); border: none; margin-top: 15px; cursor: pointer; }
+        #pageLoader { position: fixed; inset: 0; background: white; display: flex; justify-content: center; align-items: center; z-index: 9999; }
     </style>
 </head>
 <body>
-
-<div id="pageLoader"><p>অপেক্ষা করুন...</p></div>
-
-<div class="box">
-    <div class="logo-icon"><i class="fas fa-user-circle"></i></div>
-    <h2>লগিন করুন</h2>
-    <p class="sub-text">Ghoti Market-এ আপনাকে স্বাগতম</p>
-
-    <div class="input-group">
-        <i class="fas fa-envelope"></i>
-        <input type="email" id="email" placeholder="আপনার ইমেইল">
-    </div>
-
-    <div class="input-group">
-        <i class="fas fa-lock"></i>
-        <input type="password" id="pass" placeholder="পাসওয়ার্ড">
-    </div>
-
-    <button id="loginBtn" class="main-btn">প্রবেশ করুন</button>
-    <button id="resetBtn" class="linkBtn">পাসওয়ার্ড ভুলে গেছেন?</button>
-
-    <p class="footer-text">অ্যাকাউন্ট নেই? <a href="signup.html">নতুন খুলুন</a></p>
-</div>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
-    projectId: "ghotimarket",
-    authDomain: "ghotimarket.firebaseapp.com"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// ১. লগিন মনে রাখার মেকানিজম সেট করা (Persistence)
-setPersistence(auth, browserLocalPersistence);
-
-// ২. অটো লগিন চেক (যদি আগে লগিন করা থাকে)
-onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        // যদি ইউজার লগিন থাকে, তার ভেরিফিকেশন চেক করে ড্যাশবোর্ডে পাঠান
-        const snap = await getDoc(doc(db, "users", user.uid));
-        if (snap.exists() && snap.data().verified) {
-            window.location.href = "dashboard.html";
-        } else {
-            document.getElementById('pageLoader').style.display = 'none';
-        }
-    } else {
-        document.getElementById('pageLoader').style.display = 'none';
-    }
-});
-
-// ৩. লগিন ফাংশন
-document.getElementById('loginBtn').addEventListener('click', async () => {
-    const e = document.getElementById('email').value.trim();
-    const p = document.getElementById('pass').value;
-    const btn = document.getElementById('loginBtn');
-
-    if(!e || !p) return alert("ইমেইল এবং পাসওয়ার্ড দিন!");
-
-    btn.disabled = true;
-    btn.innerText = "যাচাই করা হচ্ছে...";
-
-    try {
-        const userCredential = await signInWithEmailAndPassword(auth, e, p);
-        const snap = await getDoc(doc(db, "users", userCredential.user.uid));
+    <div id="pageLoader"><p>অপেক্ষা করুন...</p></div>
+    <div class="box">
+        <div class="logo-icon"><i class="fas fa-user-circle"></i></div>
+        <h2>লগিন করুন</h2>
+        <div class="input-group"><i class="fas fa-envelope"></i><input type="email" id="email" placeholder="আপনার ইমেইল" /></div>
+        <div class="input-group"><i class="fas fa-lock"></i><input type="password" id="pass" placeholder="পাসওয়ার্ড" /></div>
         
-        if(!snap.exists()){
-            alert("ডাটা পাওয়া যায়নি!");
-            await auth.signOut();
-            location.reload();
-            return;
-        }
+        <div class="g-recaptcha" data-sitekey="6LfLDwItAAAAAK4KIWSSo5OMphHLYSU1zK3ykaYQ"></div>
 
-        if(!snap.data().verified){
-            alert("অ্যাকাউন্ট ভেরিফাইড হয়নি!");
-            await auth.signOut();
-            location.reload();
-        } else {
-            window.location.href = "dashboard.html";
-        }
+        <button id="loginBtn" class="main-btn">প্রবেশ করুন</button>
+        <button id="resetBtn" class="linkBtn">পাসওয়ার্ড ভুলে গেছেন?</button>
+    </div>
 
-    } catch (err) {
-        alert("ভুল ইমেইল বা পাসওয়ার্ড!");
-        btn.disabled = false;
-        btn.innerText = "প্রবেশ করুন";
-    }
-});
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// ৪. পাসওয়ার্ড রিসেট
-document.getElementById('resetBtn').addEventListener('click', async () => {
-    const email = document.getElementById('email').value.trim();
-    if(!email) return alert("আগে আপনার ইমেইলটি লিখুন!");
+        const firebaseConfig = { apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket", authDomain: "ghotimarket.firebaseapp.com" };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-    try {
-        await sendPasswordResetEmail(auth, email);
-        alert("রিসেট লিংক ইমেইলে পাঠানো হয়েছে।");
-    } catch (err) {
-        alert("ভুল ইমেইল!");
-    }
-});
-</script>
+        setPersistence(auth, browserLocalPersistence);
 
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const snap = await getDoc(doc(db, "users", user.uid));
+                if (snap.exists() && snap.data().verified) window.location.href = "dashboard.html";
+                else document.getElementById('pageLoader').style.display = 'none';
+            } else document.getElementById('pageLoader').style.display = 'none';
+        });
+
+        document.getElementById('loginBtn').addEventListener('click', async () => {
+            const e = document.getElementById('email').value.trim();
+            const p = document.getElementById('pass').value;
+            
+            // ক্যাপচা ভেরিফিকেশন চেক
+            const response = grecaptcha.getResponse();
+            if(response.length == 0) return alert("দয়া করে ক্যাপচাটি পূরণ করুন!");
+
+            if(!e || !p) return alert("ইমেইল এবং পাসওয়ার্ড দিন!");
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, e, p);
+                const snap = await getDoc(doc(db, "users", userCredential.user.uid));
+                
+                if(!snap.exists() || !snap.data().verified) {
+                    alert("অ্যাকাউন্ট ভেরিফাইড হয়নি!");
+                    await auth.signOut();
+                    location.reload();
+                } else {
+                    window.location.href = "dashboard.html";
+                }
+            } catch (err) {
+                alert("ভুল ইমেইল, পাসওয়ার্ড অথবা ক্যাপচা ত্রুটি!");
+                grecaptcha.reset(); // ক্যাপচা রিসেট
+            }
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', async () => {
+            const email = document.getElementById('email').value.trim();
+            if(!email) return alert("আগে আপনার ইমেইলটি লিখুন!");
+            try {
+                await sendPasswordResetEmail(auth, email);
+                alert("রিসেট লিংক ইমেইলে পাঠানো হয়েছে।");
+            } catch (err) { alert("ভুল ইমেইল!"); }
+        });
+    </script>
 </body>
 </html>
