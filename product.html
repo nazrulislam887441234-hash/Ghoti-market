@@ -86,6 +86,10 @@
 
         async function loadProduct() {
             if(!pId) return;
+            // পুরনো ডেটা ক্লিয়ার করা হচ্ছে
+            document.getElementById('pMeta').innerHTML = "";
+            document.getElementById('imgSlider').innerHTML = "";
+
             const snap = await getDoc(doc(db, "products", pId));
             if(!snap.exists()) return alert("পণ্যটি খুঁজে পাওয়া যায়নি!");
             
@@ -94,7 +98,6 @@
             document.getElementById('pPrice').innerText = "৳ " + p.price;
             document.getElementById('pDesc').innerText = p.description;
             
-            // সেলার প্রোফাইল লিংক
             const shopLink = document.getElementById('pShopLink');
             shopLink.innerHTML = `<i class="fas fa-store"></i> শপ: ${p.shopName}`;
             shopLink.href = `profile.html?sellerId=${p.sellerId}`;
@@ -111,6 +114,8 @@
 
         function loadProductAds() {
             onSnapshot(collection(db, "ghoti_ads"), snap => {
+                const adBox = document.getElementById('adContent');
+                adBox.innerHTML = ""; // আগের অ্যাড ক্লিয়ার করা
                 let adHtml = "";
                 snap.forEach(d => {
                     const ad = d.data();
@@ -118,7 +123,6 @@
                         adHtml += `<div style="margin-bottom:15px;">${ad.code}</div>`;
                     }
                 });
-                const adBox = document.getElementById('adContent');
                 adBox.innerHTML = adHtml;
                 adBox.querySelectorAll('script').forEach(oldScript => {
                     const newScript = document.createElement('script');
