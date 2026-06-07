@@ -1,60 +1,53 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <!-- SEO Meta Tags -->
     <meta name="title" content="Ghoti Market - আপনার কেনা-বেচার বিশ্বস্ত ঠিকানা">
-    <meta name="description" content="Ghoti Market বাংলাদেশের একটি অনলাইন মার্কেটপ্লেস যেখানে সরাসরি সেলারদের সাথে যোগাযোগ করে কম দামে পণ্য কেনা ও বিক্রি করা যায়।">
-    <meta name="keywords" content="Ghoti Market, GhotiMarket, ঘটি মার্কেট, online shopping Bangladesh, marketplace Bangladesh">
+    <meta name="description" content="Ghoti Market বাংলাদেশের অনলাইন মার্কেটপ্লেস যেখানে সরাসরি সেলারদের সাথে যোগাযোগ করে কম দামে পণ্য কেনা ও বিক্রি করা যায়।">
+    <meta name="keywords" content="Ghoti Market, GhotiMarket, ঘটি মার্কেট, online shopping Bangladesh, marketplace, buy and sell, fashion, electronics, gadgets">
     <meta name="author" content="Nazrul Islam">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://www.ghotimarket.com/">
-    
-    <!-- Open Graph / Facebook -->
+
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.ghotimarket.com/">
     <meta property="og:title" content="Ghoti Market - আপনার কেনা-বেচার বিশ্বস্ত ঠিকানা">
     <meta property="og:description" content="সরাসরি সেলারদের সাথে কথা বলে কম দামে পণ্য কিনুন ও বিক্রি করুন Ghoti Market-এ।">
     <meta property="og:image" content="https://i.ibb.co.com/MkvbQgYt/n880-H5fs-K56-K.jpg">
-    <meta property="og:site_name" content="Ghoti Market">
-    <meta property="og:locale" content="bn_BD">
+    <meta property="twitter:card" content="summary_large_image">
 
-    <!-- Favicon -->
     <link rel="icon" type="image/jpeg" href="https://i.ibb.co.com/MkvbQgYt/n880-H5fs-K56-K.jpg">
-    
+    <link rel="apple-touch-icon" href="https://i.ibb.co.com/MkvbQgYt/n880-H5fs-K56-K.jpg">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ghoti Market- আপনার কেনা-বেচার বিশ্বস্ত ঠিকানা</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Ghoti Market - আপনার কেনা-বেচার বিশ্বস্ত ঠিকানা</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        :root { --primary: #1a2a3a; --accent: #00a8ff; --danger: #ff4757; --bg: #f1f2f6; }
+        :root { --primary: #1a2a3a; --danger: #ff4757; --bg: #f1f2f6; }
         body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg); margin: 0; padding-bottom: 100px; }
         header { background: var(--primary); padding: 15px; position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; gap: 10px; }
         .search-container { background: white; border-radius: 50px; display: flex; align-items: center; padding: 2px 15px; flex-grow: 1; }
         .search-container input { border: none; outline: none; width: 100%; padding: 10px; font-size: 16px; }
         
-        /* Banner Slider Styles */
-        .banner-wrapper { width: 100%; max-height: 450px; background: #e0e0e0; overflow: hidden; position: relative; touch-action: pan-y; }
-        .banner-track { display: flex; transition: transform 0.5s ease-in-out; }
-        .banner-img { min-width: 100%; aspect-ratio: 1280 / 713; object-fit: cover; }
+        .banner-wrapper { width: 100%; background: #ddd; overflow: hidden; position: relative; }
+        .banner-track { display: flex; transition: transform 0.5s ease-in-out; width: 100%; }
+        .banner-img { min-width: 100%; width: 100%; display: block; object-fit: cover; aspect-ratio: 16/9; }
         .indicator { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
-        .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.5); border-radius: 50%; }
+        .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.6); border-radius: 50%; }
         .dot.active { background: white; }
 
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 12px; max-width: 1200px; margin: 0 auto; }
         @media (min-width: 600px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-        .p-card { background: white; border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: 0.2s; }
-        .p-card:active { transform: scale(0.96); }
-        .img-box { position: relative; width: 100%; padding-top: 100%; background: #eee; overflow: hidden; }
+        .p-card { background: white; border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: column; }
+        .img-box { position: relative; width: 100%; padding-top: 100%; background: #eee; }
         .img-box img { position: absolute; top: 0; width: 100%; height: 100%; object-fit: cover; }
-        .p-info { padding: 12px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .p-info h3 { margin: 0; font-size: 15px; line-height: 1.4; height: 42px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-        .price-row { margin-top: 8px; display: flex; justify-content: space-between; align-items: center; }
-        .price-row b { color: var(--danger); font-size: 17px; }
-        .p-shop { font-size: 11px; color: #636e72; background: #f1f2f6; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-top: 8px; }
-        .load-more-btn { display: block; width: 90%; margin: 20px auto; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
+        .p-info { padding: 12px; }
+        .p-info h3 { margin: 0; font-size: 15px; height: 42px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .price-row { margin-top: 8px; display: flex; justify-content: space-between; align-items: center; color: var(--danger); font-weight: bold; }
+        .p-shop { font-size: 11px; color: #636e72; padding-top: 5px; }
+        .load-more-btn { display: block; width: 90%; margin: 20px auto; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -72,7 +65,7 @@
     </div>
     
     <div class="grid" id="productGrid"></div>
-    <button id="loadMoreBtn" class="load-more-btn" style="display:none;" onclick="loadMore()">See More</button>
+    <button id="loadMoreBtn" class="load-more-btn" onclick="loadMore()">See More</button>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -93,35 +86,18 @@
         let allProductsCache = []; 
         let displayCount = 20;
         let slideIndex = 0;
+        let bannerCount = 0;
 
         async function loadData() {
             const bannerSnap = await getDocs(query(collection(db, "banners"), orderBy("createdAt", "desc")));
             const track = document.getElementById('bannerContainer');
             const ind = document.getElementById('indicator');
-            let count = 0;
             bannerSnap.forEach(d => {
                 track.innerHTML += `<img src="${d.data().url}" class="banner-img">`;
-                ind.innerHTML += `<div class="dot ${count === 0 ? 'active' : ''}"></div>`;
-                count++;
+                ind.innerHTML += `<div class="dot"></div>`;
+                bannerCount++;
             });
-
-            // Slider Logic
-            setInterval(() => {
-                slideIndex = (slideIndex + 1) % count;
-                track.style.transform = `translateX(-${slideIndex * 100}%)`;
-                document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === slideIndex));
-            }, 3000);
-
-            // Swipe Logic
-            let startX = 0;
-            track.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-            track.addEventListener('touchend', e => {
-                let endX = e.changedTouches[0].clientX;
-                if(startX - endX > 50) slideIndex = Math.min(slideIndex + 1, count - 1);
-                else if(endX - startX > 50) slideIndex = Math.max(slideIndex - 1, 0);
-                track.style.transform = `translateX(-${slideIndex * 100}%)`;
-                document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === slideIndex));
-            });
+            document.querySelectorAll('.dot')[0]?.classList.add('active');
 
             const productSnap = await getDocs(query(collection(db, "products"), orderBy("createdAt", "desc")));
             allProductsCache = [];
@@ -142,20 +118,45 @@
                     <div class="img-box"><img src="${p.images[0]}" alt="${p.name}" loading="lazy"></div>
                     <div class="p-info">
                         <h3>${p.name}</h3>
-                        <div class="price-row"><b>৳ ${p.price}</b> <i class="fas fa-chevron-right" style="color:#ccc"></i></div>
+                        <div class="price-row">৳ ${p.price}</div>
                         <span class="p-shop"><i class="fas fa-store"></i> ${p.shopName || 'Ghoti Market'}</span>
                     </div>
                 </a>`;
             });
-            btn.style.display = (products.length < allProductsCache.length && document.getElementById('searchInput').value === "") ? 'block' : 'none';
+            btn.style.display = (displayCount >= allProductsCache.length) ? 'none' : 'block';
         }
 
-        window.loadMore = () => { displayCount += 20; renderUI(allProductsCache.slice(0, displayCount)); };
+        setInterval(() => {
+            if(bannerCount > 0) {
+                slideIndex = (slideIndex + 1) % bannerCount;
+                document.getElementById('bannerContainer').style.transform = `translateX(-${slideIndex * 100}%)`;
+                document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === slideIndex));
+            }
+        }, 3000);
+
+        window.loadMore = () => {
+            displayCount += 20;
+            renderUI(allProductsCache.slice(0, displayCount));
+        };
 
         window.performSearch = () => {
             const term = document.getElementById('searchInput').value.toLowerCase().trim();
-            if(term === "") { displayCount = 20; renderUI(allProductsCache.slice(0, displayCount)); return; }
-            renderUI(allProductsCache.filter(p => p.name.toLowerCase().includes(term) || (p.keywords && p.keywords.toLowerCase().includes(term))));
+            const btn = document.getElementById('loadMoreBtn');
+            
+            if(term === "") {
+                renderUI(allProductsCache.slice(0, displayCount));
+                btn.style.display = 'block';
+                return;
+            }
+            
+            const filtered = allProductsCache.filter(p => {
+                const name = p.name ? p.name.toLowerCase() : "";
+                const keywords = p.keywords ? (Array.isArray(p.keywords) ? p.keywords.join(" ").toLowerCase() : p.keywords.toLowerCase()) : "";
+                return name.includes(term) || keywords.includes(term);
+            });
+            
+            renderUI(filtered);
+            btn.style.display = 'none';
         };
 
         loadData();
