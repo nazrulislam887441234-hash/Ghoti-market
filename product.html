@@ -6,73 +6,77 @@
     <title>Product Details</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { font-family: sans-serif; margin: 0; background: #f9f9f9; padding-bottom: 120px; }
+        body { font-family: sans-serif; margin: 0; background: #f9f9f9; padding-bottom: 20px; }
         .back-nav { padding: 15px; background: white; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: sticky; top:0; z-index: 100; }
         .slider { width: 100%; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; background: #eee; height: 350px; scrollbar-width: none; }
         .slider::-webkit-scrollbar { display: none; }
         .slider img { width: 100%; flex-shrink: 0; scroll-snap-align: start; object-fit: contain; }
-        .content { padding: 20px; background: white; border-radius: 25px 25px 0 0; margin-top: -25px; position: relative; min-height: 300px; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); }
+        .content { padding: 20px; background: white; border-radius: 25px 25px 0 0; margin-top: -25px; position: relative; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); }
         .price { color: #e74c3c; font-size: 26px; font-weight: bold; margin: 10px 0; }
         .desc { color: #444; line-height: 1.7; margin: 15px 0; white-space: pre-line; }
         .meta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; }
         .tag { background: #f0f2f5; padding: 6px 15px; border-radius: 20px; font-size: 13px; color: #555; }
         
-        /* পেমেন্ট নীতি স্টাইল */
         .policy-container { background: #fff5f5; border: 1px solid #fed7d7; padding: 15px; border-radius: 12px; margin: 20px 0; }
         .policy-container p { font-size: 12px; color: #c53030; margin: 0 0 10px; line-height: 1.5; }
         .check-group { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
         .check-group input { width: 18px; height: 18px; cursor: pointer; }
         .check-group label { font-size: 13px; color: #4a5568; cursor: pointer; font-weight: 600; }
 
-        .ad-container { margin: 20px 0; padding: 10px; background: #fff; text-align: center; border-top: 1px solid #eee; min-height: 50px; }
+        .order-btn { display: block; width: 100%; background: #25d366; color: white; text-align: center; padding: 15px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 18px; margin: 20px 0; }
+        .order-btn.disabled { background: #ccc; pointer-events: none; }
+        
+        .ad-container { margin: 20px 0; padding: 10px; background: #fff; text-align: center; border: 1px solid #eee; border-radius: 12px; }
         .ad-label { font-size: 10px; color: #ccc; margin-bottom: 5px; display: block; text-transform: uppercase; }
 
-        .order-btn { position: fixed; bottom: 15px; left: 15px; right: 15px; background: #25d366; color: white; text-align: center; padding: 15px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 18px; box-shadow: 0 4px 15px rgba(37,211,102,0.3); z-index: 99; transition: 0.3s; }
-        .order-btn.disabled { background: #ccc; pointer-events: none; box-shadow: none; }
+        .related-products { padding: 20px; margin-top: 20px; }
+        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .product-card { background: white; padding: 10px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .product-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; }
+        
         .share-btn { float: right; color: #3498db; cursor: pointer; background: #f0f8ff; padding: 8px 15px; border-radius: 10px; font-size: 14px; }
         .shop-link { color: #3498db; text-decoration: none; display: inline-block; margin-bottom: 10px; font-weight: 600; }
+        /* নতুন স্টাইল */
+        .img-counter { font-size: 12px; color: #888; margin-bottom: 5px; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="back-nav" onclick="history.back()"><i class="fas fa-arrow-left"></i> ফিরে যান</div>
-    
     <div class="slider" id="imgSlider"></div>
     
     <div class="content">
         <div class="share-btn" onclick="copyLink()"><i class="fas fa-share-alt"></i> Share</div>
+        <div class="img-counter" id="imgCounter"></div>
         <h2 id="pName" style="margin-top: 0;">Loading...</h2>
         <div class="price" id="pPrice"></div>
-        
         <div class="meta" id="pMeta"></div>
         <a href="#" id="pShopLink" class="shop-link"></a>
-        
         <p class="desc" id="pDesc"></p>
 
         <div class="policy-container">
-            <p><strong>৫. পেমেন্ট নীতি:</strong> ঘটি মার্কেট শুধুমাত্র ক্যাশ অন ডেলিভারি (COD) সাপোর্ট করে। কোন ক্রেতা-বিক্রেতা যদি নিজ দায়িত্বে অগ্রিম লেনদেন করে এবং প্রতারিত হয়, তার জন্য ঘটি মার্কেট কর্তৃপক্ষ কোনভাবেই দায়ী থাকবে না।</p>
+            <p><strong>৫. পেমেন্ট নীতি:</strong> ঘটি মার্কেট শুধুমাত্র ক্যাশ অন ডেলিভারি (COD) সাপোর্ট করে।</p>
             <div class="check-group" onclick="toggleOrderBtn()">
                 <input type="checkbox" id="agreeCheck">
                 <label for="agreeCheck">আমি পেমেন্ট নীতি মেনে নিচ্ছি</label>
             </div>
         </div>
 
+        <a href="#" class="order-btn disabled" id="waBtn"><i class="fab fa-whatsapp"></i> সরাসরি অর্ডার করুন</a>
+
         <div class="ad-container" id="productAds">
             <span class="ad-label">Advertisement</span>
             <div id="adContent"></div>
         </div>
-    </div>
 
-    <a href="#" class="order-btn disabled" id="waBtn"><i class="fab fa-whatsapp"></i> সরাসরি অর্ডার করুন</a>
+        <h3 style="margin-top: 30px;">আরও পণ্য দেখুন</h3>
+        <div class="product-grid" id="relatedProducts"></div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, query, orderBy, limit, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const app = initializeApp({ 
-            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
-            authDomain: "ghotimarket.firebaseapp.com",
-            projectId: "ghotimarket" 
-        });
+        const app = initializeApp({ apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", authDomain: "ghotimarket.firebaseapp.com", projectId: "ghotimarket" });
         const db = getFirestore(app);
         const urlParams = new URLSearchParams(window.location.search);
         const pId = urlParams.get('id');
@@ -80,63 +84,60 @@
         window.toggleOrderBtn = () => {
             const check = document.getElementById('agreeCheck');
             const btn = document.getElementById('waBtn');
-            if(check.checked) btn.classList.remove('disabled');
-            else btn.classList.add('disabled');
+            btn.classList.toggle('disabled', !check.checked);
         };
 
         async function loadProduct() {
             if(!pId) return;
-            // পুরনো ডেটা ক্লিয়ার করা হচ্ছে
-            document.getElementById('pMeta').innerHTML = "";
-            document.getElementById('imgSlider').innerHTML = "";
-
             const snap = await getDoc(doc(db, "products", pId));
-            if(!snap.exists()) return alert("পণ্যটি খুঁজে পাওয়া যায়নি!");
-            
+            if(!snap.exists()) return;
             const p = snap.data();
             document.getElementById('pName').innerText = p.name;
             document.getElementById('pPrice').innerText = "৳ " + p.price;
             document.getElementById('pDesc').innerText = p.description;
-            
-            const shopLink = document.getElementById('pShopLink');
-            shopLink.innerHTML = `<i class="fas fa-store"></i> শপ: ${p.shopName}`;
-            shopLink.href = `profile.html?sellerId=${p.sellerId}`;
+            document.getElementById('pShopLink').innerHTML = `<i class="fas fa-store"></i> শপ: ${p.shopName}`;
+            document.getElementById('pShopLink').href = `profile.html?sellerId=${p.sellerId}`;
             
             let imgH = ""; 
             p.images.forEach(i => imgH += `<img src="${i}" alt="product">`);
-            document.getElementById('imgSlider').innerHTML = imgH;
+            const slider = document.getElementById('imgSlider');
+            slider.innerHTML = imgH;
 
-            if(p.size) document.getElementById('pMeta').innerHTML += `<span class="tag">Size: ${p.size}</span>`;
-            if(p.color) document.getElementById('pMeta').innerHTML += `<span class="tag">Color: ${p.color}</span>`;
-
-            document.getElementById('waBtn').href = `https://wa.me/88${p.whatsapp}?text=আমি এই পণ্যটি অর্ডার করতে চাই। %0Aপণ্য: ${p.name} %0Aলিংক: ${window.location.href}`;
+            // কাউন্টার লজিক
+            const counter = document.getElementById('imgCounter');
+            counter.innerText = `১ / ${p.images.length}`;
+            slider.addEventListener('scroll', () => {
+                let page = Math.round(slider.scrollLeft / slider.offsetWidth) + 1;
+                counter.innerText = `${page} / ${p.images.length}`;
+            });
+            
+            document.getElementById('waBtn').href = `https://wa.me/88${p.whatsapp}?text=আমি এই পণ্যটি অর্ডার করতে চাই। %0Aপণ্য: ${p.name}`;
+            
+            const q = query(collection(db, "products"), orderBy("createdAt", "desc"), limit(20));
+            const querySnap = await getDocs(q);
+            const grid = document.getElementById('relatedProducts');
+            querySnap.forEach(doc => {
+                const item = doc.data();
+                grid.innerHTML += `<div class="product-card">
+                    <img src="${item.images[0]}" alt="${item.name}">
+                    <p style="font-size:14px; margin:5px 0;">${item.name}</p>
+                    <p style="color:red; font-weight:bold;">৳ ${item.price}</p>
+                </div>`;
+            });
         }
 
         function loadProductAds() {
             onSnapshot(collection(db, "ghoti_ads"), snap => {
                 const adBox = document.getElementById('adContent');
-                adBox.innerHTML = ""; // আগের অ্যাড ক্লিয়ার করা
-                let adHtml = "";
+                adBox.innerHTML = "";
                 snap.forEach(d => {
                     const ad = d.data();
-                    if(ad.type === 'product_ads' && (!ad.expiry || ad.expiry > Date.now())) {
-                        adHtml += `<div style="margin-bottom:15px;">${ad.code}</div>`;
-                    }
-                });
-                adBox.innerHTML = adHtml;
-                adBox.querySelectorAll('script').forEach(oldScript => {
-                    const newScript = document.createElement('script');
-                    Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                    if(ad.type === 'product_ads') adBox.innerHTML += `<div>${ad.code}</div>`;
                 });
             });
         }
 
-        window.copyLink = () => { 
-            navigator.clipboard.writeText(window.location.href); 
-            alert("লিংক কপি হয়েছে!"); 
-        }
+        window.copyLink = () => { navigator.clipboard.writeText(window.location.href); alert("লিংক কপি হয়েছে!"); }
 
         loadProduct();
         loadProductAds();
