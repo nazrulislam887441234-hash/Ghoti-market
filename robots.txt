@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Important Pages
+Allow: /index.html
+Allow: /contact.html
+Allow: /product.html
+Allow: /profile.html
+
+# Block unnecessary parameters (optional)
+Disallow: /*?utm_
+Disallow: /*?fbclid=
+
+Sitemap: https://ghotimarket.com/sitemap.xml
