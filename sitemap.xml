@@ -1,64 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://www.ghotimarket.com/</loc>
+    <loc>https://ghotimarket.com/</loc>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://www.ghotimarket.com/index.html</loc>
-    <priority>0.9</priority>
+    <loc>https://ghotimarket.com/index.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
   </url>
+
   <url>
-    <loc>https://www.ghotimarket.com/product.html</loc>
+    <loc>https://ghotimarket.com/contact.html</loc>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+
   <url>
-    <loc>https://www.ghotimarket.com/contact.html</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.ghotimarket.com/promotion.html</loc>
-    <priority>0.7</priority>
+    <loc>https://ghotimarket.com/product.html</loc>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://www.ghotimarket.com/login.html</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.ghotimarket.com/signup.html</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.ghotimarket.com/verification-notice.html</loc>
-    <priority>0.5</priority>
+    <loc>https://ghotimarket.com/profile.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.ghotimarket.com/dashboard.html</loc>
-    <priority>0.5</priority>
+    <loc>https://seller.ghotimarket.com/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
+
   <url>
-    <loc>https://www.ghotimarket.com/profile-setup.html</loc>
+    <loc>https://seller.ghotimarket.com/privacy-policy</loc>
+    <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
+
   <url>
-    <loc>https://www.ghotimarket.com/upload.html</loc>
+    <loc>https://seller.ghotimarket.com/termsandcondition</loc>
+    <changefreq>yearly</changefreq>
     <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://www.ghotimarket.com/settings.html</loc>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://www.ghotimarket.com/edit.html</loc>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://www.ghotimarket.com/locked.html</loc>
-    <priority>0.3</priority>
   </url>
 
 </urlset>
