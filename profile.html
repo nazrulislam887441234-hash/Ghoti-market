@@ -4,104 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="metaTitle">Seller Profile | Ghoti Market</title>
-    <meta id="metaDesc" name="description" content="ঘটি মার্কেটের সেলার প্রোফাইল। এখানে সেরা সব পণ্য দেখুন।">
-    <meta property="og:title" id="ogTitle" content="Seller Profile | Ghoti Market">
-    <meta property="og:description" id="ogDesc" content="ঘটি মার্কেটের সেলার প্রোফাইল দেখুন।">
-    <meta property="og:image" id="ogImage" content="">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --primary: #1a2a3a; --bg: #f1f2f6; --accent: #00a8ff; --success: #25d366; --danger: #ff4757; }
-        body { font-family: sans-serif; background: var(--bg); margin: 0; padding-bottom: 100px; }
+        :root { --primary: #1a2a3a; --bg: #f8f9fa; --accent: #00a8ff; --danger: #ff4757; }
+        body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg); margin: 0; padding-bottom: 80px; }
         
-        /* Skeleton Animation */
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-        .skeleton { background: #e0e0e0; animation: pulse 1.5s infinite; border-radius: 8px; }
+        /* Back Button */
+        .back-btn { position: fixed; top: 15px; left: 15px; z-index: 1000; background: rgba(0,0,0,0.5); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 18px; backdrop-filter: blur(5px); }
 
-        .profile-container { position: relative; background: var(--primary); border-radius: 0 0 30px 30px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .banner-box { position: relative; width: 100%; padding-top: 56.25%; background: linear-gradient(135deg, #2c3e50, #1a2a3a); }
+        /* Profile Section */
+        .profile-container { position: relative; background: white; border-radius: 0 0 25px 25px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.08); padding-bottom: 20px; }
+        .banner-box { position: relative; width: 100%; padding-top: 56.25%; background: #ddd; } /* 16:9 Ratio */
         .banner-box img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
-        .profile-info-box { position: relative; text-align: center; padding: 0 20px 30px; margin-top: -50px; z-index: 5; }
-        .shop-icon { width: 100px; height: 100px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; color: var(--primary); font-size: 40px; border: 4px solid var(--accent); box-shadow: 0 5px 15px rgba(0,0,0,0.2); overflow: hidden; }
-        .shop-icon img { width: 100%; height: 100%; object-fit: cover; display: none; }
-        .profile-info-box h1 { margin: 0; font-size: 24px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
-        .back-btn, .share-btn { position: absolute; top: 20px; color: white; font-size: 20px; text-decoration: none; z-index: 10; background: rgba(0,0,0,0.4); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
-        .back-btn { left: 20px; }
-        .share-btn { right: 20px; }
+        
+        /* Updated Logo Section */
+        .profile-info-box { text-align: center; padding: 20px 20px 0; }
+        .shop-icon { width: 90px; height: 90px; background: white; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; border: 3px solid #eee; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow: hidden; }
+        .shop-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        .status-tag { display: inline-block; margin-top: 10px; padding: 5px 15px; border-radius: 50px; font-size: 12px; font-weight: bold; text-transform: uppercase; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .verified { background: var(--success); color: white; }
-        .unverified { background: var(--danger); color: white; }
+        .search-area { padding: 15px; position: sticky; top: 0; z-index: 100; background: var(--bg); }
+        .search-bar { width: 100%; max-width: 800px; margin: 0 auto; display: block; padding: 14px 20px; border-radius: 50px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.08); outline: none; font-size: 16px; }
 
-        .policy-card { background: white; margin: 20px 15px; padding: 15px; border-radius: 15px; border-left: 5px solid #e74c3c; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .policy-card p { font-size: 12px; color: #444; margin: 0 0 10px; line-height: 1.5; }
-        .check-area { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
-        .section-title { padding: 10px 15px 5px; font-weight: bold; color: #555; font-size: 18px; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 12px; max-width: 1200px; margin: 0 auto; }
-        .p-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-decoration: none; color: inherit; display: flex; flex-direction: column; }
-        .img-box { position: relative; width: 100%; padding-top: 100%; background: #eee; }
-        .img-box img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        .wa-float { position: fixed; bottom: 25px; right: 25px; background: var(--danger); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4); z-index: 1000; text-decoration: none; }
+
+        /* Responsive Grid */
+        .grid { display: grid; gap: 15px; padding: 15px; grid-template-columns: repeat(2, 1fr); max-width: 1400px; margin: 0 auto; }
+        @media (min-width: 600px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (min-width: 900px) { .grid { grid-template-columns: repeat(6, 1fr); } }
+
+        .p-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-decoration: none; color: #333; }
+        .img-box { position: relative; padding-top: 100%; background: #eee; }
+        .img-box img { position: absolute; top: 0; width: 100%; height: 100%; object-fit: cover; }
         .p-info { padding: 10px; }
-        .p-price { color: #e74c3c; font-weight: bold; margin-top: 5px; display: block; }
-        .wa-float { position: fixed; bottom: 20px; left: 20px; right: 20px; background: var(--success); color: white; text-align: center; padding: 15px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 16px; box-shadow: 0 5px 15px rgba(37,211,102,0.4); z-index: 1000; max-width: 500px; margin: 0 auto; }
-        .wa-float.disabled { background: #ccc; pointer-events: none; }
+        .p-name { font-size: 13px; font-weight: 600; height: 35px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 5px; }
+        .p-price { color: var(--danger); font-weight: bold; font-size: 14px; }
+        
+        .see-more-btn { display: block; width: 200px; margin: 20px auto; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; }
     </style>
 </head>
 <body>
 
+    <a href="https://ghotimarket.com" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+
     <div class="profile-container">
-        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <button class="share-btn" onclick="shareProfile()"><i class="fas fa-share-alt"></i></button>
-        
-        <div class="banner-box" id="bannerBox">
-            <img id="shopBannerImg" src="" alt="Shop Banner">
-        </div>
-        
+        <div class="banner-box"><img id="shopBannerImg" src="" alt="Banner"></div>
         <div class="profile-info-box">
-            <div class="shop-icon" id="logoBox">
-                <i class="fas fa-store" id="defaultLogoIcon"></i>
-                <img id="shopLogoImg" src="" alt="Shop Logo">
-            </div>
-            <h1 id="shopName">Loading...</h1>
-            <div id="shopStatusArea"></div>
+            <div class="shop-icon"><img id="shopLogoImg" src="" alt="Logo"></div>
+            <h1 id="shopName" style="font-size: 22px; margin: 0;">Loading...</h1>
         </div>
     </div>
 
-    <div class="policy-card">
-        <p><strong>পেমেন্ট নীতি:</strong> ঘটি মার্কেট শুধুমাত্র ক্যাশ অন ডেলিভারি (COD) সাপোর্ট করে। কোন ক্রেতা-বিক্রেতা যদি নিজ দায়িত্বে অগ্রিম লেনদেন করে এবং প্রতারিত হয়, তার জন্য ঘটি মার্কেট কর্তৃপক্ষ কোনভাবেই দায়ী থাকবে না।</p>
-        <div class="check-area" onclick="toggleWaBtn()">
-            <input type="checkbox" id="profileAgree">
-            <label for="profileAgree">আমি পেমেন্ট নীতি মেনে নিচ্ছি</label>
-        </div>
+    <div class="search-area">
+        <input type="text" id="pSearch" class="search-bar" placeholder="পণ্য খুঁজুন..." oninput="handleSearch()">
     </div>
 
-    <div class="section-title">সেলার এর সকল পণ্য:</div>
-    <div class="grid" id="sellerProductGrid">
-        <div class="p-card skeleton" style="height: 200px;"></div>
-        <div class="p-card skeleton" style="height: 200px;"></div>
-    </div>
+    <div class="grid" id="sellerProductGrid"></div>
+    <button id="seeMoreBtn" class="see-more-btn" style="display:none;" onclick="loadMore()">See More</button>
 
-    <a href="#" class="wa-float disabled" id="sellerWa"><i class="fab fa-whatsapp"></i> সেলারের সাথে কথা বলুন</a>
+    <a href="#" class="wa-float" id="sellerWa"><i class="fab fa-whatsapp"></i></a>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const app = initializeApp({ apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", authDomain: "ghotimarket.firebaseapp.com", projectId: "ghotimarket" });
-        const db = getFirestore(app);
+        const db = getFirestore(initializeApp({ apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket" }));
         const sId = new URLSearchParams(window.location.search).get('sellerId');
-
-        window.toggleWaBtn = () => {
-            const check = document.getElementById('profileAgree');
-            const btn = document.getElementById('sellerWa');
-            btn.classList.toggle('disabled', !check.checked);
-        };
-
-        window.shareProfile = () => {
-            if (navigator.share) {
-                navigator.share({ title: document.title, url: window.location.href });
-            }
-        };
+        
+        let allProducts = [];
+        let filteredProducts = [];
+        let displayCount = 100;
 
         async function loadProfile() {
             if(!sId) return;
@@ -109,36 +80,51 @@
             if(userSnap.exists()){
                 const d = userSnap.data();
                 document.getElementById('shopName').innerText = d.shopName;
-                document.title = d.shopName + " | Ghoti Market";
-                document.getElementById('metaTitle').innerText = d.shopName;
-                
-                if(d.shopLogo) {
-                    document.getElementById('shopLogoImg').src = d.shopLogo;
-                    document.getElementById('shopLogoImg').style.display = 'block';
-                    document.getElementById('defaultLogoIcon').style.display = 'none';
-                    document.getElementById('ogImage').content = d.shopLogo;
-                }
-                if(d.shopBanner) {
-                    document.getElementById('shopBannerImg').src = d.shopBanner;
-                    document.getElementById('shopBannerImg').style.display = 'block';
-                }
-                document.getElementById('shopStatusArea').innerHTML = d.verified ? `<span class="status-tag verified">VERIFIED</span>` : `<span class="status-tag unverified">UNVERIFIED</span>`;
+                if(d.shopLogo) document.getElementById('shopLogoImg').src = d.shopLogo;
+                if(d.shopBanner) { document.getElementById('shopBannerImg').src = d.shopBanner; document.getElementById('shopBannerImg').style.display = 'block'; }
                 if(d.whatsapp) document.getElementById('sellerWa').href = `https://wa.me/88${d.whatsapp}?text=আমি আপনার শপ '${d.shopName}' থেকে পণ্য কিনতে আগ্রহী।`;
             }
 
             const q = query(collection(db, "products"), where("sellerId", "==", sId), where("active", "==", true));
-            onSnapshot(q, snap => {
-                let html = "";
-                snap.forEach(d => {
-                    const p = d.data();
-                    html += `<a href="product.html?id=${d.id}" class="p-card">
-                        <div class="img-box"><img src="${p.images[0]}" alt="${p.name}"></div>
-                        <div class="p-info"><h3>${p.name}</h3><span class="p-price">৳ ${p.price}</span></div>
-                    </a>`;
-                });
-                document.getElementById('sellerProductGrid').innerHTML = html || '<p style="grid-column: 1/-1; text-align: center;">কোনো পণ্য পাওয়া যায়নি!</p>';
-            });
+            const snap = await getDocs(q);
+            allProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            filteredProducts = allProducts;
+            render();
         }
+
+        window.handleSearch = () => {
+            const term = document.getElementById('pSearch').value.toLowerCase().trim();
+            filteredProducts = allProducts.filter(p => 
+                p.name?.toLowerCase().includes(term) || 
+                (Array.isArray(p.keywords) ? p.keywords.some(k => k.toLowerCase().includes(term)) : p.keywords?.toLowerCase().includes(term))
+            );
+            displayCount = 100;
+            render();
+        };
+
+        window.loadMore = () => {
+            displayCount += 100;
+            render();
+        };
+
+        function render() {
+            const grid = document.getElementById('sellerProductGrid');
+            const btn = document.getElementById('seeMoreBtn');
+            const dataToDisplay = filteredProducts.slice(0, displayCount);
+            
+            grid.innerHTML = dataToDisplay.length ? dataToDisplay.map(p => `
+                <a href="product.html?id=${p.id}" class="p-card">
+                    <div class="img-box"><img src="${p.images?.[0] || ''}" alt="${p.name}"></div>
+                    <div class="p-info">
+                        <div class="p-name">${p.name}</div>
+                        <div class="p-price">৳${p.price}</div>
+                    </div>
+                </a>
+            `).join('') : '<p style="text-align:center; grid-column:1/-1;">কোনো পণ্য পাওয়া যায়নি!</p>';
+            
+            btn.style.display = (displayCount < filteredProducts.length) ? 'block' : 'none';
+        }
+
         loadProfile();
     </script>
 </body>
