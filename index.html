@@ -3,13 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ghoti Market - সেলার শপ সমূহ</title>
+    <title>Ghoti Market -আপনার কেনা-বেচার বিশ্বস্ত ঠিকানা</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    <style>
+    <link rel="icon" type="image/png" href="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png">
+    <!-- Meta Description -->
+    <meta name="description" content="ঘটি মার্কেটে সরাসরি সেলারদের সাথে কথা বলে পণ্য কিনুন। প্রতিদিন আকর্ষণীয় ডিসকাউন্ট, সেরা দাম এবং বিশ্বস্ত বিক্রেতাদের কাছ থেকে সহজে কেনাকাটা করুন।">
+    <meta name="keywords" content="ঘটি মার্কেট, Ghoti Market, অনলাইন শপিং, বাংলাদেশ অনলাইন মার্কেটপ্লেস, সেলার শপ, ডিসকাউন্ট অফার">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Ghoti Market - আপনার কেনা-বেচার বিশ্বস্ত ঠিকানা">
+    <meta property="og:description" content="সরাসরি সেলারদের সাথে কথা বলে পণ্য কিনুন এবং সেরা ডিসকাউন্ট উপভোগ করুন।">
+    <meta property="og:image" content="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.ghotimarket.com">
+    <meta property="og:site_name" content="Ghoti Market">
+    <link rel="canonical" href="https://www.ghotimarket.com">
+   <style>
         :root { --primary: #1e272e; --accent: #ff9f43; --bg: #f8f9fa; --text: #2f3542; }
         body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg); margin: 0; color: var(--text); }
         
+        /* Loading Animation */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; justify-content: center; align-items: center; z-index: 9999; }
+        .spinner { width: 40px; height: 40px; border: 4px solid #ddd; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
         /* Header */
         header { background: var(--primary); padding: 15px; }
         .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 0 10px; }
@@ -44,11 +61,13 @@
 </head>
 <body>
 
+    <div id="loader"><div class="spinner"></div></div>
+
 <header>
     <div class="top-nav">
         <div>
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="terms.html">Terms </a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="termsandcondition.html">Terms</a>
         </div>
         <a href="contact.html"><i class="fas fa-headset"></i> Support</a>
     </div>
@@ -101,6 +120,7 @@
         const snap = await getDocs(collection(db, "users"));
         allShops = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(d => d.shopName);
         render(allShops);
+        document.getElementById('loader').style.display = 'none'; // Hide loader
     }
 
     window.filterShops = () => {
@@ -110,7 +130,7 @@
 
     function render(shops) {
         document.getElementById('shopGrid').innerHTML = shops.map(s => `
-            <a href="seller.html?sellerId=${s.id}" class="shop-card">
+            <a href="https://www.ghotimarket.com/profile.html?sellerId=${s.id}" class="shop-card">
                 <div class="banner">${s.shopBanner ? `<img src="${s.shopBanner}" style="width:100%; height:100px; object-fit:cover;">` : 'No Banner'}</div>
                 <div class="info">
                     <div class="logo">${s.shopLogo ? `<img src="${s.shopLogo}" style="width:100%; height:70px; object-fit:cover;">` : 'No Logo'}</div>
