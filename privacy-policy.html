@@ -14,7 +14,10 @@
         .container { max-width: 750px; margin: -30px auto 50px; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         h2 { color: var(--primary); font-size: 19px; border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 30px; }
         .contact-box { background: #e8f5e9; padding: 25px; border-radius: 15px; text-align: center; border: 1px solid #c8e6c9; margin-top: 30px; }
-        .whatsapp-btn { background: #25D366; color: white; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 15px; }
+        .btn { padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 15px; transition: 0.3s; }
+        .whatsapp-btn { background: #25D366; color: white; }
+        .download-btn { background: var(--primary); color: white; margin-bottom: 10px; }
+        .btn:hover { transform: translateY(-3px); }
     </style>
 </head>
 <body>
@@ -25,6 +28,14 @@
     </div>
 
     <div class="container">
+        <!-- ডাউনলোড বাটন সেকশন -->
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h3>আমাদের অফিশিয়াল GHOTI MARKET অ্যাপ ডাউনলোড করুন</h3>
+            <a href="https://app.ghotimarket.com" class="btn download-btn">
+                <i class="fas fa-download"></i> অ্যাপ ডাউনলোড করুন
+            </a>
+        </div>
+
         <h2>১. আমরা কী কী তথ্য সংগ্রহ করি?</h2>
         <p>সেবা প্রদানের উদ্দেশ্যে আমরা নিম্নোক্ত তথ্যসমূহ সংগ্রহ করি:</p>
         <ul>
@@ -64,13 +75,13 @@
         <div class="contact-box">
             <h3>সেলার অ্যাকাউন্ট খুলতে চান?</h3>
             <p>আপনার শপ ভেরিফিকেশন এবং সেলার অ্যাকাউন্ট খোলার জন্য আমাদের সাথে হোয়াটসঅ্যাপে যোগাযোগ করুন।</p>
-            <a href="https://wa.me/8801727003670" class="whatsapp-btn">
+            <a href="https://wa.me/8801727003670" class="btn whatsapp-btn">
                 <i class="fab fa-whatsapp"></i> হোয়াটসঅ্যাপে মেসেজ দিন
             </a>
         </div>
 
         <p style="text-align: center; margin-top: 30px; font-size: 14px; color: #777;">
-            সর্বশেষ আপডেট: জুন ২৫, ২০২৬
+            সর্বশেষ আপডেট: জুন ২৬, ২০২৬
         </p>
     </div>
 </body>
