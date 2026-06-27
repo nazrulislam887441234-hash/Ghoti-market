@@ -1,162 +1,309 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support | Ghoti Market</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ghoti Market Support</title>
+    <meta name="description" content="Ghoti Market সাপোর্ট সেন্টার। সেলার ফি মাত্র ৫০ টাকা/মাস। 0% কমিশন। WhatsApp, কল, ইমেইল সাপোর্ট।" />
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="icon" type="image/png" href="https://www.ghotimarket.com/logo.png">
+    <link rel="shortcut icon" type="image/png" href="https://www.ghotimarket.com/logo.png">
+    <link rel="apple-touch-icon" href="https://www.ghotimarket.com/logo.png">
     <style>
-        :root { --primary: #1a2a3a; --accent: #3498db; --whatsapp: #25d366; --fb: #1877f2; --bg: #f4f7f6; }
-        
-        body { 
-            font-family: 'Hind Siliguri', sans-serif; 
-            background: var(--bg); 
-            margin: 0; 
-            color: #333;
-        }
-
-        .contact-header {
-            background: var(--primary);
-            color: white;
-            padding: 60px 20px;
-            text-align: center;
-            border-radius: 0 0 40px 40px;
-        }
-
-        .contact-header h1 { margin: 0; font-size: 28px; }
-        .contact-header p { opacity: 0.8; margin-top: 10px; font-size: 15px; }
-
-        .container {
-            max-width: 500px;
-            margin: -40px auto 40px;
-            padding: 0 20px;
-        }
-
-        .contact-card {
-            background: white;
-            border-radius: 20px;
-            padding: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-
-        .method-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 20px;
-            text-decoration: none;
-            color: inherit;
-            border-bottom: 1px solid #f0f0f0;
-            transition: 0.3s;
-        }
-
-        .method-item:last-child { border-bottom: none; }
-        .method-item:active { background: #f9f9f9; transform: scale(0.98); }
-
-        .icon-circle {
-            width: 50px;
-            height: 50px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: white;
-        }
-
-        .info h4 { margin: 0; font-size: 14px; color: #777; }
-        .info p { margin: 2px 0 0; font-size: 16px; font-weight: 600; color: var(--primary); }
-
-        /* Social Styles */
-        .fb-card {
-            background: linear-gradient(135deg, var(--fb), #0056b3);
-            color: white;
-            padding: 25px;
-            border-radius: 20px;
-            text-align: center;
-            margin-top: 25px;
-            box-shadow: 0 10px 20px rgba(24,119,242,0.2);
-        }
-
-        .fb-card i { font-size: 40px; margin-bottom: 10px; }
-        .fb-card h3 { margin: 10px 0 5px; }
-        .fb-card p { font-size: 14px; opacity: 0.9; margin-bottom: 20px; }
-        
-        .fb-btn {
-            background: white;
-            color: var(--fb);
-            text-decoration: none;
-            padding: 12px 25px;
-            border-radius: 10px;
-            font-weight: 600;
-            display: inline-block;
-            transition: 0.3s;
-        }
-
-        .back-nav {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-        }
+        :root { --primary: #1a2a3a; --accent: #3498db; --whatsapp: #25d366; --bg: #f4f7f6; --success: #2ecc71; --secondary: #f39c12; --danger: #e74c3c; }
+        body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg); margin: 0; color: #333; }
+        .contact-header { background: var(--primary); color: white; padding: 50px 20px; text-align: center; border-radius: 0 0 40px 40px; }
+        .contact-header h1 { margin: 0; font-size: 26px; }
+        .container { max-width: 500px; margin: -30px auto 40px; padding: 0 20px; }
+        .contact-card { background: white; border-radius: 20px; padding: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .method-item { display: flex; align-items: center; gap: 15px; padding: 18px; text-decoration: none; color: inherit; border-bottom: 1px solid #f0f0f0; }
+        .icon-circle { width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; }
+        .info h4 { margin: 0; font-size: 13px; color: #777; }
+        .info p { margin: 2px 0 0; font-size: 15px; font-weight: 600; color: var(--primary); }
+        .faq-section, .warning-section, .about-card, .trusted-badge { background: white; padding: 20px; border-radius: 20px; margin-top: 20px; }
+        .faq-item { margin-bottom: 15px; border-bottom: 1px solid #f9f9f9; padding-bottom: 10px; }
+        .faq-item h5 { margin: 0 0 5px; color: var(--primary); }
+        .faq-item p { margin: 0; font-size: 13px; color: #666; line-height: 1.5; }
+        .btn-link { display: block; background: var(--success); color: white; text-align: center; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-bottom: 8px; font-size: 14px; }
+        .btn-web { background: var(--secondary); }
+        .btn-policy { background: var(--accent); }
+        .btn-dev { background: var(--primary); }
+        .warning-section { border-left: 5px solid var(--danger); }
+        .warning-section h4 { color: var(--danger); margin-top: 0; }
+        .time-badge { background: #e8f4fd; color: var(--accent); padding: 5px 15px; border-radius: 50px; font-size: 12px; display: inline-block; margin-top: 10px; }
+        .badge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .badge-item { font-size: 13px; font-weight: 600; }
     </style>
+
+    <!-- Schema Markup for Google SEO - এটা বসাবেন </head> এর আগে -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Ghoti Market",
+      "url": "https://www.ghotimarket.com",
+      "logo": "https://www.ghotimarket.com/logo.png",
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+8801316487435",
+          "contactType": "customer support",
+          "areaServed": "BD",
+          "availableLanguage": ["Bengali", "English"]
+        },
+        {
+          "@type": "ContactPoint", 
+          "telephone": "+8801727003670",
+          "contactType": "customer support",
+          "areaServed": "BD",
+          "availableLanguage": ["Bengali", "English"]
+        }
+      ],
+      "sameAs": [
+        "https://facebook.com/ghotimarket",
+        "https://youtube.com/@ghotimarket"
+      ]
+    }
+    </script>
+    <!-- Schema End -->
+
 </head>
 <body>
-
     <div class="contact-header">
-        <a href="javascript:history.back()" class="back-nav"><i class="fas fa-arrow-left"></i></a>
         <h1>সাপোর্ট সেন্টার</h1>
-        <p>আপনার যেকোনো সমস্যায় আমরা আছি আপনার পাশে</p>
+        <p>যেকোনো সমস্যায় আমরা আছি আপনার পাশে</p>
+        <div class="time-badge"><i class="fas fa-clock"></i> সাপোর্ট সময়: দুপুর ২ টা থেকে রাত ৯ টা</div>
     </div>
 
     <div class="container">
-        <div class="contact-card">
+        <!-- Trusted Badge -->
+        <div class="trusted-badge">
+            <h4 style="margin-top:0;"><i class="fas fa-shield-alt" style="color: var(--success);"></i> আমাদের বিশেষত্ব</h4>
+            <div class="badge-grid">
+                <div class="badge-item"><i class="fas fa-check-circle" style="color: var(--success);"></i> নিরাপদ কেনাকাটা</div>
+                <div class="badge-item"><i class="fas fa-truck" style="color: var(--accent);"></i> COD সাপোর্ট</div>
+                <div class="badge-item"><i class="fas fa-user-check" style="color: var(--secondary);"></i> ভেরিফাইড সেলার</div>
+                <div class="badge-item"><i class="fas fa-bolt" style="color: var(--danger);"></i> দ্রুত সাপোর্ট</div>
+            </div>
+        </div>
+
+        <a href="https://app.ghotimarket.com" class="btn-link"><i class="fas fa-download"></i> অফিশিয়াল অ্যাপ ডাউনলোড করুন</a>
+        <a href="https://www.ghotimarket.com" class="btn-link btn-web"><i class="fas fa-globe"></i> ওয়েবসাইট ভিজিট করুন</a>
+        <a href="privacy-policy.html" class="btn-link btn-policy"><i class="fas fa-user-shield"></i> প্রাইভেসি পলিসি</a>
+        <a href="termsandcondition.html" class="btn-link btn-policy"><i class="fas fa-file-contract"></i> শর্তাবলী (Terms & Conditions)</a>
+        <a href="developer.html" class="btn-link btn-dev"><i class="fas fa-code"></i> ডেভেলপার</a>
+
+        <div class="contact-card" style="margin-top:20px;">
             <a href="tel:+8801316487435" class="method-item">
-                <div class="icon-circle" style="background: var(--accent);">
-                    <i class="fas fa-phone-alt"></i>
-                </div>
-                <div class="info">
-                    <h4>সরাসরি কল করুন</h4>
-                    <p>+880 1316487435</p>
-                </div>
+                <div class="icon-circle" style="background: var(--accent);"><i class="fas fa-phone-alt"></i></div>
+                <div class="info"><h4>সরাসরি কল(১)</h4><p>+8801316487435</p></div>
             </a>
-
+            <a href="tel:+8801727003670" class="method-item">
+                <div class="icon-circle" style="background: var(--accent);"><i class="fas fa-phone-alt"></i></div>
+                <div class="info"><h4>সরাসরি কল(২)</h4><p>+8801727003670</p></div>
+            </a>
             <a href="https://wa.me/8801316487435" class="method-item">
-                <div class="icon-circle" style="background: var(--whatsapp);">
-                    <i class="fab fa-whatsapp"></i>
-                </div>
-                <div class="info">
-                    <h4>হোয়াটসঅ্যাপ মেসেজ</h4>
-                    <p>+8801316487435</p>
-                </div>
+                <div class="icon-circle" style="background: var(--whatsapp);"><i class="fab fa-whatsapp"></i></div>
+                <div class="info"><h4>হোয়াটসঅ্যাপ (1)</h4><p>+8801316487435</p></div>
             </a>
-
+             <a href="https://wa.me/8801727003670" class="method-item">
+                <div class="icon-circle" style="background: var(--whatsapp);"><i class="fab fa-whatsapp"></i></div>
+                <div class="info"><h4>হোয়াটসঅ্যাপ (2)</h4><p>+8801727003670</p></div>
+            </a>
             <a href="mailto:support@ghotimarket.com" class="method-item">
-                <div class="icon-circle" style="background: #e74c3c;">
-                    <i class="fas fa-envelope"></i>
-                </div>
-                <div class="info">
-                    <h4>ইমেইল অ্যাড্রেস</h4>
-                    <p>support@ghotimarket.com</p>
-                </div>
+                <div class="icon-circle" style="background: var(--danger);"><i class="fas fa-envelope"></i></div>
+                <div class="info"><h4>ইমেইল(1)</h4><p>support@ghotimarket.com</p></div>
+            </a>
+            <a href="mailto:ghotimarket@gmail.com" class="method-item">
+                <div class="icon-circle" style="background: var(--danger);"><i class="fas fa-envelope"></i></div>
+                <div class="info"><h4>ইমেইল(2)</h4><p>ghotimarket@gmail.com</p></div>
             </a>
         </div>
 
-        <div class="fb-card">
-            <i class="fab fa-facebook"></i>
-            <h3>আমাদের ফেসবুক পেজ</h3>
-            <p>নতুন সব আপডেট পেতে আমাদের ফেসবুক পেজে যুক্ত থাকুন</p>
-            <a href="https://www.facebook.com/ghotimarket" target="_blank" class="fb-btn">পেজ ভিজিট করুন</a>
+        <!-- About Ghoti Market -->
+        <div class="about-card">
+            <h4 style="margin-top:0;"><i class="fas fa-info-circle"></i>About Ghoti Market</h4>
+            <p style="font-size: 13px; color: #666;">ঘটি মার্কেট একটি বিশ্বস্ত অনলাইন মার্কেটপ্লেস, যেখানে বিভিন্ন সেলার তাদের পণ্য বিক্রি করেন। আমরা নিরাপদ কেনাকাটা ও সহজ যোগাযোগ নিশ্চিত করতে কাজ করি।</p>
         </div>
 
-        <p style="text-align: center; color: #bbb; font-size: 12px; margin-top: 30px;">
-            © 2026 Ghoti Market. All Rights Reserved.
-        </p>
-    </div>
+        <div class="warning-section">
+            <h4><i class="fas fa-exclamation-triangle"></i> সেলারদের জন্য সতর্কবার্তা</h4>
+            <ul style="font-size: 13px; color: #555; padding-left: 20px;">
+                <li>অপরিচিত কাউকে আপনার শপের লগইন পাসওয়ার্ড বা OTP দেবেন না।</li>
+                <li>অফিসিয়াল হোয়াটসঅ্যাপ বা ইমেইল ছাড়া অন্য কোনো মাধ্যমে ব্যক্তিগত তথ্য শেয়ার করবেন না।</li>
+                <li>কাস্টমারকে কখনোই অগ্রিম পেমেন্ট করতে বাধ্য করবেন না।</li>
+                <li>সন্দেহজনক কোনো লিংক বা ইমেইলে ক্লিক করা থেকে বিরত থাকুন।</li>
+            </ul>
+        </div>
 
+        <!-- সেলার একাউন্ট খোলার নির্দেশনা -->
+        <div class="about-card">
+            <h4 style="margin-top:0; color: var(--secondary);">
+                <i class="fas fa-store"></i> সেলার একাউন্ট কিভাবে খুলবেন?
+            </h4>
+            <p style="font-size:13px; color:#666; line-height:1.7;">
+                আপনি যদি <strong>Ghoti Market</strong>-এ একজন সেলার হিসেবে যুক্ত হতে চান, তাহলে নিজে থেকে একাউন্ট খুলতে পারবেন না।
+                সেলার একাউন্ট খোলার জন্য আমাদের অফিসিয়াল সাপোর্ট টিমের সাথে যোগাযোগ করুন।
+            </p>
+            <ul style="font-size:13px; color:#555; padding-left:20px; line-height:1.8;">
+                <li>📞 কল অথবা হোয়াটসঅ্যাপে যোগাযোগ করুন।</li>
+                <li>📝 প্রয়োজনীয় তথ্য ও ডকুমেন্ট প্রদান করুন।</li>
+                <li>✅ যাচাই শেষে আপনার সেলার একাউন্ট তৈরি করে দেওয়া হবে।</li>
+                <li>🏪 একাউন্ট চালু হওয়ার পর আপনি নিজের শপ পরিচালনা করতে পারবেন।</li>
+            </ul>
+            <div style="margin-top:15px; background:#f8f9fa; border-left:4px solid var(--secondary); padding:12px; border-radius:8px;">
+                <strong style="color:var(--secondary);">
+                    <i class="fas fa-info-circle"></i> গুরুত্বপূর্ণ তথ্য
+                </strong>
+                <p style="margin:8px 0 0; font-size:13px; color:#666;">
+                    সেলার একাউন্ট খোলার জন্য কোনো অপরিচিত ব্যক্তি বা তৃতীয় পক্ষকে অর্থ প্রদান করবেন না।
+                    শুধুমাত্র Ghoti Market-এর অফিসিয়াল যোগাযোগ মাধ্যম ব্যবহার করুন।
+                </p>
+            </div>
+        </div>
+
+        <!-- ক্রেতাদের জন্য গুরুত্বপূর্ণ নির্দেশনা -->
+        <div class="about-card">
+            <h4 style="margin-top:0; color: var(--success);">
+                <i class="fas fa-shopping-cart"></i> ক্রেতাদের জন্য গুরুত্বপূর্ণ নির্দেশনা
+            </h4>
+            <p style="font-size:13px; color:#666; line-height:1.7;">
+                নিরাপদ ও ঝামেলামুক্ত কেনাকাটার জন্য নিচের বিষয়গুলো অবশ্যই অনুসরণ করুন।
+            </p>
+            <ul style="font-size:13px; color:#555; padding-left:20px; line-height:1.9;">
+                <li>📦 অর্ডার করার আগে পণ্যের বিবরণ ভালোভাবে পড়ুন।</li>
+                <li>💬 অর্ডার দেওয়ার আগে সেলারের সাথে প্রয়োজনীয় সব তথ্য নিশ্চিত করুন।</li>
+                <li>📱 অর্ডার সম্পন্ন না হওয়া পর্যন্ত WhatsApp চ্যাট ডিলিট করবেন না।</li>
+                <li>💵 যদি সেলার Cash on Delivery (COD) সাপোর্ট করে, তাহলে পণ্য হাতে পাওয়ার আগে কোনো অর্থ প্রদান করবেন না।</li>
+            </ul>
+            <div style="margin-top:15px; background:#f8f9fa; border-left:4px solid var(--success); padding:12px; border-radius:8px;">
+                <strong style="color:var(--success);">
+                    <i class="fas fa-shield-alt"></i> নিরাপদ কেনাকাটার পরামর্শ
+                </strong>
+                <p style="margin:8px 0 0; font-size:13px; color:#666;">
+                    যেকোনো সন্দেহজনক কার্যকলাপ, প্রতারণার চেষ্টা বা সমস্যার সম্মুখীন হলে দ্রুত আমাদের অফিসিয়াল সাপোর্ট টিমের সাথে যোগাযোগ করুন।
+                </p>
+            </div>
+        </div>
+
+        <!-- নিরাপত্তা ও গোপনীয়তা -->
+        <div class="about-card">
+            <h4 style="margin-top:0; color: var(--accent);">
+                <i class="fas fa-user-shield"></i> আপনার নিরাপত্তা ও গোপনীয়তা
+            </h4>
+            <p style="font-size:13px; color:#666; line-height:1.7;">
+                আপনার ব্যক্তিগত তথ্যের নিরাপত্তা আমাদের সর্বোচ্চ অগ্রাধিকার। নিরাপদে সেবা দিতে আমরা নিচের নীতিগুলো অনুসরণ করি।
+            </p>
+            <ul style="font-size:13px; color:#555; padding-left:20px; line-height:1.9;">
+                <li>🔐 আমরা কখনোই আপনার OTP চাই না।</li>
+                <li>🔑 আমরা কখনোই আপনার Password চাই না।</li>
+                <li>🛡️ আপনার ব্যক্তিগত তথ্য কোনো তৃতীয় পক্ষের কাছে বিক্রি বা শেয়ার করা হয় না।</li>
+                <li>📧 শুধুমাত্র অফিসিয়াল যোগাযোগ মাধ্যম ব্যবহার করুন।</li>
+            </ul>
+            <div style="margin-top:15px; background:#f8f9fa; border-left:4px solid var(--accent); padding:12px; border-radius:8px;">
+                <strong style="color:var(--accent);">
+                    <i class="fas fa-lock"></i> গুরুত্বপূর্ণ সতর্কতা
+                </strong>
+                <p style="margin:8px 0 0; font-size:13px; color:#666;">
+                    যদি কেউ Ghoti Market-এর পরিচয় দিয়ে আপনার OTP, Password বা ব্যক্তিগত তথ্য চায়, তাহলে কোনো তথ্য শেয়ার করবেন না। দ্রুত আমাদের অফিসিয়াল সাপোর্ট টিমের সাথে যোগাযোগ করুন।
+                </p>
+            </div>
+        </div>
+
+        <div class="about-card">
+            <h4><i class="fas fa-user-check"></i> সেলার ভেরিফিকেশন</h4>
+            <p style="font-size:13px;color:#666;">
+                সকল সেলার যাচাই-বাছাইয়ের মাধ্যমে অনুমোদিত হন।
+                প্রয়োজনীয় তথ্য ও ডকুমেন্ট যাচাই শেষে সেলার একাউন্ট চালু করা হয়।
+            </p>
+        </div>
+
+        <div class="about-card">
+            <h4><i class="fas fa-star"></i> কেন Ghoti Market?</h4>
+            <ul style="font-size:13px;color:#555;padding-left:20px;line-height:1.8;">
+                <li>✔ নিরাপদ অনলাইন মার্কেটপ্লেস</li>
+                <li>✔ ভেরিফাইড সেলার</li>
+                <li>✔ WhatsApp অর্ডার সিস্টেম</li>
+                <li>✔ দ্রুত সাপোর্ট</li>
+                <li>✔ সহজে শপ পরিচালনা</li>
+            </ul>
+        </div>
+
+        <!-- Support Status Card -->
+        <div id="supportStatusCard" style="background:#fff; border-radius:20px; padding:20px; margin-top:20px; box-shadow:0 10px 30px rgba(0,0,0,0.05);">
+            <h4 style="margin:0 0 15px;color:#1a2a3a;">
+                <i class="fas fa-headset"></i> সাপোর্ট স্ট্যাটাস
+            </h4>
+            <div id="supportStatus" style="display:inline-block; padding:8px 18px; border-radius:30px; font-weight:bold; color:#fff; font-size:15px;"></div>
+            <p id="supportMessage" style="margin-top:15px;font-size:14px;color:#666;line-height:1.7;"></p>
+        </div>
+
+        <script>
+        function updateSupportStatus() {
+            const now = new Date();
+            const bdTime = new Date(now.toLocaleString("en-US", {timeZone: "Asia/Dhaka"}));
+            const hour = bdTime.getHours();
+            const minute = bdTime.getMinutes();
+            const currentMinutes = hour * 60 + minute;
+            const openTime = 14 * 60;   // 2:00 PM
+            const closeTime = 21 * 60;  // 9:00 PM
+            const status = document.getElementById("supportStatus");
+            const message = document.getElementById("supportMessage");
+            if (currentMinutes >= openTime && currentMinutes < closeTime) {
+                status.innerHTML = "🟢 বর্তমানে সাপোর্ট খোলা";
+                status.style.background = "#2ecc71";
+                const remaining = closeTime - currentMinutes;
+                const h = Math.floor(remaining / 60);
+                const m = remaining % 60;
+                let text = "";
+                if(h>0){ text += h + " ঘণ্টা "; }
+                if(m>0){ text += m + " মিনিট"; }
+                message.innerHTML = "<strong>আজ রাত ৯:০ টায় সাপোর্ট বন্ধ হবে।</strong><br><br>" + "বন্ধ হতে বাকি: <b>" + text + "</b>";
+            } else {
+                status.innerHTML = "🔴 বর্তমানে সাপোর্ট বন্ধ";
+                status.style.background = "#e74c3c";
+                let remaining;
+                if(currentMinutes < openTime){ remaining = openTime - currentMinutes; }else{ remaining = (24*60 - currentMinutes) + openTime; }
+                const h = Math.floor(remaining / 60);
+                const m = remaining % 60;
+                let text = "";
+                if(h>0){ text += h + " ঘণ্টা "; }
+                if(m>0){ text += m + " মিনিট"; }
+                message.innerHTML = "<strong>আগামীকাল/আজ দুপুর ২:০ টায় সাপোর্ট খুলবে।</strong><br><br>" + "খুলতে বাকি: <b>" + text + "</b>";
+            }
+        }
+        updateSupportStatus();
+        setInterval(updateSupportStatus, 60000);
+        </script>
+
+        <div class="faq-section">
+            <h4 style="margin-top:0;"><i class="fas fa-question-circle"></i> সাধারণ প্রশ্নোত্তর</h4>
+            <div class="faq-item"><h5>১. কিভাবে অর্ডার করব?</h5><p>প্রথমে ওয়েবসাইট বা অ্যাপ থেকে পছন্দের সেলার শপ নির্বাচন করুন। এরপর যেকোনো পণ্যের উপর ক্লিক করুন, পেমেন্ট নীতি পড়ে টিক মার্ক দিন এবং সবশেষে 'হোয়াটসঅ্যাপে অর্ডার করুন' বাটনে ক্লিক করুন।</p></div>
+            <div class="faq-item"><h5>২. ডেলিভারি কতদিন লাগে?</h5><p>অর্ডার কনফার্ম হওয়ার পর সাধারণত ২ থেকে ৫ দিনের মধ্যে ডেলিভারি সম্পন্ন হয়।</p></div>
+            <div class="faq-item"><h5>৩. পণ্য রিটার্ন কি সম্ভব?</h5><p>রিটার্ন বা রিফান্ডের শর্ত সংশ্লিষ্ট সেলারের পলিসির ওপর নির্ভর করে। ক্রয়ের আগে সেলারের সাথে কথা বলে নিন।</p></div>
+            <div class="faq-item"><h5>৪. পাসওয়ার্ড ভুলে গেলে কী করব?</h5><p>লগইন পেজের 'Forgot Password' অপশনে গিয়ে আপনার রেজিস্টার্ড ইমেইল বা ফোন নম্বরের মাধ্যমে পাসওয়ার্ড রিসেট করতে পারবেন।</p></div>
+            <div class="faq-item"><h5>৫. অ্যাকাউন্ট ভেরিফিকেশন কিভাবে করব?</h5><p>প্রোফাইল সেকশন থেকে প্রয়োজনীয় নথিপত্র (যেমন NID) আপলোড করে আমাদের অ্যাডমিন প্যানেল থেকে ম্যানুয়াল ভেরিফিকেশন সম্পন্ন করতে হবে।</p></div>
+            <div class="faq-item"><h5>৬. অভিযোগ কোথায় করব?</h5><p>যেকোনো অভিযোগের জন্য আমাদের অফিসিয়াল সাপোর্ট ইমেইল বা হোয়াটসঅ্যাপে সরাসরি যোগাযোগ করুন।</p></div>
+            <div class="faq-item"><h5>৭. কিভাবে সাপোর্ট টিকিট খুলব?</h5><p>আমাদের ওয়েবসাইট বা অ্যাপের সাপোর্ট মেনু থেকে সরাসরি আমাদের টিমের সাথে চ্যাট বা মেসেজের মাধ্যমে টিকিট ওপেন করতে পারেন।</p></div>
+            <div class="faq-item"><h5>৮. সেলার ফি কিভাবে নেওয়া হয়?</h5><p>আমাদের এখানে প্রতি মাসিক ফি <strong>৫০ টাকা</strong> আর এক্সট্রা কোন চার্জ বা কমিশন নেই।</p></div>
+            <div class="faq-item"><h5>৯. পেমেন্ট কিভাবে করব?</h5><p>আমাদের এখানে সম্পূর্ণ ক্যাশ অন ডেলিভারি সাপোর্ট করে পণ্য হাতে পাওয়ার পর টাকা পরিশোধ করবেন।</p></div>
+        </div>
+
+        <div class="contact-card" style="margin-top:20px; text-align:center;">
+            <h4><i class="fas fa-share-alt"></i> সোশ্যাল মিডিয়া</h4>
+            <div style="display:flex; justify-content:center; gap:20px;">
+                <a href="https://facebook.com/ghotimarket" target="_blank" style="font-size:24px; color:var(--secondary);"><i class="fab fa-facebook"></i></a>
+                <a href="https://youtube.com/@ghotimarket" target="_blank" style="font-size:24px; color:var(--danger);"><i class="fab fa-youtube"></i></a>
+                <a href="https://ghotimarket.com" target="_blank" rel="noopener noreferrer" style="font-size:24px; color:var(--danger);"><i class="fas fa-globe"></i></a>
+                <a href="https://wa.me/8801727003670" target="_blank" style="font-size:24px; color:var(--danger);"><i class="fab fa-whatsapp"></i></a>  
+                <a href="mailto:support@ghotimarket.com" target="_blank" rel="noopener noreferrer" style="font-size:24px; color:var(--danger);"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; font-size: 12px; color: #888;">
+            © 2026 Ghoti Market. All Rights Reserved.
+        </div>
+    </div>
 </body>
 </html>
