@@ -6,37 +6,203 @@
     <title>Terms & Conditions | Ghoti Market</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root { --primary: #0f172a; --accent: #2563eb; --gold: #d4af37; --light: #f8fafc; --text: #334155; }
-        
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #eef2f6; color: var(--text); line-height: 1.8; margin: 0; padding: 20px; }
-        
-        .main-wrapper { max-width: 900px; margin: 40px auto; background: white; padding: 60px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-        
-        .header-section { text-align: center; margin-bottom: 50px; }
-        .logo { width: 120px; margin-bottom: 20px; }
-        .update-badge { background: #fee2e2; color: #b91c1c; padding: 6px 15px; border-radius: 20px; font-size: 13px; font-weight: 600; display: inline-block; margin-bottom: 15px; }
-        
-        h1 { color: var(--primary); font-size: 36px; margin: 0; }
-        h2 { color: var(--primary); font-size: 22px; margin-top: 40px; display: flex; align-items: center; gap: 12px; }
-        h2 i { color: var(--accent); }
+ <style>
+:root{
+    --primary:#0f172a;
+    --accent:#2563eb;
+    --light:#f8fafc;
+    --text:#334155;
+    --border:#e2e8f0;
+    --warning:#fff8db;
+    --warning-border:#facc15;
+}
 
-        .card { background: var(--light); padding: 30px; border-radius: 20px; margin: 25px 0; border-left: 5px solid var(--accent); }
-        .highlight-card { background: #fffdf0; border: 1px solid #fde68a; padding: 20px; border-radius: 15px; color: #92400e; }
-        
-        .btn-contact { background: var(--primary); color: white; padding: 15px 30px; border-radius: 12px; text-decoration: none; font-weight: 600; display: inline-block; transition: 0.3s; margin-top: 20px; }
-        .btn-contact:hover { background: var(--accent); transform: translateY(-2px); }
-        
-        @media (max-width: 768px) { .main-wrapper { padding: 30px; } }
-    </style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Plus Jakarta Sans',sans-serif;
+    background:#eef2f6;
+    color:var(--text);
+    line-height:1.8;
+    padding:20px;
+}
+
+.main-wrapper{
+    max-width:900px;
+    margin:40px auto;
+    background:#fff;
+    padding:60px;
+    border-radius:30px;
+    border:1px solid var(--border);
+    box-shadow:0 20px 45px rgba(15,23,42,.08);
+}
+
+.header-section{
+    text-align:center;
+    margin-bottom:45px;
+}
+
+.logo{
+    width:120px;
+    margin-bottom:18px;
+}
+
+.update-badge{
+    display:inline-block;
+    background:#fee2e2;
+    color:#b91c1c;
+    padding:8px 16px;
+    border-radius:50px;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:18px;
+}
+
+h1{
+    font-size:36px;
+    color:var(--primary);
+    margin-bottom:10px;
+}
+
+h2{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:22px;
+    color:var(--primary);
+    margin-bottom:15px;
+}
+
+h2 i{
+    color:var(--accent);
+    font-size:20px;
+}
+
+h3{
+    color:var(--primary);
+    margin-bottom:10px;
+}
+
+p{
+    font-size:16px;
+}
+
+ul{
+    margin-top:10px;
+    padding-left:25px;
+}
+
+li{
+    margin-bottom:10px;
+}
+
+.section{
+    margin:35px 0;
+    padding-bottom:25px;
+    border-bottom:1px solid var(--border);
+}
+
+.section:last-child{
+    border-bottom:none;
+    padding-bottom:0;
+}
+
+.card{
+    background:var(--light);
+    border-left:5px solid var(--accent);
+    border-radius:18px;
+    padding:30px;
+    margin:30px 0;
+}
+
+.highlight-card{
+    background:var(--warning);
+    border:1px solid var(--warning-border);
+    border-left:5px solid #f59e0b;
+    border-radius:18px;
+    padding:22px;
+    color:#92400e;
+    margin-bottom:35px;
+}
+
+.highlight-card i{
+    margin-right:8px;
+}
+
+.btn-contact{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    margin-top:20px;
+    padding:15px 30px;
+    background:var(--primary);
+    color:#fff;
+    text-decoration:none;
+    border-radius:12px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn-contact:hover{
+    background:var(--accent);
+    transform:translateY(-2px);
+    box-shadow:0 10px 20px rgba(37,99,235,.25);
+}
+
+a{
+    color:inherit;
+}
+
+@media (max-width:768px){
+
+    body{
+        padding:15px;
+    }
+
+    .main-wrapper{
+        margin:20px auto;
+        padding:30px 22px;
+        border-radius:20px;
+    }
+
+    .logo{
+        width:90px;
+    }
+
+    h1{
+        font-size:28px;
+    }
+
+    h2{
+        font-size:19px;
+    }
+
+    p,
+    li{
+        font-size:15px;
+    }
+
+    .btn-contact{
+        width:100%;
+        justify-content:center;
+    }
+}
+</style>
 </head>
 <body>
 
 <div class="main-wrapper">
     <div class="header-section">
         <img src="https://www.ghotimarket.com/logo.png" alt="Ghoti Market Logo" class="logo">
-        <div class="update-badge"><i class="fas fa-calendar-alt"></i> সর্বশেষ আপডেট: জুলাই ২, ২০২৬</div>
+        <div class="update-badge"><i class="fas fa-calendar-alt"></i> সর্বশেষ আপডেট: ০৫ জুলাই ২০২৬</div>
         <h1>শর্তাবলী এবং ব্যবহারবিধি</h1>
+    </div>
+        <div class="highlight-card">
+        <i class="fas fa-users"></i> <strong>প্রযোজ্যতা:</strong> এই শর্তাবলী GHOTI MARKET App/Website এর সকল <strong>Buyer</strong> ও <strong>Seller</strong>-এর জন্য প্রযোজ্য।
     </div>
 
     <div class="highlight-card">
@@ -53,20 +219,59 @@
         <p>ঘটি মার্কেট শুধুমাত্র ক্যাশ অন ডেলিভারি (COD) সাপোর্ট করে। কোনো ক্রেতা-বিক্রেতা যদি নিজ দায়িত্বে অগ্রিম লেনদেন করে এবং প্রতারিত হয়, তার জন্য ঘটি মার্কেট কর্তৃপক্ষ কোনোভাবেই দায়ী থাকবে না।</p>
     </div>
 
-    <div class="section">
-        <h2><i class="fas fa-gavel"></i> আইনি ব্যবস্থা ও দায়বদ্ধতা</h2>
-        <ul>
-            <li>প্রত্যেক সেলারের NID কার্ডের ছবি সংরক্ষণ করা হয়।</li>
-            <li>যেকোনো ধরনের জালিয়াতি বা প্রতারণার ক্ষেত্রে আইন প্রয়োগকারী সংস্থার সহায়তায় কঠোর আইনি ব্যবস্থা নেওয়া হবে।</li>
-            <li>অ্যাকাউন্ট অপব্যবহারের দায়ে যেকোনো সময় অ্যাকাউন্ট স্থগিত করার ক্ষমতা কর্তৃপক্ষ রাখে।</li>
-        </ul>
-    </div>
+  <div class="section">
+    <h2><i class="fas fa-gavel"></i> আইনি ব্যবস্থা ও দায়বদ্ধতা</h2>
+    <ul>
+        <li>প্রত্যেক সেলারের NID কার্ডের ছবি সংরক্ষণ করা হয়।</li>
+        <li>যেকোনো ধরনের জালিয়াতি বা প্রতারণার ক্ষেত্রে আইন প্রয়োগকারী সংস্থার সহায়তায় কঠোর আইনি ব্যবস্থা নেওয়া হবে।</li>
+        <li>অ্যাকাউন্ট অপব্যবহারের দায়ে যেকোনো সময় অ্যাকাউন্ট স্থগিত করার ক্ষমতা কর্তৃপক্ষ রাখে।</li>
+    </ul>
+</div>
 
-    <div class="section">
-        <h2><i class="fas fa-user-check"></i> ক্রেতা সুরক্ষা</h2>
-        <p>পণ্য গ্রহণের সময় অবশ্যই আনবক্সিং ভিডিও করার পরামর্শ দেওয়া হলো। এটি যেকোনো সমস্যা সমাধানে শক্তিশালী প্রমাণ হিসেবে কাজ করবে।</p>
-    </div>
+<!-- এখানে নতুন সেকশন -->
 
+<div class="section">
+    <h2><i class="fas fa-ban"></i> নিষিদ্ধ পণ্য</h2>
+    <ul>
+        <li>মাদক, অস্ত্র, বিস্ফোরক বা আইনবিরোধী কোনো পণ্য বিক্রি করা যাবে না।</li>
+        <li>নকল (Counterfeit) বা কপিরাইট লঙ্ঘনকারী পণ্য বিক্রি নিষিদ্ধ।</li>
+        <li>যে কোনো অবৈধ বা বাংলাদেশের প্রচলিত আইনবিরোধী পণ্য নিষিদ্ধ।</li>
+    </ul>
+</div>
+<div class="section">  
+    <h2><i class="fas fa-store"></i> সেলারের দায়িত্ব</h2>  
+    <ul>  
+        <li>সঠিক তথ্য দিয়ে অ্যাকাউন্ট খুলতে হবে।</li>  
+        <li>পণ্যের বিবরণ, ছবি ও মূল্য সঠিক দিতে হবে।</li>  
+        <li>অর্ডার পাওয়ার পর সময়মতো পণ্য পাঠাতে হবে।</li> 
+        <li>অবৈধ, বিভ্রান্তিকর বা অন্যের কপিরাইট লঙ্ঘনকারী কোনো তথ্য বা পণ্য প্রকাশ করা যাবে না।</li>
+        <li>স্টকে না থাকা কোনো পণ্য বিক্রির জন্য প্রকাশ করা যাবে না।</li>
+        <li>স্টক থেকে কোনো পণ্য শেষ হয়ে গেলে তাৎক্ষণিকভাবে পণ্যটি সরিয়ে ফেলতে বা ডিলিট করতে হবে।</li>
+    </ul>  
+</div>  
+
+<div class="section">
+    <h2><i class="fas fa-rotate-left"></i> রিফান্ড ও রিটার্ন নীতি</h2>
+    <p>রিফান্ড বা রিটার্নের সিদ্ধান্ত সংশ্লিষ্ট সেলার এবং ক্রেতার মধ্যে প্রযোজ্য নীতির ভিত্তিতে হবে। ঘটি মার্কেট একটি অনলাইন মার্কেটপ্লেস হিসেবে কাজ করে এবং প্রতিটি বিরোধ নিষ্পত্তিতে মধ্যস্থতার চেষ্টা করবে, তবে সকল ক্ষেত্রে রিফান্ডের নিশ্চয়তা প্রদান করে না।</p>
+</div>
+
+<div class="section">
+    <h2><i class="fas fa-user-check"></i> ক্রেতা সুরক্ষা</h2>
+    <p>পণ্য গ্রহণের সময় অবশ্যই আনবক্সিং ভিডিও ধারণ করার পরামর্শ দেওয়া হয়। কোনো অভিযোগ বা বিরোধের ক্ষেত্রে এটি গুরুত্বপূর্ণ প্রমাণ হিসেবে বিবেচিত হতে পারে।</p>
+</div>
+<div class="section">
+    <h2><i class="fas fa-copyright"></i> বুদ্ধিবৃত্তিক সম্পত্তি</h2>
+    <p>GHOTI MARKET-এর লোগো, নাম, ডিজাইন, সফটওয়্যার এবং অন্যান্য কনটেন্ট কপিরাইট ও প্রযোজ্য আইন দ্বারা সুরক্ষিত। কর্তৃপক্ষের লিখিত অনুমতি ছাড়া এগুলো ব্যবহার, কপি বা পুনঃপ্রকাশ করা যাবে না।</p>
+</div>
+<div class="section">
+    <h2><i class="fas fa-circle-exclamation"></i> দায়-সীমাবদ্ধতা</h2>
+    <p>ঘটি মার্কেট একটি অনলাইন মার্কেটপ্লেস, যেখানে ক্রেতা ও সেলার পরস্পরের সাথে লেনদেন করেন। পণ্যের মান, বর্ণনা, মূল্য, ওয়ারেন্টি, ডেলিভারি বা বিক্রয়-পরবর্তী সেবার জন্য সংশ্লিষ্ট সেলার সম্পূর্ণ দায়ী থাকবেন। ঘটি মার্কেট শুধুমাত্র একটি প্রযুক্তিগত প্ল্যাটফর্ম হিসেবে সেবা প্রদান করে।</p>
+</div>
+
+<div class="section">
+    <h2><i class="fas fa-user-slash"></i> অ্যাকাউন্ট স্থগিত বা বাতিল</h2>
+    <p>যদি কোনো ব্যবহারকারী এই শর্তাবলী লঙ্ঘন করেন, প্রতারণা করেন বা অবৈধ কার্যকলাপে জড়িত থাকেন, তাহলে ঘটি মার্কেট কোনো পূর্ব নোটিশ ছাড়াই তার অ্যাকাউন্ট সাময়িকভাবে স্থগিত বা স্থায়ীভাবে বন্ধ করার অধিকার সংরক্ষণ করে।</p>
+</div>
 <div class="section">
     <h2><i class="fas fa-balance-scale"></i> প্রযোজ্য আইন</h2>
     <p>এই শর্তাবলী বাংলাদেশের প্রচলিত আইন দ্বারা পরিচালিত ও ব্যাখ্যা করা হবে।</p>
@@ -75,9 +280,16 @@
     <div class="section" style="text-align: center; margin-top: 50px; border-top: 2px solid #e2e8f0; padding-top: 40px;">
         <h3>আপনার কোনো প্রশ্ন আছে?</h3>
         <p>শর্তাবলী সম্পর্কে বিস্তারিত জানতে আমাদের সাপোর্ট টিমের সাথে যোগাযোগ করুন।</p>
-        <a href="https://www.ghotimarket.com/contact" class="btn-contact"><i class="fas fa-headset"></i> আমাদের সাথে যোগাযোগ করুন</a>
+       <a href="https://www.ghotimarket.com/contact"
+       class="btn-contact"
+       target="_blank"
+       rel="noopener noreferrer">
+      <i class="fas fa-headset"></i> আমাদের সাথে যোগাযোগ করুন
+      </a>
     </div>
 </div>
-
+<footer style="text-align:center;margin-top:40px;color:#64748b;font-size:14px;">
+    &copy; <script>document.write(new Date().getFullYear())</script> GHOTI MARKET. সর্বস্বত্ব সংরক্ষিত।
+</footer>
 </body>
 </html>
