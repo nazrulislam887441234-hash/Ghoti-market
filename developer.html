@@ -11,7 +11,7 @@
     <link rel="apple-touch-icon" href="https://mathematical-teal-pr4bbtrqs8.edgeone.app/47863.png">
     <link rel="canonical" href="https://www.ghotimarket.com/developer.html">
     <meta name="theme-color" content="#1e293b">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <!-- Facebook/WhatsApp Share Preview -->
     <meta property="og:type" content="profile">
     <meta property="og:title" content="Nazrul Islam | Developer Profile">
@@ -132,6 +132,42 @@
         font-size: 11px;
         color: #64748b;
     }
+/* Bottom Navigation - iPhone Style */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 65px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(25px) saturate(180%);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.08);
+    border-top: 1px solid rgba(0,0,0,0.05);
+    z-index: 9999;
+    padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 600;
+    transition: 0.2s;
+    width: 25%;
+}
+.nav-item i {
+    font-size: 21px;
+    margin-bottom: 3px;
+}
+.nav-item.active {
+    color: var(--accent);
+}
 </style>
 <script type="application/ld+json">
 {
@@ -168,6 +204,24 @@
        <span class="skill-tag">Graphics Designer</span>
        <span class="skill-tag">Content Creator</span>
    </div>
+<div class="bottom-nav">
+    <a href="https://ghotimarket.com" class="nav-item">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </a>
+    <a href="https://ghotimarket.com/contact.html" class="nav-item active">
+        <i class="fas fa-headset"></i>
+        <span>Support</span>
+    </a>
+    <a href="https://seller.ghotimarket.com/signup" class="nav-item">
+        <i class="fas fa-user-plus"></i>
+        <span>Join Seller</span>
+    </a>
+    <a href="https://ghotimarket.com/privacy-policy" class="nav-item">
+        <i class="fas fa-shield-alt"></i>
+        <span>Privacy</span>
+    </a>
+</div>
  <div class="btn-box">
     <a href="nazrul-cv.pdf" class="btn" style="background:#7c3aed;color:#fff; font-weight: 700;" download>
         <span class="icon">📄</span> Download CV
