@@ -18,59 +18,250 @@
     <meta property="og:url" content="https://www.ghotimarket.com">
     <meta property="og:site_name" content="Ghoti Market">
     <link rel="canonical" href="https://www.ghotimarket.com">
-   <style>
-        :root { --primary: #1e272e; --accent: #ff9f43; --bg: #f8f9fa; --text: #2f3542; }
-        body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg); margin: 0; color: var(--text); }
-        
-        /* Loading Animation */
-        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; justify-content: center; align-items: center; z-index: 9999; }
-        .spinner { width: 40px; height: 40px; border: 4px solid #ddd; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#f97316">
+ <style>
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap');
 
-        /* Header */
-        header { background: var(--primary); padding: 15px; }
-        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 0 10px; }
-        .top-nav a { color: white; text-decoration: none; font-size: 14px; background: rgba(255,255,255,0.1); padding: 6px 15px; border-radius: 20px; transition: 0.3s; }
-        .top-nav a:hover { background: var(--accent); }
-        
-        .search-box { background: white; width: 90%; max-width: 600px; margin: 0 auto; padding: 12px 20px; border-radius: 50px; display: flex; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .search-box input { border: none; outline: none; width: 100%; font-size: 16px; margin-left: 10px; }
+:root { 
+  --primary: #0f172a; 
+  --accent: #f97316; 
+  --accent2: #fb923c;
+  --bg: #f8fafc; 
+  --text: #1e293b; 
+  --glass: rgba(255,255,255,0.7);
+}
 
-        /* Banner */
-        .banner-container { width: 100%; max-width: 1200px; margin: 25px auto; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
-        .swiper-slide img { width: 100%; height: 250px; object-fit: cover; }
+body { 
+  font-family: 'Hind Siliguri', sans-serif; 
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  margin: 0; 
+  color: var(--text); 
+}
 
-        /* Shop Grid */
-        .section-header { text-align: center; font-size: 24px; font-weight: bold; margin: 30px 0; color: var(--primary); }
-        .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; padding: 15px; max-width: 1200px; margin: 0 auto; }
-        @media (min-width: 768px) { .shop-grid { grid-template-columns: repeat(4, 1fr); } }
-        
-        .shop-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.05); transition: 0.4s; text-decoration: none; color: inherit; display: block; }
-        .shop-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        
-        .banner { height: 100px; background: #e0e0e0; display: flex; align-items: center; justify-content: center; color: #aaa; }
-        .info { padding: 15px; text-align: center; margin-top: -35px; }
-        .logo { width: 70px; height: 70px; border-radius: 50%; border: 4px solid white; background: white; margin: 0 auto; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+/* Loading Animation - Premium */
+#loader { 
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+  background: linear-gradient(135deg, #0f172a, #1e293b); 
+  display: flex; justify-content: center; align-items: center; z-index: 9999; 
+}
+.spinner { 
+  width: 50px; height: 50px; 
+  border: 3px solid rgba(255,255,255,0.1); 
+  border-top: 3px solid var(--accent); 
+  border-radius: 50%; 
+  animation: spin 0.8s linear infinite; 
+  box-shadow: 0 0 20px var(--accent);
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* Footer & About Section */
-        .about-section { background: white; padding: 50px 20px; text-align: center; margin-top: 50px; }
-        .footer { background: var(--primary); color: white; padding: 40px 20px; text-align: center; }
-        .social-icons a { color: white; font-size: 20px; margin: 0 10px; transition: 0.3s; }
-        .social-icons a:hover { color: var(--accent); }
-    </style>
+/* Header - Glass Effect */
+header { 
+  background: rgba(15, 23, 42, 0.8); 
+  backdrop-filter: blur(20px);
+  padding: 15px; 
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.top-nav { 
+  display: flex; justify-content: space-between; align-items: center; 
+  margin-bottom: 15px; padding: 0 10px; 
+}
+.top-nav a { 
+  color: white; text-decoration: none; font-size: 14px; font-weight: 600;
+  background: linear-gradient(135deg, var(--accent), var(--accent2)); 
+  padding: 8px 18px; border-radius: 50px; transition: 0.3s;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+}
+.top-nav a:hover { 
+  transform: translateY(-2px); 
+  box-shadow: 0 8px 25px rgba(249, 115, 22, 0.5);
+}
+
+.search-box { 
+  background: white; width: 90%; max-width: 600px; margin: 0 auto; 
+  padding: 14px 25px; border-radius: 50px; display: flex; align-items: center; 
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1); 
+  border: 2px solid transparent;
+  transition: 0.3s;
+}
+.search-box:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 10px 40px rgba(249, 115, 22, 0.2);
+}
+.search-box input { 
+  border: none; outline: none; width: 100%; font-size: 16px; margin-left: 10px;
+  background: transparent;
+}
+
+/* Banner - Premium */
+.banner-container {
+  width: 95%; max-width: 1200px; margin: 30px auto;
+  border-radius: 25px; overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+  transition: 0.4s;
+}
+.banner-container:hover {
+  transform: scale(1.01);
+}
+.swiper-slide img {
+  width: 100%; height: auto; display: block; object-fit: contain;
+}
+
+/* Section Header */
+.section-header { 
+  text-align: center; font-size: 32px; font-weight: 700; 
+  margin: 50px 0 20px; color: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Shop Grid - কোটি টাকার কার্ড */
+.shop-grid { 
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; 
+  padding: 20px; max-width: 1300px; margin: 0 auto; 
+}
+@media (min-width: 768px) { 
+  .shop-grid { grid-template-columns: repeat(4, 1fr); } 
+}
+
+.shop-card { 
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border-radius: 25px; overflow: hidden; 
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08); 
+  transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+  text-decoration: none; color: inherit; display: block;
+  border: 1px solid rgba(255,255,255,0.5);
+  position: relative;
+}
+.shop-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transform: scaleX(0);
+  transition: 0.4s;
+}
+.shop-card:hover { 
+  transform: translateY(-12px) scale(1.02); 
+  box-shadow: 0 25px 50px rgba(249, 115, 22, 0.2); 
+}
+.shop-card:hover::before {
+  transform: scaleX(1);
+}
+
+.banner { 
+  height: 120px; 
+  background: linear-gradient(135deg, #e2e8f0, #cbd5e1); 
+  display: flex; align-items: center; justify-content: center; 
+  color: #94a3b8; font-weight: 600;
+}
+.info { 
+  padding: 20px 15px; text-align: center; margin-top: -40px; 
+}
+.logo { 
+  width: 80px; height: 80px; border-radius: 50%; 
+  border: 4px solid white; background: white; margin: 0 auto; 
+  display: flex; align-items: center; justify-content: center; 
+  overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  transition: 0.4s;
+}
+.shop-card:hover .logo {
+  transform: rotate(5deg) scale(1.1);
+  box-shadow: 0 12px 30px rgba(249, 115, 22, 0.3);
+}
+.info h3 {
+  margin: 10px 0 5px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+}
+.info p {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* Footer */
+.footer { 
+  background: linear-gradient(135deg, var(--primary), #020617); 
+  color: white; padding: 50px 20px; text-align: center; 
+}
+.social-icons a { 
+  color: white; font-size: 22px; margin: 0 12px; 
+  transition: 0.3s; display: inline-block;
+}
+.social-icons a:hover { 
+  color: var(--accent); 
+  transform: translateY(-3px) scale(1.2);
+}
+.footer a{
+    color:#fff;
+    text-decoration:none;
+    margin:0 8px;
+    transition:.3s;
+}
+
+.footer a:hover{
+    color:#f97316;
+}
+/* Bottom Navigation - Mobile App Style */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 65px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -5px 25px rgba(0,0,0,0.08);
+    border-top: 1px solid rgba(0,0,0,0.05);
+    z-index: 9999;
+    padding-bottom: env(safe-area-inset-bottom); /* Iphone এর জন্য */
+}
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 600;
+    transition: 0.3s;
+    width: 25%;
+}
+.nav-item i {
+    font-size: 22px;
+    margin-bottom: 4px;
+    transition: 0.3s;
+}
+.nav-item:hover, .nav-item.active {
+    color: var(--accent);
+}
+.nav-item.active i {
+    transform: translateY(-3px);
+}
+
+/* Footer যেন Bottom Nav এর নিচে চাপা না পরে */
+.footer {
+    padding-bottom: 90px;
+}
+</style>
 </head>
 <body>
 
     <div id="loader"><div class="spinner"></div></div>
 
 <header>
-    <div class="top-nav">
-        <div>
-            <a href="privacy-policy.html">Privacy Policy</a>
-            <a href="termsandcondition.html">Terms</a>
-        </div>
-        <a href="contact.html"><i class="fas fa-headset"></i> Support</a>
-    </div>
     <div class="search-box">
         <i class="fas fa-search" style="color:#888"></i>
         <input type="text" id="shopSearch" placeholder="শপ এর নাম খুঁজুন..." oninput="filterShops()">
@@ -82,66 +273,173 @@
 </div>
 
 <div class="section-header">জনপ্রিয় সেলার শপ সমূহ</div>
+
 <div id="shopGrid" class="shop-grid"></div>
 
-<div class="about-section">
-    <h2>ঘটি মার্কেটে কেন কেনাকাটা করবেন?</h2>
-    <p style="max-width: 600px; margin: 0 auto; color: #666; line-height: 1.8;">
-        আমাদের ঘটি মার্কেটে আপনার প্রয়োজনীয় সব ধরনের পণ্য পাওয়া যায়। ফ্যাশন, ইলেকট্রনিক্স থেকে শুরু করে নিত্যপ্রয়োজনীয় সব কিছু এখন আপনার হাতের মুঠোয়। আমরা বিশ্বাস করি গুণগত মান এবং সঠিক সার্ভিসে। আজই আপনার পছন্দের শপ থেকে অর্ডার করুন।
-    </p>
+<div style="text-align:center;margin:30px 0;">
+    <button id="seeMore" onclick="renderNextShops()"
+        style="padding:12px 30px;border:none;border-radius:8px;background:#1e272e;color:#fff;cursor:pointer;">
+        See More
+    </button>
 </div>
 
 <div class="footer">
-    <p>&copy; 2026 Ghoti Market. সর্বস্বত্ব সংরক্ষিত।</p>
+
+    <h2>ঘটি মার্কেটে কেন কেনাকাটা করবেন?</h2>
+
+    <p style="max-width:700px;margin:15px auto 30px;line-height:1.8;opacity:.9;">
+        আমাদের ঘটি মার্কেটে আপনার প্রয়োজনীয় সব ধরনের পণ্য পাওয়া যায়।
+        ফ্যাশন, ইলেকট্রনিক্স থেকে শুরু করে নিত্যপ্রয়োজনীয় সব কিছু এখন
+        আপনার হাতের মুঠোয়। আমরা বিশ্বাস করি গুণগত মান এবং সঠিক সার্ভিসে।
+        আজই আপনার পছন্দের শপ থেকে অর্ডার করুন।
+    </p>
+
+    <hr style="border:none;height:1px;background:rgba(255,255,255,.15);margin:25px 0;">
+
+    <div style="margin:20px 0;">
+        <a href="privacy-policy.html">Privacy Policy</a> |
+        <a href="termsandcondition.html">Terms & Conditions</a> |
+        <a href="contact.html">Support</a>
+    </div>
+
     <div class="social-icons">
         <a href="https://www.facebook.com/ghotimarket"><i class="fab fa-facebook"></i></a>
         <a href="https://wa.me/+8801727003670"><i class="fab fa-whatsapp"></i></a>
         <a href="https://youtube.com/@ghotimarket"><i class="fab fa-youtube"></i></a>
     </div>
-    <p style="font-size: 12px; margin-top: 15px; opacity: 0.7;">Powered by Advanced E-commerce Solutions</p>
-</div>
 
+    <p style="margin-top:20px;">
+    &copy; <span id="year"></span> Ghoti Market. সর্বস্বত্ব সংরক্ষিত।
+    </p>
+
+    <p style="font-size:12px;opacity:.7;">
+        Powered by Advanced E-commerce Solutions
+    </p>
+
+</div>
+<div class="bottom-nav">
+    <a href="https://ghotimarket.com" class="nav-item active">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </a>
+    <a href="https://ghotimarket.com/contact.html" class="nav-item">
+        <i class="fas fa-headset"></i>
+        <span>Support</span>
+    </a>
+    <a href="https://seller.ghotimarket.com/signup" class="nav-item">
+        <i class="fas fa-user-plus"></i>
+        <span>Join Seller</span>
+    </a>
+    <a href="https://ghotimarket.com/privacy-policy" class="nav-item">
+        <i class="fas fa-shield-alt"></i>
+        <span>Privacy</span>
+    </a>
+</div>
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const db = getFirestore(initializeApp({ apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket" }));
-    
+   let allShops = [];
+let shuffledShops = [];
+let currentIndex = 0;
+const perPage = 20;
+
     async function loadBanners() {
         const snap = await getDocs(query(collection(db, "banners"), orderBy("createdAt", "desc")));
         const wrapper = document.getElementById('swiperWrapper');
         wrapper.innerHTML = snap.docs.map(d => `<div class="swiper-slide"><img src="${d.data().url}"></div>`).join('');
         new Swiper('.banner-container', { loop: true, autoplay: { delay: 3000, disableOnInteraction: false } });
     }
-
-    let allShops = [];
     async function loadShops() {
-        const snap = await getDocs(collection(db, "users"));
-        allShops = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(d => d.shopName);
-        render(allShops);
-        document.getElementById('loader').style.display = 'none'; // Hide loader
+    const snap = await getDocs(collection(db, "users"));
+
+    allShops = snap.docs
+        .map(d => ({ id: d.id, ...d.data() }))
+        .filter(d => d.shopName);
+
+    // Random Shuffle
+    shuffledShops = allShops.sort(() => Math.random() - 0.5);
+
+    renderNextShops();
+
+    document.getElementById("loader").style.display = "none";
+}
+
+window.filterShops = function () {
+    const text = document.getElementById("shopSearch").value.toLowerCase();
+
+    currentIndex = 0;
+    document.getElementById("shopGrid").innerHTML = "";
+
+    shuffledShops = allShops.filter(shop =>
+        shop.shopName.toLowerCase().includes(text)
+    );
+
+    if (shuffledShops.length === 0) {
+        document.getElementById("shopGrid").innerHTML = `
+            <div style="grid-column:1/-1;text-align:center;padding:40px;font-size:20px;color:#666;">
+                😔 কোনো শপ পাওয়া যায়নি
+            </div>
+        `;
+        document.getElementById("seeMore").style.display = "none";
+        return;
     }
 
-    window.filterShops = () => {
-        const term = document.getElementById('shopSearch').value.toLowerCase();
-        render(allShops.filter(s => s.shopName.toLowerCase().includes(term)));
-    };
+    document.getElementById("seeMore").style.display = "block";
+    renderNextShops();
+};
 
-    function render(shops) {
-        document.getElementById('shopGrid').innerHTML = shops.map(s => `
-            <a href="https://www.ghotimarket.com/profile.html?sellerId=${s.id}" class="shop-card">
-                <div class="banner">${s.shopBanner ? `<img src="${s.shopBanner}" style="width:100%; height:100px; object-fit:cover;">` : 'No Banner'}</div>
-                <div class="info">
-                    <div class="logo">${s.shopLogo ? `<img src="${s.shopLogo}" style="width:100%; height:70px; object-fit:cover;">` : 'No Logo'}</div>
-                    <h3 style="margin:10px 0 0; font-size: 15px;">${s.shopName}</h3>
-                </div>
-            </a>
-        `).join('');
-    }
+function renderNextShops() {
+    const grid = document.getElementById("shopGrid");
 
-    loadBanners();
-    loadShops();
+    const shops = shuffledShops.slice(currentIndex, currentIndex + perPage);
+
+    grid.innerHTML += shops.map(s => `
+        <a href="https://www.ghotimarket.com/profile.html?sellerId=${s.id}" class="shop-card">
+            <div class="banner">
+                ${s.shopBanner ? `<img src="${s.shopBanner}" style="width:100%;height:100px;object-fit:cover;">` : "No Banner"}
+            </div>
+
+         <div class="info">
+    <div class="logo">
+        ${s.shopLogo ? `<img src="${s.shopLogo}" style="width:100%;height:70px;object-fit:cover;">` : "No Logo"}
+    </div>
+
+    <h3>
+        ${s.shopName}
+        ${s.verified ? `
+  <svg width="18" height="18" viewBox="0 0 24 24" title="Verified Shop"
+       style="vertical-align:middle;margin-left:6px;cursor:help;">
+      <circle cx="12" cy="12" r="12" fill="#1877F2"/>
+      <path d="M9.1 13.8l-2.3-2.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l3 3c.2.2.5.3.7.3.2 0 .5-.1.7-.3l5.8-5.8c.4-.4.4-1 0-1.4-.4-.4-1-.4-1.4 0L9.1 13.8z"
+            fill="#fff"/>
+  </svg>
+` : ""}
+    </h3>
+</div>
+        </a>
+    `).join("");
+
+    currentIndex += perPage;
+
+    document.getElementById("seeMore").style.display =
+        currentIndex >= shuffledShops.length ? "none" : "block";
+}
+
+window.renderNextShops = renderNextShops;
+loadBanners();
+loadShops();
+document.getElementById("year").textContent = new Date().getFullYear();
+// Bottom Nav Active
+const currentUrl = window.location.pathname;
+document.querySelectorAll('.nav-item').forEach(item => {
+  if(item.href.includes(currentUrl) && currentUrl !== '/') {
+    document.querySelector('.nav-item.active').classList.remove('active');
+    item.classList.add('active');
+  }
+});
 </script>
 </body>
 </html>
