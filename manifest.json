@@ -1,0 +1,16 @@
+{
+  "name": "Ghoti Market - কেনা বেচার বিশ্বস্ত ঠিকানা",
+  "short_name": "Ghoti Market",
+  "description": "সরাসরি সেলারদের সাথে কথা বলে পণ্য কিনুন",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f97316",
+  "icons": [
+    {
+      "src": "https://ghotimarket.com/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
