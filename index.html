@@ -275,65 +275,73 @@
 .footer-item a:hover{
     color:#FF6B35;
 }
-.app-popup{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.55);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:99999;
-    opacity:0;
-    visibility:hidden;
-    transition:.3s;
+/* App Popup */
+.app-popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
 }
 
-.app-popup.show{
-    opacity:1;
-    visibility:visible;
+.app-popup.show {
+    display: flex;
 }
 
-.app-popup-box{
-    width:320px;
-    background:#fff;
-    border-radius:25px;
-    text-align:center;
-    padding:30px 20px;
-    position:relative;
-    animation:popup .35s;
+.app-popup-box {
+    width: 320px;
+    background: #fff;
+    border-radius: 25px;
+    text-align: center;
+    padding: 30px 20px;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    animation: popupAnim 0.4s ease;
 }
 
-@keyframes popup{
-from{transform:scale(.8);}
-to{transform:scale(1);}
+@keyframes popupAnim {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 
-.popup-app-icon{
-    width:90px;
-    height:90px;
-    border-radius:20px;
-    margin-bottom:15px;
+.popup-app-icon {
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    margin-bottom: 15px;
+    object-fit: contain;
 }
 
-.popup-close{
-    position:absolute;
-    right:12px;
-    top:12px;
-    border:none;
-    background:none;
-    font-size:22px;
-    cursor:pointer;
+.popup-close {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    width: 35px;
+    height: 35px;
+    border: none;
+    background: #f1f5f9;
+    color: #64748b;
+    font-size: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.download-btn{
-    display:inline-block;
-    margin-top:20px;
-    background:#FF6B35;
-    color:#fff;
-    padding:13px 30px;
-    border-radius:50px;
-    text-decoration:none;
-    font-weight:bold;
+.download-btn {
+    display: inline-block;
+    margin-top: 20px;
+    background: var(--gradient);
+    color: #fff;
+    padding: 14px 35px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
 }
     </style>
 </head>
@@ -438,31 +446,6 @@ to{transform:scale(1);}
     Made with ❤️ in Bangladesh 🇧🇩
 </div>
 </footer>
-<!-- App Download Popup -->
-<div id="appPopup" class="app-popup">
-    <div class="app-popup-box">
-
-        <button class="popup-close" onclick="closeAppPopup()">
-            ✕
-        </button>
-
-        <img src="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png"
-             class="popup-app-icon">
-
-        <h2>Ghoti Market App</h2>
-
-        <p>
-            আরও দ্রুত কেনাকাটা করুন আমাদের অফিসিয়াল অ্যাপ দিয়ে।
-        </p>
-
-        <a href="https://play.google.com/store/apps/details?id=com.ghotimarket.app"
-           class="download-btn">
-            <i class="fa-brands fa-google-play"></i>
-            Download App
-        </a>
-
-    </div>
-</div>
 <div class="bottom-nav">
     <a href="https://ghotimarket.com" class="nav-item active"><i data-lucide="home"></i><span>Home</span></a>
     <a href="https://ghotimarket.com/categories" class="nav-item"><i data-lucide="grid"></i><span>Categories</span></a>
@@ -488,31 +471,6 @@ to{transform:scale(1);}
 
     let progress = 0; const progressFill = document.getElementById('load-progress');
     const updateProgress = (val) => { progress = val; progressFill.style.width = `${progress}%`; };
-
-function closeAppPopup() {
-    document.getElementById("appPopup").classList.remove("show");
-
-    // ক্লোজ করার সময় সংরক্ষণ
-    localStorage.setItem("appPopupCloseTime", Date.now());
-}
-
-window.addEventListener("load", () => {
-
-    const lastClose = localStorage.getItem("appPopupCloseTime");
-
-    // ৩০ মিনিট = 1800000 মিলিসেকেন্ড
-    const thirtyMinutes = 30 * 60 * 1000;
-
-    if (!lastClose || (Date.now() - lastClose) > thirtyMinutes) {
-
-        setTimeout(() => {
-            document.getElementById("appPopup").classList.add("show");
-        }, 5000);
-
-    }
-
-});
-
     async function init() {
         updateProgress(20);
         try {
@@ -571,7 +529,46 @@ window.addEventListener("load", () => {
         resultsBox.innerHTML = html || '<p style="text-align:center; padding:10px; color:#94a3b8">কিছু পাওয়া যায়নি</p>';
         resultsBox.style.display = 'block';
     });
+// ================= APP POPUP LOGIC =================
+function showAppPopup() {
+    const popup = document.getElementById('appPopup');
+    const lastClosed = localStorage.getItem('appPopupClosedTime');
+    
+    if (lastClosed) {
+        const minutesPassed = (Date.now() - parseInt(lastClosed)) / (1000 * 60);
+        if (minutesPassed < 30) return; // ৩০ মিনিটের মধ্যে দেখাবে না
+    }
+    
+    // 30 সেকেন্ড পর popup দেখাবে
+    setTimeout(() => {
+        popup.classList.add('show');
+    }, 5000); // 1000 = 1 সেকেন্ড, তাই 5000 = 05 সেকেন্ড
+}
 
+// Close popup and save time
+function closeAppPopup() {
+    const popup = document.getElementById('appPopup');
+    popup.classList.remove('show');
+    localStorage.setItem('appPopupClosedTime', Date.now());
+}
+
+// Event Listeners
+document.getElementById('closePopup').addEventListener('click', closeAppPopup);
+
+// Optional: Click outside to close
+document.getElementById('appPopup').addEventListener('click', function(e) {
+    if (e.target === this) closeAppPopup();
+});
+
+// Download button
+document.getElementById('downloadAppBtn').addEventListener('click', function(e) {
+    e.preventDefault(); // href="#" থাকলে পেজ রিলোড হবে না
+    window.location.href = "https://play.google.com/store/apps/details?id=com.ghotimarket.app";
+    closeAppPopup(); // ক্লিক করার পর পপআপ ক্লোজ হয়ে যাবে
+});
+
+// Initialize popup
+showAppPopup();
     const handleScrollAnim = () => {
         const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.1 });
         document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
@@ -580,5 +577,25 @@ window.addEventListener("load", () => {
     document.addEventListener('click', (e) => { if (!e.target.closest('.search-wrapper')) resultsBox.style.display = 'none'; });
     init();
 </script>
+<!-- App Download Popup -->
+<div class="app-popup" id="appPopup">
+    <div class="app-popup-box">
+        <button class="popup-close" id="closePopup">✕</button>
+        
+        <img src="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png" 
+             class="popup-app-icon" 
+             alt="Ghoti Market App">
+        
+        <h2 style="margin-bottom:8px; color:#1e293b;">Ghoti Market App</h2>
+        <p style="color:#64748b; font-size:15px; margin-bottom:20px;">
+            সবচেয়ে সহজে কেনাকাটা করুন আমাদের অ্যাপে!<br>
+            দ্রুত ডেলিভারি • অফার • লাইভ চ্যাট
+        </p>
+        
+        <a href="#" class="download-btn" id="downloadAppBtn">
+            <i class="fa-brands fa-google-play"></i> অ্যাপ ডাউনলোড করুন
+        </a>
+    </div>
+</div>
 </body>
 </html>
