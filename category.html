@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ক্যাটাগরি পণ্য | GHOTI MARKET</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --primary: #16A34A;
+            --primary-hover: #15803D;
+            --bg: #F8FAFC;
+            --white: #FFFFFF;
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Noto Sans Bengali', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* --- Header --- */
+        header {
+            background: var(--white);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 12px 0;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+        }
+
+        .category-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            flex-grow: 1;
+            text-transform: capitalize;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+            font-size: 14px;
+            background: #f1f5f9;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            width: 18px;
+        }
+
+        /* --- Product Grid --- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 20px 0;
+        }
+
+        @media (min-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .product-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        /* --- Product Card --- */
+        .product-card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            background: #f1f5f9;
+        }
+
+        .product-info {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 40px;
+            color: var(--text-main);
+        }
+
+        .product-price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 17px;
+            margin-bottom: 6px;
+        }
+
+        .shop-name {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .card-buttons {
+            margin-top: auto;
+        }
+
+        .btn-view {
+            width: 100%;
+            padding: 9px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+            color: var(--text-main);
+            transition: background 0.2s;
+            border: 1px solid var(--border);
+        }
+
+        .product-card:hover .btn-view {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* --- Skeleton Loader --- */
+        .skeleton {
+            background: #e2e8f0;
+            background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+        }
+
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-card {
+            height: 320px;
+            border-radius: 12px;
+        }
+
+        /* --- Load More --- */
+        .load-more-container {
+            text-align: center;
+            padding: 20px 0 40px;
+        }
+
+        .btn-more {
+            background: var(--primary);
+            color: white;
+            padding: 12px 35px;
+            border-radius: 30px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-more:hover {
+            background: var(--primary-hover);
+        }
+
+        /* --- Empty State --- */
+        .empty-state {
+            text-align: center;
+            padding: 100px 20px;
+            display: none;
+        }
+
+        .empty-state i {
+            font-size: 50px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="header-top">
+                <button class="back-btn" onclick="history.back()">
+                    <i data-lucide="arrow-left"></i>
+                </button>
+                <h1 class="category-title" id="page-title">ক্যাটাগরি</h1>
+            </div>
+            <div class="search-box">
+                <i data-lucide="search"></i>
+                <input type="text" id="product-search" placeholder="এই ক্যাটাগরিতে পণ্য খুঁজুন...">
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Skeleton Loading -->
+        <div id="skeleton-grid" class="product-grid">
+            <div class="skeleton skeleton-card"></div>
+            <div class="skeleton skeleton-card"></div>
+            <div class="skeleton skeleton-card"></div>
+            <div class="skeleton skeleton-card"></div>
+            <div class="skeleton skeleton-card"></div>
+            <div class="skeleton skeleton-card"></div>
+        </div>
+
+        <!-- Product Container -->
+        <div id="product-grid" class="product-grid hidden"></div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state">
+            <i data-lucide="shopping-bag"></i>
+            <h3>এই ক্যাটাগরিতে এখনো কোনো পণ্য নেই</h3>
+            <p>অন্য ক্যাটাগরি চেক করে দেখতে পারেন।</p>
+        </div>
+
+        <!-- Pagination -->
+        <div id="load-more-container" class="load-more-container hidden">
+            <button id="load-more-btn" class="btn-more">আরো দেখুন</button>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // --- Firebase Configuration ---
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // --- Variables ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const slug = urlParams.get('slug');
+        
+        let shuffledProducts = []; // র্যান্ডমাইজড লিস্ট
+        let displayedCount = 0;    // বর্তমানে কয়টি দেখানো হয়েছে
+        const PAGE_LIMIT = 20;
+
+        const productGrid = document.getElementById('product-grid');
+        const skeletonGrid = document.getElementById('skeleton-grid');
+        const emptyState = document.getElementById('empty-state');
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        const loadMoreContainer = document.getElementById('load-more-container');
+        const pageTitle = document.getElementById('page-title');
+        const searchInput = document.getElementById('product-search');
+
+        if (!slug) { window.location.href = 'index.html'; }
+
+        // Set Page Title from Slug
+        pageTitle.innerText = slug.replace(/-/g, ' ');
+
+        // --- Fisher-Yates Shuffle Algorithm ---
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // --- Fetch & Randomize Products ---
+        async function fetchAndInitialize() {
+            try {
+                const q = query(
+                    collection(db, "products"),
+                    where("categorySlug", "==", slug),
+                    where("active", "==", true)
+                );
+
+                const querySnapshot = await getDocs(q);
+                
+                if (querySnapshot.empty) {
+                    skeletonGrid.classList.add('hidden');
+                    emptyState.style.display = 'block';
+                    return;
+                }
+
+                let tempProducts = [];
+                querySnapshot.forEach((doc) => {
+                    tempProducts.push({ id: doc.id, ...doc.data() });
+                });
+
+                // জাভাস্ক্রিপ্ট দিয়ে র্যান্ডম শাফেল
+                shuffledProducts = shuffle(tempProducts);
+
+                // প্রথম ব্যাচ রেন্ডার করা
+                renderBatch();
+
+                skeletonGrid.classList.add('hidden');
+                productGrid.classList.remove('hidden');
+
+            } catch (error) {
+                console.error("Error fetching products: ", error);
+            }
+        }
+
+        // --- Render Batch (Pagination) ---
+        function renderBatch() {
+            const nextBatch = shuffledProducts.slice(displayedCount, displayedCount + PAGE_LIMIT);
+            
+            nextBatch.forEach(product => {
+                const firstImg = product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/300';
+                
+                const card = document.createElement('a');
+                card.href = `product.html?id=${product.id}`;
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${firstImg}" class="product-img" alt="${product.name}" loading="lazy">
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-price">৳ ${product.price}</p>
+                        <p class="shop-name"><i data-lucide="store" style="width:12px"></i> ${product.shopName || 'Ghoti Shop'}</p>
+                        <div class="card-buttons">
+                            <span class="btn-view">বিস্তারিত</span>
+                        </div>
+                    </div>
+                `;
+                productGrid.appendChild(card);
+            });
+
+            displayedCount += nextBatch.length;
+
+            // See More বাটন প্রদর্শন লজিক
+            if (displayedCount < shuffledProducts.length) {
+                loadMoreContainer.classList.remove('hidden');
+            } else {
+                loadMoreContainer.classList.add('hidden');
+            }
+            
+            lucide.createIcons();
+        }
+
+        // --- Search Logic (Searching from Random List) ---
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase().trim();
+            
+            if (term === '') {
+                // সার্চ খালি থাকলে বর্তমান ব্যাচ পর্যন্ত শাফেলড ডেটা দেখানো
+                productGrid.innerHTML = '';
+                const currentView = shuffledProducts.slice(0, displayedCount);
+                renderSpecificList(currentView);
+                if (displayedCount < shuffledProducts.length) loadMoreContainer.classList.remove('hidden');
+                return;
+            }
+
+            const filtered = shuffledProducts.filter(p => 
+                p.name.toLowerCase().includes(term) || 
+                (p.keywords && p.keywords.some(k => k.toLowerCase().includes(term)))
+            );
+
+            productGrid.innerHTML = '';
+            if (filtered.length === 0) {
+                emptyState.style.display = 'block';
+                loadMoreContainer.classList.add('hidden');
+            } else {
+                emptyState.style.display = 'none';
+                loadMoreContainer.classList.add('hidden'); // সার্চ চলাকালীন পেজিনেশন বন্ধ
+                renderSpecificList(filtered);
+            }
+        });
+
+        function renderSpecificList(list) {
+            list.forEach(product => {
+                const firstImg = product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/300';
+                const card = document.createElement('a');
+                card.href = `product.html?id=${product.id}`;
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${firstImg}" class="product-img" alt="${product.name}" loading="lazy">
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-price">৳ ${product.price}</p>
+                        <p class="shop-name"><i data-lucide="store" style="width:12px"></i> ${product.shopName || 'Ghoti Shop'}</p>
+                        <div class="card-buttons">
+                            <span class="btn-view">বিস্তারিত</span>
+                        </div>
+                    </div>
+                `;
+                productGrid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        // --- Events ---
+        loadMoreBtn.addEventListener('click', renderBatch);
+        
+        // Start initialization
+        fetchAndInitialize();
+        lucide.createIcons();
+
+    </script>
+</body>
+</html>
