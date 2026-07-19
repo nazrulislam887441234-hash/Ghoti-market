@@ -275,6 +275,66 @@
 .footer-item a:hover{
     color:#FF6B35;
 }
+.app-popup{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:99999;
+    opacity:0;
+    visibility:hidden;
+    transition:.3s;
+}
+
+.app-popup.show{
+    opacity:1;
+    visibility:visible;
+}
+
+.app-popup-box{
+    width:320px;
+    background:#fff;
+    border-radius:25px;
+    text-align:center;
+    padding:30px 20px;
+    position:relative;
+    animation:popup .35s;
+}
+
+@keyframes popup{
+from{transform:scale(.8);}
+to{transform:scale(1);}
+}
+
+.popup-app-icon{
+    width:90px;
+    height:90px;
+    border-radius:20px;
+    margin-bottom:15px;
+}
+
+.popup-close{
+    position:absolute;
+    right:12px;
+    top:12px;
+    border:none;
+    background:none;
+    font-size:22px;
+    cursor:pointer;
+}
+
+.download-btn{
+    display:inline-block;
+    margin-top:20px;
+    background:#FF6B35;
+    color:#fff;
+    padding:13px 30px;
+    border-radius:50px;
+    text-decoration:none;
+    font-weight:bold;
+}
     </style>
 </head>
 <body>
@@ -303,7 +363,7 @@
 
 <div class="section-title fade-up">
     <h2>জনপ্রিয় ক্যাটাগরি</h2>
-    <a href="categories.html">সব ক্যাটাগরি দেখুন</a>
+    <a href="https://ghotimarket.com/categories.html">সব ক্যাটাগরি দেখুন</a>
 </div>
 <div class="category-grid" id="category-grid">
     <div class="category-card skeleton" style="height: 110px;"></div>
@@ -378,7 +438,31 @@
     Made with ❤️ in Bangladesh 🇧🇩
 </div>
 </footer>
+<!-- App Download Popup -->
+<div id="appPopup" class="app-popup">
+    <div class="app-popup-box">
 
+        <button class="popup-close" onclick="closeAppPopup()">
+            ✕
+        </button>
+
+        <img src="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png"
+             class="popup-app-icon">
+
+        <h2>Ghoti Market App</h2>
+
+        <p>
+            আরও দ্রুত কেনাকাটা করুন আমাদের অফিসিয়াল অ্যাপ দিয়ে।
+        </p>
+
+        <a href="https://play.google.com/store/apps/details?id=com.ghotimarket.app"
+           class="download-btn">
+            <i class="fa-brands fa-google-play"></i>
+            Download App
+        </a>
+
+    </div>
+</div>
 <div class="bottom-nav">
     <a href="https://ghotimarket.com" class="nav-item active"><i data-lucide="home"></i><span>Home</span></a>
     <a href="https://ghotimarket.com/categories" class="nav-item"><i data-lucide="grid"></i><span>Categories</span></a>
@@ -392,6 +476,7 @@
     import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = { apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", authDomain: "ghotimarket.firebaseapp.com", projectId: "ghotimarket", storageBucket: "ghotimarket.firebasestorage.app", messagingSenderId: "481257644093", appId: "1:481257644093:web:0dfc3699d6b3c86afeca54" };
+
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
@@ -404,6 +489,30 @@
     let progress = 0; const progressFill = document.getElementById('load-progress');
     const updateProgress = (val) => { progress = val; progressFill.style.width = `${progress}%`; };
 
+function closeAppPopup() {
+    document.getElementById("appPopup").classList.remove("show");
+
+    // ক্লোজ করার সময় সংরক্ষণ
+    localStorage.setItem("appPopupCloseTime", Date.now());
+}
+
+window.addEventListener("load", () => {
+
+    const lastClose = localStorage.getItem("appPopupCloseTime");
+
+    // ৩০ মিনিট = 1800000 মিলিসেকেন্ড
+    const thirtyMinutes = 30 * 60 * 1000;
+
+    if (!lastClose || (Date.now() - lastClose) > thirtyMinutes) {
+
+        setTimeout(() => {
+            document.getElementById("appPopup").classList.add("show");
+        }, 5000);
+
+    }
+
+});
+
     async function init() {
         updateProgress(20);
         try {
@@ -414,7 +523,7 @@
 
             const catSnap = await getDocs(collection(db, "categories"));
             allCategories = catSnap.docs.map(d => ({ id: d.id,...d.data() }));
-            document.getElementById('category-grid').innerHTML = shuffle([...allCategories]).slice(0, 10).map(cat => `<a href="category.html?slug=${cat.slug}" class="category-card fade-up"><div class="cat-img-box"><img src="${cat.image}" alt="${cat.categoryName}" loading="lazy"></div><div class="cat-name">${cat.categoryName}</div></a>`).join('');
+            document.getElementById('category-grid').innerHTML = shuffle([...allCategories]).slice(0, 10).map(cat => `<a href="https://ghotimarket.com/category.html?slug=${cat.slug}" class="category-card fade-up"><div class="cat-img-box"><img src="${cat.image}" alt="${cat.categoryName}" loading="lazy"></div><div class="cat-name">${cat.categoryName}</div></a>`).join('');
             updateProgress(70);
 
             const shopSnap = await getDocs(collection(db, "users"));
@@ -434,7 +543,7 @@
         if (currentIndex === 0) grid.innerHTML = '';
         const batch = allShops.slice(currentIndex, currentIndex + perPage);
         grid.innerHTML += batch.map(s => `
-            <a href="profile.html?sellerId=${s.id}" class="shop-card fade-up">
+            <a href="https://ghotimarket.com/profile.html?sellerId=${s.id}" class="shop-card fade-up">
                 <div class="shop-banner"><img src="${s.shopBanner || 'https://via.placeholder.com/400x120'}" loading="lazy"></div>
                 <div class="shop-info">
                     <div class="shop-logo"><img src="${s.shopLogo || 'https://via.placeholder.com/80'}" loading="lazy"></div>
@@ -456,9 +565,9 @@
         const matchShops = allShops.filter(s => s.shopName.toLowerCase().includes(val)).slice(0, 5);
         const matchProds = allProducts.filter(p => p.name.toLowerCase().includes(val)).slice(0, 5);
         let html = '';
-        if(matchCats.length) html += `<div class="search-group-title">ক্যাটাগরি</div>` + matchCats.map(c => `<a href="category.html?slug=${c.slug}" class="search-item"><img src="${c.image}"> ${c.categoryName}</a>`).join('');
-        if(matchShops.length) html += `<div class="search-group-title">শপ সমূহ</div>` + matchShops.map(s => `<a href="profile.html?sellerId=${s.id}" class="search-item"><img src="${s.shopLogo || 'https://via.placeholder.com/40'}"> ${s.shopName}</a>`).join('');
-        if(matchProds.length) html += `<div class="search-group-title">পণ্য</div>` + matchProds.map(p => `<a href="product.html?id=${p.id}" class="search-item"><img src="${p.images[0]}"> ${p.name}</a>`).join('');
+        if(matchCats.length) html += `<div class="search-group-title">ক্যাটাগরি</div>` + matchCats.map(c => `<a href="https://ghotimarket.com/category.html?slug=${c.slug}" class="search-item"><img src="${c.image}"> ${c.categoryName}</a>`).join('');
+        if(matchShops.length) html += `<div class="search-group-title">শপ সমূহ</div>` + matchShops.map(s => `<a href="https://ghotimarket.com/profile.html?sellerId=${s.id}" class="search-item"><img src="${s.shopLogo || 'https://via.placeholder.com/40'}"> ${s.shopName}</a>`).join('');
+        if(matchProds.length) html += `<div class="search-group-title">পণ্য</div>` + matchProds.map(p => `<a href="https://ghotimarket.com/product.html?id=${p.id}" class="search-item"><img src="${p.images[0]}"> ${p.name}</a>`).join('');
         resultsBox.innerHTML = html || '<p style="text-align:center; padding:10px; color:#94a3b8">কিছু পাওয়া যায়নি</p>';
         resultsBox.style.display = 'block';
     });
