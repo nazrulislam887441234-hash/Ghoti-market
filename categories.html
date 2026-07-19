@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সব ক্যাটাগরি | GHOTI MARKET - সেরা অনলাইন মার্কেটপ্লেস</title>
+    <meta name="description" content="ঘোটি মার্কেটের সব ক্যাটাগরি ব্রাউজ করুন এবং আপনার পছন্দের পণ্যটি খুঁজে নিন।">
+    <meta name="theme-color" content="#16A34A">
+    <link rel="shortcut icon" href="https://ghotimarket.com/logo.png" type="image/png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+Bengali:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --primary: #16A34A; --primary-dark: #15803D; --secondary: #DC2626;
+            --gradient: linear-gradient(135deg, #16A34A 0%, #DC2626 100%);
+            --white: #FFFFFF; --bg-body: #F0FDF4; --text-dark: #0F172A;
+            --text-muted: #64748B; --glass: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Inter', 'Noto Sans Bengali', sans-serif;
+            background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+            background-attachment: fixed; color: var(--text-dark); line-height: 1.6; overflow-x: hidden;
+        }
+
+        .container { width: 100%; max-width: 1300px; margin: 0 auto; padding: 0 12px; }
+
+        header {
+            background: var(--glass); backdrop-filter: blur(20px); padding: 12px 0;
+            position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.05);
+        }
+        .header-content { display: flex; align-items: center; justify-content: space-between; }
+        .logo-box { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-box img { height: 42px; width: auto; object-fit: contain; transition: 0.3s; }
+        .logo-box:hover img{transform: scale(1.05);}
+        .logo-text { font-size: 1.3rem; font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        @media(max-width: 400px){ .logo-text{font-size: 1.1rem;} }
+        #menuBtn { padding: 10px; cursor: pointer; border-radius: 12px; transition: 0.3s; color: var(--primary); }
+        #menuBtn:hover { background: #DCFCE7; transform: rotate(90deg); }
+
+        .drawer { position: fixed; top: 0; left: -320px; width: 300px; height: 100vh; background: var(--glass); backdrop-filter: blur(30px); z-index: 2001; padding: 25px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid var(--glass-border); }
+        .drawer.active { left: 0; }
+        .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .drawer-header b { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.3rem; font-weight: 800; }
+        .drawer a { display: flex; align-items: center; gap: 15px; padding: 16px; text-decoration: none; color: var(--text-dark); font-weight: 600; border-radius: 12px; transition: 0.3s; }
+        .drawer a:hover { background: #DCFCE7; color: var(--primary); transform: translateX(5px); }
+        #overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index: 2000; display: none; opacity: 0; transition: 0.3s; }
+        #overlay.active { display: block; opacity: 1; }
+
+        .search-section { background: var(--gradient); padding: 40px 0 60px; color: white; position: relative; overflow: hidden; }
+        .section-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 10px; text-align: center; text-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+        @media(min-width: 768px){ .section-title{font-size: 2.5rem;} }
+        .section-subtitle{text-align: center; opacity: 0.9; margin-bottom: 25px; font-size: 0.9rem;}
+        .search-wrapper { position: relative; max-width: 700px; margin: 0 auto; }
+        .search-input { width: 100%; padding: 14px 20px 14px 50px; border-radius: 16px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); font-size: 1rem; color: white; transition: all 0.3s; outline: none; }
+        .search-input::placeholder{color: rgba(255,255,255,0.7);}
+        .search-input:focus { background: rgba(255,255,255,0.95); color: var(--text-dark); border-color: white; box-shadow: 0 0 0 5px rgba(255,255,255,0.2); }
+        .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.8); }
+
+        main{padding: 30px 0;}
+        .category-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; }
+        @media (min-width: 480px) { .category-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; } }
+        @media (min-width: 768px) { .category-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; } }
+        @media (min-width: 1024px) { .category-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 25px; } }
+
+        .category-card {
+            background: var(--glass); backdrop-filter: blur(20px);
+            border-radius: 18px; padding: 12px; text-align: center;
+            transition: 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            border: 1px solid var(--glass-border); cursor: pointer;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08); position: relative; overflow: hidden;
+        }
+        .category-card:hover { transform: translateY(-8px) scale(1.03); box-shadow: 0 20px 40px rgba(22,163,74,0.2); border-color: var(--primary); }
+        .img-container { width: 65px; height: 65px; border-radius: 50%; background: var(--gradient); margin: 0 auto 10px; overflow: hidden; padding: 2px; transition: 0.4s; }
+        @media (min-width: 768px) { .img-container { width: 90px; height: 90px; } }
+        .img-container img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; background: white; }
+        .cat-name { font-weight: 700; font-size: 0.85rem; color: var(--text-dark); line-height: 1.3; }
+
+        .btn-more {
+            background: var(--gradient); color: white; border: none;
+            padding: 14px 30px; border-radius: 15px; font-weight: 700; font-size: 1rem;
+            cursor: pointer; display: flex; align-items: center; gap: 10px;
+            margin: 40px auto; transition: 0.3s; box-shadow: 0 10px 30px rgba(22,163,74,0.3);
+        }
+        .btn-more:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 15px 40px rgba(22,163,74,0.4); }
+
+        .skeleton { background: linear-gradient(90deg, #edf2f7 25%, #f7fafc 50%, #edf2f7 75%); background-size: 200% 100%; animation: skeleton-loading 1.5s infinite; }
+        @keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        .empty-state { text-align: center; padding: 60px 0; display: none; }
+
+        footer { background: var(--glass); backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); padding: 40px 0; margin-top: 60px; text-align: center; }
+        .copyright { color: var(--text-muted); font-size: 0.9rem; margin-top: 15px; }
+        .ripple { position: absolute; background: rgba(22, 163, 74, 0.2); border-radius: 50%; transform: scale(0); animation: ripple-animation 0.6s linear; pointer-events: none; }
+        @keyframes ripple-animation { to { transform: scale(4); opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container header-content">
+            <a href="index.html" class="logo-box">
+                <img src="https://ghotimarket.com/logo.png" alt="GHOTI MARKET">
+                <span class="logo-text">GHOTI MARKET</span>
+            </a>
+            <i data-lucide="menu" id="menuBtn"></i>
+        </div>
+    </header>
+
+    <div id="drawer" class="drawer">
+        <div class="drawer-header">
+            <b>GHOTI MARKET</b>
+            <i data-lucide="x" id="closeDrawer" style="cursor:pointer"></i>
+        </div>
+        <a href="index.html"><i data-lucide="home" size="18"></i> হোম</a>
+        <a href="categories.html"><i data-lucide="grid" size="18"></i> সব ক্যাটাগরি</a>
+        <a href="cart.html"><i data-lucide="shopping-cart" size="18"></i> কার্ট</a>
+        <a href="login.html"><i data-lucide="user" size="18"></i> লগইন</a>
+    </div>
+
+    <div id="overlay"></div>
+
+    <section class="search-section">
+        <div class="container">
+            <h1 class="section-title">সব ক্যাটাগরি ব্রাউজ করুন</h1>
+            <p class="section-subtitle">আপনার পছন্দের পণ্য খুঁজে পেতে নিচে থেকে ক্যাটাগরি সিলেক্ট করুন</p>
+            <div class="search-wrapper">
+                <i data-lucide="search" class="search-icon"></i>
+                <input type="text" id="search-input" class="search-input" placeholder="ক্যাটাগরি খুঁজুন (উদা: ইলেকট্রনিক্স, মোবাইল...)">
+            </div>
+        </div>
+    </section>
+
+    <main class="container">
+        <div id="category-grid" class="category-grid">
+            <div class="category-card"><div class="img-container skeleton"></div><div class="skeleton" style="height:12px; width:80%; margin:0 auto; border-radius: 10px;"></div></div>
+            <div class="category-card"><div class="img-container skeleton"></div><div class="skeleton" style="height:12px; width:80%; margin:0 auto; border-radius: 10px;"></div></div>
+            <div class="category-card"><div class="img-container skeleton"></div><div class="skeleton" style="height:12px; width:80%; margin:0 auto; border-radius: 10px;"></div></div>
+            <div class="category-card"><div class="img-container skeleton"></div><div class="skeleton" style="height:12px; width:80%; margin:0 auto; border-radius: 10px;"></div></div>
+        </div>
+
+        <div id="empty-state" class="empty-state">
+            <i data-lucide="search-x" style="width: 50px; height: 50px;"></i>
+            <h3>কোন ক্যাটাগরি পাওয়া যায়নি</h3>
+        </div>
+
+        <button id="load-more-btn" class="btn-more" style="display:none">
+            <span>আরো দেখুন</span>
+            <i data-lucide="chevron-down" size="18"></i>
+        </button>
+    </main>
+
+    <footer>
+        <div class="container">
+            <img src="https://ghotimarket.com/logo.png" alt="GHOTI MARKET" style="height: 45px;">
+            <p style="color:var(--text-muted); margin-top:15px">সেরা পণ্যের নির্ভরযোগ্য মার্কেটপ্লেস</p>
+            <div class="copyright"> &copy; <span id="currentYear"></span> GHOTI MARKET | All Rights Reserved. </div>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = { 
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
+            authDomain: "ghotimarket.firebaseapp.com", 
+            projectId: "ghotimarket", 
+            storageBucket: "ghotimarket.firebasestorage.app", 
+            messagingSenderId: "481257644093", 
+            appId: "1:481257644093:web:0dfc3699d6b3c86afeca54" 
+        };
+
+        const app = initializeApp(firebaseConfig); 
+        const db = getFirestore(app);
+
+        // --- State Management ---
+        let shuffledCategories = []; // র্যান্ডমাইজড ক্যাটাগরি লিস্ট
+        let displayedCount = 0;      // বর্তমানে কয়টি দেখানো হচ্ছে
+        const PAGE_SIZE = 20;        // প্রতিবার কয়টি লোড হবে
+        let isFetching = false;
+
+        const grid = document.getElementById('category-grid'); 
+        const loadMoreBtn = document.getElementById('load-more-btn'); 
+        const searchInput = document.getElementById('search-input'); 
+        const emptyState = document.getElementById('empty-state');
+
+        // --- Fisher-Yates Shuffle Algorithm ---
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function initUI() { 
+            const menuBtn = document.getElementById("menuBtn"); 
+            const drawer = document.getElementById("drawer"); 
+            const overlay = document.getElementById("overlay"); 
+            const closeDrawer = document.getElementById("closeDrawer"); 
+            
+            menuBtn.onclick = () => { drawer.classList.add("active"); overlay.classList.add("active"); }; 
+            const hideDrawer = () => { drawer.classList.remove("active"); overlay.classList.remove("active"); }; 
+            closeDrawer.onclick = hideDrawer; 
+            overlay.onclick = hideDrawer; 
+            
+            document.getElementById("currentYear").textContent = new Date().getFullYear(); 
+            lucide.createIcons(); 
+        }
+
+        // --- Fetch & Randomize Logic ---
+        async function loadAllAndRandomize() {
+            if (isFetching) return;
+            isFetching = true;
+
+            try {
+                // ১. Firestore থেকে সব ক্যাটাগরি একবারেই নিয়ে আসা (র্যান্ডম করার জন্য সব ডেটা প্রয়োজন)
+                const querySnapshot = await getDocs(collection(db, "categories"));
+                const rawData = [];
+                querySnapshot.forEach(doc => {
+                    rawData.push({ id: doc.id, ...doc.data() });
+                });
+
+                // ২. Fisher-Yates Shuffle প্রয়োগ করা
+                shuffledCategories = shuffleArray(rawData);
+
+                // ৩. প্রথম ব্যাচ রেন্ডার করা
+                grid.innerHTML = '';
+                renderNextBatch();
+
+            } catch (error) {
+                console.error("Firebase Error:", error);
+            } finally {
+                isFetching = false;
+            }
+        }
+
+        // --- Pagination Logic (Local) ---
+        function renderNextBatch() {
+            const nextBatch = shuffledCategories.slice(displayedCount, displayedCount + PAGE_SIZE);
+            renderCategories(nextBatch, true);
+            
+            displayedCount += nextBatch.length;
+
+            // Load More বাটন কন্ট্রোল
+            if (displayedCount < shuffledCategories.length) {
+                loadMoreBtn.style.display = 'flex';
+            } else {
+                loadMoreBtn.style.display = 'none';
+            }
+        }
+
+        function renderCategories(categories, append = false) { 
+            if (!append) grid.innerHTML = ''; 
+            
+            categories.forEach(cat => { 
+                const card = document.createElement('div'); 
+                card.className = 'category-card'; 
+                card.onclick = (e) => { 
+                    const ripple = document.createElement("span"); 
+                    ripple.className = "ripple"; 
+                    card.appendChild(ripple); 
+                    const rect = card.getBoundingClientRect(); 
+                    ripple.style.left = `${e.clientX - rect.left}px`; 
+                    ripple.style.top = `${e.clientY - rect.top}px`; 
+                    setTimeout(() => { window.location.href = `category.html?slug=${cat.slug}`; }, 200); 
+                }; 
+                card.innerHTML = `<div class="img-container"><img src="${cat.image}" alt="${cat.categoryName}" loading="lazy" onerror="this.onerror=null;this.src='https://via.placeholder.com/150?text=Category';"></div><div class="cat-name">${cat.categoryName}</div>`; 
+                grid.appendChild(card); 
+            }); 
+            lucide.createIcons(); 
+        }
+
+        // --- Search Logic ---
+        searchInput.addEventListener('input', (e) => { 
+            const term = e.target.value.toLowerCase().trim(); 
+            
+            if (term === '') { 
+                emptyState.style.display = 'none'; 
+                // সার্চ ক্লিয়ার করলে বর্তমান দেখানো শাফেলড ডেটা ফিরিয়ে আনা
+                const currentlyVisible = shuffledCategories.slice(0, displayedCount);
+                renderCategories(currentlyVisible); 
+                loadMoreBtn.style.display = (displayedCount < shuffledCategories.length) ? 'flex' : 'none'; 
+                return; 
+            } 
+            
+            loadMoreBtn.style.display = 'none'; 
+            const filtered = shuffledCategories.filter(cat => 
+                (cat.categoryName && cat.categoryName.toLowerCase().includes(term)) || 
+                (cat.slug && cat.slug.toLowerCase().includes(term))
+            ); 
+
+            if (filtered.length === 0) { 
+                grid.innerHTML = ''; 
+                emptyState.style.display = 'block'; 
+            } else { 
+                emptyState.style.display = 'none'; 
+                renderCategories(filtered); 
+            } 
+        });
+
+        loadMoreBtn.onclick = () => renderNextBatch(); 
+
+        initUI(); 
+        loadAllAndRandomize();
+    </script>
+</body>
+</html>
