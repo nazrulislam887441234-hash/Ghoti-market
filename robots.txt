@@ -2,13 +2,21 @@ User-agent: *
 Allow: /
 
 # Important Pages
-Allow: /index.html
-Allow: /contact.html
-Allow: /product.html
-Allow: /profile.html
+Allow: /
+Allow: /categories
+Allow: /contact
+Allow: /privacy-policy
+Allow: /termsandcondition
 
-# Block unnecessary parameters (optional)
-Disallow: /*?utm_
-Disallow: /*?fbclid=
+# App Download Page
+Allow: https://app.ghotimarket.com/
 
+# About Page
+Allow: https://about.ghotimarket.com/
+
+# Block Admin/Login pages if you have any
+# Disallow: /admin/
+# Disallow: /login/
+
+# Sitemap Location
 Sitemap: https://ghotimarket.com/sitemap.xml
