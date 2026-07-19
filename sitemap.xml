@@ -1,52 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+<?xml version="1.0" encoding="UTF-8"?>  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"  
+xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
-  <url>
-    <loc>https://ghotimarket.com/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-
-  <url>
-    <loc>https://ghotimarket.com/index.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-
-  <url>
-    <loc>https://ghotimarket.com/contact.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://ghotimarket.com/product.html</loc>
-    <changefreq>hourly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://ghotimarket.com/profile.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://seller.ghotimarket.com/</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://seller.ghotimarket.com/privacy-policy</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
-  </url>
-
-  <url>
-    <loc>https://seller.ghotimarket.com/termsandcondition</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
-  </url>
-
-</urlset>
+  <!-- 1. হোম পেজ - সবচেয়ে ইম্পর্টেন্ট -->    <url>  
+    <loc>https://ghotimarket.com/</loc>  
+    <lastmod>2026-07-19</lastmod>  
+    <changefreq>daily</changefreq>  
+    <priority>1.0</priority>  
+  </url>    <!-- 2. ক্যাটাগরি পেজ -->    <url>  
+    <loc>https://ghotimarket.com/categories</loc>  
+    <lastmod>2026-07-19</lastmod>  
+    <changefreq>daily</changefreq>  
+    <priority>0.9</priority>  
+  </url>    <!-- 3. অ্যাপ ডাউনলোড পেজ -->    <url>  
+    <loc>https://app.ghotimarket.com/</loc>  
+    <lastmod>2026-07-19</lastmod>  
+    <changefreq>weekly</changefreq>  
+    <priority>0.8</priority>  
+  </url>    <!-- 4. About পেজ -->    <url>  
+    <loc>https://about.ghotimarket.com/</loc>  
+    <lastmod>2026-07-19</lastmod>  
+    <changefreq>monthly</changefreq>  
+    <priority>0.7</priority>  
+  </url>    <!-- 5. Contact পেজ -->    <url>  
+    <loc>https://ghotimarket.com/contact</loc>  
+    <lastmod>2026-07-19</lastmod>  
+    <changefreq>monthly</changefreq>  
+    <priority>0.7</priority>  
+  </url>  </urlset> 
