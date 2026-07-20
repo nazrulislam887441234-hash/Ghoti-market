@@ -206,9 +206,7 @@
         
     <a href="#" id="pShopLink" class="shop-link">
     <img id="pShopLogoImg" src="" class="shop-logo" style="display:none;">
-
     <span id="pShopName">Loading Shop...</span>
-
     <span id="verifiedBadge" class="verified-badge" style="display:none;">
         <svg viewBox="0 0 24 24" fill="white">
             <path d="M9.1 13.8l-2.3-2.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l3 3c.2.2.5.3.7.3.2 0 .5-.1.7-.3l5.8-5.8c.4-.4.4-1 0-1.4-.4-.4-1-.4-1.4 0L9.1 13.8z"/>
@@ -218,92 +216,67 @@
 
         <p class="desc" id="pDesc"></p>
 
-        <div class="policy-container">
-            <p><strong>পেমেন্ট নীতি:</strong> ঘটি মার্কেট ক্যাশ অন ডেলিভারি সাপোর্ট করে। কেউ অগ্রিম লেনদেন করবেন না। দয়া করে ডেলিভারির সময় পণ্য চেক করে নেবেন।</p>
-            <div class="check-group" onclick="toggleOrderBtn()">
-                <input type="checkbox" id="agreeCheck">
-                <label for="agreeCheck">আমি পেমেন্ট নীতি মেনে নিচ্ছি</label>
+        <!-- 1. WhatsApp Button Removed -->
+        <!-- 2. Checkbox Removed -->
+        <!-- 3. Policy Popup Removed -->
+        <!-- 4. Only 1 Primary Button -->
+        <a href="#" id="orderNowBtn" class="order-btn">🛒 অর্ডার করুন</a>
+
+        <button class="share-btn" onclick="openSharePopup()">
+            <i class="fas fa-share-alt"></i> Share
+        </button>
+
+        <div id="sharePopup" class="popup">
+            <div class="popup-box">
+                <h3><i class="fas fa-share-alt"></i> Share Product</h3>
+                <button onclick="shareNow()">
+                    <i class="fas fa-paper-plane"></i> Share Now
+                </button>
+                <button onclick="copyLink()" style="background:#1877F2;margin-top:10px;">
+                    <i class="fas fa-link"></i> Copy Link
+                </button>
+                <button onclick="closeSharePopup()" style="background:#888;margin-top:10px;">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
             </div>
         </div>
-        <a href="#" class="order-btn disabled" id="waBtn"><i class="fab fa-whatsapp"></i> সরাসরি অর্ডার করুন</a>
-         <button class="share-btn" onclick="openSharePopup()">
-    <i class="fas fa-share-alt"></i> Share
-</button>
 
-<div id="sharePopup" class="popup">
-    <div class="popup-box">
-
-        <h3>
-            <i class="fas fa-share-alt"></i> Share Product
-        </h3>
-
-        <button onclick="shareNow()">
-            <i class="fas fa-paper-plane"></i>
-            Share Now
-        </button>
-
-        <button onclick="copyLink()" style="background:#1877F2;margin-top:10px;">
-            <i class="fas fa-link"></i>
-            Copy Link
-        </button>
-
-        <button onclick="closeSharePopup()" style="background:#888;margin-top:10px;">
-            <i class="fas fa-times"></i>
-            Cancel
-        </button>
-    </div>
-</div>
         <h3>আরও পণ্য দেখুন</h3>
         <div class="product-grid" id="relatedProducts"></div>
     </div>
-           <div class="bottom-nav">
-    <a href="https://ghotimarket.com" class="nav-item active">
-        <i class="fas fa-home"></i>
-        <span>Home</span>
-    </a>
-    <a href="https://ghotimarket.com/contact.html" class="nav-item">
-        <i class="fas fa-headset"></i>
-        <span>Support</span>
-    </a>
-    <a href="https://seller.ghotimarket.com/signup" class="nav-item">
-        <i class="fas fa-user-plus"></i>
-        <span>Join Seller</span>
-    </a>
-    <a href="https://ghotimarket.com/privacy-policy" class="nav-item">
-        <i class="fas fa-shield-alt"></i>
-        <span>Privacy</span>
-    </a>
-</div>
-<div id="customPopup" class="popup">
-    <div class="popup-box">
-        <i class="fas fa-exclamation-circle"></i>
-        <h3>সতর্কতা</h3>
-        <p>অর্ডার করার আগে অনুগ্রহ করে "আমি পেমেন্ট নীতি মেনে নিচ্ছি" অপশনটিতে টিক দিন।</p>
 
-        <button onclick="closePopup()">ঠিক আছে</button>
+    <div class="bottom-nav">
+        <a href="https://ghotimarket.com" class="nav-item active">
+            <i class="fas fa-home"></i><span>Home</span>
+        </a>
+        <a href="https://ghotimarket.com/contact.html" class="nav-item">
+            <i class="fas fa-headset"></i><span>Support</span>
+        </a>
+        <a href="https://seller.ghotimarket.com/signup" class="nav-item">
+            <i class="fas fa-user-plus"></i><span>Join Seller</span>
+        </a>
+        <a href="https://ghotimarket.com/privacy-policy" class="nav-item">
+            <i class="fas fa-shield-alt"></i><span>Privacy</span>
+        </a>
     </div>
-</div>
 
-<div id="notFoundPopup" class="popup">
-    <div class="popup-box">
-        <i class="fas fa-box-open"></i>
-        <h3>পণ্য পাওয়া যায়নি</h3>
-        <p>দুঃখিত! আপনি যে পণ্যটি খুঁজছেন সেটি আর পাওয়া যাচ্ছে না অথবা মুছে ফেলা হয়েছে।</p>
-
-        <button onclick="goHome()">হোম পেজে যান</button>
+    <div id="notFoundPopup" class="popup">
+        <div class="popup-box">
+            <i class="fas fa-box-open"></i>
+            <h3>পণ্য পাওয়া যায়নি</h3>
+            <p>দুঃখিত! আপনি যে পণ্যটি খুঁজছেন সেটি আর পাওয়া যাচ্ছে না অথবা মুছে ফেলা হয়েছে।</p>
+            <button onclick="goHome()">হোম পেজে যান</button>
+        </div>
     </div>
-</div>
-<div id="copyPopup" class="popup">
-    <div class="popup-box">
-        <i class="fas fa-check-circle" style="color:#25d366;"></i>
-        <h3>সফল হয়েছে</h3>
-        <p>পণ্যের লিংক সফলভাবে কপি হয়েছে।</p>
-
-        <button onclick="closeCopyPopup()">
-            <i class="fas fa-check"></i> ঠিক আছে
-        </button>
+    <div id="copyPopup" class="popup">
+        <div class="popup-box">
+            <i class="fas fa-check-circle" style="color:#25d366;"></i>
+            <h3>সফল হয়েছে</h3>
+            <p>পণ্যের লিংক সফলভাবে কপি হয়েছে।</p>
+            <button onclick="closeCopyPopup()"><i class="fas fa-check"></i> ঠিক আছে</button>
+        </div>
     </div>
-</div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -313,199 +286,123 @@
         const urlParams = new URLSearchParams(window.location.search);
         const pId = urlParams.get('id');
 
-window.toggleOrderBtn = () => {
-    const check = document.getElementById("agreeCheck");
-    const btn = document.getElementById("waBtn");
+        window.goHome = function () {
+            window.location.href = "https://ghotimarket.com";
+        };
 
-    btn.classList.toggle("disabled", !check.checked);
-};
-
-window.goHome = function () {
-    window.location.href = "https://ghotimarket.com";
-};
-
-// ===== Share Popup =====
-window.openSharePopup = function () {
-    document.getElementById("sharePopup").classList.add("show");
-}
-
-window.closeSharePopup = function () {
-    document.getElementById("sharePopup").classList.remove("show");
-}
-
-window.shareNow = async function () {
-
-    const text =
-`🛒 ${document.getElementById("pName").innerText}
-
-💰 ${document.getElementById("pPrice").innerText}
-
-📝 ${document.getElementById("pDesc").innerText}`;
-
-    if (navigator.share) {
-        await navigator.share({
-            title: document.getElementById("pName").innerText,
-            text: text,
-            url: window.location.href
-        });
-    } else {
-        copyLink();
-    }
-
-    closeSharePopup();
-}
-
-// ===== Copy Link =====
-window.copyLink = async function () {
-    await navigator.clipboard.writeText(window.location.href);
-
-    closeSharePopup();
-
-    document.getElementById("copyPopup").classList.add("show");
-}
-
-window.closeCopyPopup = function () {
-    document.getElementById("copyPopup").classList.remove("show");
-}
-
-window.closePopup = function () {
-    document.getElementById("customPopup").classList.remove("show");
-};
-
-window.showNotFoundPopup = function () {
-    document.querySelector(".back-nav").style.display = "none";
-    document.getElementById("imgSlider").style.display = "none";
-    document.querySelector(".content").style.display = "none";
-    document.getElementById("notFoundPopup").classList.add("show");
-};
-document.getElementById("waBtn").addEventListener("click", function(e){
-
-    if(!document.getElementById("agreeCheck").checked){
-        e.preventDefault();
-        document.getElementById("customPopup").classList.add("show");
-        return;
-    }
-
-    // টিক দেওয়া থাকলে WhatsApp-এ চলে যাবে
-});
-
-async function loadProduct() {
-
-    if (!pId) {
-        showNotFoundPopup();
-        return;
-    }
-
-    try {
-
-        const snap = await getDoc(doc(db, "products", pId));
-
-        if (!snap.exists()) {
-            showNotFoundPopup();
-            return;
+        // ===== Share Popup =====
+        window.openSharePopup = function () {
+            document.getElementById("sharePopup").classList.add("show");
+        }
+        window.closeSharePopup = function () {
+            document.getElementById("sharePopup").classList.remove("show");
+        }
+        window.shareNow = async function () {
+            const text = `🛒 ${document.getElementById("pName").innerText}\n\n💰 ${document.getElementById("pPrice").innerText}\n\n📝 ${document.getElementById("pDesc").innerText}`;
+            if (navigator.share) {
+                await navigator.share({ title: document.getElementById("pName").innerText, text: text, url: window.location.href });
+            } else { copyLink(); }
+            closeSharePopup();
+        }
+        window.copyLink = async function () {
+            await navigator.clipboard.writeText(window.location.href);
+            closeSharePopup();
+            document.getElementById("copyPopup").classList.add("show");
+        }
+        window.closeCopyPopup = function () {
+            document.getElementById("copyPopup").classList.remove("show");
         }
 
-        const p = snap.data();
-document.querySelector('meta[property="og:title"]').content = p.name;
-document.querySelector('meta[property="og:description"]').content = p.description;
-document.querySelector('meta[property="og:image"]').content = p.images?.[0] || "";
-document.querySelector('meta[property="og:url"]').content = window.location.href;
+        window.showNotFoundPopup = function () {
+            document.querySelector(".back-nav").style.display = "none";
+            document.getElementById("imgSlider").style.display = "none";
+            document.querySelector(".content").style.display = "none";
+            document.getElementById("notFoundPopup").classList.add("show");
+        };
 
-    // Dynamic Page Title
-    document.title = `${p.name} | GHOTI MARKET`;
+        async function loadProduct() {
+            if (!pId) {
+                showNotFoundPopup();
+                return;
+            }
+            try {
+                const snap = await getDoc(doc(db, "products", pId));
+                if (!snap.exists()) {
+                    showNotFoundPopup();
+                    return;
+                }
+                const p = snap.data();
 
-    // Dynamic Meta Description (SEO)
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-        metaDesc = document.createElement("meta");
-        metaDesc.name = "description";
-        document.head.appendChild(metaDesc);
-    }
-    metaDesc.content = `${p.name} - মূল্য ৳${p.price}. GHOTI MARKET থেকে সরাসরি সেলারের সাথে কথা বলে নিরাপদে কিনুন।`;
+                // SEO Update
+                document.querySelector('meta[property="og:title"]').content = p.name;
+                document.querySelector('meta[property="og:description"]').content = p.description;
+                document.querySelector('meta[property="og:image"]').content = p.images?.[0] || "";
+                document.querySelector('meta[property="og:url"]').content = window.location.href;
+                
+                // 5. Order button link set dynamically
+                document.getElementById("orderNowBtn").href = `order.html?id=${pId}`;
 
-    // Product Info
-    document.getElementById("pName").innerText = p.name;
-    document.getElementById("pPrice").innerText = "৳ " + p.price;
-    document.getElementById("pDesc").innerText = p.description;
+                document.title = `${p.name} | GHOTI MARKET`;
+                let metaDesc = document.querySelector('meta[name="description"]');
+                if (!metaDesc) {
+                    metaDesc = document.createElement("meta");
+                    metaDesc.name = "description";
+                    document.head.appendChild(metaDesc);
+                }
+                metaDesc.content = `${p.name} - মূল্য ৳${p.price}. GHOTI MARKET থেকে সরাসরি সেলারের সাথে কথা বলে নিরাপদে কিনুন।`;
 
-    // Shop Link
-    const shopLink = document.getElementById("pShopLink");
-    shopLink.href = `profile.html?sellerId=${p.sellerId}`;
-    document.getElementById("pShopName").innerText = p.shopName;
+                document.getElementById("pName").innerText = p.name;
+                document.getElementById("pPrice").innerText = "৳ " + p.price;
+                document.getElementById("pDesc").innerText = p.description;
 
-// Shop Logo + Verified Badge
-const userSnap = await getDoc(doc(db, "users", p.sellerId));
+                const shopLink = document.getElementById("pShopLink");
+                shopLink.href = `profile.html?sellerId=${p.sellerId}`;
+                document.getElementById("pShopName").innerText = p.shopName;
 
-if (userSnap.exists()) {
-    const user = userSnap.data();
+                const userSnap = await getDoc(doc(db, "users", p.sellerId));
+                if (userSnap.exists()) {
+                    const user = userSnap.data();
+                    if (user.shopLogo) {
+                        const logoImg = document.getElementById("pShopLogoImg");
+                        logoImg.src = user.shopLogo;
+                        logoImg.style.display = "block";
+                    }
+                    if (user.verified === true || user.verified === "true") {
+                        document.getElementById("verifiedBadge").style.display = "flex";
+                    }
+                }
 
-    if (user.shopLogo) {
-        const logoImg = document.getElementById("pShopLogoImg");
-        logoImg.src = user.shopLogo;
-        logoImg.style.display = "block";
-    }
+                const slider = document.getElementById("imgSlider");
+                slider.innerHTML = "";
+                if (p.images && p.images.length > 0) {
+                    slider.innerHTML = p.images.map(img => `<img src="${img}" alt="${p.name}">`).join("");
+                    document.getElementById("imgCounter").innerText = `ছবি ${p.images.length} টি`;
+                }
 
-if (user.verified === true || user.verified === "true") {
-    document.getElementById("verifiedBadge").style.display = "flex";
-}
-}
+                // 6. WhatsApp logic removed
 
-    // Product Images
-    const slider = document.getElementById("imgSlider");
-    slider.innerHTML = "";
+                const q = query(collection(db, "products"), orderBy("createdAt", "desc"), limit(10));
+                const querySnap = await getDocs(q);
+                const grid = document.getElementById("relatedProducts");
+                grid.innerHTML = "";
+                querySnap.forEach(productDoc => {
+                    if (productDoc.id === pId) return;
+                    const item = productDoc.data();
+                    grid.innerHTML += `
+                        <a href="product.html?id=${productDoc.id}" class="product-card">
+                            <img src="${item.images?.[0] || ''}" alt="${item.name}">
+                            <p style="font-size:14px;margin:5px 0;">${item.name}</p>
+                            <p style="color:red;font-weight:bold;">৳ ${item.price}</p>
+                        </a>
+                    `;
+                });
 
-    if (p.images && p.images.length > 0) {
-        slider.innerHTML = p.images
-            .map(img => `<img src="${img}" alt="${p.name}">`)
-            .join("");
-
-        document.getElementById("imgCounter").innerText =
-            `ছবি ${p.images.length} টি`;
-    }
-
-    // WhatsApp Order Link
-    const waMsg =
-`আমি এই পণ্যটি কিনতে চাই।
-
-পণ্যের নাম: ${p.name}
-দাম: ৳${p.price}
-লিংক: ${window.location.href}`;
-
-    document.getElementById("waBtn").href =
-        `https://wa.me/88${p.whatsapp}?text=${encodeURIComponent(waMsg)}`;
-
-    // Related Products
-    const q = query(
-        collection(db, "products"),
-        orderBy("createdAt", "desc"),
-        limit(10)
-    );
-
-    const querySnap = await getDocs(q);
-    const grid = document.getElementById("relatedProducts");
-    grid.innerHTML = "";
-
-        querySnap.forEach(productDoc => {
-        if (productDoc.id === pId) return;
-
-        const item = productDoc.data();
-
-        grid.innerHTML += `
-            <a href="product.html?id=${productDoc.id}" class="product-card">
-                <img src="${item.images?.[0] || ''}" alt="${item.name}">
-                <p style="font-size:14px;margin:5px 0;">${item.name}</p>
-                <p style="color:red;font-weight:bold;">৳ ${item.price}</p>
-            </a>
-        `;
-    });
-
-    } catch (error) {
-        console.error(error);
-        showNotFoundPopup();
-    }
-}
-
-loadProduct();
+            } catch (error) {
+                console.error(error);
+                showNotFoundPopup();
+            }
+        }
+        loadProduct();
     </script>
 </body>
 </html>
