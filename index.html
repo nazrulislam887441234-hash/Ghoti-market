@@ -343,9 +343,18 @@
     font-size: 16px;
     box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
 }
+.search-item img{
+    width:40px;
+    height:40px;
+    border-radius:10px;
+    object-fit:cover;
+    flex-shrink:0;
+}
     </style>
 </head>
-<body>
+<h1 style="position:absolute;left:-9999px;">
+Ghoti Market - বাংলাদেশের সেরা অনলাইন মার্কেটপ্লেস
+</h1>
 <!-- Loader -->
 <div id="loader">
     <img src="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png" class="loader-logo" alt="Ghoti Market">
@@ -496,12 +505,32 @@
         } catch (err) { console.error("Firebase Error:", err); }
     }
 
+function handleScrollAnim() {
+    const elements = document.querySelectorAll(".fade-up");
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+            }
+        });
+    }, {
+        threshold: 0.15
+    });
+
+    elements.forEach(el => observer.observe(el));
+}
+
     window.renderShops = function() {
         const grid = document.getElementById('shop-grid');
         if (currentIndex === 0) grid.innerHTML = '';
         const batch = allShops.slice(currentIndex, currentIndex + perPage);
         grid.innerHTML += batch.map(s => `
-            <a href="https://ghotimarket.com/profile.html?sellerId=${s.id}" class="shop-card fade-up">
+          <a href="${
+    s.username
+        ? `https://ghotimarket.com/seller?@${encodeURIComponent(s.username)}`
+        : `https://ghotimarket.com/profile?sellerId=${s.id}`
+}" class="shop-card fade-up">
                 <div class="shop-banner"><img src="${s.shopBanner || 'https://via.placeholder.com/400x120'}" loading="lazy"></div>
                 <div class="shop-info">
                     <div class="shop-logo"><img src="${s.shopLogo || 'https://via.placeholder.com/80'}" loading="lazy"></div>
@@ -529,73 +558,13 @@
         resultsBox.innerHTML = html || '<p style="text-align:center; padding:10px; color:#94a3b8">কিছু পাওয়া যায়নি</p>';
         resultsBox.style.display = 'block';
     });
-// ================= APP POPUP LOGIC =================
-function showAppPopup() {
-    const popup = document.getElementById('appPopup');
-    const lastClosed = localStorage.getItem('appPopupClosedTime');
-    
-    if (lastClosed) {
-        const minutesPassed = (Date.now() - parseInt(lastClosed)) / (1000 * 60);
-        if (minutesPassed < 30) return; // ৩০ মিনিটের মধ্যে দেখাবে না
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-wrapper')) {
+        resultsBox.style.display = 'none';
     }
-    
-    // 30 সেকেন্ড পর popup দেখাবে
-    setTimeout(() => {
-        popup.classList.add('show');
-    }, 5000); // 1000 = 1 সেকেন্ড, তাই 5000 = 05 সেকেন্ড
-}
-
-// Close popup and save time
-function closeAppPopup() {
-    const popup = document.getElementById('appPopup');
-    popup.classList.remove('show');
-    localStorage.setItem('appPopupClosedTime', Date.now());
-}
-
-// Event Listeners
-document.getElementById('closePopup').addEventListener('click', closeAppPopup);
-
-// Optional: Click outside to close
-document.getElementById('appPopup').addEventListener('click', function(e) {
-    if (e.target === this) closeAppPopup();
 });
 
-// Download button
-document.getElementById('downloadAppBtn').addEventListener('click', function(e) {
-    e.preventDefault(); // href="#" থাকলে পেজ রিলোড হবে না
-    window.location.href = "https://play.google.com/store/apps/details?id=com.ghotimarket.app";
-    closeAppPopup(); // ক্লিক করার পর পপআপ ক্লোজ হয়ে যাবে
-});
-
-// Initialize popup
-showAppPopup();
-    const handleScrollAnim = () => {
-        const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.1 });
-        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-    };
-
-    document.addEventListener('click', (e) => { if (!e.target.closest('.search-wrapper')) resultsBox.style.display = 'none'; });
-    init();
+init();
 </script>
-<!-- App Download Popup -->
-<div class="app-popup" id="appPopup">
-    <div class="app-popup-box">
-        <button class="popup-close" id="closePopup">✕</button>
-        
-        <img src="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png" 
-             class="popup-app-icon" 
-             alt="Ghoti Market App">
-        
-        <h2 style="margin-bottom:8px; color:#1e293b;">Ghoti Market App</h2>
-        <p style="color:#64748b; font-size:15px; margin-bottom:20px;">
-            সবচেয়ে সহজে কেনাকাটা করুন আমাদের অ্যাপে!<br>
-            দ্রুত ডেলিভারি • অফার • লাইভ চ্যাট
-        </p>
-        
-        <a href="#" class="download-btn" id="downloadAppBtn">
-            <i class="fa-brands fa-google-play"></i> অ্যাপ ডাউনলোড করুন
-        </a>
-    </div>
-</div>
 </body>
 </html>
