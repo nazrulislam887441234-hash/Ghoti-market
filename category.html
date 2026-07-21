@@ -305,6 +305,42 @@
 .nav-item.active i { 
     transform: translateY(-3px); 
 }
+.price-box{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:8px;
+    margin:8px 0;
+}
+
+.current-price{
+    font-size:20px;
+    font-weight:700;
+    color:#16A34A;
+}
+
+.old-price{
+    font-size:15px;
+    color:#94A3B8;
+    text-decoration:line-through;
+}
+
+.discount-badge{
+    background:#EF4444;
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    padding:4px 8px;
+    border-radius:20px;
+}
+
+.save-text{
+    width:100%;
+    margin-top:6px;
+    color:#DC2626;
+    font-size:13px;
+    font-weight:600;
+}
     </style>
 </head>
 <body>
@@ -441,13 +477,31 @@
                 const firstImg = product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/300';
                 
                 const card = document.createElement('a');
-                card.href = `product.html?id=${product.id}`;
+                card.href = product.slug
+    ? `https://ghotimarket.com/product.html?${product.slug}`
+    : `https://ghotimarket.com/product.html?id=${product.id}`;
                 card.className = 'product-card';
                 card.innerHTML = `
                     <img src="${firstImg}" class="product-img" alt="${product.name}" loading="lazy">
                     <div class="product-info">
                         <h3 class="product-name">${product.name}</h3>
-                        <p class="product-price">৳ ${product.price}</p>
+                        <div class="price-box">
+    <span class="current-price">৳ ${product.price}</span>
+
+    ${
+        product.oldPrice && product.oldPrice > product.price
+        ? `
+        <span class="old-price">৳ ${product.oldPrice}</span>
+        <span class="discount-badge">
+            ${Math.round(((product.oldPrice-product.price)/product.oldPrice)*100)}% OFF
+        </span>
+        <div class="save-text">
+            Save ৳${product.oldPrice-product.price}
+        </div>
+        `
+        : ""
+    }
+</div>
                         <p class="shop-name"><i data-lucide="store" style="width:12px"></i> ${product.shopName || 'Ghoti Shop'}</p>
                         <div class="card-buttons">
                             <span class="btn-view">বিস্তারিত</span>
@@ -502,13 +556,31 @@
             list.forEach(product => {
                 const firstImg = product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/300';
                 const card = document.createElement('a');
-                card.href = `product.html?id=${product.id}`;
+                card.href = product.slug
+    ? `https://ghotimarket.com/product.html?${product.slug}`
+    : `https://ghotimarket.com/product.html?id=${product.id}`;
                 card.className = 'product-card';
                 card.innerHTML = `
                     <img src="${firstImg}" class="product-img" alt="${product.name}" loading="lazy">
                     <div class="product-info">
                         <h3 class="product-name">${product.name}</h3>
-                        <p class="product-price">৳ ${product.price}</p>
+                       <div class="price-box">
+    <span class="current-price">৳ ${product.price}</span>
+
+    ${
+        product.oldPrice && product.oldPrice > product.price
+        ? `
+        <span class="old-price">৳ ${product.oldPrice}</span>
+        <span class="discount-badge">
+            ${Math.round(((product.oldPrice-product.price)/product.oldPrice)*100)}% OFF
+        </span>
+        <div class="save-text">
+            Save ৳${product.oldPrice-product.price}
+        </div>
+        `
+        : ""
+    }
+</div>
                         <p class="shop-name"><i data-lucide="store" style="width:12px"></i> ${product.shopName || 'Ghoti Shop'}</p>
                         <div class="card-buttons">
                             <span class="btn-view">বিস্তারিত</span>
