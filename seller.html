@@ -261,6 +261,42 @@ html, body {
 .nav-item.active {
     color: var(--accent);
 }
+.price-box{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:6px;
+    margin-top:6px;
+}
+
+.current-price{
+    color:#16A34A;
+    font-size:18px;
+    font-weight:700;
+}
+
+.old-price{
+    color:#94A3B8;
+    text-decoration:line-through;
+    font-size:14px;
+}
+
+.discount-badge{
+    background:#EF4444;
+    color:#fff;
+    font-size:11px;
+    font-weight:700;
+    padding:3px 7px;
+    border-radius:20px;
+}
+
+.save-text{
+    width:100%;
+    color:#DC2626;
+    font-size:12px;
+    font-weight:600;
+    margin-top:3px;
+}
 </style>
 </head>
 <body>
@@ -311,8 +347,6 @@ html, body {
 </div>
     <div class="grid" id="sellerProductGrid"></div>
     <button id="seeMoreBtn" class="see-more-btn" style="display:none;" onclick="loadMore()">See More</button>
-
-    <a href="#" class="wa-float" id="sellerWa"><i class="fab fa-whatsapp"></i></a>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -367,10 +401,6 @@ html, body {
         document.getElementById('shopBannerImg').style.display = "block";
     }
 
-    if (d.whatsapp)
-        document.getElementById('sellerWa').href =
-            `https://wa.me/88${d.whatsapp}?text=আমি আপনার শপ '${d.shopName}' থেকে পণ্য কিনতে আগ্রহী।`;
-
     if (d.verified)
         document.getElementById('verifiedBadge').style.display = "flex";
 
@@ -412,11 +442,34 @@ html, body {
             const dataToDisplay = filteredProducts.slice(0, displayCount);
             
             grid.innerHTML = dataToDisplay.length ? dataToDisplay.map(p => `
-                <a href="product.html?id=${p.id}" class="p-card">
+              <a href="${
+    p.slug
+        ? `https://ghotimarket.com/product?${p.slug}`
+        : `https://ghotimarket.com/product?id=${p.id}`
+}" class="p-card">
                     <div class="img-box"><img src="${p.images?.[0] || ''}" alt="${p.name}"></div>
                     <div class="p-info">
                         <div class="p-name">${p.name}</div>
-                        <div class="p-price">৳${p.price}</div>
+                      <div class="price-box">
+    <span class="current-price">৳${p.price}</span>
+
+    ${
+        p.oldPrice && Number(p.oldPrice) > Number(p.price)
+        ? `
+        <span class="old-price">৳${p.oldPrice}</span>
+
+        <span class="discount-badge">
+            ${Math.round(((p.oldPrice-p.price)/p.oldPrice)*100)}% OFF
+        </span>
+
+        <div class="save-text">
+            Save ৳${p.oldPrice-p.price}
+        </div>
+        `
+        : ""
+    }
+</div>
+
                     </div>
                 </a>
             `).join('') : '<p style="text-align:center; grid-column:1/-1; padding:40px;">😔 কোনো পণ্য পাওয়া যায়নি!</p>';
