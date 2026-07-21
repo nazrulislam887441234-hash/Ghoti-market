@@ -328,8 +328,9 @@ where
         const db = getFirestore(app);
         const urlParams = new URLSearchParams(window.location.search);
 
+
 const pId = urlParams.get("id");
-const slug = urlParams.get("slug");
+const slug = location.search.substring(1); // ?phone -> phone
 
         window.goHome = function () {
             window.location.href = "https://ghotimarket.com";
@@ -366,24 +367,42 @@ const slug = urlParams.get("slug");
         };
 
         async function loadProduct() {
-            if (!pId) {
-                showNotFoundPopup();
-                return;
+
+    try {
+
+        let p = null;
+        let realId = null;
+
+        if (pId) {
+
+            const snap = await getDoc(doc(db,"products",pId));
+
+            if (snap.exists()) {
+                p = snap.data();
+                realId = snap.id;
             }
-            try {
-                let p = null;
-let realId = null;
 
-if (pId) {
+        } else if (slug) {
 
-    const snap = await getDoc(doc(db,"products",pId));
+            const q = query(
+                collection(db,"products"),
+                where("slug","==",slug)
+            );
 
-    if(snap.exists()){
-        p = snap.data();
-        realId = snap.id;
-    }
+            const s = await getDocs(q);
 
-}
+            if (!s.empty) {
+                p = s.docs[0].data();
+                realId = s.docs[0].id;
+            }
+
+        }
+
+        if (!p) {
+            showNotFoundPopup();
+            return;
+        }
+           
 else if(slug){
 
     const q = query(
@@ -482,12 +501,36 @@ if (p.oldPrice && p.oldPrice > p.price) {
                     if (productDoc.id === pId) return;
                     const item = productDoc.data();
                     grid.innerHTML += `
-                        <a href="product.html?id=${productDoc.id}" class="product-card">
-                            <img src="${item.images?.[0] || ''}" alt="${item.name}">
-                            <p style="font-size:14px;margin:5px 0;">${item.name}</p>
-                            <p style="color:red;font-weight:bold;">৳ ${item.price}</p>
-                        </a>
-                    `;
+<a href="${
+    item.slug
+        ? `https://ghotimarket.com/product?${item.slug}`
+        : `https://ghotimarket.com/product?id=${productDoc.id}`
+}" class="product-card">
+
+    <img src="${item.images?.[0] || ''}" alt="${item.name}">
+
+    <p style="font-size:14px;margin:8px 0;font-weight:600;">
+        ${item.name}
+    </p>
+
+    <div class="price-box">
+        <span class="current-price">৳ ${item.price}</span>
+
+        ${
+            item.oldPrice && Number(item.oldPrice) > Number(item.price)
+            ? `
+            <span class="old-price">৳ ${item.oldPrice}</span>
+
+            <span class="discount-badge">
+                ${Math.round(((item.oldPrice-item.price)/item.oldPrice)*100)}% OFF
+            </span>
+            `
+            : ""
+        }
+    </div>
+
+</a>
+`;
                 });
 
             } catch (error) {
