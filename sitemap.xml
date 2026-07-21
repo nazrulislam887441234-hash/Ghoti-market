@@ -1,29 +1,96 @@
-<?xml version="1.0" encoding="UTF-8"?>  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"  
-xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
-  <!-- 1. হোম পেজ - সবচেয়ে ইম্পর্টেন্ট -->    <url>  
-    <loc>https://ghotimarket.com/</loc>  
-    <lastmod>2026-07-19</lastmod>  
-    <changefreq>daily</changefreq>  
-    <priority>1.0</priority>  
-  </url>    <!-- 2. ক্যাটাগরি পেজ -->    <url>  
-    <loc>https://ghotimarket.com/categories</loc>  
-    <lastmod>2026-07-19</lastmod>  
-    <changefreq>daily</changefreq>  
-    <priority>0.9</priority>  
-  </url>    <!-- 3. অ্যাপ ডাউনলোড পেজ -->    <url>  
-    <loc>https://app.ghotimarket.com/</loc>  
-    <lastmod>2026-07-19</lastmod>  
-    <changefreq>weekly</changefreq>  
-    <priority>0.8</priority>  
-  </url>    <!-- 4. About পেজ -->    <url>  
-    <loc>https://about.ghotimarket.com/</loc>  
-    <lastmod>2026-07-19</lastmod>  
-    <changefreq>monthly</changefreq>  
-    <priority>0.7</priority>  
-  </url>    <!-- 5. Contact পেজ -->    <url>  
-    <loc>https://ghotimarket.com/contact</loc>  
-    <lastmod>2026-07-19</lastmod>  
-    <changefreq>monthly</changefreq>  
-    <priority>0.7</priority>  
-  </url>  </urlset> 
+  <!-- 1. হোম পেজ - সবচেয়ে ইম্পর্টেন্ট -->
+  <url>
+    <loc>https://ghotimarket.com/</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- 2. ক্যাটাগরি পেজ -->
+  <url>
+    <loc>https://ghotimarket.com/categories</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://ghotimarket.com/category.html?slug=electronics</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ghotimarket.com/categories</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ghotimarket.com/category.html?slug=smartwatch</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ghotimarket.com/category.html?slug=shoes</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ghotimarket.com/category.html?slug=tshirts</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 4. অ্যাপ ডাউনলোড পেজ -->
+  <url>
+    <loc>https://app.ghotimarket.com/</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 5. About পেজ -->
+  <url>
+    <loc>https://about.ghotimarket.com/</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- 6. Contact পেজ -->
+  <url>
+    <loc>https://ghotimarket.com/contact</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- 7. Seller Login + Policy পেজ -->
+  <url>
+    <loc>https://ghotimarket.com/seller</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ghotimarket.com/privacy-policy</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ghotimarket.com/terms</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+</urlset>
