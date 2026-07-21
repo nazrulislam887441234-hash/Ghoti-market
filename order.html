@@ -176,7 +176,17 @@ input:focus,textarea:focus{outline:none;border-color:var(--orange);}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  addDoc,
+  collection,
+  serverTimestamp,
+  query,
+  where,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
@@ -190,19 +200,47 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const urlParams = new URLSearchParams(window.location.search);
-const productId = urlParams.get('id');
 
+const productId = urlParams.get("id");
+const slug = urlParams.get("slug");
 let product = null;
 let quantity = 1;
 let deliveryCharge = 120;
 let isSubmitting = false;
 
 async function loadProduct(){
-  if(!productId){ showNotFound(); return; }
-  const snap = await getDoc(doc(db, "products", productId));
-  if(!snap.exists()){ showNotFound(); return; }
 
-  product = {id: snap.id,...snap.data()};
+  let snap = null;
+
+  if(productId){
+
+    snap = await getDoc(doc(db,"products",productId));
+
+  }else if(slug){
+
+    const q = query(
+      collection(db,"products"),
+      where("slug","==",slug)
+    );
+
+    const result = await getDocs(q);
+
+    if(!result.empty){
+      snap = result.docs[0];
+    }
+
+  }
+
+  if(!snap || !snap.exists()){
+    showNotFound();
+    return;
+  }
+
+  product = {
+    id: snap.id,
+    ...snap.data()
+  };
+
 
   document.getElementById('pImage').src = product.images?.[0] || '';
   document.getElementById('pName').innerText = product.name;
