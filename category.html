@@ -557,8 +557,8 @@
                 const firstImg = product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/300';
                 const card = document.createElement('a');
                 card.href = product.slug
-    ? `https://ghotimarket.com/product.html?${product.slug}`
-    : `https://ghotimarket.com/product.html?id=${product.id}`;
+    ? `https://ghotimarket.com/product?${product.slug}`
+    : `https://ghotimarket.com/product?id=${product.id}`;
                 card.className = 'product-card';
                 card.innerHTML = `
                     <img src="${firstImg}" class="product-img" alt="${product.name}" loading="lazy">
