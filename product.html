@@ -188,6 +188,34 @@
 .share-btn i{
     margin-right:8px;
 }
+.price-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:10px 0 15px;
+    flex-wrap:wrap;
+}
+
+.old-price{
+    color:#999;
+    text-decoration:line-through;
+    font-size:18px;
+}
+
+.current-price{
+    color:#e53935;
+    font-size:28px;
+    font-weight:bold;
+}
+
+.discount-badge{
+    background:#ff1744;
+    color:#fff;
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:bold;
+}
     </style>
 <meta property="og:title" content="পণ্যের নাম">
 <meta property="og:description" content="পণ্যের বিবরণ">
@@ -202,7 +230,11 @@
     <div class="content">
         <div class="img-counter" id="imgCounter"></div>
         <h2 id="pName">Loading...</h2>
-        <div class="price" id="pPrice"></div>
+      <div class="price-box">
+    <span class="current-price" id="pPrice"></span>
+    <span class="old-price" id="oldPrice"></span>
+    <span class="discount-badge" id="discountBadge" style="display:none;"></span>
+</div>
         
     <a href="#" id="pShopLink" class="shop-link">
     <img id="pShopLogoImg" src="" class="shop-logo" style="display:none;">
@@ -220,7 +252,7 @@
         <!-- 2. Checkbox Removed -->
         <!-- 3. Policy Popup Removed -->
         <!-- 4. Only 1 Primary Button -->
-        <a href="#" id="orderNowBtn" class="order-btn">🛒 অর্ডার করুন</a>
+        <a href="#" id="orderNowBtn" class="order-btn"> অর্ডার করুন</a>
 
         <button class="share-btn" onclick="openSharePopup()">
             <i class="fas fa-share-alt"></i> Share
@@ -279,12 +311,25 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import {
+getFirestore,
+doc,
+getDoc,
+collection,
+query,
+orderBy,
+limit,
+getDocs,
+where
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
 
         const app = initializeApp({ apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", authDomain: "ghotimarket.firebaseapp.com", projectId: "ghotimarket" });
         const db = getFirestore(app);
         const urlParams = new URLSearchParams(window.location.search);
-        const pId = urlParams.get('id');
+
+const pId = urlParams.get("id");
+const slug = urlParams.get("slug");
 
         window.goHome = function () {
             window.location.href = "https://ghotimarket.com";
@@ -326,12 +371,40 @@
                 return;
             }
             try {
-                const snap = await getDoc(doc(db, "products", pId));
-                if (!snap.exists()) {
-                    showNotFoundPopup();
-                    return;
-                }
-                const p = snap.data();
+                let p = null;
+let realId = null;
+
+if (pId) {
+
+    const snap = await getDoc(doc(db,"products",pId));
+
+    if(snap.exists()){
+        p = snap.data();
+        realId = snap.id;
+    }
+
+}
+else if(slug){
+
+    const q = query(
+        collection(db,"products"),
+        where("slug","==",slug)
+    );
+
+    const s = await getDocs(q);
+
+    if(!s.empty){
+        const d = s.docs[0];
+        p = d.data();
+        realId = d.id;
+    }
+
+}
+
+if (!p) {
+    showNotFoundPopup();
+    return;
+}
 
                 // SEO Update
                 document.querySelector('meta[property="og:title"]').content = p.name;
@@ -340,7 +413,8 @@
                 document.querySelector('meta[property="og:url"]').content = window.location.href;
                 
                 // 5. Order button link set dynamically
-                document.getElementById("orderNowBtn").href = `order.html?id=${pId}`;
+                document.getElementById("orderNowBtn").href =
+`order.html?id=${realId}&slug=${p.slug}`;
 
                 document.title = `${p.name} | GHOTI MARKET`;
                 let metaDesc = document.querySelector('meta[name="description"]');
@@ -353,6 +427,25 @@
 
                 document.getElementById("pName").innerText = p.name;
                 document.getElementById("pPrice").innerText = "৳ " + p.price;
+
+if (p.oldPrice && p.oldPrice > p.price) {
+
+    document.getElementById("oldPrice").innerText =
+        "৳ " + p.oldPrice;
+
+    const save = p.oldPrice - p.price;
+    const percent = Math.round((save / p.oldPrice) * 100);
+
+    const badge = document.getElementById("discountBadge");
+    badge.style.display = "inline-block";
+    badge.innerText = `-${percent}% (৳${save} OFF)`;
+
+} else {
+
+    document.getElementById("oldPrice").style.display = "none";
+    document.getElementById("discountBadge").style.display = "none";
+
+}
                 document.getElementById("pDesc").innerText = p.description;
 
                 const shopLink = document.getElementById("pShopLink");
