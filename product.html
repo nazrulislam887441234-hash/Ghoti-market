@@ -127,29 +127,39 @@ const safeNum = (val, def=0) => Number(val) || def;
 const hide = el => { if(el) el.style.display = 'none'; }
 const show = el => { if(el) el.style.display = 'block'; }
 const PLACEHOLDER = 'https://via.placeholder.com/400x350?text=No+Image';
-
-// ===== GET SLUG FROM URL - FB BROWSER FIX =====
+    
+// ===== GET SLUG FROM URL - FB BROWSER 100% FIX =====
 function getSlugFromURL(){
     const urlParams = new URLSearchParams(window.location.search);
+    
+    // Case 1:?product-slug=bed-sheet
     let slug = urlParams.get("product-slug");
+    if(slug) return decodeURIComponent(slug.trim());
 
-    // FB Browser Fix 1:?iphone-15-pro
-    if(!slug && window.location.search.startsWith('?') && window.location.search.length > 1){
-        slug = window.location.search.substring(1);
+    // Case 2:?bed-sheet-r26bsjhjkb=&fbclid=... FB এমন করে দেয়
+    // সব parameter ঘুরে দেখবো কোনটার value ফাঁকা
+    for(const [key, value] of urlParams.entries()){
+        if(key!== 'fbclid' && key!== 'utm_source' && key!== 'utm_medium' && value === ''){
+            return decodeURIComponent(key.trim()); // key টাই slug
+        }
     }
 
-    // FB Browser Fix 2: /product/iphone-15-pro or #iphone-15-pro
-    if(!slug){
-        const pathParts = window.location.pathname.split('/');
-        const lastPart = pathParts[pathParts.length - 1];
-        if(lastPart && lastPart!== 'product.html') slug = lastPart;
-    }
-    if(!slug && window.location.hash){
-        slug = window.location.hash.substring(1);
+    // Case 3:?bed-sheet-r26bsjhjkb কোনো = নাই
+    if(window.location.search.startsWith('?') && window.location.search.length > 1){
+        const raw = window.location.search.substring(1).split('&')[0]; // fbclid বাদ
+        if(raw &&!raw.includes('=') &&!raw.startsWith('fbclid')){
+            return decodeURIComponent(raw.trim());
+        }
     }
 
-    return slug? decodeURIComponent(slug.trim()) : null;
-}
+    // Case 4: /product/bed-sheet or #bed-sheet
+    const pathParts = window.location.pathname.split('/');
+    const lastPart = pathParts[pathParts.length - 1];
+    if(lastPart && lastPart!== 'product.html') return decodeURIComponent(lastPart);
+    if(window.location.hash) return decodeURIComponent(window.location.hash.substring(1));
+
+    return null;
+    }
 
 // ===== SHARE =====
 window.openSharePopup = () => document.getElementById("sharePopup").classList.add("show");
