@@ -27,7 +27,7 @@ body { font-family: 'Hind Siliguri', sans-serif; margin: 0; background: #f9f9f9;
 .order-btn { display: block; width: 100%; box-sizing: border-box; background: #25d366; color: white; text-align: center; padding: 15px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 18px; margin: 20px 0; }
 .order-btn.disabled{ background:#ccc; opacity:.7; pointer-events:none; }
 .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.product-card { background: white; padding: 10px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-decoration: none; color: inherit; }
+.product-card { background: white; padding: 10px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-decoration: none; color: inherit; cursor:pointer; }
 .product-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; background:#f1f1f1;}
 .shop-link { color: #3498db; display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-weight: 600; text-decoration: none; }
 .shop-logo { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd; background:#eee;}
@@ -38,7 +38,7 @@ body { font-family: 'Hind Siliguri', sans-serif; margin: 0; background: #f9f9f9;
 .nav-item.active{ color:#25d366; }
 .popup{ position:fixed; inset:0; background:rgba(0,0,0,.45); display:none; justify-content:center; align-items:center; z-index:99999; }
 .popup.show{ display:flex; }
-.popup-box{ width:90%; max-width:330px; background:#fff; border-radius:18px; padding:25px; text-align:center; animation:pop .25s ease; }
+.popup-box{ width:90%; max-width:330px; background:#fff; border-radius:18px; padding:25px; text-align:center; animation:pop.25s ease; }
 .popup-box i{ font-size:55px; color:#ff9800; margin-bottom:10px; }
 .popup-box h3{ margin:10px 0; }
 .popup-box p{ color:#555; line-height:1.6; }
@@ -57,7 +57,7 @@ body { font-family: 'Hind Siliguri', sans-serif; margin: 0; background: #f9f9f9;
 
 <div id="mainContent" style="display:none;">
 <div class="slider" id="imgSlider"></div>
-    
+
 <div class="content">
     <div class="img-counter" id="imgCounter"></div>
     <h2 id="pName"></h2>
@@ -66,12 +66,12 @@ body { font-family: 'Hind Siliguri', sans-serif; margin: 0; background: #f9f9f9;
         <span class="old-price" id="oldPrice"></span>
         <span class="discount-badge" id="discountBadge" style="display:none;"></span>
     </div>
-        
+
     <a href="#" id="pShopLink" class="shop-link">
         <img id="pShopLogoImg" src="" class="shop-logo" style="display:none;">
         <span id="pShopName"></span>
         <span id="verifiedBadge" class="verified-badge" style="display:none;">
-            <svg viewBox="0 0 24 24" fill="white"><path d="M9.1 13.8l-2.3-2.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l3 3c.2.2.5.3.7.3.2 0 .5-.1.7-.3l5.8-5.8c.4-.4.4-1 0-1.4-.4-.4-1-.4-1.4 0L9.1 13.8z"/></svg>
+            <svg viewBox="0 0 24 24" fill="white"><path d="M9.1 13.8l-2.3-2.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l3 3c.2.2.5.3.7.3.2 0.5-.1.7-.3l5.8-5.8c.4-.4.4-1 0-1.4-.4-.4-1-.4-1.4 0L9.1 13.8z"/></svg>
         </span>
     </a>
 
@@ -88,7 +88,7 @@ body { font-family: 'Hind Siliguri', sans-serif; margin: 0; background: #f9f9f9;
         </div>
     </div>
 
-    <h3>আরও পণ্য দেখুন</h3>
+    <h3 id="relatedTitle">আরও পণ্য দেখুন</h3>
     <div class="product-grid" id="relatedProducts"></div>
 </div>
 </div>
@@ -100,14 +100,6 @@ body { font-family: 'Hind Siliguri', sans-serif; margin: 0; background: #f9f9f9;
     <a href="https://ghotimarket.com/privacy-policy" class="nav-item"><i class="fas fa-shield-alt"></i><span>Privacy</span></a>
 </div>
 
-<div id="notFoundPopup" class="popup">
-    <div class="popup-box">
-        <i class="fas fa-box-open"></i>
-        <h3>পণ্য পাওয়া যায়নি</h3>
-        <p>দুঃখিত! আপনি যে পণ্যটি খুঁজছেন সেটি আর পাওয়া যাচ্ছে না।</p>
-        <button onclick="goHome()">হোম পেজে যান</button>
-    </div>
-</div>
 <div id="copyPopup" class="popup">
     <div class="popup-box">
         <i class="fas fa-check-circle" style="color:#25d366;"></i>
@@ -119,33 +111,40 @@ body { font-family: 'Hind Siliguri', sans-serif; margin: 0; background: #f9f9f9;
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, doc, getDoc, collection, query, where, limit, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, query, where, limit, getDocs, doc, getDoc, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const app = initializeApp({ apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", authDomain: "ghotimarket.firebaseapp.com", projectId: "ghotimarket" });
 const db = getFirestore(app);
 
-const urlParams = new URLSearchParams(window.location.search);
-const productId = urlParams.get("id");
-const productSlug = urlParams.get("product-slug") || window.location.search.replace('?','');
-
-let currentProduct = null;
-let currentProductId = null;
+// ===== GLOBAL STATE =====
+let currentSlug = null;
+let currentProductCache = null;
+let loading = false;
 
 // ===== UTILS =====
-const safe = (val, def='') => val ?? def;
+const safe = (val, def='') => val?? def;
 const safeNum = (val, def=0) => Number(val) || def;
 const hide = el => { if(el) el.style.display = 'none'; }
 const show = el => { if(el) el.style.display = 'block'; }
+const PLACEHOLDER = 'https://via.placeholder.com/400x350?text=No+Image';
 
-window.goHome = () => window.location.href = "https://ghotimarket.com";
+// ===== GET SLUG FROM URL =====
+function getSlugFromURL(){
+    const urlParams = new URLSearchParams(window.location.search);
+    let slug = urlParams.get("product-slug");
+    if(!slug && window.location.search.startsWith('?')){
+        slug = window.location.search.substring(1);
+    }
+    return slug? decodeURIComponent(slug) : null;
+}
 
 // ===== SHARE =====
 window.openSharePopup = () => document.getElementById("sharePopup").classList.add("show");
 window.closeSharePopup = () => document.getElementById("sharePopup").classList.remove("show");
 window.shareNow = async () => {
-    const text = `🛒 ${currentProduct?.name}\n\n💰 ৳${currentProduct?.price}\n\n📝 ${currentProduct?.description?.substring(0,100)}...`;
+    const text = `🛒 ${currentProductCache?.name}\n\n💰 ৳${currentProductCache?.price}\n\n📝 ${safe(currentProductCache?.description).substring(0,100)}...`;
     try{
-        if(navigator.share){ await navigator.share({ title: currentProduct?.name, text, url: window.location.href }); }
+        if(navigator.share){ await navigator.share({ title: currentProductCache?.name, text, url: window.location.href }); }
         else{ copyLink(); }
     }catch(e){}
     closeSharePopup();
@@ -157,164 +156,195 @@ window.copyLink = async () => {
 }
 window.closeCopyPopup = () => document.getElementById("copyPopup").classList.remove("show");
 
-function showNotFoundPopup(){
-    hide(document.querySelector(".back-nav"));
-    hide(document.getElementById("imgSlider"));
-    hide(document.querySelector(".content"));
-    document.getElementById("notFoundPopup").classList.add("show");
-}
+// ===== LOAD PRODUCT BY SLUG =====
+async function loadProductBySlug(slug, push = true){
+    if(!slug || loading) return;
+    loading = true;
+    show(document.getElementById("loader"));
+    hide(document.getElementById("mainContent"));
 
-// ===== MAIN LOAD FUNCTION =====
-async function loadProduct(){
     try{
-        let productData = null;
-        let productDocId = null;
+        const q = query(collection(db,"products"), where("slug","==",slug), limit(1));
+        const snap = await getDocs(q);
 
-        // 1. Priority: id param
-        if(productId){
-            const snap = await getDoc(doc(db,"products", productId));
-            if(snap.exists()){ productData = snap.data(); productDocId = snap.id; }
-        } 
-        // 2. Fallback: slug param
-        else if(productSlug){
-            const q = query(collection(db,"products"), where("slug","==",productSlug), limit(1));
-            const snap = await getDocs(q);
-            if(!snap.empty){ productData = snap.docs[0].data(); productDocId = snap.docs[0].id; }
+        if(snap.empty){
+            await loadRelatedProducts(null, null, true); // show latest if not found
+            hide(document.getElementById("loader"));
+            show(document.getElementById("mainContent"));
+            loading = false;
+            return;
         }
 
-        if(!productData){ showNotFoundPopup(); return; }
+        const productDoc = snap.docs[0];
+        const productData = productDoc.data();
+        currentSlug = slug;
+        currentProductCache = productData;
 
-        currentProduct = productData;
-        currentProductId = productDocId;
-
-        // ===== SEO UPDATE =====
-        const name = safe(productData.name, 'Product');
-        const desc = safe(productData.description, 'GHOTI MARKET Product');
-        const img = productData.images?.[0] || 'https://ghotimarket.com/assets/logo.png';
-        const price = safeNum(productData.price);
-        
-        document.title = `${name} - ৳${price} | GHOTI MARKET`;
-        document.querySelector('meta[name="description"]').setAttribute('content', desc.substring(0,160));
-        document.querySelector('meta[property="og:title"]').setAttribute('content', name);
-        document.querySelector('meta[property="og:description"]').setAttribute('content', desc.substring(0,160));
-        document.querySelector('meta[property="og:image"]').setAttribute('content', img);
-        document.querySelector('meta[property="og:url"]').setAttribute('content', window.location.href);
-        document.querySelector('link[rel="canonical"]').setAttribute('href', window.location.href);
-
-        // ===== RENDER PRODUCT =====
-        document.getElementById("pName").innerText = name;
-        document.getElementById("pPrice").innerText = `৳ ${price}`;
-        document.getElementById("pDesc").innerText = desc || 'কোন বিবরণ নেই';
-
-        // Old Price + Discount
-        const oldPrice = safeNum(productData.oldPrice);
-        if(oldPrice > price){
-            document.getElementById("oldPrice").innerText = `৳ ${oldPrice}`;
-            const save = oldPrice - price;
-            const percent = Math.round((save / oldPrice) * 100);
-            const badge = document.getElementById("discountBadge");
-            badge.style.display = "inline-block";
-            badge.innerText = `-${percent}%`;
-        }else{
-            hide(document.getElementById("oldPrice"));
-            hide(document.getElementById("discountBadge"));
+        if(push){
+            const newUrl = `product.html?product-slug=${slug}`;
+            history.pushState({slug}, '', newUrl);
         }
 
-        // Shop Info
-        const shopLink = document.getElementById("pShopLink");
-        const sellerId = safe(productData.sellerId);
-        shopLink.href = sellerId ? `profile.html?sellerId=${sellerId}` : '#';
-        document.getElementById("pShopName").innerText = safe(productData.shopName, 'Unknown Shop');
+        renderProduct(productData);
+        await loadRelatedProducts(productDoc.id, productData.categorySlug, false);
 
-        if(sellerId){
-            try{
-                const userSnap = await getDoc(doc(db, "users", sellerId));
-                if(userSnap.exists()){
-                    const user = userSnap.data();
-                    if(user.shopLogo){
-                        const logoImg = document.getElementById("pShopLogoImg");
-                        logoImg.src = user.shopLogo;
-                        logoImg.onerror = () => hide(logoImg);
-                        show(logoImg);
-                    }
-                    if(user.verified === true || user.verified === "true"){
-                        show(document.getElementById("verifiedBadge"));
-                    }
-                }
-            }catch(e){ console.log("Seller load error", e); }
-        }
-
-        // Image Slider
-        const slider = document.getElementById("imgSlider");
-        const images = Array.isArray(productData.images) ? productData.images : [];
-        if(images.length > 0){
-            slider.innerHTML = images.map(img => `<img src="${img}" alt="${name}" onerror="this.src='https://via.placeholder.com/400x350?text=No+Image'">`).join("");
-            document.getElementById("imgCounter").innerText = `ছবি ${images.length} টি`;
-        }else{
-            slider.innerHTML = `<img src="https://via.placeholder.com/400x350?text=No+Image" alt="No Image">`;
-            document.getElementById("imgCounter").innerText = `ছবি 0 টি`;
-        }
-
-        // Order Button
-        const orderBtn = document.getElementById("orderNowBtn");
-        if(productDocId && productData.slug){
-            orderBtn.href = `order.html?id=${productDocId}&slug=${productData.slug}`;
-        }else if(productDocId){
-            orderBtn.href = `order.html?id=${productDocId}`;
-        }else{
-            orderBtn.classList.add('disabled');
-            orderBtn.href = '#';
-        }
-
-        // ===== RELATED PRODUCTS =====
-        await loadRelatedProducts(productDocId, productData.categorySlug);
-
-        // Show content
         hide(document.getElementById("loader"));
         show(document.getElementById("mainContent"));
+        window.scrollTo({top:0, behavior:'smooth'});
 
     }catch(error){
-        console.error("Load Product Error:", error);
+        console.error("Product Load Error:", error);
         hide(document.getElementById("loader"));
-        showNotFoundPopup();
+        show(document.getElementById("mainContent"));
+    }
+    loading = false;
+}
+
+// ===== RENDER PRODUCT =====
+function renderProduct(p){
+    const name = safe(p.name, 'Product');
+    const desc = safe(p.description, 'GHOTI MARKET Product');
+    const img = p.images?.[0] || PLACEHOLDER;
+    const price = safeNum(p.price);
+
+    // SEO UPDATE
+    document.title = `${name} - ৳${price} | GHOTI MARKET`;
+    setMeta('meta[name="description"]', desc.substring(0,160));
+    setMeta('meta[property="og:title"]', name);
+    setMeta('meta[property="og:description"]', desc.substring(0,160));
+    setMeta('meta[property="og:image"]', img);
+    setMeta('meta[property="og:url"]', window.location.href);
+    document.querySelector('link[rel="canonical"]').setAttribute('href', window.location.href);
+
+    // CONTENT
+    document.getElementById("pName").innerText = name;
+    document.getElementById("pPrice").innerText = `৳ ${price}`;
+    document.getElementById("pDesc").innerText = desc || 'কোন বিবরণ নেই';
+
+    // OLD PRICE
+    const oldPrice = safeNum(p.oldPrice);
+    if(oldPrice > price){
+        document.getElementById("oldPrice").innerText = `৳ ${oldPrice}`;
+        const save = oldPrice - price;
+        const percent = Math.round((save / oldPrice) * 100);
+        const badge = document.getElementById("discountBadge");
+        badge.style.display = "inline-block";
+        badge.innerText = `-${percent}%`;
+    }else{
+        hide(document.getElementById("oldPrice"));
+        hide(document.getElementById("discountBadge"));
+    }
+
+    // SHOP
+    const shopLink = document.getElementById("pShopLink");
+    const sellerId = safe(p.sellerId);
+    shopLink.href = sellerId? `profile.html?sellerId=${sellerId}` : '#';
+    document.getElementById("pShopName").innerText = safe(p.shopName, 'Unknown Shop');
+
+    if(sellerId){
+        getDoc(doc(db, "users", sellerId)).then(userSnap=>{
+            if(userSnap.exists()){
+                const user = userSnap.data();
+                const logoImg = document.getElementById("pShopLogoImg");
+                if(user.shopLogo){
+                    logoImg.src = user.shopLogo;
+                    logoImg.onerror = () => hide(logoImg);
+                    show(logoImg);
+                }else hide(logoImg);
+                if(user.verified === true || user.verified === "true"){
+                    show(document.getElementById("verifiedBadge"));
+                }else hide(document.getElementById("verifiedBadge"));
+            }
+        }).catch(()=>{});
+    }else{
+        hide(document.getElementById("pShopLogoImg"));
+        hide(document.getElementById("verifiedBadge"));
+    }
+
+    // IMAGES
+    const slider = document.getElementById("imgSlider");
+    const images = Array.isArray(p.images)? p.images : [];
+    if(images.length > 0){
+        slider.innerHTML = images.map(img => `<img src="${img}" alt="${name}" onerror="this.src='${PLACEHOLDER}'">`).join("");
+        document.getElementById("imgCounter").innerText = `ছবি ${images.length} টি`;
+    }else{
+        slider.innerHTML = `<img src="${PLACEHOLDER}" alt="No Image">`;
+        document.getElementById("imgCounter").innerText = `ছবি 0 টি`;
+    }
+
+    // ORDER BUTTON - ONLY SLUG
+    const orderBtn = document.getElementById("orderNowBtn");
+    if(p.slug){
+        orderBtn.href = `order.html?product-slug=${p.slug}`;
+        orderBtn.classList.remove('disabled');
+    }else{
+        orderBtn.href = '#';
+        orderBtn.classList.add('disabled');
     }
 }
 
+function setMeta(selector, content){
+    const el = document.querySelector(selector);
+    if(el) el.setAttribute('content', content);
+}
+
 // ===== RELATED PRODUCTS =====
-async function loadRelatedProducts(currentId, categorySlug){
+async function loadRelatedProducts(currentId, categorySlug, isFallback){
     try{
         let q;
-        if(categorySlug){
+        if(categorySlug &&!isFallback){
             q = query(collection(db,"products"), where("categorySlug","==",categorySlug), orderBy("createdAt","desc"), limit(10));
+            document.getElementById("relatedTitle").innerText = "একই ক্যাটাগরির পণ্য";
         }else{
             q = query(collection(db,"products"), orderBy("createdAt","desc"), limit(10));
+            document.getElementById("relatedTitle").innerText = "সর্বশেষ পণ্য";
         }
-        
+
         const snap = await getDocs(q);
         const grid = document.getElementById("relatedProducts");
         grid.innerHTML = "";
-        
+
         snap.forEach(productDoc => {
-            if(productDoc.id === currentId) return; // exclude self
+            if(productDoc.id === currentId) return;
             const item = productDoc.data();
+            if(!item.slug) return; // slug must exist
+
             const itemPrice = safeNum(item.price);
             const itemOldPrice = safeNum(item.oldPrice);
-            const link = item.slug ? `product.html?product-slug=${item.slug}` : `product.html?id=${productDoc.id}`;
-            
-            grid.innerHTML += `
-            <a href="${link}" class="product-card">
-                <img src="${item.images?.[0] || 'https://via.placeholder.com/150'}" alt="${safe(item.name)}" onerror="this.src='https://via.placeholder.com/150'">
+
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+                <img src="${item.images?.[0] || PLACEHOLDER}" alt="${safe(item.name)}" onerror="this.src='${PLACEHOLDER}'">
                 <p style="font-size:14px;margin:8px 0;font-weight:600;">${safe(item.name)}</p>
                 <div class="price-box">
                     <span class="current-price">৳ ${itemPrice}</span>
-                    ${itemOldPrice > itemPrice ? `<span class="old-price">৳ ${itemOldPrice}</span>` : ""}
+                    ${itemOldPrice > itemPrice? `<span class="old-price">৳ ${itemOldPrice}</span>` : ""}
                 </div>
-            </a>`;
+            `;
+            card.onclick = () => loadProductBySlug(item.slug, true);
+            grid.appendChild(card);
         });
     }catch(e){ console.error("Related products error", e); }
 }
 
-loadProduct();
+// ===== POPSTATE FOR BACK/FORWARD =====
+window.addEventListener('popstate', (event) => {
+    const slug = event.state?.slug || getSlugFromURL();
+    if(slug) loadProductBySlug(slug, false);
+});
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+    const slug = getSlugFromURL();
+    if(slug){
+        loadProductBySlug(slug, false);
+    }else{
+        loadRelatedProducts(null, null, true);
+        hide(document.getElementById("loader"));
+        show(document.getElementById("mainContent"));
+    }
+});
 </script>
 </body>
 </html>
