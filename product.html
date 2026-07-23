@@ -128,14 +128,27 @@ const hide = el => { if(el) el.style.display = 'none'; }
 const show = el => { if(el) el.style.display = 'block'; }
 const PLACEHOLDER = 'https://via.placeholder.com/400x350?text=No+Image';
 
-// ===== GET SLUG FROM URL =====
+// ===== GET SLUG FROM URL - FB BROWSER FIX =====
 function getSlugFromURL(){
     const urlParams = new URLSearchParams(window.location.search);
     let slug = urlParams.get("product-slug");
-    if(!slug && window.location.search.startsWith('?')){
+
+    // FB Browser Fix 1:?iphone-15-pro
+    if(!slug && window.location.search.startsWith('?') && window.location.search.length > 1){
         slug = window.location.search.substring(1);
     }
-    return slug? decodeURIComponent(slug) : null;
+
+    // FB Browser Fix 2: /product/iphone-15-pro or #iphone-15-pro
+    if(!slug){
+        const pathParts = window.location.pathname.split('/');
+        const lastPart = pathParts[pathParts.length - 1];
+        if(lastPart && lastPart!== 'product.html') slug = lastPart;
+    }
+    if(!slug && window.location.hash){
+        slug = window.location.hash.substring(1);
+    }
+
+    return slug? decodeURIComponent(slug.trim()) : null;
 }
 
 // ===== SHARE =====
@@ -159,6 +172,7 @@ window.closeCopyPopup = () => document.getElementById("copyPopup").classList.rem
 // ===== LOAD PRODUCT BY SLUG =====
 async function loadProductBySlug(slug, push = true){
     if(!slug || loading) return;
+    slug = slug.trim();
     loading = true;
     show(document.getElementById("loader"));
     hide(document.getElementById("mainContent"));
@@ -168,7 +182,7 @@ async function loadProductBySlug(slug, push = true){
         const snap = await getDocs(q);
 
         if(snap.empty){
-            await loadRelatedProducts(null, null, true); // show latest if not found
+            await loadRelatedProducts(null, null, true);
             hide(document.getElementById("loader"));
             show(document.getElementById("mainContent"));
             loading = false;
@@ -181,7 +195,7 @@ async function loadProductBySlug(slug, push = true){
         currentProductCache = productData;
 
         if(push){
-            const newUrl = `product.html?product-slug=${slug}`;
+            const newUrl = `product.html?product-slug=${encodeURIComponent(slug)}`;
             history.pushState({slug}, '', newUrl);
         }
 
@@ -207,7 +221,6 @@ function renderProduct(p){
     const img = p.images?.[0] || PLACEHOLDER;
     const price = safeNum(p.price);
 
-    // SEO UPDATE
     document.title = `${name} - ৳${price} | GHOTI MARKET`;
     setMeta('meta[name="description"]', desc.substring(0,160));
     setMeta('meta[property="og:title"]', name);
@@ -216,12 +229,10 @@ function renderProduct(p){
     setMeta('meta[property="og:url"]', window.location.href);
     document.querySelector('link[rel="canonical"]').setAttribute('href', window.location.href);
 
-    // CONTENT
     document.getElementById("pName").innerText = name;
     document.getElementById("pPrice").innerText = `৳ ${price}`;
     document.getElementById("pDesc").innerText = desc || 'কোন বিবরণ নেই';
 
-    // OLD PRICE
     const oldPrice = safeNum(p.oldPrice);
     if(oldPrice > price){
         document.getElementById("oldPrice").innerText = `৳ ${oldPrice}`;
@@ -235,7 +246,6 @@ function renderProduct(p){
         hide(document.getElementById("discountBadge"));
     }
 
-    // SHOP
     const shopLink = document.getElementById("pShopLink");
     const sellerId = safe(p.sellerId);
     shopLink.href = sellerId? `profile.html?sellerId=${sellerId}` : '#';
@@ -261,7 +271,6 @@ function renderProduct(p){
         hide(document.getElementById("verifiedBadge"));
     }
 
-    // IMAGES
     const slider = document.getElementById("imgSlider");
     const images = Array.isArray(p.images)? p.images : [];
     if(images.length > 0){
@@ -272,10 +281,9 @@ function renderProduct(p){
         document.getElementById("imgCounter").innerText = `ছবি 0 টি`;
     }
 
-    // ORDER BUTTON - ONLY SLUG
     const orderBtn = document.getElementById("orderNowBtn");
     if(p.slug){
-        orderBtn.href = `order.html?product-slug=${p.slug}`;
+        orderBtn.href = `order.html?product-slug=${encodeURIComponent(p.slug)}`;
         orderBtn.classList.remove('disabled');
     }else{
         orderBtn.href = '#';
@@ -307,7 +315,7 @@ async function loadRelatedProducts(currentId, categorySlug, isFallback){
         snap.forEach(productDoc => {
             if(productDoc.id === currentId) return;
             const item = productDoc.data();
-            if(!item.slug) return; // slug must exist
+            if(!item.slug) return;
 
             const itemPrice = safeNum(item.price);
             const itemOldPrice = safeNum(item.oldPrice);
@@ -328,7 +336,7 @@ async function loadRelatedProducts(currentId, categorySlug, isFallback){
     }catch(e){ console.error("Related products error", e); }
 }
 
-// ===== POPSTATE FOR BACK/FORWARD =====
+// ===== POPSTATE =====
 window.addEventListener('popstate', (event) => {
     const slug = event.state?.slug || getSlugFromURL();
     if(slug) loadProductBySlug(slug, false);
