@@ -348,7 +348,7 @@ html, body {
     <div class="grid" id="sellerProductGrid"></div>
     <button id="seeMoreBtn" class="see-more-btn" style="display:none;" onclick="loadMore()">See More</button>
 
-    <script type="module">
+<script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import {
   getFirestore,
@@ -357,26 +357,57 @@ html, body {
   collection,
   query,
   where,
-  getDocs
+  getDocs,
+  limit
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const db = getFirestore(initializeApp({ apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket" }));
-        const username = decodeURIComponent(
-    location.search.startsWith("?@")
-        ? location.search.slice(2)
-        : ""
-);
+
+        // ===== FB PROOF USERNAME GETTER =====
+        function getUsernameFromURL(){
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // 1. Normal:?@chainapaikari
+            let user = urlParams.get("@");
+            if(user) return decodeURIComponent(user.trim());
+
+            // 2. FB Mয়লা:?%40chainapaikari=&fbclid=xyz
+            for(const [key, value] of urlParams.entries()){
+                if(key!== 'fbclid' && key!== 'utm_source'){
+                    let cleanKey = decodeURIComponent(key.trim()); // %40 কে @ বানাবে
+                    if(cleanKey.startsWith('@')){
+                        return cleanKey.substring(1); // @ বাদ দিয়ে শুধু নাম
+                    }
+                }
+            }
+
+            // 3. Last backup: URL থেকে সরাসরি
+            const raw = window.location.search;
+            if(raw.includes('@') || raw.includes('%40')){
+                return decodeURIComponent(raw.replace('?', '').split('&')[0].replace('@','').replace('%40',''));
+            }
+
+            return null;
+        }
+
+        const username = getUsernameFromURL();
+        // ===== END =====
+
         let allProducts = [];
         let filteredProducts = [];
         let displayCount = 100;
 
         async function loadProfile() {
 
-    if (!username) return;
+    if (!username) {
+        document.getElementById("shopName").innerText = "Shop Not Found";
+        return;
+    }
 
     const userQuery = query(
         collection(db, "users"),
-        where("username", "==", username)
+        where("username", "==", username),
+        limit(1)
     );
 
     const userSnap = await getDocs(userQuery);
@@ -414,7 +445,7 @@ html, body {
 
     allProducts = productSnap.docs.map(doc => ({
         id: doc.id,
-        ...doc.data()
+       ...doc.data()
     }));
 
     filteredProducts = allProducts;
@@ -423,9 +454,9 @@ html, body {
 
         window.handleSearch = () => {
             const term = document.getElementById('pSearch').value.toLowerCase().trim();
-            filteredProducts = allProducts.filter(p => 
-                p.name?.toLowerCase().includes(term) || 
-                (Array.isArray(p.keywords) ? p.keywords.some(k => k.toLowerCase().includes(term)) : p.keywords?.toLowerCase().includes(term))
+            filteredProducts = allProducts.filter(p =>
+                p.name?.toLowerCase().includes(term) ||
+                (Array.isArray(p.keywords)? p.keywords.some(k => k.toLowerCase().includes(term)) : p.keywords?.toLowerCase().includes(term))
             );
             displayCount = 100;
             render();
@@ -440,11 +471,11 @@ html, body {
             const grid = document.getElementById('sellerProductGrid');
             const btn = document.getElementById('seeMoreBtn');
             const dataToDisplay = filteredProducts.slice(0, displayCount);
-            
-            grid.innerHTML = dataToDisplay.length ? dataToDisplay.map(p => `
+
+            grid.innerHTML = dataToDisplay.length? dataToDisplay.map(p => `
               <a href="${
     p.slug
-        ? `https://ghotimarket.com/product?${p.slug}`
+       ? `https://ghotimarket.com/product?${p.slug}`
         : `https://ghotimarket.com/product?id=${p.id}`
 }" class="p-card">
                     <div class="img-box"><img src="${p.images?.[0] || ''}" alt="${p.name}"></div>
@@ -455,7 +486,7 @@ html, body {
 
     ${
         p.oldPrice && Number(p.oldPrice) > Number(p.price)
-        ? `
+       ? `
         <span class="old-price">৳${p.oldPrice}</span>
 
         <span class="discount-badge">
@@ -473,8 +504,8 @@ html, body {
                     </div>
                 </a>
             `).join('') : '<p style="text-align:center; grid-column:1/-1; padding:40px;">😔 কোনো পণ্য পাওয়া যায়নি!</p>';
-            
-            btn.style.display = (displayCount < filteredProducts.length) ? 'block' : 'none';
+
+            btn.style.display = (displayCount < filteredProducts.length)? 'block' : 'none';
         }
 
         loadProfile();
