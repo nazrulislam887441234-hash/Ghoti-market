@@ -148,6 +148,7 @@ input:focus,textarea:focus{outline:none;border-color:var(--orange);}
   <button class="btn" id="confirmBtn">Confirm Order</button>
 </div>
 
+<!-- Confirm Popup -->
 <div id="confirmPopup" class="popup">
   <div class="popup-box">
     <i class="fas fa-shopping-bag" style="color:var(--orange);"></i>
@@ -159,6 +160,7 @@ input:focus,textarea:focus{outline:none;border-color:var(--orange);}
   </div>
 </div>
 
+<!-- Success Popup -->
 <div id="successPopup" class="popup">
   <div class="popup-box">
     <i class="fas fa-check-circle" style="color:var(--green);"></i>
@@ -197,62 +199,93 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ===== FB PROOF SLUG GETTER =====
-function getSlugFromURL(){
+function getSlugFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
-    let slug = urlParams.get("product-slug") || urlParams.get("slug");
 
-    for(const [key, value] of urlParams.entries()){
-        if(key!== 'fbclid' && key!== 'utm_source' && value === ''){
+    let slug = urlParams.get("product-slug");
+    if (slug) return decodeURIComponent(slug.trim());
+
+    for (const [key, value] of urlParams.entries()) {
+        if (
+            key !== "fbclid" &&
+            key !== "utm_source" &&
+            key !== "utm_medium" &&
+            value === ""
+        ) {
             return decodeURIComponent(key.trim());
         }
     }
-    if(window.location.search.startsWith('?') && window.location.search.length > 1){
-        const raw = window.location.search.substring(1).split('&')[0];
-        if(raw &&!raw.includes('=') &&!raw.startsWith('fbclid')){
+
+    if (window.location.search.startsWith("?")) {
+        const raw = window.location.search.substring(1).split("&")[0];
+        if (
+            raw &&
+            !raw.includes("=") &&
+            !raw.startsWith("fbclid")
+        ) {
             return decodeURIComponent(raw.trim());
         }
     }
-    return slug? decodeURIComponent(slug.trim()) : null;
+
+    const parts = window.location.pathname.split("/");
+    const last = parts[parts.length - 1];
+
+    if (last && last !== "order.html") {
+        return decodeURIComponent(last);
+    }
+
+    if (window.location.hash) {
+        return decodeURIComponent(window.location.hash.substring(1));
+    }
+
+    return null;
 }
 
-const productSlug = getSlugFromURL();
+const slug = getSlugFromURL();
 let product = null;
 let quantity = 1;
 let deliveryCharge = 120;
 let isSubmitting = false;
 
-async function loadProduct(){
-  if(!productSlug){
-    showNotFound();
-    return;
-  }
+async function loadProduct() {
 
-  try{
-    const q = query(collection(db,"products"), where("slug","==",productSlug), limit(1));
+    const slug = getSlugFromURL();
+
+    if (!slug) {
+        showNotFound();
+        return;
+    }
+
+    const q = query(
+        collection(db, "products"),
+        where("slug", "==", slug),
+        limit(1)
+    );
+
     const result = await getDocs(q);
 
-    if(result.empty){
-      showNotFound();
-      return;
+    if (result.empty) {
+        showNotFound();
+        return;
     }
 
     const snap = result.docs[0];
-    product = { id: snap.id,...snap.data() };
 
-    document.getElementById('pImage').src = product.images?.[0] || '';
-    document.getElementById('pName').innerText = product.name;
-    document.getElementById('pPrice').innerText = '৳' + product.price;
-    document.getElementById('pShop').innerText = product.shopName || 'GHOTI Seller';
-    document.getElementById('pStock').innerText = product.stock? `স্টকে আছে: ${product.stock} পিস` : '';
+    product = {
+        id: snap.id,
+        ...snap.data()
+    };
 
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('orderForm').style.display = 'block';
-    updateSummary();
-  }catch(e){
-    console.error(e);
-    showNotFound();
-  }
+
+  document.getElementById('pImage').src = product.images?.[0] || '';
+  document.getElementById('pName').innerText = product.name;
+  document.getElementById('pPrice').innerText = '৳' + product.price;
+  document.getElementById('pShop').innerText = product.shopName || 'GHOTI Seller';
+  document.getElementById('pStock').innerText = product.stock? `স্টকে আছে: ${product.stock} পিস` : '';
+
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('orderForm').style.display = 'block';
+  updateSummary();
 }
 
 function showNotFound(){
@@ -315,6 +348,7 @@ function validate(){
   else document.getElementById('locationError').style.display='none';
 
   if(quantity < 1){ valid=false; }
+
   return valid;
 }
 
@@ -341,7 +375,6 @@ document.getElementById('finalConfirm').onclick = async () => {
   const orderData = {
     orderTrackId,
     productId: product.id,
-    productSlug: product.slug,
     sellerId: product.sellerId,
     shopName: product.shopName,
     productName: product.name,
