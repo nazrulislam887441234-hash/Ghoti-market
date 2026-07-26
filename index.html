@@ -67,6 +67,15 @@
 <meta property="twitter:title" content="Ghoti Market | বাংলাদেশের শ্রেষ্ঠ অনলাইন মার্কেটপ্লেস">
 <meta property="twitter:description" content="ঘোটি মার্কেট - বিশ্বস্ত বিক্রেতাদের কাছ থেকে সেরা দামে পণ্য কিনুন।">
 <meta property="twitter:image" content="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P25N2WYNED"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P25N2WYNED');
+</script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -539,7 +548,7 @@ bannerSnap.docs.map(d => {
 
             const catSnap = await getDocs(collection(db, "categories"));
             allCategories = catSnap.docs.map(d => ({ id: d.id,...d.data() }));
-            document.getElementById('category-grid').innerHTML = shuffle([...allCategories]).slice(0, 10).map(cat => `<a href="https://ghotimarket.com/category.html?slug=${cat.slug}" class="category-card fade-up"><div class="cat-img-box"><img src="${cat.image}" alt="${cat.categoryName}" loading="lazy"></div><div class="cat-name">${cat.categoryName}</div></a>`).join('');
+            document.getElementById('category-grid').innerHTML = shuffle([...allCategories]).slice(0, 20).map(cat => `<a href="https://ghotimarket.com/category.html?slug=${cat.slug}" class="category-card fade-up"><div class="cat-img-box"><img src="${cat.image}" alt="${cat.categoryName}" loading="lazy"></div><div class="cat-name">${cat.categoryName}</div></a>`).join('');
             updateProgress(70);
 
             const shopSnap = await getDocs(collection(db, "users"));
