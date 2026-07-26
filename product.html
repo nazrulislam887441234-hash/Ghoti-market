@@ -257,29 +257,43 @@ function renderProduct(p){
     }
 
     const shopLink = document.getElementById("pShopLink");
-    const sellerId = safe(p.sellerId);
-    shopLink.href = sellerId? `profile.html?sellerId=${sellerId}` : '#';
-    document.getElementById("pShopName").innerText = safe(p.shopName, 'Unknown Shop');
+const sellerId = safe(p.sellerId);
 
-    if(sellerId){
-        getDoc(doc(db, "users", sellerId)).then(userSnap=>{
-            if(userSnap.exists()){
-                const user = userSnap.data();
-                const logoImg = document.getElementById("pShopLogoImg");
-                if(user.shopLogo){
-                    logoImg.src = user.shopLogo;
-                    logoImg.onerror = () => hide(logoImg);
-                    show(logoImg);
-                }else hide(logoImg);
-                if(user.verified === true || user.verified === "true"){
-                    show(document.getElementById("verifiedBadge"));
-                }else hide(document.getElementById("verifiedBadge"));
+document.getElementById("pShopName").innerText = safe(p.shopName, "Unknown Shop");
+
+if (sellerId) {
+    getDoc(doc(db, "users", sellerId)).then(userSnap => {
+        if (userSnap.exists()) {
+            const user = userSnap.data();
+
+            // Username থাকলে username URL ব্যবহার করবে
+            if (user.username) {
+                shopLink.href = `https://ghotimarket.com/seller?@${encodeURIComponent(user.username)}`;
+            } else {
+                shopLink.href = `https://ghotimarket.com/profile?sellerId=${sellerId}`;
             }
-        }).catch(()=>{});
-    }else{
-        hide(document.getElementById("pShopLogoImg"));
-        hide(document.getElementById("verifiedBadge"));
-    }
+
+            const logoImg = document.getElementById("pShopLogoImg");
+            if (user.shopLogo) {
+                logoImg.src = user.shopLogo;
+                logoImg.onerror = () => hide(logoImg);
+                show(logoImg);
+            } else {
+                hide(logoImg);
+            }
+
+            if (user.verified === true || user.verified === "true") {
+                show(document.getElementById("verifiedBadge"));
+            } else {
+                hide(document.getElementById("verifiedBadge"));
+            }
+        }
+    }).catch(console.error);
+} else {
+    shopLink.href = "#";
+    hide(document.getElementById("pShopLogoImg"));
+    hide(document.getElementById("verifiedBadge"));
+}
 
     const slider = document.getElementById("imgSlider");
     const images = Array.isArray(p.images)? p.images : [];
