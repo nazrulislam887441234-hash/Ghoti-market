@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="metaTitle">Seller Profile | Ghoti Market</title>
-    <!-- SEO & Social Meta -->
     <meta name="description" content="Ghoti Market Seller Profile">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    
+
     <link rel="icon" type="image/png" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -16,60 +15,61 @@
         :root { --primary: #0f172a; --accent: #f97316; --accent-light: #fb923c; --bg: #f8fafc; --glass: rgba(255, 255, 255, 0.85); --shadow: 0 8px 32px rgba(0,0,0,0.05); }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Hind Siliguri', sans-serif; background: #f1f5f9; margin: 0; padding-bottom: 40px; color: var(--primary); overflow-x: hidden; }
-        
-        .header { position: sticky; top: 0; z-index: 1000; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(15px); padding: 12px 15px; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .back-btn { color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; background: rgba(255,255,255,0.1); }
-        
-        .profile-card { background: var(--glass); backdrop-filter: blur(10px); border-radius: 0 0 30px 30px; box-shadow: var(--shadow); overflow: hidden; margin-bottom: 20px; }
-        .banner { width: 100%; height: 200px; background: #cbd5e1; object-fit: cover; }
-        .profile-content { text-align: center; margin-top: -60px; padding: 0 20px 25px; }
-        .logo-box { width: 110px; height: 110px; background: white; border-radius: 50%; margin: 0 auto 15px; border: 5px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); overflow: hidden; position: relative; }
-        .logo-box img { width: 100%; height: 100%; object-fit: cover; }
-        .shop-name { font-size: 26px; font-weight: 800; margin: 0; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .verified { color: #1877F2; font-size: 18px; }
 
-        .stats-card { background: white; border-radius: 20px; padding: 20px; margin: 20px 15px; display: flex; align-items: center; gap: 20px; border: 1px solid #e2e8f0; }
-        .rating-big h2 { font-size: 48px; margin: 0; color: var(--primary); }
-        .stars-row { color: var(--accent); font-size: 14px; margin: 5px 0; }
-        .progress-stack { flex: 1; }
-        .progress-row { display: flex; align-items: center; gap: 10px; font-size: 12px; margin-bottom: 4px; }
-        .bar-bg { flex: 1; height: 6px; background: #e2e8f0; border-radius: 10px; overflow: hidden; }
-        .bar-fill { height: 100%; background: var(--accent); transition: 0.8s ease; }
+       .header { position: sticky; top: 0; z-index: 1000; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(15px); padding: 12px 15px; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+       .back-btn { color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; background: rgba(255,255,255,0.1); }
 
-        .btn-group { padding: 0 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn { padding: 14px; border: none; border-radius: 15px; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; font-size: 14px; }
-        .btn-primary { background: var(--primary); color: white; grid-column: span 2; margin-bottom: 5px; }
-        .btn-outline { background: white; color: var(--primary); border: 1.5px solid #e2e8f0; }
+       .profile-card { background: var(--glass); backdrop-filter: blur(10px); border-radius: 0 0 30px 30px; box-shadow: var(--shadow); overflow: hidden; margin-bottom: 20px; }
+       .banner { width: 100%; height: 200px; background: #cbd5e1; object-fit: cover; }
+       .profile-content { text-align: center; margin-top: -60px; padding: 0 20px 25px; }
+       .logo-box { width: 110px; height: 110px; background: white; border-radius: 50%; margin: 0 auto 15px; border: 5px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); overflow: hidden; position: relative; }
+       .logo-box img { width: 100%; height: 100%; object-fit: cover; }
+       .shop-name { font-size: 26px; font-weight: 800; margin: 0; display: flex; align-items: center; justify-content: center; gap: 8px; }
+       .verified { color: #1877F2; font-size: 18px; }
 
-        .search-area { padding: 15px; position: sticky; top: 65px; z-index: 99; background: #f1f5f9; }
-        .search-bar { width: 100%; padding: 15px 25px; border-radius: 50px; border: 2px solid #e2e8f0; outline: none; box-shadow: 0 4px 12px rgba(0,0,0,0.03); font-size: 16px; }
+       .stats-card { background: white; border-radius: 20px; padding: 20px; margin: 20px 15px; display: flex; align-items: center; gap: 20px; border: 1px solid #e2e8f0; }
+       .rating-big h2 { font-size: 48px; margin: 0; color: var(--primary); }
+       .stars-row { color: var(--accent); font-size: 14px; margin: 5px 0; }
+       .progress-stack { flex: 1; }
+       .progress-row { display: flex; align-items: center; gap: 10px; font-size: 12px; margin-bottom: 4px; }
+       .bar-bg { flex: 1; height: 6px; background: #e2e8f0; border-radius: 10px; overflow: hidden; }
+       .bar-fill { height: 100%; background: var(--accent); transition: 0.8s ease; }
 
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; }
-        @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+       .btn-group { padding: 0 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+       .btn { padding: 14px; border: none; border-radius: 15px; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; font-size: 14px; }
+       .btn-primary { background: var(--primary); color: white; grid-column: span 2; margin-bottom: 5px; }
+       .btn-outline { background: white; color: var(--primary); border: 1.5px solid #e2e8f0; }
+       .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        .p-card { background: white; border-radius: 20px; overflow: hidden; border: 1px solid #e2e8f0; text-decoration: none; color: inherit; position: relative; transition: transform 0.2s; }
-        .p-card:active { transform: scale(0.97); }
-        .p-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; background: #f8fafc; }
-        .p-discount { position: absolute; top: 10px; left: 10px; background: #ef4444; color: white; font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 8px; z-index: 1; }
-        .p-info { padding: 12px; }
-        .p-name { font-size: 14px; font-weight: 600; height: 40px; overflow: hidden; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-        .p-price { color: #16a34a; font-weight: 800; font-size: 18px; }
-        .p-old { color: #94a3b8; text-decoration: line-through; font-size: 13px; margin-left: 5px; }
+       .search-area { padding: 15px; position: sticky; top: 65px; z-index: 99; background: #f1f5f9; }
+       .search-bar { width: 100%; padding: 15px 25px; border-radius: 50px; border: 2px solid #e2e8f0; outline: none; box-shadow: 0 4px 12px rgba(0,0,0,0.03); font-size: 16px; }
 
-        /* Modal & UI Elements */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
-        .modal-box { background: white; width: 100%; max-width: 450px; border-radius: 30px; padding: 30px; position: relative; animation: pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+       .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; }
+        @media (min-width: 768px) {.grid { grid-template-columns: repeat(4, 1fr); } }
+
+       .p-card { background: white; border-radius: 20px; overflow: hidden; border: 1px solid #e2e8f0; text-decoration: none; color: inherit; position: relative; transition: transform 0.2s; }
+       .p-card:active { transform: scale(0.97); }
+       .p-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; background: #f8fafc; }
+       .p-discount { position: absolute; top: 10px; left: 10px; background: #ef4444; color: white; font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 8px; z-index: 1; }
+       .p-info { padding: 12px; }
+       .p-name { font-size: 14px; font-weight: 600; height: 40px; overflow: hidden; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+       .p-price { color: #16a34a; font-weight: 800; font-size: 18px; }
+       .p-old { color: #94a3b8; text-decoration: line-through; font-size: 13px; margin-left: 5px; }
+
+       .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+       .modal-box { background: white; width: 100%; max-width: 450px; border-radius: 30px; padding: 30px; position: relative; animation: pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
         @keyframes pop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        
-        .star-input { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; }
-        .star-input i { font-size: 32px; color: #e2e8f0; cursor: pointer; }
-        .star-input i.active { color: var(--accent); }
-        .input-field { width: 100%; padding: 15px; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 15px; outline: none; font-family: inherit; font-size: 15px; }
-        
-        .skeleton { background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; }
+
+       .star-input { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; }
+       .star-input i { font-size: 32px; color: #e2e8f0; cursor: pointer; }
+       .star-input i.active { color: var(--accent); }
+       .input-field { width: 100%; padding: 15px; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 15px; outline: none; font-family: inherit; font-size: 15px; }
+
+       .skeleton { background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; }
         @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        
+
         #errorPage { display: none; text-align: center; padding: 100px 20px; }
+       .debug-info { font-size: 12px; color: #64748b; text-align: center; margin: 10px 0; }
     </style>
 </head>
 <body>
@@ -104,9 +104,7 @@
                         <div class="stars-row" id="avgStars"></div>
                         <small id="totalReviewsCount">0 রিভিউ</small>
                     </div>
-                    <div class="progress-stack" id="ratingBreakdown">
-                        <!-- Bars inject here -->
-                    </div>
+                    <div class="progress-stack" id="ratingBreakdown"></div>
                 </div>
 
                 <div class="btn-group">
@@ -126,26 +124,25 @@
         <div class="search-area">
             <input type="text" id="pSearch" class="search-bar" placeholder="এই শপের পণ্য খুঁজুন...">
         </div>
+        <div class="debug-info" id="debugInfo"></div>
 
         <div class="grid" id="productGrid">
-            <!-- Products inject here -->
+            <div class="p-card skeleton" style="height: 250px;"></div>
+            <div class="p-card skeleton" style="height: 250px;"></div>
         </div>
     </div>
 
-    <!-- Review Modal -->
     <div class="modal" id="reviewModal">
         <div class="modal-box">
             <h3 id="modalTitle" style="text-align:center; margin:0 0 20px 0;">আপনার মতামত দিন</h3>
             <div class="star-input" id="starInput">
-                <i class="fas fa-star" data-v="1"></i>
-                <i class="fas fa-star" data-v="2"></i>
-                <i class="fas fa-star" data-v="3"></i>
-                <i class="fas fa-star" data-v="4"></i>
+                <i class="fas fa-star" data-v="1"></i><i class="fas fa-star" data-v="2"></i>
+                <i class="fas fa-star" data-v="3"></i><i class="fas fa-star" data-v="4"></i>
                 <i class="fas fa-star" data-v="5"></i>
             </div>
             <input type="text" id="revTitle" class="input-field" placeholder="টাইটেল (যেমন: দারুণ সার্ভিস)">
             <textarea id="revMsg" class="input-field" rows="4" placeholder="আপনার অভিজ্ঞতা লিখুন (কমপক্ষে ১০ অক্ষর)"></textarea>
-            
+
             <button class="btn btn-primary" id="submitReview">রিভিউ জমা দিন</button>
             <div id="deleteZone"></div>
             <button class="btn" style="margin-top:10px; width:100%; color: #64748b;" id="closeModal">বন্ধ করুন</button>
@@ -155,9 +152,9 @@
     <script type="module">
         import { auth, db } from "./firebase.js";
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { 
-            collection, query, where, getDocs, doc, onSnapshot, 
-            addDoc, updateDoc, deleteDoc, serverTimestamp, limit, orderBy 
+        import {
+            collection, query, where, getDocs, doc, onSnapshot,
+            addDoc, updateDoc, deleteDoc, serverTimestamp, limit, orderBy
         } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         let currentSellerId = null;
@@ -166,8 +163,13 @@
         let existingReviewId = null;
         let selectedRating = 0;
         let allProducts = [];
+        let productUnsub = null; // for cleanup
+        let reviewUnsub = null;
+        let searchDebounce = null;
 
-        // 1. URL parsing
+        const log = (msg, data) => console.log(`[SellerPage] ${msg}`, data || '');
+        const showDebug = (msg) => document.getElementById('debugInfo').innerText = msg;
+
         function getUsername() {
             const urlParams = new URLSearchParams(window.location.search);
             const userParam = urlParams.get('username');
@@ -179,29 +181,40 @@
 
         const username = getUsername();
 
-        // 2. Load Seller Data
         async function initSeller() {
-            if (!username) return show404();
+            try {
+                log("Init started with username:", username);
+                if (!username) return show404();
 
-            const q = query(collection(db, "users"), where("username", "==", username), limit(1));
-            const snap = await getDocs(q);
-            
-            if (snap.empty) return show404();
+                const q = query(collection(db, "users"), where("username", "==", username), limit(1));
+                const snap = await getDocs(q);
 
-            const userDoc = snap.docs[0];
-            currentSellerId = userDoc.id;
-            currentSellerData = userDoc.data();
-            
-            renderSellerUI();
-            listenProducts();
-            listenReviews();
+                if (snap.empty) {
+                    log("Seller not found in users collection");
+                    return show404();
+                }
+
+                const userDoc = snap.docs[0];
+                currentSellerId = userDoc.id; // IMPORTANT: This must match product.sellerId
+                currentSellerData = userDoc.data();
+
+                log("Seller loaded", {id: currentSellerId, data: currentSellerData});
+                showDebug(`Seller ID: ${currentSellerId}`);
+
+                renderSellerUI();
+                listenProducts();
+                listenReviews();
+            } catch (error) {
+                console.error("initSeller error:", error);
+                showDebug("Error loading seller: " + error.message);
+            }
         }
 
         function renderSellerUI() {
-            document.getElementById('shopName').innerText = currentSellerData.shopName;
+            document.getElementById('shopName').innerText = currentSellerData.shopName || 'Unknown Shop';
             document.title = `${currentSellerData.shopName} | Ghoti Market`;
             document.getElementById('metaTitle').innerText = `${currentSellerData.shopName} | Ghoti Market`;
-            
+
             if (currentSellerData.shopLogo) document.getElementById('shopLogo').src = currentSellerData.shopLogo;
             if (currentSellerData.shopBanner) {
                 const b = document.getElementById('shopBanner');
@@ -209,19 +222,45 @@
                 b.classList.remove('skeleton');
             }
             if (currentSellerData.verified) document.getElementById('verifiedBadge').style.display = 'inline';
-            
+
             document.getElementById('viewAllReviewsBtn').onclick = () => {
                 window.location.href = `seller-review.html?@${username}`;
             };
         }
 
-        // 3. Products Logic (Realtime)
         function listenProducts() {
-            const q = query(collection(db, "products"), where("sellerId", "==", currentSellerId), where("active", "==", true), orderBy("createdAt", "desc"));
-            onSnapshot(q, (snap) => {
-                allProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                renderProducts(allProducts);
-            });
+            if (productUnsub) productUnsub(); // cleanup old listener
+
+            log("Listening products for sellerId:", currentSellerId);
+            showDebug("Loading products...");
+
+            // CRITICAL: This query needs a composite index
+            const q = query(
+                collection(db, "products"),
+                where("sellerId", "==", currentSellerId),
+                where("active", "in", [true, "true"]), // Handle both boolean and string
+                orderBy("createdAt", "desc")
+            );
+
+            productUnsub = onSnapshot(q,
+                (snap) => {
+                    log(`Products snapshot: ${snap.size} docs`);
+                    allProducts = snap.docs.map(d => ({
+                        id: d.id,
+                       ...d.data(),
+                        createdAt: d.data().createdAt?.toMillis?.() || 0 // fallback for sorting
+                    }));
+                    renderProducts(allProducts);
+                    showDebug(`${snap.size} টি পণ্য পাওয়া গেছে`);
+                },
+                (error) => {
+                    console.error("Product listener error:", error);
+                    showDebug("Error: " + error.message);
+                    if (error.code === 'failed-precondition') {
+                        alert("Firebase Index লাগবে! Console এ লিংক দেখুন।\nError: " + error.message);
+                    }
+                }
+            );
         }
 
         function renderProducts(products) {
@@ -232,16 +271,18 @@
             }
 
             grid.innerHTML = products.map(p => {
-                const discount = p.oldPrice > p.price ? Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100) : 0;
+                const price = Number(p.price) || 0;
+                const oldPrice = Number(p.oldPrice) || 0;
+                const discount = oldPrice > price? Math.round(((oldPrice - price) / oldPrice) * 100) : 0;
                 return `
                     <a href="product.html?id=${p.id}" class="p-card">
-                        ${discount > 0 ? `<div class="p-discount">${discount}% ছাড়</div>` : ''}
-                        <img src="${p.images?.[0] || 'https://i.ibb.co/6P0x9Yy/no-image.png'}" class="p-img" loading="lazy">
+                        ${discount > 0? `<div class="p-discount">${discount}% ছাড়</div>` : ''}
+                        <img src="${p.images?.[0] || 'https://i.ibb.co/6P0x9Yy/no-image.png'}" class="p-img" loading="lazy" onerror="this.src='https://i.ibb.co/6P0x9Yy/no-image.png'">
                         <div class="p-info">
-                            <div class="p-name">${p.name}</div>
+                            <div class="p-name">${p.name || 'No Name'}</div>
                             <div>
-                                <span class="p-price">৳${p.price}</span>
-                                ${p.oldPrice > p.price ? `<span class="p-old">৳${p.oldPrice}</span>` : ''}
+                                <span class="p-price">৳${price}</span>
+                                ${oldPrice > price? `<span class="p-old">৳${oldPrice}</span>` : ''}
                             </div>
                         </div>
                     </a>
@@ -249,60 +290,50 @@
             }).join('');
         }
 
-        // 4. Search Implementation
         document.getElementById('pSearch').oninput = (e) => {
-            const val = e.target.value.toLowerCase();
-            const filtered = allProducts.filter(p => p.name.toLowerCase().includes(val));
-            renderProducts(filtered);
+            clearTimeout(searchDebounce);
+            searchDebounce = setTimeout(() => {
+                const val = e.target.value.toLowerCase().trim();
+                const filtered = allProducts.filter(p => (p.name || '').toLowerCase().includes(val));
+                renderProducts(filtered);
+            }, 300);
         };
 
-        // 5. Review Analytics (Realtime)
         function listenReviews() {
+            if (reviewUnsub) reviewUnsub();
             const q = query(collection(db, "reviews"), where("sellerId", "==", currentSellerId));
-            onSnapshot(q, (snap) => {
+            reviewUnsub = onSnapshot(q, (snap) => {
                 let total = snap.size;
                 let sum = 0;
                 let counts = {5:0, 4:0, 3:0, 2:0, 1:0};
 
                 snap.forEach(d => {
-                    const r = d.data().rating;
+                    const r = Number(d.data().rating) || 0;
                     sum += r;
-                    counts[r]++;
+                    if(counts[r]!== undefined) counts[r]++;
                 });
 
-                const avg = total > 0 ? (sum / total).toFixed(1) : "0.0";
+                const avg = total > 0? (sum / total).toFixed(1) : "0.0";
                 document.getElementById('avgRating').innerText = avg;
                 document.getElementById('totalReviewsCount').innerText = `${total} রিভিউ`;
 
-                // Render Big Stars
                 let starsHtml = "";
-                for(let i=1; i<=5; i++) {
-                    starsHtml += `<i class="${i <= Math.round(avg) ? 'fas' : 'far'} fa-star"></i>`;
-                }
+                for(let i=1; i<=5; i++) starsHtml += `<i class="${i <= Math.round(avg)? 'fas' : 'far'} fa-star"></i>`;
                 document.getElementById('avgStars').innerHTML = starsHtml;
 
-                // Render Bars
                 let barsHtml = "";
                 [5,4,3,2,1].forEach(num => {
-                    const percent = total > 0 ? (counts[num] / total) * 100 : 0;
-                    barsHtml += `
-                        <div class="progress-row">
-                            <span>${num}★</span>
-                            <div class="bar-bg"><div class="bar-fill" style="width:${percent}%"></div></div>
-                            <span style="width:20px; text-align:right;">${counts[num]}</span>
-                        </div>
-                    `;
+                    const percent = total > 0? (counts[num] / total) * 100 : 0;
+                    barsHtml += `<div class="progress-row"><span>${num}★</span><div class="bar-bg"><div class="bar-fill" style="width:${percent}%"></div></div><span style="width:20px; text-align:right;">${counts[num]}</span></div>`;
                 });
                 document.getElementById('ratingBreakdown').innerHTML = barsHtml;
-            });
+            }, (err) => console.error("Review listener error:", err));
         }
 
-        // 6. Auth Flow & Review Modal Logic
         onAuthStateChanged(auth, async (user) => {
             currentUser = user;
             const params = new URLSearchParams(window.location.search);
             if (user && params.get('triggerReview') === "true") {
-                // Remove parameter from URL without refresh
                 const newUrl = window.location.pathname + window.location.search.replace(/[?&]triggerReview=true/, '');
                 window.history.replaceState({}, '', newUrl);
                 openReviewModal();
@@ -320,22 +351,24 @@
 
         async function openReviewModal() {
             document.getElementById('reviewModal').style.display = 'flex';
-            const q = query(collection(db, "reviews"), where("sellerId", "==", currentSellerId), where("userUid", "==", currentUser.uid));
-            const snap = await getDocs(q);
+            try {
+                const q = query(collection(db, "reviews"), where("sellerId", "==", currentSellerId), where("userUid", "==", currentUser.uid));
+                const snap = await getDocs(q);
 
-            if (!snap.empty) {
-                const data = snap.docs[0].data();
-                existingReviewId = snap.docs[0].id;
-                document.getElementById('modalTitle').innerText = "আপনার রিভিউ এডিট করুন";
-                document.getElementById('revTitle').value = data.title;
-                document.getElementById('revMsg').value = data.message;
-                setStars(data.rating);
-                document.getElementById('submitReview').innerText = "আপডেট করুন";
-                document.getElementById('deleteZone').innerHTML = `<button id="delBtn" class="btn" style="color:#ef4444; width:100%; margin-top:10px; background:#fef2f2;">রিভিউ ডিলিট করুন</button>`;
-                document.getElementById('delBtn').onclick = deleteReview;
-            } else {
-                resetModal();
-            }
+                if (!snap.empty) {
+                    const data = snap.docs[0].data();
+                    existingReviewId = snap.docs[0].id;
+                    document.getElementById('modalTitle').innerText = "আপনার রিভিউ এডিট করুন";
+                    document.getElementById('revTitle').value = data.title || '';
+                    document.getElementById('revMsg').value = data.message || '';
+                    setStars(Number(data.rating) || 0);
+                    document.getElementById('submitReview').innerText = "আপডেট করুন";
+                    document.getElementById('deleteZone').innerHTML = `<button id="delBtn" class="btn" style="color:#ef4444; width:100%; margin-top:10px; background:#fef2f2;">রিভিউ ডিলিট করুন</button>`;
+                    document.getElementById('delBtn').onclick = deleteReview;
+                } else {
+                    resetModal();
+                }
+            } catch (e) { console.error(e); }
         }
 
         function setStars(v) {
@@ -352,7 +385,7 @@
         document.getElementById('submitReview').onclick = async () => {
             const title = document.getElementById('revTitle').value.trim();
             const msg = document.getElementById('revMsg').value.trim();
-            
+
             if (selectedRating === 0) return alert("অনুগ্রহ করে রেটিং সিলেক্ট করুন");
             if (msg.length < 10) return alert("রিভিউ কমপক্ষে ১০ অক্ষরের হতে হবে");
 
@@ -363,8 +396,8 @@
             const payload = {
                 sellerId: currentSellerId,
                 userUid: currentUser.uid,
-                userName: currentUser.displayName,
-                userPhoto: currentUser.photoURL,
+                userName: currentUser.displayName || 'Anonymous',
+                userPhoto: currentUser.photoURL || '',
                 rating: selectedRating,
                 title,
                 message: msg,
