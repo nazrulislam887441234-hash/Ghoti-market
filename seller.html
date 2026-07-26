@@ -149,12 +149,13 @@
         </div>
     </div>
 
-    <script type="module">
+    
+            <script type="module">
         import { auth, db } from "./firebase.js";
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import {
             collection, query, where, getDocs, doc, onSnapshot,
-            addDoc, updateDoc, deleteDoc, serverTimestamp, limit, orderBy
+            addDoc, updateDoc, deleteDoc, serverTimestamp, limit
         } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         let currentSellerId = null;
@@ -163,55 +164,62 @@
         let existingReviewId = null;
         let selectedRating = 0;
         let allProducts = [];
-        let productUnsub = null; // for cleanup
+        let productUnsub = null;
         let reviewUnsub = null;
-        let searchDebounce = null;
 
         const log = (msg, data) => console.log(`[SellerPage] ${msg}`, data || '');
-        const showDebug = (msg) => document.getElementById('debugInfo').innerText = msg;
+        const getFallbackImage = () => 'https://i.ibb.co/6P0x9Yy/no-image.png';
 
         function getUsername() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const userParam = urlParams.get('username');
-            if (userParam) return userParam;
-            const path = window.location.search;
-            if (path.startsWith('?@')) return path.substring(2);
-            return null;
+            const search = window.location.search;
+            log("Raw URL search:", search);
+            if (!search) return null;
+
+            let username = null;
+            if (search.startsWith('?@')) {
+                username = search.substring(2);
+            } else {
+                const urlParams = new URLSearchParams(search);
+                username = urlParams.get('username');
+            }
+
+            if (username) {
+                username = decodeURIComponent(username);
+                const ampersandIndex = username.indexOf('&');
+                if (ampersandIndex!== -1) username = username.substring(0, ampersandIndex);
+            }
+
+            log("Parsed username:", username);
+            return username;
         }
 
         const username = getUsername();
 
         async function initSeller() {
             try {
-                log("Init started with username:", username);
                 if (!username) return show404();
 
                 const q = query(collection(db, "users"), where("username", "==", username), limit(1));
                 const snap = await getDocs(q);
 
-                if (snap.empty) {
-                    log("Seller not found in users collection");
-                    return show404();
-                }
+                if (snap.empty) return show404();
 
                 const userDoc = snap.docs[0];
-                currentSellerId = userDoc.id; // IMPORTANT: This must match product.sellerId
+                currentSellerId = userDoc.id;
                 currentSellerData = userDoc.data();
 
-                log("Seller loaded", {id: currentSellerId, data: currentSellerData});
-                showDebug(`Seller ID: ${currentSellerId}`);
+                log("Seller loaded", {id: currentSellerId, shopName: currentSellerData.shopName});
 
                 renderSellerUI();
                 listenProducts();
                 listenReviews();
             } catch (error) {
                 console.error("initSeller error:", error);
-                showDebug("Error loading seller: " + error.message);
             }
         }
 
         function renderSellerUI() {
-            document.getElementById('shopName').innerText = currentSellerData.shopName || 'Unknown Shop';
+            document.getElementById('shopName').innerText = currentSellerData.shopName || 'Shop';
             document.title = `${currentSellerData.shopName} | Ghoti Market`;
             document.getElementById('metaTitle').innerText = `${currentSellerData.shopName} | Ghoti Market`;
 
@@ -229,43 +237,47 @@
         }
 
         function listenProducts() {
-            if (productUnsub) productUnsub(); // cleanup old listener
+            if (productUnsub) productUnsub();
 
             log("Listening products for sellerId:", currentSellerId);
-            showDebug("Loading products...");
 
-            // CRITICAL: This query needs a composite index
-            const q = query(
-                collection(db, "products"),
-                where("sellerId", "==", currentSellerId),
-                where("active", "in", [true, "true"]), // Handle both boolean and string
-                orderBy("createdAt", "desc")
-            );
+            const qBase = query(collection(db, "products"), where("sellerId", "==", currentSellerId));
 
-            productUnsub = onSnapshot(q,
+            productUnsub = onSnapshot(qBase,
                 (snap) => {
                     log(`Products snapshot: ${snap.size} docs`);
-                    allProducts = snap.docs.map(d => ({
-                        id: d.id,
-                       ...d.data(),
-                        createdAt: d.data().createdAt?.toMillis?.() || 0 // fallback for sorting
-                    }));
+                    let products = [];
+
+                    snap.forEach(d => {
+                        const data = d.data();
+                        const isActive = data.active === true || data.active === "true" || data.active === 1;
+                        if (isActive) {
+                            products.push({
+                                id: d.id,
+                               ...data,
+                                _createdAt: data.createdAt?.toMillis?.() || data.createdAt || 0
+                            });
+                        }
+                    });
+
+                    const hasCreatedAt = products.some(p => p._createdAt > 0);
+                    if (hasCreatedAt) {
+                        products.sort((a, b) => b._createdAt - a._createdAt);
+                    }
+
+                    allProducts = products;
                     renderProducts(allProducts);
-                    showDebug(`${snap.size} টি পণ্য পাওয়া গেছে`);
                 },
                 (error) => {
                     console.error("Product listener error:", error);
-                    showDebug("Error: " + error.message);
-                    if (error.code === 'failed-precondition') {
-                        alert("Firebase Index লাগবে! Console এ লিংক দেখুন।\nError: " + error.message);
-                    }
+                    document.getElementById('productGrid').innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #ef4444;">পণ্য লোড করতে সমস্যা হয়েছে।</div>';
                 }
             );
         }
 
         function renderProducts(products) {
             const grid = document.getElementById('productGrid');
-            if (products.length === 0) {
+            if (!products || products.length === 0) {
                 grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #94a3b8;">এই শপে কোনো পণ্য নেই।</div>';
                 return;
             }
@@ -274,12 +286,16 @@
                 const price = Number(p.price) || 0;
                 const oldPrice = Number(p.oldPrice) || 0;
                 const discount = oldPrice > price? Math.round(((oldPrice - price) / oldPrice) * 100) : 0;
+                const imgSrc = p.images?.[0] || p.image || getFallbackImage();
+                const productName = p.name || p.title || 'Unnamed Product';
+                const productUrl = `product.html?id=${p.id}`;
+
                 return `
-                    <a href="product.html?id=${p.id}" class="p-card">
+                    <a href="${productUrl}" class="p-card">
                         ${discount > 0? `<div class="p-discount">${discount}% ছাড়</div>` : ''}
-                        <img src="${p.images?.[0] || 'https://i.ibb.co/6P0x9Yy/no-image.png'}" class="p-img" loading="lazy" onerror="this.src='https://i.ibb.co/6P0x9Yy/no-image.png'">
+                        <img src="${imgSrc}" class="p-img" loading="lazy" onerror="this.src='${getFallbackImage()}'">
                         <div class="p-info">
-                            <div class="p-name">${p.name || 'No Name'}</div>
+                            <div class="p-name">${productName}</div>
                             <div>
                                 <span class="p-price">৳${price}</span>
                                 ${oldPrice > price? `<span class="p-old">৳${oldPrice}</span>` : ''}
@@ -290,11 +306,16 @@
             }).join('');
         }
 
+        let searchTimeout;
         document.getElementById('pSearch').oninput = (e) => {
-            clearTimeout(searchDebounce);
-            searchDebounce = setTimeout(() => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
                 const val = e.target.value.toLowerCase().trim();
-                const filtered = allProducts.filter(p => (p.name || '').toLowerCase().includes(val));
+                if (!val) return renderProducts(allProducts);
+                const filtered = allProducts.filter(p => {
+                    const name = (p.name || p.title || '').toLowerCase();
+                    return name.includes(val);
+                });
                 renderProducts(filtered);
             }, 300);
         };
@@ -309,8 +330,10 @@
 
                 snap.forEach(d => {
                     const r = Number(d.data().rating) || 0;
-                    sum += r;
-                    if(counts[r]!== undefined) counts[r]++;
+                    if (r >= 1 && r <= 5) {
+                        sum += r;
+                        counts[r]++;
+                    }
                 });
 
                 const avg = total > 0? (sum / total).toFixed(1) : "0.0";
@@ -453,6 +476,6 @@
         };
 
         initSeller();
-    </script>
+            </script>
 </body>
 </html>
