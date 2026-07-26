@@ -3,238 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="metaTitle">Customer Reviews | Ghoti Market</title>
-    <link rel="icon" type="image/png" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
+    <title>Customer Reviews | Ghoti Market</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700;800&display=swap');
-        :root { --primary: #0f172a; --accent: #f97316; --glass: rgba(255,255,255,0.9); }
-        body { font-family: 'Hind Siliguri', sans-serif; background: #f8fafc; margin: 0; padding-bottom: 80px; }
-        
-        .native-bar { position: sticky; top: 0; z-index: 1000; background: var(--primary); padding: 12px 15px; display: flex; align-items: center; gap: 15px; color: white; }
-        .back-btn { color: white; font-size: 18px; text-decoration: none; }
-        
-        .header-card { background: white; padding: 20px; text-align: center; border-bottom: 1px solid #e2e8f0; }
-        .shop-logo { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid #f97316; margin-bottom: 10px; }
-        .shop-name { font-size: 20px; font-weight: 800; margin: 0; color: var(--primary); }
-        
-        .stats-section { padding: 20px; background: white; margin-bottom: 10px; }
-        .stats-row { display: flex; align-items: center; gap: 20px; }
-        .avg-big { text-align: center; min-width: 80px; }
-        .avg-big h1 { font-size: 48px; margin: 0; color: var(--primary); }
-        .breakdown { flex: 1; }
-        .b-row { display: flex; align-items: center; gap: 10px; font-size: 11px; margin-bottom: 4px; }
-        .b-bar { flex: 1; height: 6px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
-        .b-fill { height: 100%; background: #f97316; width: 0%; transition: 1s; }
-
-        .filters { padding: 15px; background: white; position: sticky; top: 55px; z-index: 900; display: flex; gap: 10px; border-bottom: 1px solid #eee; }
-        .search-box { flex: 1; padding: 10px 15px; border-radius: 10px; border: 1px solid #e2e8f0; outline: none; font-family: inherit; }
-        .sort-box { padding: 10px; border-radius: 10px; border: 1px solid #e2e8f0; background: white; font-family: inherit; }
-
-        .review-list { padding: 15px; }
-        .rev-card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; position: relative; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .rev-user { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-        .rev-user img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; }
-        .user-meta h4 { margin: 0; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 5px; }
-        .v-icon { color: #1877F2; font-size: 12px; }
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap');
+        body { font-family: 'Hind Siliguri', sans-serif; background: #f8fafc; margin: 0; padding-bottom: 30px; }
+        .header { background: #0f172a; color: white; padding: 15px; display: flex; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .back-btn { color: white; text-decoration: none; margin-right: 15px; }
+        .review-card { background: white; margin: 15px; padding: 20px; border-radius: 20px; border: 1px solid #e2e8f0; }
+        .user-info { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .user-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; background: #e2e8f0; }
+        .user-name { font-weight: 700; font-size: 15px; }
         .rev-date { font-size: 11px; color: #94a3b8; }
-        
-        .rev-stars { color: #f97316; font-size: 12px; margin-bottom: 8px; }
-        .rev-title { font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
-        .rev-msg { font-size: 14px; color: #475569; line-height: 1.6; }
-        
-        .edit-badge { position: absolute; top: 20px; right: 20px; background: #f1f5f9; padding: 5px 12px; border-radius: 20px; font-size: 11px; color: #64748b; font-weight: 700; cursor: pointer; }
-
-        .load-more { display: block; width: 200px; margin: 20px auto; padding: 12px; border: 2px solid #e2e8f0; border-radius: 50px; background: white; font-weight: 700; color: #64748b; cursor: pointer; }
-        
-        .skeleton { background: #eee; height: 100px; border-radius: 20px; margin-bottom: 15px; position: relative; overflow: hidden; }
-        .skeleton::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent); animation: blink 1.5s infinite; }
-        @keyframes blink { 0% { left: -100%; } 100% { left: 100%; } }
-
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 65px; background: white; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #64748b; text-decoration: none; font-size: 10px; }
+        .stars { color: #f97316; font-size: 12px; margin-bottom: 8px; }
+        .rev-title { font-weight: 800; font-size: 16px; margin-bottom: 5px; display: block; }
+        .rev-msg { color: #475569; font-size: 14px; line-height: 1.6; }
     </style>
 </head>
 <body>
-
-    <div class="native-bar">
-        <a href="#" onclick="history.back()" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-        <span style="font-weight:700;">কাস্টমার রিভিউ</span>
+    <div class="header">
+        <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <div style="font-weight:700;">কাস্টমার রিভিউ</div>
     </div>
 
-    <div class="header-card">
-        <img id="shopLogo" src="" class="shop-logo">
-        <h1 id="shopName" class="shop-name">লোড হচ্ছে...</h1>
-    </div>
-
-    <div class="stats-section">
-        <div class="stats-row">
-            <div class="avg-big">
-                <h1 id="avgRating">0.0</h1>
-                <div style="color:#f97316; font-size:12px;" id="avgStars"></div>
-                <div style="font-size:11px; color:#94a3b8; margin-top:5px;" id="totalCount">0 রিভিউ</div>
-            </div>
-            <div class="breakdown" id="ratingBreakdown"></div>
-        </div>
-    </div>
-
-    <div class="filters">
-        <input type="text" id="searchBox" class="search-box" placeholder="রিভিউ খুঁজুন...">
-        <select id="sortBox" class="sort-box">
-            <option value="newest">নতুন আগে</option>
-            <option value="highest">সর্বোচ্চ রেটিং</option>
-            <option value="lowest">সর্বনিম্ন রেটিং</option>
-            <option value="oldest">পুরানো আগে</option>
-        </select>
-    </div>
-
-    <div class="review-list" id="reviewList">
-        <div class="skeleton"></div>
-        <div class="skeleton"></div>
-    </div>
-
-    <button id="loadMoreBtn" class="load-more" style="display:none;">আরো লোড করুন</button>
-
-    <div class="bottom-nav">
-        <a href="https://ghotimarket.com" class="nav-item"><i class="fas fa-home"></i><span>Home</span></a>
-        <a href="#" class="nav-item"><i class="fas fa-headset"></i><span>Support</span></a>
-        <a href="#" class="nav-item"><i class="fas fa-user-plus"></i><span>Join</span></a>
-        <a href="#" class="nav-item"><i class="fas fa-shield-alt"></i><span>Privacy</span></a>
+    <div id="reviewsList">
+        <div style="text-align:center; padding:50px; color:#94a3b8;">লোডিং রিভিউ...</div>
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, query, where, getDocs, orderBy, limit, startAfter, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-        const firebaseConfig = { apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket" };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-
-        let currentSellerId = null;
-        let lastDoc = null;
-        let allLoadedReviews = [];
-        let currentUser = null;
+        import { db } from "./firebase.js";
+        import { collection, query, where, getDocs, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const urlParams = new URLSearchParams(window.location.search);
-        let username = "";
-        for(let [key, val] of urlParams.entries()) { if(key.startsWith('@')) username = key.substring(1); }
+        const username = window.location.search.startsWith('?@') ? window.location.search.substring(2) : urlParams.get('username');
 
-        onAuthStateChanged(auth, u => currentUser = u);
+        async function loadReviews() {
+            if (!username) return;
 
-        async function init() {
-            const q = query(collection(db, "users"), where("username", "==", username));
-            const snap = await getDocs(q);
-            if(snap.empty) return;
+            // First get the seller ID
+            const uQ = query(collection(db, "users"), where("username", "==", username), limit(1));
+            const uSnap = await getDocs(uQ);
+            if (uSnap.empty) return;
+            const sellerId = uSnap.docs[0].id;
+
+            const rQ = query(collection(db, "reviews"), where("sellerId", "==", sellerId), orderBy("createdAt", "desc"));
             
-            currentSellerId = snap.docs[0].id;
-            const seller = snap.docs[0].data();
-            document.getElementById('shopName').innerText = seller.shopName;
-            document.getElementById('shopLogo').src = seller.shopLogo;
-            document.getElementById('metaTitle').innerText = `${seller.shopName} Reviews | Ghoti Market`;
-
-            listenToStats();
-            fetchReviews(true);
-        }
-
-        function listenToStats() {
-            const q = query(collection(db, "reviews"), where("sellerId", "==", currentSellerId));
-            onSnapshot(q, (snap) => {
-                let total = snap.size;
-                let sum = 0;
-                let counts = {5:0, 4:0, 3:0, 2:0, 1:0};
-                snap.forEach(d => { sum += d.data().rating; counts[d.data().rating]++; });
-                
-                const avg = total > 0 ? (sum/total).toFixed(1) : "0.0";
-                document.getElementById('avgRating').innerText = avg;
-                document.getElementById('totalCount').innerText = `${total} রিভিউ`;
-                
-                let stars = "";
-                for(let i=1; i<=5; i++) stars += `<i class="${i<=Math.round(avg)?'fas':'far'} fa-star"></i>`;
-                document.getElementById('avgStars').innerHTML = stars;
-
-                let bHtml = "";
-                [5,4,3,2,1].forEach(num => {
-                    let p = total > 0 ? (counts[num]/total)*100 : 0;
-                    bHtml += `<div class="b-row"><span>${num}★</span><div class="b-bar"><div class="b-fill" style="width:${p}%"></div></div><span>${counts[num]}</span></div>`;
-                });
-                document.getElementById('ratingBreakdown').innerHTML = bHtml;
-            });
-        }
-
-        async function fetchReviews(reset = false) {
-            const sortBy = document.getElementById('sortBox').value;
-            let qRef = collection(db, "reviews");
-            let constraints = [where("sellerId", "==", currentSellerId)];
-
-            if(sortBy === "newest") constraints.push(orderBy("createdAt", "desc"));
-            else if(sortBy === "oldest") constraints.push(orderBy("createdAt", "asc"));
-            else if(sortBy === "highest") constraints.push(orderBy("rating", "desc"), orderBy("createdAt", "desc"));
-            else if(sortBy === "lowest") constraints.push(orderBy("rating", "asc"), orderBy("createdAt", "desc"));
-
-            if(!reset && lastDoc) constraints.push(startAfter(lastDoc));
-            constraints.push(limit(20));
-
-            const q = query(qRef, ...constraints);
-            const snap = await getDocs(q);
-            
-            if(reset) {
-                allLoadedReviews = [];
-                document.getElementById('reviewList').innerHTML = "";
-            }
-
-            snap.forEach(doc => {
-                const data = {id: doc.id, ...doc.data()};
-                allLoadedReviews.push(data);
-                renderCard(data);
-            });
-
-            lastDoc = snap.docs[snap.docs.length - 1];
-            document.getElementById('loadMoreBtn').style.display = snap.docs.length === 20 ? 'block' : 'none';
-        }
-
-        function renderCard(r) {
-            const date = r.createdAt?.toDate().toLocaleDateString('bn-BD') || 'এখনই';
-            const isOwner = currentUser && currentUser.uid === r.userUid;
-            const html = `
-                <div class="rev-card">
-                    <div class="rev-user">
-                        <img src="${r.userPhoto}">
-                        <div class="user-meta">
-                            <h4>${r.userName} <i class="fas fa-check-circle v-icon"></i></h4>
-                            <div class="rev-date">${date}</div>
-                        </div>
-                    </div>
-                    <div class="rev-stars">${'<i class="fas fa-star"></i>'.repeat(r.rating)}${'<i class="far fa-star"></i>'.repeat(5-r.rating)}</div>
-                    <div class="rev-title">${r.title}</div>
-                    <div class="rev-msg">${r.message}</div>
-                    ${isOwner ? `<div class="edit-badge" onclick="goToProfile()">এডিট করুন</div>` : ''}
-                </div>
-            `;
-            document.getElementById('reviewList').insertAdjacentHTML('beforeend', html);
-        }
-
-        window.goToProfile = () => location.href = `seller-profile.html?@${username}`;
-
-        document.getElementById('loadMoreBtn').onclick = () => fetchReviews(false);
-        document.getElementById('sortBox').onchange = () => fetchReviews(true);
-
-        document.getElementById('searchBox').oninput = (e) => {
-            const term = e.target.value.toLowerCase();
-            const cards = document.querySelectorAll('.rev-card');
-            cards.forEach((card, index) => {
-                const r = allLoadedReviews[index];
-                if(r) {
-                    const match = r.userName.toLowerCase().includes(term) || r.title.toLowerCase().includes(term) || r.message.toLowerCase().includes(term);
-                    card.style.display = match ? 'block' : 'none';
+            onSnapshot(rQ, (snap) => {
+                const list = document.getElementById('reviewsList');
+                if (snap.empty) {
+                    list.innerHTML = `<div style="text-align:center; padding:100px 20px; color:#94a3b8;">এখনো কোনো রিভিউ দেওয়া হয়নি।</div>`;
+                    return;
                 }
-            });
-        };
 
-        init();
+                list.innerHTML = snap.docs.map(doc => {
+                    const r = doc.data();
+                    let stars = "";
+                    for(let i=1; i<=5; i++) stars += `<i class="${i <= r.rating ? 'fas' : 'far'} fa-star"></i> `;
+                    
+                    const date = r.createdAt ? new Date(r.createdAt.seconds * 1000).toLocaleDateString('bn-BD', {year:'numeric', month:'long', day:'numeric'}) : 'এইমাত্র';
+
+                    return `
+                        <div class="review-card">
+                            <div class="user-info">
+                                <img src="${r.userPhoto || 'https://i.ibb.co/6P0x9Yy/no-image.png'}" class="user-img">
+                                <div>
+                                    <div class="user-name">${r.userName}</div>
+                                    <div class="rev-date">${date}</div>
+                                </div>
+                            </div>
+                            <div class="stars">${stars}</div>
+                            <strong class="rev-title">${r.title}</strong>
+                            <div class="rev-msg">${r.message}</div>
+                        </div>
+                    `;
+                }).join('');
+            });
+        }
+        
+        loadReviews();
     </script>
 </body>
 </html>
