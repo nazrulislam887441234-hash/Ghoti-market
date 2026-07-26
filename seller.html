@@ -281,7 +281,7 @@
         document.getElementById('writeReviewBtn').onclick = () => {
             if (!isAuthReady) return;
             if (!currentUser) {
-                const authUrl = new URL("https://auth.ghotimarket.com/auth.html");
+                const authUrl = new URL("https://auth.ghotimarket.com");
                 authUrl.searchParams.set("redirectUrl", window.location.href);
                 authUrl.searchParams.set("triggerReview", "true");
                 window.location.href = authUrl.href;
