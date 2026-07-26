@@ -3,246 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- SEO Meta Tags - Dynamic (Updated via JS) -->
     <title id="metaTitle">Seller Profile | Ghoti Market</title>
-    <meta name="description" content="ঘোটি মার্কেট-এ সেলার প্রোফাইল দেখুন এবং পণ্য কিনুন।">
     <link rel="icon" type="image/png" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
-    <meta name="theme-color" content="#f97316">
-
-    <!-- Fonts & Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700;800&display=swap');
-
-        :root {
-            --primary: #0f172a;
-            --accent: #f97316;
-            --accent-light: #fb923c;
-            --bg: #f8fafc;
-            --glass: rgba(255, 255, 255, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-        }
-
+        :root { --primary: #0f172a; --accent: #f97316; --accent-light: #fb923c; --bg: #f8fafc; --glass: rgba(255, 255, 255, 0.85); --shadow: 0 8px 32px rgba(0,0,0,0.05); }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body {
-            font-family: 'Hind Siliguri', sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            margin: 0;
-            padding-bottom: 90px;
-            color: var(--primary);
-            overflow-x: hidden;
-        }
-
-        /* Glassmorphism Header */
-        .header {
-            position: sticky; top: 0; z-index: 1000;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
-            padding: 12px 15px;
-            display: flex; align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .back-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: white; width: 40px; height: 40px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            text-decoration: none; transition: 0.3s;
-        }
-
-        /* Profile Section */
-        .profile-container {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border-radius: 0 0 30px 30px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--glass-border);
-            padding-bottom: 20px;
-        }
-        .banner-box {
-            position: relative; width: 100%; padding-top: 40%;
-            background: #cbd5e1; overflow: hidden;
-        }
-        .banner-box img {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; opacity: 0; transition: 0.5s;
-        }
-        .profile-info {
-            text-align: center; margin-top: -45px;
-            position: relative; z-index: 2; padding: 0 15px;
-        }
-        .shop-logo {
-            width: 90px; height: 90px; background: white;
-            border-radius: 50%; margin: 0 auto 12px;
-            border: 4px solid white; box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        .shop-logo img { width: 100%; height: 100%; object-fit: cover; }
-        .shop-name-area { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px; }
-        .shop-name-area h1 { font-size: 22px; margin: 0; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .verified-badge { color: #1877F2; font-size: 18px; }
-
-        /* Review Summary Card */
-        .summary-card {
-            margin: 15px; background: rgba(255, 255, 255, 0.5);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px; padding: 20px;
-        }
-        .summary-grid { display: flex; align-items: center; gap: 20px; }
-        .avg-rating { text-align: center; }
-        .avg-rating h2 { font-size: 42px; margin: 0; color: var(--primary); font-weight: 800; }
-        .stars-row { color: var(--accent); font-size: 14px; margin: 5px 0; }
-        .breakdown { flex: 1; }
-        .break-item { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; font-size: 11px; color: #64748b; }
-        .progress { flex: 1; height: 6px; background: #e2e8f0; border-radius: 10px; overflow: hidden; }
-        .bar { height: 100%; background: var(--accent); width: 0%; transition: 0.8s; }
-
-        /* Buttons */
-        .btn-group { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-        .btn {
-            padding: 14px; border: none; border-radius: 15px; font-weight: 700;
-            cursor: pointer; transition: 0.3s; display: flex; align-items: center;
-            justify-content: center; gap: 10px; font-family: inherit; font-size: 15px;
-        }
-        .btn-write { background: var(--primary); color: white; }
-        .btn-view-all { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: white; box-shadow: 0 8px 20px rgba(249,115,22,0.3); }
-        .btn:active { transform: scale(0.96); }
-
-        /* Search Bar */
-        .search-area { padding: 15px; position: sticky; top: 64px; z-index: 99; background: var(--bg); }
-        .search-bar {
-            width: 100%; padding: 14px 20px; border-radius: 50px;
-            border: 2px solid #e2e8f0; outline: none; font-family: inherit;
-            transition: 0.3s; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-        }
-        .search-bar:focus { border-color: var(--accent); box-shadow: 0 4px 15px rgba(249,115,22,0.1); }
-
-        /* Product Grid */
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 12px; }
-        @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 20px; } }
-
-        .p-card {
-            background: white; border-radius: 18px; overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-decoration: none;
-            color: inherit; border: 1px solid #f1f5f9; transition: 0.2s; position: relative;
-        }
-        .p-card:active { transform: scale(0.98); }
-        .img-box { padding-top: 100%; position: relative; background: #f8fafc; }
-        .img-box img { position: absolute; top:0; width:100%; height:100%; object-fit: cover; loading: lazy; }
-        .discount-tag {
-            position: absolute; top: 8px; left: 8px; background: #ef4444;
-            color: white; font-size: 10px; font-weight: 800; padding: 3px 7px; border-radius: 6px;
-        }
-        .p-info { padding: 12px; }
-        .p-name { font-size: 13px; font-weight: 600; height: 38px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 5px; }
-        .p-price-row { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
-        .curr-price { color: #16a34a; font-weight: 800; font-size: 16px; }
-        .old-price { color: #94a3b8; text-decoration: line-through; font-size: 12px; }
-        .save-amt { width: 100%; font-size: 11px; color: #ef4444; font-weight: 600; margin-top: 2px; }
-
-        /* Modal */
-        .modal {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px); display: none; align-items: center;
-            justify-content: center; z-index: 2000; padding: 20px;
-        }
-        .modal-content {
-            background: white; width: 100%; max-width: 450px;
-            border-radius: 25px; padding: 25px; animation: slideUp 0.3s ease-out;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-        }
-        @keyframes slideUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        body { font-family: 'Hind Siliguri', sans-serif; background: #f1f5f9; margin: 0; padding-bottom: 40px; color: var(--primary); }
         
-        .star-input { display: flex; gap: 10px; justify-content: center; margin: 20px 0; font-size: 32px; color: #e2e8f0; }
-        .star-input i { cursor: pointer; transition: 0.2s; }
-        .star-input i.active { color: var(--accent); transform: scale(1.1); }
-        .form-input {
-            width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0;
-            margin-bottom: 15px; font-family: inherit; font-size: 14px; outline: none;
-        }
-        .form-input:focus { border-color: var(--accent); }
+        .header { position: sticky; top: 0; z-index: 1000; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(15px); padding: 12px 15px; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .back-btn { color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; background: rgba(255,255,255,0.1); }
 
-        /* Loading Spinner */
-        .loader { width: 20px; height: 20px; border: 3px solid #eee; border-top: 3px solid var(--accent); border-radius: 50%; animation: spin 1s linear infinite; display: none; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .profile-card { background: var(--glass); backdrop-filter: blur(10px); border-radius: 0 0 30px 30px; box-shadow: var(--shadow); overflow: hidden; margin-bottom: 20px; }
+        .banner { width: 100%; height: 180px; background: #cbd5e1; object-fit: cover; }
+        .profile-content { text-align: center; margin-top: -50px; padding: 0 20px 25px; }
+        .logo-box { width: 100px; height: 100px; background: white; border-radius: 50%; margin: 0 auto 15px; border: 5px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); overflow: hidden; }
+        .logo-box img { width: 100%; height: 100%; object-fit: cover; }
+        .shop-name { font-size: 24px; font-weight: 800; margin: 0; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .verified { color: #1877F2; font-size: 18px; }
 
-        /* Skeleton Loading */
+        .stats-card { background: white; border-radius: 20px; padding: 20px; margin: 20px 15px; display: flex; align-items: center; gap: 20px; border: 1px solid #e2e8f0; }
+        .rating-big h2 { font-size: 48px; margin: 0; color: var(--primary); }
+        .stars-row { color: var(--accent); font-size: 14px; margin: 5px 0; }
+        .progress-stack { flex: 1; }
+        .progress-row { display: flex; align-items: center; gap: 10px; font-size: 12px; margin-bottom: 4px; }
+        .bar-bg { flex: 1; height: 6px; background: #e2e8f0; border-radius: 10px; overflow: hidden; }
+        .bar-fill { height: 100%; background: var(--accent); transition: 0.8s; }
+
+        .btn { padding: 14px; border: none; border-radius: 15px; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: inherit; font-size: 15px; width: 100%; }
+        .btn-primary { background: var(--primary); color: white; margin-bottom: 10px; }
+        .btn-outline { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: white; }
+        
+        .search-area { padding: 0 15px 15px; position: sticky; top: 65px; z-index: 99; background: #f1f5f9; }
+        .search-bar { width: 100%; padding: 15px 25px; border-radius: 50px; border: 2px solid #e2e8f0; outline: none; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; }
+        @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+        
+        .p-card { background: white; border-radius: 20px; overflow: hidden; border: 1px solid #e2e8f0; text-decoration: none; color: inherit; position: relative; }
+        .p-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; background: #f8fafc; }
+        .p-discount { position: absolute; top: 10px; left: 10px; background: #ef4444; color: white; font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 8px; }
+        .p-info { padding: 12px; }
+        .p-name { font-size: 14px; font-weight: 600; height: 40px; overflow: hidden; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .p-price { color: #16a34a; font-weight: 800; font-size: 18px; }
+        .p-old { color: #94a3b8; text-decoration: line-through; font-size: 13px; margin-left: 5px; }
+
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+        .modal-box { background: white; width: 100%; max-width: 450px; border-radius: 30px; padding: 30px; animation: pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes pop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
+        .star-input { display: flex; gap: 12px; justify-content: center; margin-bottom: 20px; }
+        .star-input i { font-size: 35px; color: #e2e8f0; cursor: pointer; transition: 0.2s; }
+        .star-input i.active { color: var(--accent); }
+        .input-field { width: 100%; padding: 15px; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 15px; outline: none; font-family: inherit; }
+
         .skeleton { background: #e2e8f0; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
-
-        /* Error States */
         #errorPage { display: none; text-align: center; padding: 100px 20px; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
     <div class="header">
         <a href="https://ghotimarket.com" class="back-btn"><i class="fas fa-arrow-left"></i></a>
     </div>
 
-    <!-- Error Page -->
     <div id="errorPage">
-        <i class="fas fa-store-slash" style="font-size: 60px; color: #94a3b8;"></i>
-        <h2>দুঃখিত! সেলার পাওয়া যায়নি।</h2>
-        <p>সঠিক ইউজারনেম ব্যবহার করে আবার চেষ্টা করুন।</p>
-        <a href="https://ghotimarket.com" class="btn btn-write" style="display:inline-flex;">হোম পেজে যান</a>
+        <i class="fas fa-store-slash" style="font-size: 80px; color: #cbd5e1; margin-bottom: 20px;"></i>
+        <h2>সেলারকে পাওয়া যায়নি!</h2>
+        <a href="https://ghotimarket.com" class="btn btn-primary" style="display:inline-flex; width: auto; padding: 12px 30px;">হোমে যান</a>
     </div>
 
-    <div id="mainContent">
-        <!-- Profile Section -->
-        <div class="profile-container">
-            <div class="banner-box"><img id="shopBanner" src="" alt="Banner"></div>
-            <div class="profile-info">
-                <div class="shop-logo"><img id="shopLogo" src="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png" alt="Logo"></div>
-                <div class="shop-name-area">
-                    <h1 id="shopName">লোড হচ্ছে...</h1>
-                    <div id="verifiedBadge" class="verified-badge" style="display:none;"><i class="fas fa-check-circle"></i></div>
+    <div id="mainUI">
+        <div class="profile-card">
+            <img src="" id="shopBanner" class="banner skeleton">
+            <div class="profile-content">
+                <div class="logo-box">
+                    <img src="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png" id="shopLogo">
+                </div>
+                <h1 class="shop-name" id="shopName">...</h1>
+                <div id="verifiedBadge" class="verified" style="display:none;"><i class="fas fa-check-circle"></i></div>
+
+                <div class="stats-card">
+                    <div class="rating-big">
+                        <h2 id="avgRating">0.0</h2>
+                        <div class="stars-row" id="avgStars"></div>
+                        <small id="totalReviewsCount">0 রিভিউ</small>
+                    </div>
+                    <div class="progress-stack" id="ratingBreakdown"></div>
                 </div>
 
-                <!-- Review Summary -->
-                <div class="summary-card">
-                    <div class="summary-grid">
-                        <div class="avg-rating">
-                            <h2 id="avgRating">0.0</h2>
-                            <div class="stars-row" id="avgStars">
-                                <i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
-                            </div>
-                            <div class="total-rev" id="totalReviewsCount">0 রিভিউ</div>
-                        </div>
-                        <div class="breakdown" id="ratingBreakdown">
-                            <!-- JS will inject bars -->
-                        </div>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-write" id="reviewTriggerBtn">
-                            <span class="loader" id="authLoader"></span>
-                            <i class="fas fa-pen-nib"></i> একটি রিভিউ লিখুন
-                        </button>
-                        <button class="btn btn-view-all" id="viewAllReviewsBtn">
-                            <i class="fas fa-comments"></i> সকল রিভিউ দেখুন
-                        </button>
-                    </div>
+                <div style="padding: 0 15px;">
+                    <button class="btn btn-primary" id="writeReviewBtn">
+                        <i class="fas fa-pen-nib"></i> একটি রিভিউ লিখুন
+                    </button>
+                    <button class="btn btn-outline" id="viewAllReviewsBtn">
+                        <i class="fas fa-comments"></i> সকল রিভিউ দেখুন
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- Search & Products -->
         <div class="search-area">
             <input type="text" id="pSearch" class="search-bar" placeholder="এই শপের পণ্য খুঁজুন...">
         </div>
 
         <div class="grid" id="productGrid">
-            <!-- Skeleton cards while loading -->
             <div class="p-card skeleton" style="height: 250px;"></div>
             <div class="p-card skeleton" style="height: 250px;"></div>
         </div>
     </div>
 
-    <!-- Review Modal -->
+    <!-- Modal -->
     <div class="modal" id="reviewModal">
-        <div class="modal-content">
-            <h3 id="modalTitle" style="text-align:center; margin:0 0 10px;">আপনার মতামত দিন</h3>
+        <div class="modal-box">
+            <h3 id="modalTitle" style="text-align:center; margin-top:0;">আপনার মতামত দিন</h3>
             <div class="star-input" id="starInput">
                 <i class="fas fa-star" data-v="1"></i>
                 <i class="fas fa-star" data-v="2"></i>
@@ -250,65 +126,54 @@
                 <i class="fas fa-star" data-v="4"></i>
                 <i class="fas fa-star" data-v="5"></i>
             </div>
-            <input type="text" id="revTitle" class="form-input" placeholder="রিভিউ টাইটেল (যেমন: খুব ভালো পণ্য)">
-            <textarea id="revMsg" class="form-input" rows="4" placeholder="আপনার অভিজ্ঞতা বিস্তারিত লিখুন (কমপক্ষে ১০ অক্ষর)..."></textarea>
+            <input type="text" id="revTitle" class="input-field" placeholder="রিভিউ টাইটেল...">
+            <textarea id="revMsg" class="input-field" rows="4" placeholder="আপনার অভিজ্ঞতা বিস্তারিত লিখুন (কমপক্ষে ১০ অক্ষর)..."></textarea>
             
-            <div style="display:flex; gap:10px;">
-                <button class="btn" style="flex:1; background:#f1f5f9; color:#64748b;" id="closeModal">বাতিল</button>
-                <button class="btn btn-view-all" style="flex:1;" id="submitReviewBtn">জমা দিন</button>
-            </div>
-            <div id="deleteZone" style="margin-top:10px;"></div>
+            <button class="btn btn-primary" id="submitReview">জমা দিন</button>
+            <div id="deleteZone"></div>
+            <button class="btn" style="margin-top:10px; color: #64748b;" id="closeModal">বন্ধ করুন</button>
         </div>
     </div>
 
     <script type="module">
-        import { db, auth } from "./firebase.js";
-        import { collection, query, where, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, serverTimestamp, onSnapshot, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { auth, db } from "./firebase.js";
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { 
+            collection, query, where, getDocs, doc, onSnapshot, 
+            addDoc, updateDoc, deleteDoc, serverTimestamp, limit 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         let currentSellerId = null;
         let currentSellerUsername = "";
         let currentUser = null;
-        let allProducts = [];
-        let selectedRating = 0;
         let existingReviewId = null;
+        let selectedRating = 0;
+        let isAuthReady = false;
 
-        // 1. URL Parsing
-        function getSellerUsername() {
-            const params = new URLSearchParams(window.location.search);
-            const userAttr = params.get('username');
-            if (userAttr) return userAttr;
-            
-            // Handle ?@username
-            for (let [key] of params.entries()) {
-                if (key.startsWith('@')) return key.substring(1);
-            }
-            return null;
+        // 1. Get Seller via URL (?@username)
+        function getUsername() {
+            const search = window.location.search;
+            if (search.startsWith('?@')) return search.substring(2);
+            return new URLSearchParams(search).get('username');
         }
 
-        currentSellerUsername = getSellerUsername();
+        currentSellerUsername = getUsername();
 
-        // 2. Load Seller Data
+        // 2. Initialize Data
         async function init() {
-            if (!currentSellerUsername) {
-                showError();
-                return;
-            }
+            if (!currentSellerUsername) return show404();
 
             const q = query(collection(db, "users"), where("username", "==", currentSellerUsername), limit(1));
             const snap = await getDocs(q);
 
-            if (snap.empty) {
-                showError();
-                return;
-            }
+            if (snap.empty) return show404();
 
             const sellerData = snap.docs[0].data();
             currentSellerId = snap.docs[0].id;
+
             renderSeller(sellerData);
             loadProducts();
-            listenToStats();
-            checkPendingReview();
+            listenReviews();
         }
 
         function renderSeller(data) {
@@ -316,67 +181,50 @@
             document.getElementById('metaTitle').innerText = `${data.shopName} | Ghoti Market`;
             if (data.shopLogo) document.getElementById('shopLogo').src = data.shopLogo;
             if (data.shopBanner) {
-                const img = document.getElementById('shopBanner');
-                img.src = data.shopBanner;
-                img.onload = () => img.style.opacity = '1';
+                const b = document.getElementById('shopBanner');
+                b.src = data.shopBanner;
+                b.classList.remove('skeleton');
             }
-            if (data.verified) document.getElementById('verifiedBadge').style.display = 'inline-block';
-            
-            document.getElementById('viewAllReviewsBtn').onclick = () => {
-                window.location.href = `seller-review.html?@${currentSellerUsername}`;
-            };
+            if (data.verified) document.getElementById('verifiedBadge').style.display = 'block';
+            document.getElementById('viewAllReviewsBtn').onclick = () => window.location.href = `seller-review.html?@${currentSellerUsername}`;
         }
 
-        function showError() {
-            document.getElementById('mainContent').style.display = 'none';
+        function show404() {
+            document.getElementById('mainUI').style.display = 'none';
             document.getElementById('errorPage').style.display = 'block';
         }
 
-        // 3. Product Management
+        // 3. Products
         async function loadProducts() {
             const q = query(collection(db, "products"), where("sellerId", "==", currentSellerId), where("active", "==", true));
-            const snap = await getDocs(q);
-            allProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-            renderProducts(allProducts);
-        }
-
-        function renderProducts(list) {
-            const grid = document.getElementById('productGrid');
-            if (list.length === 0) {
-                grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; padding:50px;">কোনো পণ্য পাওয়া যায়নি!</p>';
-                return;
-            }
-
-            grid.innerHTML = list.map(p => {
-                const hasDiscount = p.oldPrice && p.oldPrice > p.price;
-                const discount = hasDiscount ? Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100) : 0;
-                const save = hasDiscount ? p.oldPrice - p.price : 0;
-
-                return `
-                    <a href="product.html?id=${p.id}" class="p-card">
-                        ${hasDiscount ? `<div class="discount-tag">${discount}% ছাড়</div>` : ''}
-                        <div class="img-box"><img src="${p.images?.[0] || 'https://i.ibb.co/6P0x9Yy/no-image.png'}" alt="${p.name}"></div>
-                        <div class="p-info">
-                            <div class="p-name">${p.name}</div>
-                            <div class="p-price-row">
-                                <span class="curr-price">৳${p.price}</span>
-                                ${hasDiscount ? `<span class="old-price">৳${p.oldPrice}</span>` : ''}
+            onSnapshot(q, (snap) => {
+                const grid = document.getElementById('productGrid');
+                if (snap.empty) {
+                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">কোনো পণ্য পাওয়া যায়নি।</p>';
+                    return;
+                }
+                grid.innerHTML = snap.docs.map(doc => {
+                    const p = doc.data();
+                    const discount = p.oldPrice > p.price ? Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100) : 0;
+                    return `
+                        <a href="product.html?id=${doc.id}" class="p-card">
+                            ${discount > 0 ? `<div class="p-discount">${discount}% ছাড়</div>` : ''}
+                            <img src="${p.images?.[0] || 'https://i.ibb.co/6P0x9Yy/no-image.png'}" class="p-img" loading="lazy">
+                            <div class="p-info">
+                                <div class="p-name">${p.name}</div>
+                                <div class="p-price-row">
+                                    <span class="p-price">৳${p.price}</span>
+                                    ${p.oldPrice > p.price ? `<span class="p-old">৳${p.oldPrice}</span>` : ''}
+                                </div>
                             </div>
-                            ${hasDiscount ? `<div class="save-amt">সাশ্রয় ৳${save}</div>` : ''}
-                        </div>
-                    </a>
-                `;
-            }).join('');
+                        </a>
+                    `;
+                }).join('');
+            });
         }
 
-        document.getElementById('pSearch').oninput = (e) => {
-            const term = e.target.value.toLowerCase();
-            const filtered = allProducts.filter(p => p.name.toLowerCase().includes(term));
-            renderProducts(filtered);
-        };
-
-        // 4. Review Summary (Realtime)
-        function listenToStats() {
+        // 4. Realtime Reviews & Stats
+        function listenReviews() {
             const q = query(collection(db, "reviews"), where("sellerId", "==", currentSellerId));
             onSnapshot(q, (snap) => {
                 let total = snap.size;
@@ -390,83 +238,74 @@
                 });
 
                 const avg = total > 0 ? (sum / total).toFixed(1) : "0.0";
-                updateStatsUI(avg, total, counts);
+                document.getElementById('avgRating').innerText = avg;
+                document.getElementById('totalReviewsCount').innerText = `${total} রিভিউ`;
+                
+                // Big Star UI
+                let stars = "";
+                for(let i=1; i<=5; i++) stars += `<i class="${i <= Math.round(avg) ? 'fas' : 'far'} fa-star"></i>`;
+                document.getElementById('avgStars').innerHTML = stars;
+
+                // Breakdown UI
+                let bars = "";
+                [5,4,3,2,1].forEach(num => {
+                    const perc = total > 0 ? (counts[num] / total) * 100 : 0;
+                    bars += `
+                        <div class="progress-row">
+                            <span>${num}★</span>
+                            <div class="bar-bg"><div class="bar-fill" style="width:${perc}%"></div></div>
+                            <span>${counts[num]}</span>
+                        </div>
+                    `;
+                });
+                document.getElementById('ratingBreakdown').innerHTML = bars;
             });
         }
 
-        function updateStatsUI(avg, total, counts) {
-            document.getElementById('avgRating').innerText = avg;
-            document.getElementById('totalReviewsCount').innerText = `${total} রিভিউ`;
-            
-            // Star Icons
-            let starsHtml = "";
-            for (let i = 1; i <= 5; i++) {
-                if (i <= Math.round(avg)) starsHtml += '<i class="fas fa-star"></i>';
-                else starsHtml += '<i class="far fa-star"></i>';
-            }
-            document.getElementById('avgStars').innerHTML = starsHtml;
-
-            // Bars
-            let barsHtml = "";
-            [5, 4, 3, 2, 1].forEach(num => {
-                const perc = total > 0 ? (counts[num] / total) * 100 : 0;
-                barsHtml += `
-                    <div class="break-item">
-                        <span>${num}★</span>
-                        <div class="progress"><div class="bar" style="width:${perc}%"></div></div>
-                        <span>${counts[num]}</span>
-                    </div>
-                `;
-            });
-            document.getElementById('ratingBreakdown').innerHTML = barsHtml;
-        }
-
-        // 5. Auth & Redirect Logic
-        onAuthStateChanged(auth, (user) => {
+        // 5. Auth Monitoring
+        onAuthStateChanged(auth, async (user) => {
             currentUser = user;
-            if (user && localStorage.getItem('pendingReview') === 'true') {
-                localStorage.removeItem('pendingReview');
-                openReviewModal();
+            isAuthReady = true;
+            
+            const params = new URLSearchParams(window.location.search);
+            if (user && params.get('triggerReview') === "true") {
+                // Remove param from URL without refresh for clean UX
+                const url = new URL(window.location);
+                url.searchParams.delete('triggerReview');
+                window.history.replaceState({}, '', url);
+                openModal();
             }
         });
 
-        document.getElementById('reviewTriggerBtn').onclick = () => {
+        // 6. Review CRUD
+        document.getElementById('writeReviewBtn').onclick = () => {
+            if (!isAuthReady) return;
             if (!currentUser) {
-                localStorage.setItem("pendingRedirect", window.location.href);
-                localStorage.setItem("pendingReview", "true");
-                window.location.href = "https://auth.ghotimarket.com";
+                const authUrl = new URL("https://auth.ghotimarket.com/auth.html");
+                authUrl.searchParams.set("redirectUrl", window.location.href);
+                authUrl.searchParams.set("triggerReview", "true");
+                window.location.href = authUrl.href;
             } else {
-                openReviewModal();
+                openModal();
             }
         };
 
-        function checkPendingReview() {
-            // Check if user came back from bridge page
-            if (currentUser && localStorage.getItem('pendingReview') === 'true') {
-                localStorage.removeItem('pendingReview');
-                openReviewModal();
-            }
-        }
-
-        // 6. Review Modal CRUD
-        async function openReviewModal() {
-            if (!currentUser) return;
-
+        async function openModal() {
+            document.getElementById('reviewModal').style.display = 'flex';
+            // Check for existing review
             const q = query(collection(db, "reviews"), where("sellerId", "==", currentSellerId), where("userUid", "==", currentUser.uid));
             const snap = await getDocs(q);
 
-            document.getElementById('reviewModal').style.display = 'flex';
-
             if (!snap.empty) {
-                const review = snap.docs[0].data();
+                const data = snap.docs[0].data();
                 existingReviewId = snap.docs[0].id;
-                document.getElementById('modalTitle').innerText = "আপনার রিভিউ আপডেট করুন";
-                document.getElementById('revTitle').value = review.title;
-                document.getElementById('revMsg').value = review.message;
-                updateStarUI(review.rating);
-                document.getElementById('submitReviewBtn').innerText = "আপডেট করুন";
-                document.getElementById('deleteZone').innerHTML = `<button class="btn" style="width:100%; color:#ef4444; background:#fff1f2; margin-top:10px;" id="deleteReviewBtn">রিভিউ ডিলিট করুন</button>`;
-                document.getElementById('deleteReviewBtn').onclick = deleteReview;
+                document.getElementById('modalTitle').innerText = "রিভিউ আপডেট করুন";
+                document.getElementById('revTitle').value = data.title;
+                document.getElementById('revMsg').value = data.message;
+                updateStars(data.rating);
+                document.getElementById('submitReview').innerText = "আপডেট করুন";
+                document.getElementById('deleteZone').innerHTML = `<button id="delBtn" class="btn" style="color: #ef4444; background: #fff1f2; margin-top:10px;">ডিলিট করুন</button>`;
+                document.getElementById('delBtn').onclick = deleteReview;
             } else {
                 resetModal();
             }
@@ -477,78 +316,65 @@
             document.getElementById('modalTitle').innerText = "আপনার মতামত দিন";
             document.getElementById('revTitle').value = "";
             document.getElementById('revMsg').value = "";
-            updateStarUI(0);
-            document.getElementById('submitReviewBtn').innerText = "জমা দিন";
+            updateStars(0);
+            document.getElementById('submitReview').innerText = "জমা দিন";
             document.getElementById('deleteZone').innerHTML = "";
         }
 
-        // Star Selection
-        document.querySelectorAll('#starInput i').forEach(star => {
-            star.onclick = () => {
-                const val = parseInt(star.dataset.v);
-                updateStarUI(val);
-            };
-        });
-
-        function updateStarUI(val) {
-            selectedRating = val;
-            document.querySelectorAll('#starInput i').forEach((s, i) => {
-                s.classList.toggle('active', i < val);
+        function updateStars(v) {
+            selectedRating = v;
+            document.querySelectorAll('#starInput i').forEach(s => {
+                s.classList.toggle('active', parseInt(s.dataset.v) <= v);
             });
         }
 
-        document.getElementById('submitReviewBtn').onclick = async () => {
+        document.querySelectorAll('#starInput i').forEach(s => {
+            s.onclick = () => updateStars(parseInt(s.dataset.v));
+        });
+
+        document.getElementById('submitReview').onclick = async () => {
             const title = document.getElementById('revTitle').value.trim();
             const msg = document.getElementById('revMsg').value.trim();
-            const btn = document.getElementById('submitReviewBtn');
+            if (selectedRating < 1) return alert("রেটিং দিন");
+            if (msg.length < 10) return alert("রিভিউ কমপক্ষে ১০ অক্ষরের হতে হবে");
 
-            if (selectedRating === 0) return alert("রেটিং দিন!");
-            if (msg.length < 10) return alert("কমপক্ষে ১০ অক্ষর লিখুন!");
-
+            const btn = document.getElementById('submitReview');
             btn.disabled = true;
             btn.innerText = "অপেক্ষা করুন...";
 
-            const reviewData = {
+            const payload = {
                 sellerId: currentSellerId,
-                sellerUsername: currentSellerUsername,
                 userUid: currentUser.uid,
                 userName: currentUser.displayName,
                 userPhoto: currentUser.photoURL,
                 rating: selectedRating,
-                title: title,
+                title,
                 message: msg,
                 updatedAt: serverTimestamp()
             };
 
             try {
                 if (existingReviewId) {
-                    await updateDoc(doc(db, "reviews", existingReviewId), reviewData);
+                    await updateDoc(doc(db, "reviews", existingReviewId), payload);
                 } else {
-                    reviewData.createdAt = serverTimestamp();
-                    await addDoc(collection(db, "reviews"), reviewData);
+                    payload.createdAt = serverTimestamp();
+                    await addDoc(collection(db, "reviews"), payload);
                 }
-                document.getElementById('reviewModal').style.display = 'none';
-            } catch (e) {
-                alert("রিভিউ জমা দেওয়া সম্ভব হয়নি।");
-            } finally {
-                btn.disabled = false;
-            }
+                closeModal();
+            } catch (e) { alert(e.message); }
+            btn.disabled = false;
         };
 
         async function deleteReview() {
-            if (confirm("আপনি কি নিশ্চিতভাবে এই রিভিউটি ডিলিট করতে চান?")) {
-                await deleteDoc(doc(db, "reviews", existingReviewId));
-                document.getElementById('reviewModal').style.display = 'none';
-            }
+            if (!confirm("আপনি কি নিশ্চিত?")) return;
+            await deleteDoc(doc(db, "reviews", existingReviewId));
+            closeModal();
         }
 
-        document.getElementById('closeModal').onclick = () => {
-            document.getElementById('reviewModal').style.display = 'none';
-        };
+        function closeModal() { document.getElementById('reviewModal').style.display = 'none'; }
+        document.getElementById('closeModal').onclick = closeModal;
 
-        // Start App
         init();
-
     </script>
 </body>
 </html>
