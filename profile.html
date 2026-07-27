@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="metaTitle">Seller Profile | Ghoti Market</title>
+    
+    <!-- FAVICON + THEME COLOR ORANGE -->
+    <link rel="icon" type="image/png" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
+    <meta name="theme-color" content="#f97316">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+   <style>
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700;800&display=swap');
+:root { 
+    --primary: #0f172a; 
+    --bg: #f8fafc; 
+    --accent: #f97316; 
+    --accent2: #fb923c;
+    --danger: #ff4757; 
+    --glass: rgba(255,255,255,0.85);
+}
+* { box-sizing: border-box; } /* এটা সবচেয়ে জরুরি */
+html, body { 
+    font-family: 'Hind Siliguri', sans-serif; 
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); 
+    margin: 0; 
+    padding: 0; /* body তে padding বাদ */
+    overflow-x: hidden; /* সাইডে স্ক্রল বন্ধ */
+    width: 100%;
+    padding-bottom: 80px; 
+}
+
+/* 1. NATIVE GLASS HEADER BAR */
+.native-bar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(25px) saturate(180%);
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    width: 100%;
+}
+.back-btn { 
+    background: rgba(255,255,255,0.1); 
+    color: white; 
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    text-decoration: none; 
+    font-size: 18px; 
+    transition:0.3s;
+}
+.back-btn:active { background: var(--accent); transform:scale(0.9); }
+
+/* Profile Section - Premium */
+.profile-container { 
+    position: relative; 
+    background: var(--glass);
+    backdrop-filter: blur(16px);
+    border-radius: 0 0 25px 25px; 
+    overflow: hidden; 
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08); 
+    padding-bottom: 20px; 
+    border:1px solid rgba(255,255,255,0.5);
+    width: 100%;
+}
+.banner-box { 
+    position: relative; 
+    width: 100%; 
+    padding-top: 40%; /* মোবাইলে একটু বেশি */
+    background: linear-gradient(135deg, #e2e8f0, #cbd5e1); 
+}
+.banner-box img { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    display: none; 
+}
+        
+/* Logo + Name Area */
+.profile-info-box { text-align: center; padding: 15px 15px 0; margin-top:-45px; position:relative; z-index:2; }
+.shop-icon { 
+    width: 90px; 
+    height: 90px; 
+    background: white; 
+    border-radius: 50%; 
+    margin: 0 auto 12px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    border: 4px solid white; 
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
+    overflow: hidden; 
+}
+.shop-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* VERIFIED BADGE - NAMER PASHE */
+.shop-name-area { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 8px; 
+    padding:0 10px; /* নাম যেন না কাটে */
+}
+.shop-name-area h1 { 
+    font-size: 20px; 
+    margin: 0; 
+    font-weight:800;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    word-break: break-word; /* লম্বা নাম ভেঙে যাবে */
+}
+.verified-badge {
+    width: 22px;
+    height: 22px;
+    background: #1877F2;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink:0;
+    box-shadow:0 3px 10px rgba(24,119,242,0.4);
+}
+.verified-badge svg { width: 12px; height: 12px; }
+
+.search-area { 
+    padding: 15px; 
+    position: sticky; 
+    top: 64px; /* Header height অনুযায়ী */
+    z-index: 99; 
+    background: var(--bg); /* transparent বাদ দিলাম নাহলে নড়ে */
+}
+.search-bar { 
+    width: 100%; 
+    max-width: 800px; 
+    margin: 0 auto; 
+    display: block; 
+    padding: 14px 20px; 
+    border-radius: 50px; 
+    border: 2px solid #e2e8f0; 
+    box-shadow: 0 5px 20px rgba(0,0,0,0.06); 
+    outline: none; 
+    font-size: 15px; 
+    font-family:'Hind Siliguri';
+    transition:0.3s;
+    background:white;
+}
+.search-bar:focus { 
+    border-color: var(--accent);
+    box-shadow: 0 5px 20px rgba(249, 115, 22, 0.2); 
+}
+
+.wa-float { 
+    position: fixed; 
+    bottom: 90px; /* Bottom Nav এর উপরে */
+    right: 15px; 
+    background: #25D366; 
+    color: white; 
+    width: 55px; 
+    height: 55px; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 26px; 
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4); 
+    z-index: 1000; 
+    text-decoration: none; 
+}
+
+/* Responsive Grid - FIXED */
+.grid { 
+    display: grid; 
+    gap: 12px; /* gap কমালাম */
+    padding: 12px; /* padding কমালাম */
+    grid-template-columns: repeat(2, 1fr); 
+    max-width: 1400px; 
+    margin: 0 auto; 
+    width: 100%;
+}
+@media (min-width: 600px) { .grid { grid-template-columns: repeat(4, 1fr); gap:15px; padding:15px; } }
+@media (min-width: 900px) { .grid { grid-template-columns: repeat(6, 1fr); gap:20px; padding:20px; } }
+
+.p-card { 
+    background: white; /* Glass বাদ দিলাম মোবাইলে lag করে */
+    border-radius: 16px; 
+    overflow: hidden; 
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06); 
+    text-decoration: none; 
+    color: #333; 
+    transition:0.2s; /* animation কম */
+    border:1px solid #f1f5f9;
+}
+.p-card:active { transform:scale(0.96); } /* hover বাদ, শুধু tap */
+.img-box { position: relative; padding-top: 100%; background: #f8fafc; overflow:hidden; }
+.img-box img { position: absolute; top: 0; width: 100%; height: 100%; object-fit: cover; }
+.p-info { padding: 10px; }
+.p-name { font-size: 13px; font-weight: 600; height: 36px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 5px; }
+.p-price { color: var(--danger); font-weight: 700; font-size: 14px; }
+        
+.see-more-btn { 
+    display: block; 
+    width: 200px; 
+    margin: 25px auto; 
+    padding: 14px; 
+    background: linear-gradient(135deg, var(--accent), var(--accent2)); 
+    color: white; 
+    border: none; 
+    border-radius: 50px; 
+    cursor: pointer; 
+    font-weight:700; 
+    font-size:15px;
+    box-shadow:0 6px 20px rgba(249,115,22,0.3); 
+}
+
+/* Bottom Navigation - iPhone Style */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 65px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(25px) saturate(180%);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.08);
+    border-top: 1px solid rgba(0,0,0,0.05);
+    z-index: 9999;
+    padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 600;
+    transition: 0.2s;
+    width: 25%;
+}
+.nav-item i {
+    font-size: 21px;
+    margin-bottom: 3px;
+}
+.nav-item.active {
+    color: var(--accent);
+}
+.price-box{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:6px;
+    margin-top:6px;
+}
+
+.current-price{
+    color:#16A34A;
+    font-size:18px;
+    font-weight:700;
+}
+
+.old-price{
+    color:#94A3B8;
+    text-decoration:line-through;
+    font-size:14px;
+}
+
+.discount-badge{
+    background:#EF4444;
+    color:#fff;
+    font-size:11px;
+    font-weight:700;
+    padding:3px 7px;
+    border-radius:20px;
+}
+
+.save-text{
+    width:100%;
+    color:#DC2626;
+    font-size:12px;
+    font-weight:600;
+    margin-top:3px;
+}
+</style>
+</head>
+<body>
+
+    <!-- 3. NATIVE GLASS BAR -->
+    <div class="native-bar">
+        <a href="https://ghotimarket.com" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    </div>
+
+    <div class="profile-container">
+        <div class="banner-box"><img id="shopBannerImg" src="" alt="Banner"></div>
+        <div class="profile-info-box">
+            <div class="shop-icon">
+                <img id="shopLogoImg" src="" alt="Logo">
+            </div>
+            <div class="shop-name-area">
+                <h1 id="shopName">Loading...</h1>
+                <!-- VERIFIED BADGE NAMER PASHE -->
+                <div id="verifiedBadge" class="verified-badge" style="display:none;" title="Verified Shop">
+                    <svg viewBox="0 0 24 24" fill="white">
+                        <path d="M9.1 13.8l-2.3-2.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l3 3c.2.2.5.3.7.3.2 0 .5-.1.7-.3l5.8-5.8c.4-.4.4-1 0-1.4-.4-.4-1-.4-1.4 0L9.1 13.8z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="search-area">
+        <input type="text" id="pSearch" class="search-bar" placeholder="পণ্য খুঁজুন..." oninput="handleSearch()">
+    </div>
+    <div class="bottom-nav">
+    <a href="https://ghotimarket.com" class="nav-item active">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </a>
+    <a href="https://ghotimarket.com/contact.html" class="nav-item">
+        <i class="fas fa-headset"></i>
+        <span>Support</span>
+    </a>
+    <a href="https://seller.ghotimarket.com/signup" class="nav-item">
+        <i class="fas fa-user-plus"></i>
+        <span>Join Seller</span>
+    </a>
+    <a href="https://ghotimarket.com/privacy-policy" class="nav-item">
+        <i class="fas fa-shield-alt"></i>
+        <span>Privacy</span>
+    </a>
+</div>
+    <div class="grid" id="sellerProductGrid"></div>
+    <button id="seeMoreBtn" class="see-more-btn" style="display:none;" onclick="loadMore()">See More</button>
+
+<script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import {
+  getFirestore,
+  doc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  limit
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const db = getFirestore(initializeApp({ apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket" }));
+
+        // ===== FB PROOF USERNAME GETTER =====
+        function getUsernameFromURL(){
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // 1. Normal:?@chainapaikari
+            let user = urlParams.get("@");
+            if(user) return decodeURIComponent(user.trim());
+
+            // 2. FB Mয়লা:?%40chainapaikari=&fbclid=xyz
+            for(const [key, value] of urlParams.entries()){
+                if(key!== 'fbclid' && key!== 'utm_source'){
+                    let cleanKey = decodeURIComponent(key.trim()); // %40 কে @ বানাবে
+                    if(cleanKey.startsWith('@')){
+                        return cleanKey.substring(1); // @ বাদ দিয়ে শুধু নাম
+                    }
+                }
+            }
+
+            // 3. Last backup: URL থেকে সরাসরি
+            const raw = window.location.search;
+            if(raw.includes('@') || raw.includes('%40')){
+                return decodeURIComponent(raw.replace('?', '').split('&')[0].replace('@','').replace('%40',''));
+            }
+
+            return null;
+        }
+
+        const username = getUsernameFromURL();
+        // ===== END =====
+
+        let allProducts = [];
+        let filteredProducts = [];
+        let displayCount = 100;
+
+        async function loadProfile() {
+
+    if (!username) {
+        document.getElementById("shopName").innerText = "Shop Not Found";
+        return;
+    }
+
+    const userQuery = query(
+        collection(db, "users"),
+        where("username", "==", username),
+        limit(1)
+    );
+
+    const userSnap = await getDocs(userQuery);
+
+    if (userSnap.empty) {
+        document.getElementById("shopName").innerText = "Shop Not Found";
+        return;
+    }
+
+    const docSnap = userSnap.docs[0];
+    const sId = docSnap.id;
+    const d = docSnap.data();
+
+    document.getElementById('shopName').innerText = d.shopName;
+    document.getElementById('metaTitle').innerText = `${d.shopName} | Ghoti Market`;
+
+    if (d.shopLogo)
+        document.getElementById('shopLogoImg').src = d.shopLogo;
+
+    if (d.shopBanner) {
+        document.getElementById('shopBannerImg').src = d.shopBanner;
+        document.getElementById('shopBannerImg').style.display = "block";
+    }
+
+    if (d.verified)
+        document.getElementById('verifiedBadge').style.display = "flex";
+
+    const productQuery = query(
+        collection(db, "products"),
+        where("sellerId", "==", sId),
+        where("active", "==", true)
+    );
+
+    const productSnap = await getDocs(productQuery);
+
+    allProducts = productSnap.docs.map(doc => ({
+        id: doc.id,
+       ...doc.data()
+    }));
+
+    filteredProducts = allProducts;
+    render();
+}
+
+        window.handleSearch = () => {
+            const term = document.getElementById('pSearch').value.toLowerCase().trim();
+            filteredProducts = allProducts.filter(p =>
+                p.name?.toLowerCase().includes(term) ||
+                (Array.isArray(p.keywords)? p.keywords.some(k => k.toLowerCase().includes(term)) : p.keywords?.toLowerCase().includes(term))
+            );
+            displayCount = 100;
+            render();
+        };
+
+        window.loadMore = () => {
+            displayCount += 100;
+            render();
+        };
+
+        function render() {
+            const grid = document.getElementById('sellerProductGrid');
+            const btn = document.getElementById('seeMoreBtn');
+            const dataToDisplay = filteredProducts.slice(0, displayCount);
+
+            grid.innerHTML = dataToDisplay.length? dataToDisplay.map(p => `
+              <a href="${
+    p.slug
+       ? `https://ghotimarket.com/product?${p.slug}`
+        : `https://ghotimarket.com/product?id=${p.id}`
+}" class="p-card">
+                    <div class="img-box"><img src="${p.images?.[0] || ''}" alt="${p.name}"></div>
+                    <div class="p-info">
+                        <div class="p-name">${p.name}</div>
+                      <div class="price-box">
+    <span class="current-price">৳${p.price}</span>
+
+    ${
+        p.oldPrice && Number(p.oldPrice) > Number(p.price)
+       ? `
+        <span class="old-price">৳${p.oldPrice}</span>
+
+        <span class="discount-badge">
+            ${Math.round(((p.oldPrice-p.price)/p.oldPrice)*100)}% OFF
+        </span>
+
+        <div class="save-text">
+            Save ৳${p.oldPrice-p.price}
+        </div>
+        `
+        : ""
+    }
+</div>
+
+                    </div>
+                </a>
+            `).join('') : '<p style="text-align:center; grid-column:1/-1; padding:40px;">😔 কোনো পণ্য পাওয়া যায়নি!</p>';
+
+            btn.style.display = (displayCount < filteredProducts.length)? 'block' : 'none';
+        }
+
+        loadProfile();
+    </script>
+</body>
+</html>
