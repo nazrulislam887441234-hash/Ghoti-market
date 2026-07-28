@@ -175,7 +175,7 @@ function renderProducts(prodSnap) {
         const productPrice = p.price || 0;
 
         return `
-        <a class="home-product-card" href="https://ghotimarket.com/product.html?id=${p.id}">
+<a class="home-product-card" href="https://ghotimarket.com/product.html?${p.slug || p.id}">
             <div class="product-image-box" style="position:relative;">
                 ${discount}
                 <img src="${productImage}" alt="${productName}" loading="lazy">
@@ -303,7 +303,7 @@ function initSearch() {
 
         if (matchProds.length) {
             html += `<div class="search-group-title">পণ্য</div>` + matchProds.map(p => `
-                <a href="https://ghotimarket.com/product.html?id=${p.id}" class="search-item">
+                <a href="https://ghotimarket.com/product?id=${p.id}" class="search-item">
                     <img src="${p.images?.[0] || 'https://via.placeholder.com/40'}" alt="Product" loading="lazy"> 
                     <span>${p.name || ''}</span>
                 </a>
