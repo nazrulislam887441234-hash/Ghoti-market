@@ -51,30 +51,36 @@
     padding-bottom: env(safe-area-inset-bottom); 
 }
 
-.nav-item { 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    text-decoration: none; 
-    color: var(--text-sub); 
-    font-size: 10px; 
-    font-weight: 800; 
-    transition: 0.3s; 
-    flex: 1; 
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #666;
+    font-size: 10px;
+    font-weight: 800;
+    flex: 1;
 }
 
-.nav-item i { 
-    font-size: 20px; 
-    margin-bottom: 4px; 
-    transition: 0.3s; 
+.nav-item svg {
+    width: 22px;
+    height: 22px;
+    margin-bottom: 4px;
+    stroke: currentColor;
+    transition: .3s;
 }
 
-.nav-item.active { 
-    color: var(--primary); 
+.nav-item.active {
+    color: #f97316;
 }
 
-.nav-item.active i { 
-    transform: translateY(-3px); 
+.nav-item.active svg {
+    stroke: #f97316;
+    transform: translateY(-3px);
+}
+
+.nav-item.active span {
+    color: #f97316;
 }
     </style>
   </head>
@@ -84,13 +90,38 @@
       <p>GHOTI MARKET App - আপনার কেনা-বেচার বিস্বস্ত ঠিকানা</p>
       <p style="font-size: 14px; opacity: 0.9;">সর্বশেষ আপডেট: ১৪ জুলাই, ২০২৬</p>
     </div>
-   <div class="bottom-nav">
-        <a href="https://ghotimarket.com" class="nav-item"><i data-lucide="home"></i><span>Home</span></a>
-        <a href="https://ghotimarket.com/categories" class="nav-item"><i data-lucide="grid"></i><span>Categories</span></a>
-        <a href="https://ghotimarket.com/contact" class="nav-item"><i data-lucide="headphones"></i><span>Support</span></a>
-        <a href="https://ghotimarket.com/privacy-policy" class="nav-item active"><i data-lucide="shield-check"></i><span>Privacy</span></a>
-        <a href="https://seller.ghotimarket.com/signup" class="nav-item"><i data-lucide="store"></i><span>Join Seller</span></a>
-     </div>
+ <!-- Bottom Navigation -->
+<nav class="bottom-nav">
+    <a href="https://ghotimarket.com" class="nav-item">
+        <i data-lucide="home"></i>
+        <span>Home</span>
+    </a>
+
+    <a href="https://ghotimarket.com/categories" class="nav-item">
+        <i data-lucide="grid"></i>
+        <span>Categories</span>
+    </a>
+
+    <a href="https://ghotimarket.com/all-product" class="nav-item">
+        <i data-lucide="box"></i>
+        <span>All product</span>
+    </a>
+
+    <a href="https://ghotimarket.com/contact" class="nav-item">
+        <i data-lucide="headphones"></i>
+        <span>Support</span>
+    </a>
+
+    <a href="https://ghotimarket.com/privacy-policy" class="nav-item active">
+        <i data-lucide="shield-check"></i>
+        <span>Privacy</span>
+    </a>
+
+    <a href="https://seller.ghotimarket.com/signup" class="nav-item">
+        <i data-lucide="store"></i>
+        <span>J.Seller</span>
+    </a>
+</nav>
    <div class="container">
 
   <p style="background:#f1f8ff; border-left:4px solid #1a2a3a; padding:15px; border-radius:8px;">
@@ -157,5 +188,12 @@
   <h2 style="margin-top:25px; font-size:16px;">এই গোপনীয়তা নীতি বাংলাদেশের প্রচলিত আইনের অধীনে পরিচালিত হবে।</h2>
 </div>
     </div>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+    lucide.createIcons();
+});
+</script>
   </body>
 </html>
