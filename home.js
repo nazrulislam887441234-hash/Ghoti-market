@@ -279,7 +279,25 @@ function initSearch() {
 
         const matchCats = allCategories.filter(c => c.categoryName && c.categoryName.toLowerCase().includes(val)).slice(0, 3);
         const matchShops = allShops.filter(s => s.shopName && s.shopName.toLowerCase().includes(val)).slice(0, 5);
-        const matchProds = allProducts.filter(p => p.name && p.name.toLowerCase().includes(val)).slice(0, 5);
+        const matchProds = allProducts.filter(p => {
+
+    const name = p.name ? p.name.toLowerCase() : "";
+
+    const description = p.description 
+        ? p.description.toLowerCase() 
+        : "";
+
+    const keywords = Array.isArray(p.keywords)
+        ? p.keywords.join(" ").toLowerCase()
+        : "";
+
+    return (
+        name.includes(val) ||
+        description.includes(val) ||
+        keywords.includes(val)
+    );
+
+}).slice(0, 5);
 
         let html = '';
 
@@ -294,7 +312,7 @@ function initSearch() {
 
         if (matchShops.length) {
             html += `<div class="search-group-title">শপ সমূহ</div>` + matchShops.map(s => `
-                <a href="https://ghotimarket.com/profile.html?sellerId=${s.id}" class="search-item">
+                <a href="${s.username ? `https://ghotimarket.com/seller?@${encodeURIComponent(s.username)}` : `https://ghotimarket.com/profile?sellerId=${s.id}`}" class="search-item">
                     <img src="${s.shopLogo || 'https://via.placeholder.com/40'}" alt="Shop" loading="lazy"> 
                     <span>${s.shopName || ''}</span>
                 </a>
@@ -303,7 +321,7 @@ function initSearch() {
 
         if (matchProds.length) {
             html += `<div class="search-group-title">পণ্য</div>` + matchProds.map(p => `
-                <a href="https://ghotimarket.com/product?id=${p.id}" class="search-item">
+               <a href="https://ghotimarket.com/product?${p.slug || p.id}" class="search-item">
                     <img src="${p.images?.[0] || 'https://via.placeholder.com/40'}" alt="Product" loading="lazy"> 
                     <span>${p.name || ''}</span>
                 </a>
