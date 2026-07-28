@@ -438,6 +438,16 @@
         .nav-item i { font-size: 20px; margin-bottom: 4px; transition: 0.3s; }
         .nav-item.active { color: var(--primary); }
         .nav-item.active i { transform: translateY(-3px); }
+.nav-item.active svg {
+    color: var(--orange);
+    stroke: var(--orange);
+    transform: translateY(-3px);
+}
+
+.nav-item.active span {
+    color: var(--orange);
+    font-weight: 800;
+}
     </style>
 </head>
 <body>
@@ -478,7 +488,7 @@
         </div>
         <!-- Bottom Navigation -->
 <nav class="bottom-nav">
-    <a href="https://ghotimarket.com" class="nav-item active">
+    <a href="https://ghotimarket.com" class="nav-item">
         <i data-lucide="home"></i>
         <span>Home</span>
     </a>
@@ -488,7 +498,7 @@
         <span>Categories</span>
     </a>
 
-    <a href="https://ghotimarket.com/all-product" class="nav-item">
+    <a href="https://ghotimarket.com/all-product" class="nav-item active">
         <i data-lucide="box"></i>
         <span>All product</span>
     </a>
