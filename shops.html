@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সব শপ | Ghoti Market</title>
+    <meta name="description" content="ঘটি মার্কেটের সকল ভেরিফাইড এবং বিশ্বস্ত শপগুলো ব্রাউজ করুন। আপনার পছন্দের শপ থেকে সহজেই কেনাকাটা করুন।">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+<link rel="icon" type="image/png" href="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png">
+<link rel="apple-touch-icon" href="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="shops.css">
+</head>
+<body>
+
+    <!-- Page Loading Progress Bar -->
+    <div id="progress-bar"></div>
+
+    <!-- Header Section -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <a href="index.html">
+                    <img src="https://ghotimarket.com/logo.png" alt="Ghoti Market Logo" class="brand-logo" onerror="this.src='https://via.placeholder.com/120x40?text=GHOTI+MARKET'">
+                </a>
+            </div>
+            <div class="header-actions">
+                <button id="search-toggle-btn" aria-label="Search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <a href="notifications.html" class="notification-icon" aria-label="Notifications">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="badge-dot"></span>
+                </a>
+            </div>
+        </div>
+        <!-- Collapsible Search Bar -->
+        <div class="header-search-bar" id="header-search-bar">
+            <div class="search-input-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="shop-search-input" placeholder="শপের নাম দিয়ে খুঁজুন (যেমন: Mobile Shop)...">
+                <button id="clear-search-btn" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        
+        <!-- Page Title Banner -->
+        <section class="page-title-section">
+            <h1 class="page-title">সকল শপসমূহ</h1>
+            <p class="page-subtitle">ঘটি মার্কেটের বিশ্বস্ত মার্চেন্ট ও বিক্রেতাগণ</p>
+        </section>
+
+        <!-- Shop Listing Section -->
+        <section class="shop-grid-section">
+            <div id="shop-grid" class="shop-grid">
+                <!-- Loading Skeletons (Initial state) -->
+                <div class="shop-skeleton-card">
+                    <div class="skeleton-banner"></div>
+                    <div class="skeleton-body">
+                        <div class="skeleton-logo"></div>
+                        <div class="skeleton-text title"></div>
+                        <div class="skeleton-text subtitle"></div>
+                    </div>
+                </div>
+                <div class="shop-skeleton-card">
+                    <div class="skeleton-banner"></div>
+                    <div class="skeleton-body">
+                        <div class="skeleton-logo"></div>
+                        <div class="skeleton-text title"></div>
+                        <div class="skeleton-text subtitle"></div>
+                    </div>
+                </div>
+                <div class="shop-skeleton-card">
+                    <div class="skeleton-banner"></div>
+                    <div class="skeleton-body">
+                        <div class="skeleton-logo"></div>
+                        <div class="skeleton-text title"></div>
+                        <div class="skeleton-text subtitle"></div>
+                    </div>
+                </div>
+                <div class="shop-skeleton-card">
+                    <div class="skeleton-banner"></div>
+                    <div class="skeleton-body">
+                        <div class="skeleton-logo"></div>
+                        <div class="skeleton-text title"></div>
+                        <div class="skeleton-text subtitle"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State Message -->
+            <div id="empty-shop-message" class="empty-state" style="display: none;">
+                <i class="fa-solid fa-store-slash"></i>
+                <h3>কোনো শপ পাওয়া যায়নি</h3>
+                <p>আপনার অনুসন্ধানের সাথে মিলে যায় এমন কোনো শপ খুঁজে পাওয়া যায়নি।</p>
+            </div>
+
+            <!-- Load More Button Section -->
+            <div class="load-more-container" id="load-more-container" style="display: none;">
+                <button id="load-more-btn" class="load-more-btn">
+                    <span>আরো শপ দেখুন</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Back To Top Button -->
+    <button id="back-to-top" aria-label="Back to Top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- Footer (Same as Home Page) -->
+    <footer class="app-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="assets/logo.png" alt="Ghoti Market" onerror="this.src='https://via.placeholder.com/100x35?text=GHOTI+MARKET'">
+                <p>আপনার আস্থার অনলাইন মার্কেটপ্লেস। ঘরে বসেই কেনাকাটা করুন নিরাপদ ও সহজে।</p>
+            </div>
+            <div class="footer-links">
+                <h4>দ্রুত লিংক</h4>
+                <ul>
+                    <li><a href="https://about.ghotimarket.com">আমাদের সম্পর্কে</a></li>
+ <li><a href="https://about.ghotimarket.com">টার্মস এন্ড কন্ডিশন</a></li>
+                    
+                    <li><a href="https://ghotimarket.com/privacy-policy.html">প্রাইভেসি পলিসি</a></li>
+                    <li><a href="https://ghotimarket.com/contact">সাপোর্ট</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 GHOTI MARKET. সর্বস্বত্ব সংরক্ষিত।</p>
+        </div>
+    </footer>
+
+    <!-- Firebase App & Scripts -->
+    <script type="module" src="shops.js"></script>
+ <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="https://ghotimarket.com" class="nav-item active"><i data-lucide="home"></i><span>Home</span></a>
+        <a href="https://ghotimarket.com/categories" class="nav-item"><i data-lucide="grid"></i><span>Categories</span></a>
+        <a href="https://ghotimarket.com/all-product" class="nav-item"><i data-lucide="box"></i><span>All product</span></a>
+        <a href="https://ghotimarket.com/contact" class="nav-item"><i data-lucide="headphones"></i><span>Support</span></a>
+        <a href="https://ghotimarket.com/privacy-policy" class="nav-item"><i data-lucide="shield-check"></i><span>Privacy</span></a>
+        <a href="https://seller.ghotimarket.com/signup" class="nav-item"><i data-lucide="store"></i><span>J.Seller</span></a>
+    </nav>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+lucide.createIcons();
+</script>
+</body>
+</html>
