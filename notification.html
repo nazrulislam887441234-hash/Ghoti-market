@@ -513,9 +513,7 @@
     <!-- Firebase SDK & Application Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot, doc, setDoc, getDocs, writeBatch, serverTimestamp, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = { 
             apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
@@ -527,18 +525,10 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
         const db = getFirestore(app);
-        let messaging = null;
-        try {
-            messaging = getMessaging(app);
-        } catch(e) {
-            console.warn("FCM not supported in this browser context", e);
-        }
 
-        let currentUser = null;
         let allNotifications = [];
-        let userReadStatusMap = {};
+        let localReadStatusMap = JSON.parse(localStorage.getItem('ghoti_local_read_status') || '{}');
 
         // Toast Utility
         function showToast(message, type = 'success') {
@@ -583,64 +573,8 @@
             return `${formattedDay} ${month} ${formattedYear}, ${formattedTime}`;
         }
 
-        // Authentication State Handler
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                window.location.href = 'login.html';
-                return;
-            }
-            currentUser = user;
-            
-            // Request FCM Permission & Save Token
-            await initFCM(user.uid);
-
-            // Load User Read Status & Notifications
-            initRealtimeData(user.uid);
-        });
-
-        // FCM Initialization & Token Storage
-        async function initFCM(uid) {
-            if (!messaging) return;
-            try {
-                const permission = await Notification.requestPermission();
-                if (permission === 'granted') {
-                    const token = await getToken(messaging, { 
-                        vapidKey: "BFOLVt_lFfdBHcNyQp0iLEcbQuBbpQ5ODlRJXt6Woz_HPhJwkMITe1kqdX9Xlx9QJzu9KQIVnrd8VDGtzxja2Yg" // Replace with valid public VAPID key if required
-                    }).catch(err => {
-                        console.warn("FCM getToken error:", err);
-                        return null;
-                    });
-
-                    if (token) {
-                        const tokenRef = doc(db, "fcm_tokens", `${uid}_${token.substring(0, 10)}`);
-                        await setDoc(tokenRef, {
-                            uid: uid,
-                            token: token,
-                            device: navigator.userAgent,
-                            createdAt: serverTimestamp()
-                        }, { merge: true });
-                    }
-                }
-            } catch (err) {
-                console.error("FCM Setup Error:", err);
-            }
-        }
-
-        // Realtime Listeners for Notifications and Read Status
-        function initRealtimeData(uid) {
-            // 1. Listen to user_notifications for this user
-            onSnapshot(query(collection(db, "user_notifications"), where("userId", "==", uid)), (userNotifSnap) => {
-                userReadStatusMap = {};
-                userNotifSnap.forEach(docSnap => {
-                    const data = docSnap.data();
-                    userReadStatusMap[data.notificationId] = data.read;
-                });
-                renderNotifications();
-            }, (error) => {
-                console.error("Error loading user read states:", error);
-            });
-
-            // 2. Listen to main notifications collection
+        // Realtime Listener for Public Notifications Collection
+        function initRealtimeData() {
             const notifQuery = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
             onSnapshot(notifQuery, (snapshot) => {
                 allNotifications = [];
@@ -674,7 +608,7 @@
                 const message = (item.message || "").toLowerCase();
                 const matchesSearch = title.includes(searchTerm) || message.includes(searchTerm);
                 
-                const isRead = userReadStatusMap[item.id] === true;
+                const isRead = localReadStatusMap[item.id] === true;
                 if (filterValue === 'unread') return matchesSearch && !isRead;
                 if (filterValue === 'read') return matchesSearch && isRead;
                 return matchesSearch;
@@ -692,7 +626,7 @@
             }
 
             listContainer.innerHTML = filtered.map(item => {
-                const isRead = userReadStatusMap[item.id] === true;
+                const isRead = localReadStatusMap[item.id] === true;
                 const cardClass = isRead ? "notif-card" : "notif-card unread";
                 const badgeClass = isRead ? "status-badge badge-read" : "status-badge badge-unread";
                 const badgeText = isRead ? "পঠিত" : "অপঠিত";
@@ -721,53 +655,34 @@
             return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
 
-        // Mark Single Notification as Read and Navigate if Link exists
-        window.handleNotificationClick = async function(notificationId, link) {
-            if (!currentUser) return;
-            
-            const userNotifDocId = `${currentUser.uid}_${notificationId}`;
-            try {
-                await setDoc(doc(db, "user_notifications", userNotifDocId), {
-                    userId: currentUser.uid,
-                    notificationId: notificationId,
-                    read: true,
-                    readAt: serverTimestamp()
-                }, { merge: true });
-            } catch (err) {
-                console.error("Failed to mark notification read:", err);
-            }
+        // Mark Single Notification as Read Locally and Navigate if Link exists
+        window.handleNotificationClick = function(notificationId, link) {
+            localReadStatusMap[notificationId] = true;
+            localStorage.setItem('ghoti_local_read_status', JSON.stringify(localReadStatusMap));
+            renderNotifications();
 
             if (link) {
                 window.open(link, '_blank');
             }
         };
 
-        // Mark All Notifications as Read
-        document.getElementById('markAllReadBtn').addEventListener('click', async () => {
-            if (!currentUser || allNotifications.length === 0) return;
-            try {
-                const batch = writeBatch(db);
-                allNotifications.forEach(item => {
-                    const userNotifDocId = `${currentUser.uid}_${item.id}`;
-                    const docRef = doc(db, "user_notifications", userNotifDocId);
-                    batch.set(docRef, {
-                        userId: currentUser.uid,
-                        notificationId: item.id,
-                        read: true,
-                        readAt: serverTimestamp()
-                    }, { merge: true });
-                });
-                await batch.commit();
-                showToast("সব নোটিফিকেশন পঠিত হিসেবে চিহ্নিত করা হয়েছে", "success");
-            } catch (err) {
-                console.error("Error marking all read:", err);
-                showToast("স্ট্যাটাস আপডেট করতে সমস্যা হয়েছে", "error");
-            }
+        // Mark All Notifications as Read Locally
+        document.getElementById('markAllReadBtn').addEventListener('click', () => {
+            if (allNotifications.length === 0) return;
+            allNotifications.forEach(item => {
+                localReadStatusMap[item.id] = true;
+            });
+            localStorage.setItem('ghoti_local_read_status', JSON.stringify(localReadStatusMap));
+            renderNotifications();
+            showToast("সব নোটিফিকেশন পঠিত হিসেবে চিহ্নিত করা হয়েছে", "success");
         });
 
         // Search & Filter Event Listeners
         document.getElementById('searchInput').addEventListener('input', renderNotifications);
         document.getElementById('filterSelect').addEventListener('change', renderNotifications);
+
+        // Initialize App
+        initRealtimeData();
 
     </script>
 </body>
