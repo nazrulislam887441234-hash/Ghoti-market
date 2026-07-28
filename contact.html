@@ -122,24 +122,38 @@
         <div class="time-badge"><i class="fas fa-clock"></i> সাপোর্ট সময়: দুপুর ২ টা থেকে রাত ৯ টা</div>
     </div>
 
-<div class="bottom-nav">
+<!-- Bottom Navigation -->
+<nav class="bottom-nav">
     <a href="https://ghotimarket.com" class="nav-item">
-        <i class="fas fa-home"></i>
+        <i data-lucide="home"></i>
         <span>Home</span>
     </a>
-    <a href="https://ghotimarket.com/contact.html" class="nav-item active">
-        <i class="fas fa-headset"></i>
+
+    <a href="https://ghotimarket.com/categories" class="nav-item">
+        <i data-lucide="grid"></i>
+        <span>Categories</span>
+    </a>
+
+    <a href="https://ghotimarket.com/all-product" class="nav-item">
+        <i data-lucide="box"></i>
+        <span>All product</span>
+    </a>
+
+    <a href="https://ghotimarket.com/contact" class="nav-item active">
+        <i data-lucide="headphones"></i>
         <span>Support</span>
     </a>
-    <a href="https://seller.ghotimarket.com/signup" class="nav-item">
-        <i class="fas fa-user-plus"></i>
-        <span>Join Seller</span>
-    </a>
-    <a href="https://ghotimarket.com/privacy-policy" class="nav-item ">
-        <i class="fas fa-shield-alt"></i>
+
+    <a href="https://ghotimarket.com/privacy-policy" class="nav-item">
+        <i data-lucide="shield-check"></i>
         <span>Privacy</span>
     </a>
-</div>
+
+    <a href="https://seller.ghotimarket.com/signup" class="nav-item">
+        <i data-lucide="store"></i>
+        <span>J.Seller</span>
+    </a>
+</nav>
 
     <div class="container">
         <!-- Trusted Badge -->
@@ -152,9 +166,6 @@
                 <div class="badge-item"><i class="fas fa-bolt" style="color: var(--danger);"></i> দ্রুত সাপোর্ট</div>
             </div>
         </div>
-
-        <a href="https://app.ghotimarket.com" class="btn-link"><i class="fas fa-download"></i> অফিশিয়াল অ্যাপ ডাউনলোড করুন</a>
-        <a href="https://www.ghotimarket.com" class="btn-link btn-web"><i class="fas fa-globe"></i> ওয়েবসাইট ভিজিট করুন</a>
         <a href="privacy-policy.html" class="btn-link btn-policy"><i class="fas fa-user-shield"></i> প্রাইভেসি পলিসি</a>
         <a href="termsandcondition.html" class="btn-link btn-policy"><i class="fas fa-file-contract"></i> শর্তাবলী (Terms & Conditions)</a>
         <a href="developer.html" class="btn-link btn-dev"><i class="fas fa-code"></i> ডেভেলপার</a>
@@ -402,4 +413,9 @@ updateSupportStatus();
         </div>
     </div>
 </body>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+lucide.createIcons();
+</script>
 </html>
