@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
     <link rel="apple-touch-icon" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
     <meta name="theme-color" content="#f97316">
-
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
    <style>
 @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700;800&display=swap');
@@ -327,24 +327,38 @@ html, body {
     <div class="search-area">
         <input type="text" id="pSearch" class="search-bar" placeholder="পণ্য খুঁজুন..." oninput="handleSearch()">
     </div>
-    <div class="bottom-nav">
-    <a href="https://ghotimarket.com" class="nav-item active">
-        <i class="fas fa-home"></i>
+  <!-- Bottom Navigation -->
+<nav class="bottom-nav">
+    <a href="https://ghotimarket.com" class="nav-item">
+        <i data-lucide="home"></i>
         <span>Home</span>
     </a>
-    <a href="https://ghotimarket.com/contact.html" class="nav-item">
-        <i class="fas fa-headset"></i>
+
+    <a href="https://ghotimarket.com/categories" class="nav-item">
+        <i data-lucide="grid"></i>
+        <span>Categories</span>
+    </a>
+
+    <a href="https://ghotimarket.com/all-product" class="nav-item">
+        <i data-lucide="box"></i>
+        <span>All product</span>
+    </a>
+
+    <a href="https://ghotimarket.com/contact" class="nav-item">
+        <i data-lucide="headphones"></i>
         <span>Support</span>
     </a>
-    <a href="https://seller.ghotimarket.com/signup" class="nav-item">
-        <i class="fas fa-user-plus"></i>
-        <span>Join Seller</span>
-    </a>
+
     <a href="https://ghotimarket.com/privacy-policy" class="nav-item">
-        <i class="fas fa-shield-alt"></i>
+        <i data-lucide="shield-check"></i>
         <span>Privacy</span>
     </a>
-</div>
+
+    <a href="https://seller.ghotimarket.com/signup" class="nav-item">
+        <i data-lucide="store"></i>
+        <span>J.Seller</span>
+    </a>
+</nav>
     <div class="grid" id="sellerProductGrid"></div>
     <button id="seeMoreBtn" class="see-more-btn" style="display:none;" onclick="loadMore()">See More</button>
 
@@ -510,5 +524,8 @@ html, body {
 
         loadProfile();
     </script>
+<script>
+  lucide.createIcons();
+</script>
 </body>
 </html>
