@@ -1,4 +1,3 @@
-
 /**
  * GHOTI MARKET - Product Detail Page Script
  * Production Ready Architecture adhering to ES6 Modules, Error Handling & Universal Popups.
@@ -11,7 +10,10 @@ import { getFirestore, collection, query, where, limit, getDocs, doc, getDoc, or
 const firebaseConfig = {
     apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
     authDomain: "ghotimarket.firebaseapp.com",
-    projectId: "ghotimarket"
+    projectId: "ghotimarket",
+    storageBucket: "ghotimarket.appspot.com",
+    messagingSenderId: "9382019283",
+    appId: "1:9382019283:web:abc12345"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -94,7 +96,16 @@ const isVerifiedUser = (user) => {
 // ===== GET SLUG FROM URL =====
 const getSlugFromURL = () => {
     try {
-        const urlParams = new URLSearchParams(window.location.search);
+        const pathname = window.location.pathname;
+        const search = window.location.search;
+
+        // Guard: Never extract slugs if we are explicitly on another core page
+        if (pathname.includes('seller') || pathname.includes('profile') || pathname.includes('order') || pathname.includes('contact') || pathname.includes('privacy') || pathname.includes('categories') || pathname.includes('all-product')) {
+            console.debug("Navigation Guard: Skipped slug extraction for non-product path ->", pathname);
+            return null;
+        }
+
+        const urlParams = new URLSearchParams(search);
         let slug = urlParams.get("product-slug");
         if (slug) return decodeURIComponent(slug.trim());
 
@@ -104,16 +115,15 @@ const getSlugFromURL = () => {
             }
         }
 
-        if (window.location.search.startsWith('?') && window.location.search.length > 1) {
-            const raw = window.location.search.substring(1).split('&')[0];
+        if (search.startsWith('?') && search.length > 1) {
+            const raw = search.substring(1).split('&')[0];
             if (raw && !raw.includes('=') && !raw.startsWith('fbclid')) {
                 return decodeURIComponent(raw.trim());
             }
         }
 
-        const pathParts = window.location.pathname.split('/');
+        const pathParts = pathname.split('/');
         const lastPart = pathParts[pathParts.length - 1];
-        // Ensure we only parse slugs if we are genuinely on the product page context
         if (lastPart && lastPart !== 'product.html' && lastPart !== '' && !lastPart.includes('.')) {
             return decodeURIComponent(lastPart);
         }
@@ -284,21 +294,39 @@ const renderProduct = (p) => {
     getEl("pShopName").innerText = safeText(p.shopName, "Unknown Shop");
     hideElement(logoImg);
     hideElement(verifiedBadge);
-    shopLink.href = "#";
+
+    // Lock shop link interaction and provide a clear loading state while fetching seller metadata
+    if (shopLink) {
+        shopLink.style.pointerEvents = "none";
+        shopLink.style.opacity = "0.7";
+        shopLink.removeAttribute("href");
+    }
 
     if (sellerId) {
         if (userCache.has(sellerId)) {
-            applyUserData(userCache.get(sellerId), sellerId, shopLink, logoImg, verifiedBadge);
+            const cachedUser = userCache.get(sellerId);
+            console.debug("Loaded Seller from Cache:", { sellerId, cachedUser });
+            applyUserData(cachedUser, sellerId, shopLink, logoImg, verifiedBadge);
         } else {
             getDoc(doc(db, "users", sellerId)).then(userSnap => {
                 if (userSnap.exists()) {
                     const userData = userSnap.data();
                     userCache.set(sellerId, userData);
+                    console.debug("Loaded Seller from Firestore:", { sellerId, userData });
                     applyUserData(userData, sellerId, shopLink, logoImg, verifiedBadge);
+                } else {
+                    console.warn("Seller Profile Document Missing for ID:", sellerId);
+                    applyFallbackUserData(sellerId, shopLink);
                 }
             }).catch(err => {
                 console.error("Seller Profile Load Error:", err);
+                applyFallbackUserData(sellerId, shopLink);
             });
+        }
+    } else {
+        if (shopLink) {
+            shopLink.style.pointerEvents = "auto";
+            shopLink.style.opacity = "1";
         }
     }
 
@@ -322,13 +350,22 @@ const renderProduct = (p) => {
 };
 
 const applyUserData = (user, sellerId, shopLink, logoImg, verifiedBadge) => {
-    let targetUrl = "#";
-    if (user.username) {
-        targetUrl = `https://ghotimarket.com/seller?@${encodeURIComponent(user.username)}`;
-    } else {
-        targetUrl = `https://ghotimarket.com/profile?sellerId=${encodeURIComponent(sellerId)}`;
+    let targetUrl = `https://ghotimarket.com/profile?sellerId=${encodeURIComponent(sellerId)}`;
+    let usernameVal = safeText(user.username).trim();
+
+    if (usernameVal) {
+        const cleanUsername = usernameVal.startsWith('@') ? usernameVal.substring(1) : usernameVal;
+        targetUrl = `https://ghotimarket.com/seller?@${encodeURIComponent(cleanUsername)}`;
     }
-    shopLink.href = targetUrl;
+
+    console.debug("Generated Seller URL:", targetUrl);
+
+    if (shopLink) {
+        shopLink.href = targetUrl;
+        shopLink.style.pointerEvents = "auto";
+        shopLink.style.opacity = "1";
+        console.debug("Current shopLink href set to:", shopLink.href);
+    }
 
     if (user.shopLogo) {
         logoImg.src = user.shopLogo;
@@ -342,6 +379,17 @@ const applyUserData = (user, sellerId, shopLink, logoImg, verifiedBadge) => {
         showElement(verifiedBadge, 'inline-flex');
     } else {
         hideElement(verifiedBadge);
+    }
+};
+
+const applyFallbackUserData = (sellerId, shopLink) => {
+    const fallbackUrl = `https://ghotimarket.com/profile?sellerId=${encodeURIComponent(sellerId)}`;
+    console.debug("Generated Fallback Seller URL:", fallbackUrl);
+    if (shopLink) {
+        shopLink.href = fallbackUrl;
+        shopLink.style.pointerEvents = "auto";
+        shopLink.style.opacity = "1";
+        console.debug("Current shopLink fallback href set to:", shopLink.href);
     }
 };
 
@@ -388,6 +436,7 @@ const loadRelatedProducts = async (currentId, categorySlug, isFallback) => {
             `;
             
             card.addEventListener('click', () => {
+                console.debug("Navigation Type: Related Product Card Clicked", item.slug);
                 loadProductBySlug(item.slug, true);
             });
             
@@ -400,11 +449,11 @@ const loadRelatedProducts = async (currentId, categorySlug, isFallback) => {
 
 // ===== EVENT LISTENERS & INITIALIZATION =====
 window.addEventListener('popstate', (event) => {
+    console.debug("Navigation Type: Browser Popstate Triggered");
     const slug = event.state?.slug || getSlugFromURL();
     if (slug) {
         loadProductBySlug(slug, false);
     } else {
-        // If popped state doesn't have a product slug, gracefully let browser navigate or reload standard view
         const currentUrlSlug = getSlugFromURL();
         if (currentUrlSlug) {
             loadProductBySlug(currentUrlSlug, false);
@@ -414,14 +463,17 @@ window.addEventListener('popstate', (event) => {
 
 document.addEventListener('DOMContentLoaded', () => {
     // Button Event Bindings
-    getEl("backNavBtn")?.addEventListener('click', () => history.back());
+    getEl("backNavBtn")?.addEventListener('click', () => {
+        console.debug("Navigation Type: Browser Back Button");
+        history.back();
+    });
     getEl("shareBtnTrig")?.addEventListener('click', openSharePopup);
     getEl("shareNowBtn")?.addEventListener('click', shareNow);
     getEl("copyLinkBtn")?.addEventListener('click', copyLinkToClipboard);
     getEl("closeSharePopupBtn")?.addEventListener('click', closeSharePopup);
     getEl("popupCloseBtn")?.addEventListener('click', closeUniversalPopup);
 
-    // Global Link Interception Guard (Ensures external/non-product links navigate normally via browser without SPA interference)
+    // Global Link Interception Guard (Strictly targets and handles local SPA vs standard external pages)
     document.addEventListener('click', (e) => {
         const anchor = e.target.closest('a');
         if (!anchor) return;
@@ -429,20 +481,50 @@ document.addEventListener('DOMContentLoaded', () => {
         const href = anchor.getAttribute('href');
         if (!href || href === '#' || href.startsWith('javascript:')) return;
 
-        // Check if the link belongs to external pages like seller, order, categories, contact, privacy, etc.
-        const isProductLink = href.includes('product.html') || (!href.includes('://') && !href.startsWith('/') && !href.includes('seller') && !href.includes('order') && !href.includes('contact') && !href.includes('privacy') && !href.includes('categories') && !href.includes('all-product'));
+        console.debug("Click Target Checked:", { href, text: anchor.innerText });
 
-        if (!isProductLink) {
-            e.preventDefault();
-            window.location.assign(anchor.href);
+        // Identify non-product URLs that must use standard browser navigation
+        const isExternalOrNonProduct = 
+            href.includes('seller') || 
+            href.includes('profile') || 
+            href.includes('order') || 
+            href.includes('contact') || 
+            href.includes('privacy') || 
+            href.includes('categories') || 
+            href.includes('all-product') ||
+            href.includes('://');
+
+        if (isExternalOrNonProduct) {
+            console.debug("Navigation Type: Standard Browser Navigation Allowed for Non-Product Link ->", href);
+            return; // Let standard browser navigation handle it natively without interference
+        }
+
+        // Handle internal SPA product links cleanly if any exist
+        if (href.includes('product.html') || (!href.includes('/') && !href.includes('.'))) {
+            // If it's a product link handled via SPA mechanism
+            let targetSlug = null;
+            if (href.includes('product-slug=')) {
+                const urlParams = new URLSearchParams(href.split('?')[1]);
+                targetSlug = urlParams.get('product-slug');
+            } else if (!href.includes('.')) {
+                targetSlug = href;
+            }
+
+            if (targetSlug) {
+                e.preventDefault();
+                console.debug("Navigation Type: SPA Internal Product Link Intercepted ->", targetSlug);
+                loadProductBySlug(targetSlug, true);
+            }
         }
     });
 
     // Initial Load based on URL
     const slug = getSlugFromURL();
     if (slug) {
+        console.debug("Navigation Type: Initial Load via Slug ->", slug);
         loadProductBySlug(slug, false);
     } else {
+        console.warn("Navigation Type: No slug detected on product page load.");
         showPopup({ title: "সতর্কতা", message: "কোনো বৈধ প্রোডাক্ট লিংক পাওয়া যায়নি।", type: "warning" });
         loadRelatedProducts(null, null, true);
         hideElement(getEl("loader"));
