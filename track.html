@@ -27,16 +27,21 @@ body{background:var(--bg);color:var(--text);}
 .status-tracker{display:flex;justify-content:space-between;margin:25px 0;position:relative;}
 .status-tracker::before{content:'';position:absolute;top:15px;left:0;right:0;height:3px;background:#e5e7eb;z-index:0;}
 .step{position:relative;z-index:1;text-align:center;flex:1;}
-.step.icon{width:35px;height:35px;border-radius:50%;background:#e5e7eb;color:#999;display:flex;align-items:center;justify-content:center;margin:0 auto 5px;font-size:14px;}
-.step.active.icon{background:var(--green);color:#fff;}
+.step .icon{width:35px;height:35px;border-radius:50%;background:#e5e7eb;color:#999;display:flex;align-items:center;justify-content:center;margin:0 auto 5px;font-size:14px;}
+.step.active .icon{background:var(--green);color:#fff;}
 .step p{font-size:11px;color:var(--muted);}
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;}
 .info-item{background:#FFF4EC;padding:12px;border-radius:10px;}
 .info-item label{font-size:12px;color:var(--muted);display:block;margin-bottom:3px;}
 .info-item b{font-size:14px;}
+.timeline-box{margin-top:20px;background:#FFF4EC;padding:15px;border-radius:12px;}
+.timeline-box h4{font-size:14px;margin-bottom:10px;color:var(--orange);}
+.timeline-item{font-size:12px;padding:6px 0;border-bottom:1px solid #FFE3D1;}
+.timeline-item:last-child{border-bottom:none;}
 .badge{display:inline-block;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;}
 .badge-Pending{background:#FEF3C7;color:#92400E;}
 .badge-Confirmed{background:#DBEAFE;color:#1E40AF;}
+.badge-Packaging{background:#FEF08A;color:#713F12;}
 .badge-Processing{background:#DBEAFE;color:#1E40AF;}
 .badge-Shipped{background:#FEE2E2;color:#991B1B;}
 .badge-Delivered{background:#D1FAE5;color:#065F46;}
@@ -64,7 +69,7 @@ body{background:var(--bg);color:var(--text);}
 <div class="container">
   <div class="search-box">
     <h2 style="margin-bottom:10px;">Track ID দিন</h2>
-    <input type="text" id="trackInput" placeholder="যেমন: GM-2025-AB12CD">
+    <input type="text" id="trackInput" placeholder="যেমন: GM-2026-AB12CD">
     <button id="searchBtn"><i class="fas fa-search"></i> ট্র্যাক করুন</button>
   </div>
 
@@ -95,8 +100,10 @@ body{background:var(--bg);color:var(--text);}
       <div class="info-item"><label>পেমেন্ট</label><b id="rPayment"></b></div>
       <div class="info-item"><label>ডেলিভারি স্ট্যাটাস</label><b id="rDelivery"></b></div>
       <div class="info-item" style="grid-column:span 2;"><label>অর্ডারের তারিখ</label><b id="rDate"></b></div>
+      <div class="info-item" style="grid-column:span 2;"><label>আপডেটের তারিখ</label><b id="rUpdatedDate"></b></div>
       <div class="info-item" style="grid-column:span 2;"><label>নোট</label><b id="rNote"></b></div>
     </div>
+    <div id="timelineContainer" style="display:none;"></div>
   </div>
 </div>
 
@@ -137,8 +144,7 @@ async function searchOrder(){
   document.getElementById('notFound').style.display = 'none';
 
   try{
-    // limit(1) দেওয়া আছে - Rule এর সাথে মিলবে
-    const q = query(collection(db, "orders"), where("orderTrackId", "==", trackId), limit(1));
+    const q = query(collection(db, "order_tracking"), where("orderTrackId", "==", trackId), limit(1));
     const snap = await getDocs(q);
 
     if(snap.empty){
@@ -153,7 +159,7 @@ async function searchOrder(){
     console.error("Firebase Error:", error);
     let msg = "অজানা সমস্যা হয়েছে।";
     if(error.code === 'permission-denied'){
-      msg = "ডাটাবেজ Access নেই। Firebase Rules এ 'allow list' চেক করুন।";
+      msg = "ডাটাবেজ Access নেই। Firebase Rules এ অনুমতি চেক করুন।";
     }else if(error.code === 'unavailable'){
       msg = "ইন্টারনেট কানেকশন নেই। নেট চেক করুন।";
     }
@@ -178,20 +184,23 @@ function showResult(o){
   document.getElementById('rPayment').innerText = `${o.paymentMethod || ''} - ${o.paymentStatus || ''}`;
   document.getElementById('rDelivery').innerText = o.deliveryStatus || '';
   document.getElementById('rDate').innerText = o.createdAt?.toDate().toLocaleString('bn-BD') || 'N/A';
+  document.getElementById('rUpdatedDate').innerText = o.updatedAt?.toDate().toLocaleString('bn-BD') || 'N/A';
   document.getElementById('rNote').innerText = o.orderNote || 'কোন নোট নেই';
+
   renderTracker(o.orderStatus);
+  renderTimeline(o.trackingHistory);
 }
 
 function renderTracker(status){
-  const steps = ['Pending','Confirmed','Processing','Shipped','Delivered'];
-  if(status === 'Cancelled') steps[4] = 'Cancelled';
-  if(status === 'Returned') steps[4] = 'Returned';
+  const steps = ['Pending','Confirmed','Packaging','Processing','Shipped','Delivered'];
+  if(status === 'Cancelled') steps[5] = 'Cancelled';
+  if(status === 'Returned') steps[5] = 'Returned';
 
   let html = '';
   steps.forEach((s, index) => {
     const currentIndex = steps.indexOf(status);
-    const active = currentIndex >= index? 'active' : '';
-    const icon = s==='Cancelled'? 'fa-xmark' : s==='Returned'? 'fa-rotate-left' : 'fa-check';
+    const active = (currentIndex >= index && currentIndex !== -1)? 'active' : '';
+    const icon = s==='Cancelled'? 'fa-xmark' : s==='Returned'? 'fa-rotate-left' : s==='Packaging'? 'fa-box' : s==='Confirmed'? 'fa-check-double' : s==='Processing'? 'fa-gears' : s==='Shipped'? 'fa-truck' : s==='Delivered'? 'fa-house-chimney' : 'fa-check';
     html += `
       <div class="step ${active}">
         <div class="icon"><i class="fas ${icon}"></i></div>
@@ -202,6 +211,34 @@ function renderTracker(status){
   document.getElementById('statusTracker').innerHTML = html;
 }
 
+function renderTimeline(history){
+  const container = document.getElementById('timelineContainer');
+  if(!history || !Array.isArray(history) || history.length === 0){
+    container.style.display = 'none';
+    container.innerHTML = '';
+    return;
+  }
+
+  let itemsHtml = history.map(h => {
+    const timeStr = h.timestamp?.toDate ? h.timestamp.toDate().toLocaleString('bn-BD') : (h.time || '');
+    return `
+      <div class="timeline-item">
+        <b>${h.status || ''}</b> - <span style="color:var(--muted);">${timeStr}</span> 
+        ${h.updatedBy ? `[উৎস: ${h.updatedBy}]` : ''}
+        ${h.note ? `<br>নোট: ${h.note}` : ''}
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="timeline-box">
+      <h4>স্ট্যাটাস হিস্ট্রি</h4>
+      ${itemsHtml}
+    </div>
+  `;
+  container.style.display = 'block';
+}
+
 function showError(title, message){
   document.getElementById('errorTitle').innerText = title;
   document.getElementById('errorMessage').innerText = message;
@@ -209,7 +246,6 @@ function showError(title, message){
 }
 window.closeError = () => document.getElementById('errorPopup').classList.remove('show');
 
-// URL থেকে Track ID থাকলে auto search
 const urlParams = new URLSearchParams(window.location.search);
 if(urlParams.get('track')){
   document.getElementById('trackInput').value = urlParams.get('track');
