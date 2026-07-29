@@ -11,46 +11,213 @@
     <link rel="shortcut icon" type="image/png" href="https://www.ghotimarket.com/logo.png">
     <link rel="apple-touch-icon" href="https://www.ghotimarket.com/logo.png">
     <meta name="theme-color" content="#f97316">
-    <style>
-        :root { --primary: #1a2a3a; --accent: #3498db; --whatsapp: #25d366; --bg: #f4f7f6; --success: #2ecc71; --secondary: #f39c12; --danger: #e74c3c; }
-        body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg); margin: 0; color: #333; }
-        .contact-header { background: var(--primary); color: white; padding: 50px 20px; text-align: center; border-radius: 0 0 40px 40px; }
-        .contact-header h1 { margin: 0; font-size: 26px; }
-        .container { max-width: 500px; margin: -30px auto 40px; padding: 0 20px; }
-        .contact-card { background: white; border-radius: 20px; padding: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .method-item { display: flex; align-items: center; gap: 15px; padding: 18px; text-decoration: none; color: inherit; border-bottom: 1px solid #f0f0f0; }
-        .icon-circle { width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; }
-        .info h4 { margin: 0; font-size: 13px; color: #777; }
-        .info p { margin: 2px 0 0; font-size: 15px; font-weight: 600; color: var(--primary); }
-        .faq-section, .warning-section, .about-card, .trusted-badge { background: white; padding: 20px; border-radius: 20px; margin-top: 20px; }
-        .faq-item { margin-bottom: 15px; border-bottom: 1px solid #f9f9f9; padding-bottom: 10px; }
-        .faq-item h5 { margin: 0 0 5px; color: var(--primary); }
-        .faq-item p { margin: 0; font-size: 13px; color: #666; line-height: 1.5; }
-        .btn-link { display: block; background: var(--success); color: white; text-align: center; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-bottom: 8px; font-size: 14px; }
-        .btn-web { background: var(--secondary); }
-        .btn-policy { background: var(--accent); }
-        .btn-dev { background: var(--primary); }
-        .warning-section { border-left: 5px solid var(--danger); }
-        .warning-section h4 { color: var(--danger); margin-top: 0; }
-        .time-badge { background: #e8f4fd; color: var(--accent); padding: 5px 15px; border-radius: 50px; font-size: 12px; display: inline-block; margin-top: 10px; }
-        .badge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .badge-item { font-size: 13px; font-weight: 600; }
+<style>
+:root { 
+    --primary: #0f172a; 
+    --accent: #2563eb; 
+    --whatsapp: #25d366; 
+    --bg: #f1f5f9; 
+    --success: #16a34a; 
+    --secondary: #f59e0b; 
+    --danger: #dc2626; 
+    --text: #334155;
+    --border: #e2e8f0;
+    --card: #ffffff;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body { 
+    font-family: 'Hind Siliguri', sans-serif; 
+    background: var(--bg); 
+    margin: 0; 
+    color: var(--text); 
+    line-height: 1.7;
+    padding-bottom: 90px; /* Bottom nav এর জন্য space */
+}
+
+.contact-header { 
+    background: linear-gradient(135deg, var(--primary) 0%, #1e293b 100%); 
+    color: white; 
+    padding: 60px 20px 80px; 
+    text-align: center; 
+    border-radius: 0 0 40px 40px; 
+    box-shadow: 0 10px 30px rgba(15,23,42,0.1);
+}
+.contact-header h1 { 
+    margin: 0; 
+    font-size: 28px; 
+    font-weight: 700;
+}
+.contact-header p{
+    margin: 8px 0 0;
+    opacity: 0.8;
+    font-size: 15px;
+}
+
+.container { 
+    max-width: 680px; 
+    margin: -40px auto 40px; 
+    padding: 0 20px; 
+}
+
+.contact-card, .faq-section, .warning-section, .about-card, .trusted-badge { 
+    background: var(--card); 
+    padding: 24px; 
+    border-radius: 20px; 
+    margin-top: 20px; 
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    transition: all 0.3s ease;
+}
+.contact-card:hover, .about-card:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+}
+
+.method-item { 
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+    padding: 18px; 
+    text-decoration: none; 
+    color: inherit; 
+    border-bottom: 1px solid #f1f5f9; 
+    border-radius: 12px;
+    transition: 0.2s;
+}
+.method-item:last-child{ border-bottom: none; }
+.method-item:hover{
+    background: #f8fafc;
+}
+
+.icon-circle { 
+    width: 48px; 
+    height: 48px; 
+    border-radius: 14px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: white; 
+    font-size: 20px; 
+    flex-shrink: 0;
+}
+
+.info h4 { 
+    margin: 0; 
+    font-size: 13px; 
+    color: #64748b; 
+    font-weight: 500;
+}
+.info p { 
+    margin: 4px 0 0; 
+    font-size: 16px; 
+    font-weight: 700; 
+    color: var(--primary); 
+}
+
+.faq-item { 
+    margin-bottom: 18px; 
+    border-bottom: 1px dashed var(--border); 
+    padding-bottom: 15px; 
+}
+.faq-item:last-child{ border: none; margin: 0; padding: 0; }
+.faq-item h5 { 
+    margin: 0 0 8px; 
+    color: var(--primary); 
+    font-size: 15px;
+}
+.faq-item p { 
+    margin: 0; 
+    font-size: 14px; 
+    color: #64748b; 
+    line-height: 1.6; 
+}
+
+.btn-link { 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--success); 
+    color: white; 
+    text-align: center; 
+    padding: 14px; 
+    border-radius: 14px; 
+    text-decoration: none; 
+    font-weight: 700; 
+    margin-bottom: 10px; 
+    font-size: 15px;
+    transition: all 0.3s;
+}
+.btn-link:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(22,163,74,0.25);
+}
+.btn-web { background: var(--secondary); }
+.btn-web:hover{ box-shadow: 0 8px 20px rgba(245,158,11,0.25); }
+.btn-policy { background: var(--accent); }
+.btn-policy:hover{ box-shadow: 0 8px 20px rgba(37,99,235,0.25); }
+.btn-dev { background: var(--primary); }
+.btn-dev:hover{ box-shadow: 0 8px 20px rgba(15,23,42,0.25); }
+
+.warning-section { 
+    border-left: 5px solid var(--danger); 
+}
+.warning-section h4 { 
+    color: var(--danger); 
+    margin-top: 0; 
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.time-badge { 
+    background: rgba(37,99,235,0.1); 
+    color: var(--accent); 
+    padding: 8px 18px; 
+    border-radius: 50px; 
+    font-size: 13px; 
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px; 
+    font-weight: 600;
+}
+
+.badge-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 12px; 
+}
+.badge-item { 
+    font-size: 14px; 
+    font-weight: 600; 
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
 /* Bottom Navigation - Mobile App Style */
 .bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 65px;
-    background: rgba(255, 255, 255, 0.9);
+    height: 70px;
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(20px);
     display: flex;
     justify-content: space-around;
     align-items: center;
-    box-shadow: 0 -5px 25px rgba(0,0,0,0.08);
-    border-top: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 -8px 30px rgba(0,0,0,0.06);
+    border-top: 1px solid var(--border);
     z-index: 9999;
-    padding-bottom: env(safe-area-inset-bottom); /* Iphone এর জন্য */
+    padding-bottom: env(safe-area-inset-bottom);
 }
 .nav-item {
     display: flex;
@@ -60,9 +227,9 @@
     text-decoration: none;
     color: #64748b;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     transition: 0.3s;
-    width: 25%;
+    flex: 1;
 }
 .nav-item i {
     font-size: 22px;
@@ -73,14 +240,16 @@
     color: var(--accent);
 }
 .nav-item.active i {
-    transform: translateY(-3px);
+    transform: translateY(-4px) scale(1.1);
 }
 
-/* Footer যেন Bottom Nav এর নিচে চাপা না পরে */
-.footer {
-    padding-bottom: 90px;
+/* Responsive */
+@media (max-width: 600px){
+    .contact-header{ padding: 40px 20px 60px; }
+    .contact-header h1{ font-size: 24px; }
+    .badge-grid{ grid-template-columns: 1fr; }
 }
-    </style>
+</style>
 
     <!-- Schema Markup for Google SEO - এটা বসাবেন </head> এর আগে -->
     <script type="application/ld+json">
@@ -208,7 +377,6 @@
             <ul style="font-size: 13px; color: #555; padding-left: 20px;">
                 <li>অপরিচিত কাউকে আপনার শপের লগইন পাসওয়ার্ড বা OTP দেবেন না।</li>
                 <li>অফিসিয়াল হোয়াটসঅ্যাপ বা ইমেইল ছাড়া অন্য কোনো মাধ্যমে ব্যক্তিগত তথ্য শেয়ার করবেন না।</li>
-                <li>কাস্টমারকে কখনোই অগ্রিম পেমেন্ট করতে বাধ্য করবেন না।</li>
                 <li>সন্দেহজনক কোনো লিংক বা ইমেইলে ক্লিক করা থেকে বিরত থাকুন।</li>
             </ul>
         </div>
@@ -263,9 +431,9 @@
             </p>
             <ul style="font-size:13px; color:#555; padding-left:20px; line-height:1.9;">
                 <li>📦 অর্ডার করার আগে পণ্যের বিবরণ ভালোভাবে পড়ুন।</li>
-                <li>💬 অর্ডার দেওয়ার আগে সেলারের সাথে প্রয়োজনীয় সব তথ্য নিশ্চিত করুন।</li>
-                <li>📱 অর্ডার সম্পন্ন না হওয়া পর্যন্ত WhatsApp চ্যাট ডিলিট করবেন না।</li>
-                <li>💵 যদি সেলার Cash on Delivery (COD) সাপোর্ট করে, তাহলে পণ্য হাতে পাওয়ার আগে কোনো অর্থ প্রদান করবেন না।</li>
+                <li>💵পণ্যের দাম দেখুন। এবং ডিসকাউন্ট আছে কিনা চ্যাক করুন।</li>
+                <li>আমাদের এখানে পণ্যের দাম সেলাররা প্রয়োজন হলে কামাতে বা বাড়াতে পারবেন।</li>
+                <li>যদি কোন শপ থেকে বা আমাদের এখান থেকে পণ্য অর্ডার করে পণ্য না পান। তাহলে আমাদের সাপোর্টে যোগাযোগ করে রিপোর্ট/অভিযোগ করতে পারেন।</li>
             </ul>
             <div style="margin-top:15px; background:#f8f9fa; border-left:4px solid var(--success); padding:12px; border-radius:8px;">
                 <strong style="color:var(--success);">
@@ -314,7 +482,6 @@
             <ul style="font-size:13px;color:#555;padding-left:20px;line-height:1.8;">
                 <li>✔ নিরাপদ অনলাইন মার্কেটপ্লেস</li>
                 <li>✔ ভেরিফাইড সেলার</li>
-                <li>✔ WhatsApp অর্ডার সিস্টেম</li>
                 <li>✔ দ্রুত সাপোর্ট</li>
                 <li>✔ সহজে শপ পরিচালনা</li>
             </ul>
@@ -386,15 +553,13 @@ updateSupportStatus();
 
         <div class="faq-section">
             <h4 style="margin-top:0;"><i class="fas fa-question-circle"></i> সাধারণ প্রশ্নোত্তর</h4>
-            <div class="faq-item"><h5>১. কিভাবে অর্ডার করব?</h5><p>প্রথমে ওয়েবসাইট বা অ্যাপ থেকে পছন্দের সেলার শপ নির্বাচন করুন। এরপর যেকোনো পণ্যের উপর ক্লিক করুন, পেমেন্ট নীতি পড়ে টিক মার্ক দিন এবং সবশেষে 'হোয়াটসঅ্যাপে অর্ডার করুন' বাটনে ক্লিক করুন।</p></div>
+            <div class="faq-item"><h5>১. কিভাবে অর্ডার করব?</h5><p>আমাদের অ্যাপ/ওয়েবসাইট থেকে পছন্দের ক্যাটাগরি/সেলার শপ/পণ্য নির্বাচন করুন। সেলার শপ অথবা ক্যাটাগরিতে যদি যান অনেক পণ্য পাবেন আপনার পছন্দের পণ্য সিলেক্ট করুন। তারপর পণ্যের তথ্য পড়ে অর্ডার করুন বাটনে ক্লিক করুন। সব। শেষে আপনার ডেলিভারির ঠিকানা, নাম ফোন। নাম্বার দিয়ে অর্ডার কনফার্ম করুন। এবং অর্ডার আইডি কপি করু সুরক্ষিত জায়গায় জমা করুন।</p></div>
             <div class="faq-item"><h5>২. ডেলিভারি কতদিন লাগে?</h5><p>অর্ডার কনফার্ম হওয়ার পর সাধারণত ২ থেকে ৫ দিনের মধ্যে ডেলিভারি সম্পন্ন হয়।</p></div>
-            <div class="faq-item"><h5>৩. পণ্য রিটার্ন কি সম্ভব?</h5><p>রিটার্ন বা রিফান্ডের শর্ত সংশ্লিষ্ট সেলারের পলিসির ওপর নির্ভর করে। ক্রয়ের আগে সেলারের সাথে কথা বলে নিন।</p></div>
-            <div class="faq-item"><h5>৪. পাসওয়ার্ড ভুলে গেলে কী করব?</h5><p>লগইন পেজের 'Forgot Password' অপশনে গিয়ে আপনার রেজিস্টার্ড ইমেইল বা ফোন নম্বরের মাধ্যমে পাসওয়ার্ড রিসেট করতে পারবেন।</p></div>
-            <div class="faq-item"><h5>৫. অ্যাকাউন্ট ভেরিফিকেশন কিভাবে করব?</h5><p>প্রোফাইল সেকশন থেকে প্রয়োজনীয় নথিপত্র (যেমন NID) আপলোড করে আমাদের অ্যাডমিন প্যানেল থেকে ম্যানুয়াল ভেরিফিকেশন সম্পন্ন করতে হবে।</p></div>
+            <div class="faq-item"><h5>৩. পণ্য রিটার্ন কি সম্ভব?</h5><p>পণ্য নেওয়ার ৭ দিন এর মধ্যে রিটার্ন করা যাবে।</p></div>
+            <div class="faq-item"><h5>৪. পাসওয়ার্ড ভুলে গেলে কী করব?</h5><p>লগইন পেজের 'Forgot Password' অপশনে গিয়ে আপনার রেজিস্টার্ড ইমেইল দিবেন। তারপর আপনার ইমেইলে লিংক যাবে ক্লিক করে নতুন পাসওয়ার্ড সেট করে নেবেন।</p></div>
+            <div class="faq-item"><h5>৫. অ্যাকাউন্ট ভেরিফিকেশন কিভাবে করব?</h5><p>আমাদের সাথে যোগাযোগ করে সব তথ্য দেওয়ার ১ ঘন্টা থেকে ২৪ ঙন্টার মধ্যে যাচাই করা হয়। NID আসল কিনা তা আমরা বাংলাদেশ NID কার্ডের অফিসিয়াল সাইটে চ্যাক করি।</p></div>
             <div class="faq-item"><h5>৬. অভিযোগ কোথায় করব?</h5><p>যেকোনো অভিযোগের জন্য আমাদের অফিসিয়াল সাপোর্ট ইমেইল বা হোয়াটসঅ্যাপে সরাসরি যোগাযোগ করুন।</p></div>
-            <div class="faq-item"><h5>৭. কিভাবে সাপোর্ট টিকিট খুলব?</h5><p>আমাদের ওয়েবসাইট বা অ্যাপের সাপোর্ট মেনু থেকে সরাসরি আমাদের টিমের সাথে চ্যাট বা মেসেজের মাধ্যমে টিকিট ওপেন করতে পারেন।</p></div>
-            <div class="faq-item"><h5>৮. সেলার ফি কিভাবে নেওয়া হয়?</h5><p>আমাদের এখানে প্রতি মাসিক ফি <strong>৫০০ টাকা</strong> আর এক্সট্রা কোন চার্জ বা কমিশন নেই।</p></div>
-            <div class="faq-item"><h5>৯. পেমেন্ট কিভাবে করব?</h5><p>আমাদের এখানে সম্পূর্ণ ক্যাশ অন ডেলিভারি সাপোর্ট করে পণ্য হাতে পাওয়ার পর টাকা পরিশোধ করবেন।</p></div>
+            <div class="faq-item"><h5>৭. পেমেন্ট কিভাবে করব?</h5><p>আমাদের এখানে সম্পূর্ণ ক্যাশ অন ডেলিভারি সাপোর্ট করে পণ্য হাতে পাওয়ার পর টাকা পরিশোধ করবেন।</p></div>
         </div>
 
         <div class="contact-card" style="margin-top:20px; text-align:center;">
