@@ -1,3 +1,4 @@
+
 /**
  * GHOTI MARKET - Product Detail Page Script
  * Production Ready Architecture adhering to ES6 Modules, Error Handling & Universal Popups.
@@ -112,7 +113,10 @@ const getSlugFromURL = () => {
 
         const pathParts = window.location.pathname.split('/');
         const lastPart = pathParts[pathParts.length - 1];
-        if (lastPart && lastPart !== 'product.html') return decodeURIComponent(lastPart);
+        // Ensure we only parse slugs if we are genuinely on the product page context
+        if (lastPart && lastPart !== 'product.html' && lastPart !== '' && !lastPart.includes('.')) {
+            return decodeURIComponent(lastPart);
+        }
         if (window.location.hash) return decodeURIComponent(window.location.hash.substring(1));
 
         return null;
@@ -318,11 +322,13 @@ const renderProduct = (p) => {
 };
 
 const applyUserData = (user, sellerId, shopLink, logoImg, verifiedBadge) => {
+    let targetUrl = "#";
     if (user.username) {
-        shopLink.href = `https://ghotimarket.com/seller?@${encodeURIComponent(user.username)}`;
+        targetUrl = `https://ghotimarket.com/seller?@${encodeURIComponent(user.username)}`;
     } else {
-        shopLink.href = `https://ghotimarket.com/profile?sellerId=${encodeURIComponent(sellerId)}`;
+        targetUrl = `https://ghotimarket.com/profile?sellerId=${encodeURIComponent(sellerId)}`;
     }
+    shopLink.href = targetUrl;
 
     if (user.shopLogo) {
         logoImg.src = user.shopLogo;
@@ -395,7 +401,15 @@ const loadRelatedProducts = async (currentId, categorySlug, isFallback) => {
 // ===== EVENT LISTENERS & INITIALIZATION =====
 window.addEventListener('popstate', (event) => {
     const slug = event.state?.slug || getSlugFromURL();
-    if (slug) loadProductBySlug(slug, false);
+    if (slug) {
+        loadProductBySlug(slug, false);
+    } else {
+        // If popped state doesn't have a product slug, gracefully let browser navigate or reload standard view
+        const currentUrlSlug = getSlugFromURL();
+        if (currentUrlSlug) {
+            loadProductBySlug(currentUrlSlug, false);
+        }
+    }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -406,6 +420,23 @@ document.addEventListener('DOMContentLoaded', () => {
     getEl("copyLinkBtn")?.addEventListener('click', copyLinkToClipboard);
     getEl("closeSharePopupBtn")?.addEventListener('click', closeSharePopup);
     getEl("popupCloseBtn")?.addEventListener('click', closeUniversalPopup);
+
+    // Global Link Interception Guard (Ensures external/non-product links navigate normally via browser without SPA interference)
+    document.addEventListener('click', (e) => {
+        const anchor = e.target.closest('a');
+        if (!anchor) return;
+
+        const href = anchor.getAttribute('href');
+        if (!href || href === '#' || href.startsWith('javascript:')) return;
+
+        // Check if the link belongs to external pages like seller, order, categories, contact, privacy, etc.
+        const isProductLink = href.includes('product.html') || (!href.includes('://') && !href.startsWith('/') && !href.includes('seller') && !href.includes('order') && !href.includes('contact') && !href.includes('privacy') && !href.includes('categories') && !href.includes('all-product'));
+
+        if (!isProductLink) {
+            e.preventDefault();
+            window.location.assign(anchor.href);
+        }
+    });
 
     // Initial Load based on URL
     const slug = getSlugFromURL();
