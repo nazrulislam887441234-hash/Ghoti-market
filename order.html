@@ -179,12 +179,15 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import {
   getFirestore,
   addDoc,
+  setDoc,
+  doc,
   collection,
   serverTimestamp,
   query,
   where,
   getDocs,
-  limit
+  limit,
+  writeBatch
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -371,6 +374,10 @@ document.getElementById('finalConfirm').onclick = async () => {
   const subtotal = price * quantity;
   const grandTotal = subtotal + deliveryCharge;
 
+  const customerName = document.getElementById('customerName').value.trim();
+  const customerPhone = document.getElementById('customerPhone').value.trim();
+  const timestamp = serverTimestamp();
+
   const orderData = {
     orderTrackId,
     productId: product.id,
@@ -383,8 +390,8 @@ document.getElementById('finalConfirm').onclick = async () => {
     subtotal,
     deliveryCharge,
     grandTotal,
-    customerName: document.getElementById('customerName').value.trim(),
-    customerPhone: document.getElementById('customerPhone').value.trim(),
+    customerName,
+    customerPhone,
     division: loc.division,
     district: loc.district,
     upazila: loc.upazila,
@@ -393,11 +400,32 @@ document.getElementById('finalConfirm').onclick = async () => {
     paymentStatus: 'Unpaid',
     deliveryStatus: 'New',
     orderStatus: 'Pending',
-    createdAt: serverTimestamp()
+    createdAt: timestamp
+  };
+
+  const trackingData = {
+    orderTrackId,
+    sellerId: product.sellerId,
+    customerName,
+    customerPhone,
+    deliveryStatus: 'New',
+    orderStatus: 'Pending',
+    paymentMethod: 'Cash On Delivery',
+    paymentStatus: 'Unpaid',
+    createdAt: timestamp
   };
 
   try{
-    await addDoc(collection(db, "orders"), orderData);
+    const batch = writeBatch(db);
+
+    const newOrderRef = doc(collection(db, "orders"));
+    batch.set(newOrderRef, orderData);
+
+    const trackingRef = doc(db, "order_tracking", orderTrackId);
+    batch.set(trackingRef, trackingData);
+
+    await batch.commit();
+
     closeConfirm();
     document.getElementById('trackIdText').innerText = orderTrackId;
     document.getElementById('successPopup').classList.add('show');
