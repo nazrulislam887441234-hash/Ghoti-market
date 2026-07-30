@@ -61,7 +61,7 @@ async function loadData() {
             getDocs(query(collection(db, "banners"), orderBy("createdAt", "desc"))),
             getDocs(query(collection(db, "categories"), limit(20))),
             getDocs(query(collection(db, "products"), orderBy("createdAt", "desc"), limit(10))),
-            getDocs(query(collection(db, "users"), limit(20)))
+            getDocs(collection(db, "users"))
         ]);
 
         updateProgress(60);
@@ -77,7 +77,7 @@ async function loadData() {
         // 3. Render Latest Products (Condition: active !== false, with Discount calculation)
         renderProducts(prodSnap);
 
-        // 4. Render Shops (Filtered where shopName exists)
+        // 4. Render Shops (Filtered with flexible verification and debugging helper)
         renderShopsData(shopSnap);
 
         updateProgress(100);
@@ -193,10 +193,59 @@ function renderProducts(prodSnap) {
 }
 
 /**
+ * Helper Function for Flexible Verified Shop Filtering
+ */
+function isVerifiedShop(shop) {
+    console.log("Shop:", shop.shopName);
+    console.log("Verified Value:", shop.verified);
+    console.log("Verified Type:", typeof shop.verified);
+
+    const val = shop.verified;
+
+    // Reject explicit falsy or negative values
+    if (
+        val === false ||
+        val === "false" ||
+        val === "False" ||
+        val === "FALSE" ||
+        val === 0 ||
+        val === "0" ||
+        val === null ||
+        val === undefined ||
+        val === "" ||
+        val === "no" ||
+        val === "No" ||
+        val === "NO"
+    ) {
+        return false;
+    }
+
+    // Accept true, numbers like 1, or approved string tokens
+    if (val === true || val === 1) return true;
+
+    if (typeof val === "string") {
+        const lowerVal = val.trim().toLowerCase();
+        const validTokens = ["true", "1", "yes", "verified"];
+        return validTokens.includes(lowerVal);
+    }
+
+    return Boolean(val);
+}
+
+/**
  * Setup and Store Shops Data for Pagination
  */
 function renderShopsData(shopSnap) {
-    allShops = shopSnap.docs.map(d => ({ id: d.id, ...d.data() })).filter(d => d.shopName);
+    const totalUsers = shopSnap.size;
+
+    allShops = shopSnap.docs
+        .map(d => ({ id: d.id, ...d.data() }))
+        .filter(shop => shop.shopName && isVerifiedShop(shop));
+
+    console.log("Total Users:", totalUsers);
+    console.log("Verified Shops:", allShops.length);
+    console.log("Verified Shop Names:", allShops.map(s => s.shopName));
+
     renderShops();
 }
 
@@ -227,7 +276,7 @@ window.renderShops = function() {
             <div class="shop-banner"><img src="${shopBanner}" alt="Shop Banner" loading="lazy"></div>
             <div class="shop-info">
                 <div class="shop-logo"><img src="${shopLogo}" alt="Shop Logo" loading="lazy"></div>
-                <div class="shop-name">${shopName} ${s.verified ? '<i class="fa-solid fa-circle-check verified-badge"></i>' : ''}</div>
+                <div class="shop-name">${shopName} <i class="fa-solid fa-circle-check verified-badge"></i></div>
                 <div class="shop-cat">${shopCategory}</div>
             </div>
         </a>
