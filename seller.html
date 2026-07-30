@@ -377,76 +377,64 @@ html, body {
 
         const db = getFirestore(initializeApp({ apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket" }));
 
-        // ===== UNIVERSAL URL PARSER FUNCTION =====
+        // ===== ADVANCED ROBUST URL PARSER & IDENTIFIER =====
         function parseTargetFromURL() {
             try {
                 const search = window.location.search;
                 const urlParams = new URLSearchParams(search);
 
-                // Priority 1: ?sellerId=xxxxx
+                // Priority 1: Explicit ?sellerId=xxxxx parameter
                 let sellerIdVal = urlParams.get("sellerId");
                 if (sellerIdVal && sellerIdVal.trim() !== "") {
-                    return { type: "sellerId", value: decodeURIComponent(sellerIdVal.trim()) };
+                    return { type: "explicit_sellerId", value: decodeURIComponent(sellerIdVal.trim()) };
                 }
 
-                // Priority 2: ?username=xxxxx
+                // Priority 2: Explicit ?username=xxxxx parameter
                 let usernameVal = urlParams.get("username");
                 if (usernameVal && usernameVal.trim() !== "") {
                     let cleanU = decodeURIComponent(usernameVal.trim());
                     if (cleanU.startsWith('@')) cleanU = cleanU.substring(1);
-                    return { type: "username", value: cleanU };
+                    return { type: "explicit_username", value: cleanU };
                 }
 
-                // Priority 3: ?@luxuryshop
+                // Priority 3: Explicit ?@luxuryshop parameter
                 let atVal = urlParams.get("@");
                 if (atVal && atVal.trim() !== "") {
                     let cleanU = decodeURIComponent(atVal.trim());
                     if (cleanU.startsWith('@')) cleanU = cleanU.substring(1);
-                    return { type: "username", value: cleanU };
+                    return { type: "explicit_at", value: cleanU };
                 }
 
-                // Priority 4 & general parameter loops (e.g., ?%40luxuryshop or raw query parameters without '=' or special keys)
+                // Scan all URL keys for Facebook shares or URL-encoded attributes like ?%40luxuryshop
                 for (const [key, value] of urlParams.entries()) {
                     let cleanKey = decodeURIComponent(key.trim());
-                    if (cleanKey !== 'fbclid' && cleanKey !== 'utm_source' && cleanKey !== 'utm_medium' && cleanKey !== '') {
+                    if (cleanKey && cleanKey !== 'fbclid' && cleanKey !== 'utm_source' && cleanKey !== 'utm_medium' && cleanKey !== 'utm_campaign') {
                         if (cleanKey.startsWith('@')) {
-                            return { type: "username", value: cleanKey.substring(1) };
+                            return { type: "encoded_at", value: cleanKey.substring(1) };
                         }
                         if (value === '' && !cleanKey.includes('=')) {
-                            // If looks like an ID or username directly passed as key
-                            if (cleanKey.length > 15) {
-                                return { type: "sellerId", value: cleanKey };
-                            } else {
-                                return { type: "username", value: cleanKey.replace(/^@/, '') };
-                            }
+                            let cleanVal = cleanKey.replace(/^@/, '');
+                            return { type: "raw_param", value: cleanVal };
                         }
                     }
                 }
 
-                // Check raw search string split
+                // Priority 4: Fallback to raw path search string (e.g. ?115qbNBgBrheiE0AdUoDarC4JCg2 or ?luxuryshop)
                 if (search && search.length > 1) {
                     const raw = decodeURIComponent(search.substring(1).split('&')[0].trim());
                     if (raw && !raw.includes('=') && !raw.startsWith('fbclid') && !raw.startsWith('utm_')) {
                         let cleanRaw = raw;
                         if (cleanRaw.startsWith('@')) cleanRaw = cleanRaw.substring(1);
-                        if (cleanRaw.length > 15) {
-                            return { type: "sellerId", value: cleanRaw };
-                        } else {
-                            return { type: "username", value: cleanRaw };
-                        }
+                        return { type: "raw_value", value: cleanRaw };
                     }
                 }
 
-                // Check hash fallback
+                // Fallback to window hash if present
                 if (window.location.hash) {
                     let hashVal = decodeURIComponent(window.location.hash.substring(1).trim());
                     if (hashVal) {
                         if (hashVal.startsWith('@')) hashVal = hashVal.substring(1);
-                        if (hashVal.length > 15) {
-                            return { type: "sellerId", value: hashVal };
-                        } else {
-                            return { type: "username", value: hashVal };
-                        }
+                        return { type: "hash_value", value: hashVal };
                     }
                 }
 
@@ -477,7 +465,8 @@ html, body {
                 let sId = null;
                 let d = null;
 
-                if (target.type === "sellerId") {
+                // Rule-based execution according to priority and strict fallback requirements
+                if (target.type === "explicit_sellerId") {
                     console.log("Firestore Method: getDoc(doc(db, 'users', sellerId))");
                     const userDocRef = doc(db, "users", target.value);
                     const userDocSnap = await getDoc(userDocRef);
@@ -485,11 +474,18 @@ html, body {
                     if (userDocSnap.exists()) {
                         sId = userDocSnap.id;
                         d = userDocSnap.data();
-                        console.log("Loaded Successfully via sellerId");
+                        console.log("Loaded Successfully");
                     } else {
-                        console.warn("Fallback Used: Seller document not found for ID:", target.value);
+                        console.warn("Fallback Used: Document ID not found, trying username query as fallback.");
+                        const fallbackQuery = query(collection(db, "users"), where("username", "==", target.value), limit(1));
+                        const fallbackSnap = await getDocs(fallbackQuery);
+                        if (!fallbackSnap.empty) {
+                            sId = fallbackSnap.docs[0].id;
+                            d = fallbackSnap.docs[0].data();
+                            console.log("Loaded Successfully via fallback username query");
+                        }
                     }
-                } else if (target.type === "username") {
+                } else if (target.type === "explicit_username" || target.type === "explicit_at" || target.type === "encoded_at") {
                     console.log("Firestore Method: query(collection(db, 'users'), where('username', '==', username), limit(1))");
                     const userQuery = query(
                         collection(db, "users"),
@@ -499,12 +495,46 @@ html, body {
                     const userSnap = await getDocs(userQuery);
 
                     if (!userSnap.empty) {
-                        const docSnap = userSnap.docs[0];
-                        sId = docSnap.id;
-                        d = docSnap.data();
-                        console.log("Loaded Successfully via username");
+                        sId = userSnap.docs[0].id;
+                        d = userSnap.docs[0].data();
+                        console.log("Loaded Successfully");
                     } else {
-                        console.warn("Fallback Used: User not found for username:", target.value);
+                        console.warn("Fallback Used: Username not found, trying document ID lookup as fallback.");
+                        const fallbackDocRef = doc(db, "users", target.value);
+                        const fallbackDocSnap = await getDoc(fallbackDocRef);
+                        if (fallbackDocSnap.exists()) {
+                            sId = fallbackDocSnap.id;
+                            d = fallbackDocSnap.data();
+                            console.log("Loaded Successfully via fallback document ID lookup");
+                        }
+                    }
+                } else {
+                    // For raw_param, raw_value, hash_value where length check is completely prohibited:
+                    // First try as direct document ID (sellerId)
+                    console.log("Firestore Method: trying document ID lookup first for raw value");
+                    const userDocRef = doc(db, "users", target.value);
+                    const userDocSnap = await getDoc(userDocRef);
+
+                    if (userDocSnap.exists()) {
+                        sId = userDocSnap.id;
+                        d = userDocSnap.data();
+                        console.log("Loaded Successfully as sellerId");
+                    } else {
+                        console.log("Document ID not found, trying username query fallback");
+                        const userQuery = query(
+                            collection(db, "users"),
+                            where("username", "==", target.value),
+                            limit(1)
+                        );
+                        const userSnap = await getDocs(userQuery);
+
+                        if (!userSnap.empty) {
+                            sId = userSnap.docs[0].id;
+                            d = userSnap.docs[0].data();
+                            console.log("Loaded Successfully as username");
+                        } else {
+                            console.warn("Fallback Used: Both sellerId and username lookup failed.");
+                        }
                     }
                 }
 
