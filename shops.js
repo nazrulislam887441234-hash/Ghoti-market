@@ -62,6 +62,54 @@ function updateProgressBar(percent) {
     }
 }
 
+/**
+ * Helper Function to Check Shop Visibility
+ */
+function isVisibleShop(shop) {
+    const val = shop.verified;
+
+    console.log("Shop:", shop.shopName);
+    console.log("Verified:", shop.verified);
+    console.log("Type:", typeof shop.verified);
+
+    // Explicitly reject falsy or negative values
+    if (
+        val === false ||
+        val === "false" ||
+        val === "False" ||
+        val === "FALSE" ||
+        val === 0 ||
+        val === "0" ||
+        val === null ||
+        val === undefined ||
+        val === "" ||
+        val === "no" ||
+        val === "No" ||
+        val === "NO"
+    ) {
+        console.log("Visible:", false);
+        return false;
+    }
+
+    // Accept true, numbers like 1, or approved string tokens
+    if (val === true || val === 1) {
+        console.log("Visible:", true);
+        return true;
+    }
+
+    if (typeof val === "string") {
+        const lowerVal = val.trim().toLowerCase();
+        const invalidTokens = ["false", "0", "no", "off", "inactive", "unverified"];
+        const isVisible = !invalidTokens.includes(lowerVal) && lowerVal !== "";
+        console.log("Visible:", isVisible);
+        return isVisible;
+    }
+
+    const isVisible = Boolean(val);
+    console.log("Visible:", isVisible);
+    return isVisible;
+}
+
 // Fetch Initial 50 Shops
 async function fetchInitialShops() {
     if (isLoading) return;
@@ -91,17 +139,9 @@ async function fetchInitialShops() {
             snapshot = await getDocs(fallbackQuery);
         }
 
-        allLoadedShops = [];
-        
-        snapshot.forEach((doc) => {
-            const data = doc.data();
-            if (data.shopName) {
-                allLoadedShops.push({
-                    id: doc.id,
-                    ...data
-                });
-            }
-        });
+        allLoadedShops = snapshot.docs
+            .map(doc => ({ id: doc.id, ...doc.data() }))
+            .filter(shop => shop.shopName && isVisibleShop(shop));
 
         if (snapshot.docs.length > 0) {
             lastVisibleDoc = snapshot.docs[snapshot.docs.length - 1];
@@ -145,7 +185,7 @@ async function fetchMoreShops() {
             lastVisibleDoc = snapshot.docs[snapshot.docs.length - 1];
             snapshot.forEach((doc) => {
                 const data = doc.data();
-                if (data.shopName && !allLoadedShops.some(s => s.id === doc.id)) {
+                if (data.shopName && isVisibleShop(data) && !allLoadedShops.some(s => s.id === doc.id)) {
                     allLoadedShops.push({
                         id: doc.id,
                         ...data
@@ -170,14 +210,16 @@ async function fetchMoreShops() {
 function renderShops(shopsToRender) {
     shopGrid.innerHTML = "";
 
-    if (shopsToRender.length === 0) {
+    const validShopsToRender = shopsToRender.filter(shop => shop.shopName && isVisibleShop(shop));
+
+    if (validShopsToRender.length === 0) {
         emptyShopMessage.style.display = "block";
         return;
     } else {
         emptyShopMessage.style.display = "none";
     }
 
-    shopsToRender.forEach((shop, index) => {
+    validShopsToRender.forEach((shop, index) => {
         const shopUrl = shop.username 
             ? `https://ghotimarket.com/seller?@${shop.username}` 
             : `https://ghotimarket.com/profile?sellerId=${shop.id}`;
@@ -197,7 +239,7 @@ function renderShops(shopsToRender) {
                     <div class="shop-info">
                         <h3 class="shop-name">
                             ${escapeHTML(shop.shopName)}
-                            ${shop.verified ? '<span class="verified-badge" title="Verified Shop"><i class="fa-solid fa-circle-check"></i></span>' : ''}
+                            <span class="verified-badge" title="Verified Shop"><i class="fa-solid fa-circle-check"></i></span>
                         </h3>
                         <p class="shop-category">${escapeHTML(shop.category || "General Store")}</p>
                     </div>
@@ -257,8 +299,10 @@ function setupEventListeners() {
         }
 
         const filteredShops = allLoadedShops.filter(shop => 
-            shop.shopName.toLowerCase().includes(queryText) || 
-            (shop.category && shop.category.toLowerCase().includes(queryText))
+            isVisibleShop(shop) && (
+                shop.shopName.toLowerCase().includes(queryText) || 
+                (shop.category && shop.category.toLowerCase().includes(queryText))
+            )
         );
 
         renderShops(filteredShops);
