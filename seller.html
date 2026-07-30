@@ -365,46 +365,97 @@ html, body {
 <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import {
-  getFirestore,
-  doc,
-  getDoc,
-  collection,
-  query,
-  where,
-  getDocs,
-  limit
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+          getFirestore,
+          doc,
+          getDoc,
+          collection,
+          query,
+          where,
+          getDocs,
+          limit
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const db = getFirestore(initializeApp({ apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket" }));
 
-        // ===== FB PROOF USERNAME GETTER =====
-        function getUsernameFromURL(){
-            const urlParams = new URLSearchParams(window.location.search);
+        // ===== UNIVERSAL URL PARSER FUNCTION =====
+        function parseTargetFromURL() {
+            try {
+                const search = window.location.search;
+                const urlParams = new URLSearchParams(search);
 
-            // 1. Normal:?@chainapaikari
-            let user = urlParams.get("@");
-            if(user) return decodeURIComponent(user.trim());
+                // Priority 1: ?sellerId=xxxxx
+                let sellerIdVal = urlParams.get("sellerId");
+                if (sellerIdVal && sellerIdVal.trim() !== "") {
+                    return { type: "sellerId", value: decodeURIComponent(sellerIdVal.trim()) };
+                }
 
-            // 2. FB Mয়লা:?%40chainapaikari=&fbclid=xyz
-            for(const [key, value] of urlParams.entries()){
-                if(key!== 'fbclid' && key!== 'utm_source'){
-                    let cleanKey = decodeURIComponent(key.trim()); // %40 কে @ বানাবে
-                    if(cleanKey.startsWith('@')){
-                        return cleanKey.substring(1); // @ বাদ দিয়ে শুধু নাম
+                // Priority 2: ?username=xxxxx
+                let usernameVal = urlParams.get("username");
+                if (usernameVal && usernameVal.trim() !== "") {
+                    let cleanU = decodeURIComponent(usernameVal.trim());
+                    if (cleanU.startsWith('@')) cleanU = cleanU.substring(1);
+                    return { type: "username", value: cleanU };
+                }
+
+                // Priority 3: ?@luxuryshop
+                let atVal = urlParams.get("@");
+                if (atVal && atVal.trim() !== "") {
+                    let cleanU = decodeURIComponent(atVal.trim());
+                    if (cleanU.startsWith('@')) cleanU = cleanU.substring(1);
+                    return { type: "username", value: cleanU };
+                }
+
+                // Priority 4 & general parameter loops (e.g., ?%40luxuryshop or raw query parameters without '=' or special keys)
+                for (const [key, value] of urlParams.entries()) {
+                    let cleanKey = decodeURIComponent(key.trim());
+                    if (cleanKey !== 'fbclid' && cleanKey !== 'utm_source' && cleanKey !== 'utm_medium' && cleanKey !== '') {
+                        if (cleanKey.startsWith('@')) {
+                            return { type: "username", value: cleanKey.substring(1) };
+                        }
+                        if (value === '' && !cleanKey.includes('=')) {
+                            // If looks like an ID or username directly passed as key
+                            if (cleanKey.length > 15) {
+                                return { type: "sellerId", value: cleanKey };
+                            } else {
+                                return { type: "username", value: cleanKey.replace(/^@/, '') };
+                            }
+                        }
                     }
                 }
-            }
 
-            // 3. Last backup: URL থেকে সরাসরি
-            const raw = window.location.search;
-            if(raw.includes('@') || raw.includes('%40')){
-                return decodeURIComponent(raw.replace('?', '').split('&')[0].replace('@','').replace('%40',''));
-            }
+                // Check raw search string split
+                if (search && search.length > 1) {
+                    const raw = decodeURIComponent(search.substring(1).split('&')[0].trim());
+                    if (raw && !raw.includes('=') && !raw.startsWith('fbclid') && !raw.startsWith('utm_')) {
+                        let cleanRaw = raw;
+                        if (cleanRaw.startsWith('@')) cleanRaw = cleanRaw.substring(1);
+                        if (cleanRaw.length > 15) {
+                            return { type: "sellerId", value: cleanRaw };
+                        } else {
+                            return { type: "username", value: cleanRaw };
+                        }
+                    }
+                }
 
-            return null;
+                // Check hash fallback
+                if (window.location.hash) {
+                    let hashVal = decodeURIComponent(window.location.hash.substring(1).trim());
+                    if (hashVal) {
+                        if (hashVal.startsWith('@')) hashVal = hashVal.substring(1);
+                        if (hashVal.length > 15) {
+                            return { type: "sellerId", value: hashVal };
+                        } else {
+                            return { type: "username", value: hashVal };
+                        }
+                    }
+                }
+
+                return { type: null, value: null };
+            } catch (err) {
+                console.error("URL Parsing Error:", err);
+                return { type: null, value: null };
+            }
         }
-
-        const username = getUsernameFromURL();
         // ===== END =====
 
         let allProducts = [];
@@ -412,65 +463,98 @@ html, body {
         let displayCount = 100;
 
         async function loadProfile() {
+            try {
+                const target = parseTargetFromURL();
+                console.log("Detected URL Type:", target.type);
+                console.log("Detected Value:", target.value);
 
-    if (!username) {
-        document.getElementById("shopName").innerText = "Shop Not Found";
-        return;
-    }
+                if (!target.type || !target.value) {
+                    console.warn("Fallback Used: No valid identifier found in URL");
+                    document.getElementById("shopName").innerText = "Shop Not Found";
+                    return;
+                }
 
-    const userQuery = query(
-        collection(db, "users"),
-        where("username", "==", username),
-        limit(1)
-    );
+                let sId = null;
+                let d = null;
 
-    const userSnap = await getDocs(userQuery);
+                if (target.type === "sellerId") {
+                    console.log("Firestore Method: getDoc(doc(db, 'users', sellerId))");
+                    const userDocRef = doc(db, "users", target.value);
+                    const userDocSnap = await getDoc(userDocRef);
 
-    if (userSnap.empty) {
-        document.getElementById("shopName").innerText = "Shop Not Found";
-        return;
-    }
+                    if (userDocSnap.exists()) {
+                        sId = userDocSnap.id;
+                        d = userDocSnap.data();
+                        console.log("Loaded Successfully via sellerId");
+                    } else {
+                        console.warn("Fallback Used: Seller document not found for ID:", target.value);
+                    }
+                } else if (target.type === "username") {
+                    console.log("Firestore Method: query(collection(db, 'users'), where('username', '==', username), limit(1))");
+                    const userQuery = query(
+                        collection(db, "users"),
+                        where("username", "==", target.value),
+                        limit(1)
+                    );
+                    const userSnap = await getDocs(userQuery);
 
-    const docSnap = userSnap.docs[0];
-    const sId = docSnap.id;
-    const d = docSnap.data();
+                    if (!userSnap.empty) {
+                        const docSnap = userSnap.docs[0];
+                        sId = docSnap.id;
+                        d = docSnap.data();
+                        console.log("Loaded Successfully via username");
+                    } else {
+                        console.warn("Fallback Used: User not found for username:", target.value);
+                    }
+                }
 
-    document.getElementById('shopName').innerText = d.shopName;
-    document.getElementById('metaTitle').innerText = `${d.shopName} | Ghoti Market`;
+                if (!sId || !d) {
+                    document.getElementById("shopName").innerText = "Shop Not Found";
+                    return;
+                }
 
-    if (d.shopLogo)
-        document.getElementById('shopLogoImg').src = d.shopLogo;
+                document.getElementById('shopName').innerText = d.shopName || "Unknown Shop";
+                document.getElementById('metaTitle').innerText = `${d.shopName || "Shop"} | Ghoti Market`;
 
-    if (d.shopBanner) {
-        document.getElementById('shopBannerImg').src = d.shopBanner;
-        document.getElementById('shopBannerImg').style.display = "block";
-    }
+                if (d.shopLogo) {
+                    document.getElementById('shopLogoImg').src = d.shopLogo;
+                }
 
-    if (d.verified)
-        document.getElementById('verifiedBadge').style.display = "flex";
+                if (d.shopBanner) {
+                    document.getElementById('shopBannerImg').src = d.shopBanner;
+                    document.getElementById('shopBannerImg').style.display = "block";
+                }
 
-    const productQuery = query(
-        collection(db, "products"),
-        where("sellerId", "==", sId),
-        where("active", "==", true)
-    );
+                if (d.verified) {
+                    document.getElementById('verifiedBadge').style.display = "flex";
+                }
 
-    const productSnap = await getDocs(productQuery);
+                const productQuery = query(
+                    collection(db, "products"),
+                    where("sellerId", "==", sId),
+                    where("active", "==", true)
+                );
 
-    allProducts = productSnap.docs.map(doc => ({
-        id: doc.id,
-       ...doc.data()
-    }));
+                const productSnap = await getDocs(productQuery);
 
-    filteredProducts = allProducts;
-    render();
-}
+                allProducts = productSnap.docs.map(productDoc => ({
+                    id: productDoc.id,
+                    ...productDoc.data()
+                }));
+
+                filteredProducts = allProducts;
+                render();
+            } catch (error) {
+                console.error("Profile Load Error:", error);
+                document.getElementById("shopName").innerText = "Shop Not Found";
+            }
+        }
 
         window.handleSearch = () => {
             const term = document.getElementById('pSearch').value.toLowerCase().trim();
             filteredProducts = allProducts.filter(p =>
                 p.name?.toLowerCase().includes(term) ||
-                (Array.isArray(p.keywords)? p.keywords.some(k => k.toLowerCase().includes(term)) : p.keywords?.toLowerCase().includes(term))
+                (Array.isArray(p.keywords) ? p.keywords.some(k => k.toLowerCase().includes(term)) : p.keywords?.toLowerCase().includes(term))
             );
             displayCount = 100;
             render();
@@ -486,40 +570,40 @@ html, body {
             const btn = document.getElementById('seeMoreBtn');
             const dataToDisplay = filteredProducts.slice(0, displayCount);
 
-            grid.innerHTML = dataToDisplay.length? dataToDisplay.map(p => `
+            grid.innerHTML = dataToDisplay.length ? dataToDisplay.map(p => `
               <a href="${
-    p.slug
-       ? `https://ghotimarket.com/product?${p.slug}`
-        : `https://ghotimarket.com/product?id=${p.id}`
-}" class="p-card">
-                    <div class="img-box"><img src="${p.images?.[0] || ''}" alt="${p.name}"></div>
+                p.slug
+                   ? `https://ghotimarket.com/product?${p.slug}`
+                    : `https://ghotimarket.com/product?id=${p.id}`
+            }" class="p-card">
+                    <div class="img-box"><img src="${p.images?.[0] || ''}" alt="${p.name || ''}"></div>
                     <div class="p-info">
-                        <div class="p-name">${p.name}</div>
+                        <div class="p-name">${p.name || ''}</div>
                       <div class="price-box">
-    <span class="current-price">৳${p.price}</span>
+                        <span class="current-price">৳${p.price || 0}</span>
 
-    ${
-        p.oldPrice && Number(p.oldPrice) > Number(p.price)
-       ? `
-        <span class="old-price">৳${p.oldPrice}</span>
+                        ${
+                            p.oldPrice && Number(p.oldPrice) > Number(p.price)
+                           ? `
+                            <span class="old-price">৳${p.oldPrice}</span>
 
-        <span class="discount-badge">
-            ${Math.round(((p.oldPrice-p.price)/p.oldPrice)*100)}% OFF
-        </span>
+                            <span class="discount-badge">
+                                ${Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100)}% OFF
+                            </span>
 
-        <div class="save-text">
-            Save ৳${p.oldPrice-p.price}
-        </div>
-        `
-        : ""
-    }
-</div>
+                            <div class="save-text">
+                                Save ৳${p.oldPrice - p.price}
+                            </div>
+                            `
+                            : ""
+                        }
+                    </div>
 
                     </div>
                 </a>
             `).join('') : '<p style="text-align:center; grid-column:1/-1; padding:40px;">😔 কোনো পণ্য পাওয়া যায়নি!</p>';
 
-            btn.style.display = (displayCount < filteredProducts.length)? 'block' : 'none';
+            btn.style.display = (displayCount < filteredProducts.length) ? 'block' : 'none';
         }
 
         loadProfile();
