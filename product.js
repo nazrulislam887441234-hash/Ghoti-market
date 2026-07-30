@@ -316,18 +316,16 @@ const renderProduct = (p) => {
                     applyUserData(userData, sellerId, shopLink, logoImg, verifiedBadge);
                 } else {
                     console.warn("Seller Profile Document Missing for ID:", sellerId);
-                    applyFallbackUserData(sellerId, shopLink);
+                    applyFallbackUserData(sellerId, shopLink, "Document not found in Firestore");
                 }
             }).catch(err => {
                 console.error("Seller Profile Load Error:", err);
-                applyFallbackUserData(sellerId, shopLink);
+                applyFallbackUserData(sellerId, shopLink, "Firestore read error: " + err.message);
             });
         }
     } else {
-        if (shopLink) {
-            shopLink.style.pointerEvents = "auto";
-            shopLink.style.opacity = "1";
-        }
+        console.warn("Seller ID is missing or empty.");
+        applyFallbackUserData(sellerId, shopLink, "Seller ID is missing or empty");
     }
 
     const slider = getEl("imgSlider");
@@ -350,24 +348,56 @@ const renderProduct = (p) => {
 };
 
 const applyUserData = (user, sellerId, shopLink, logoImg, verifiedBadge) => {
-    let targetUrl = `https://ghotimarket.com/profile?sellerId=${encodeURIComponent(sellerId)}`;
-    let usernameVal = safeText(user.username).trim();
+    let detectedUsername = null;
+    let finalUrl = "";
+    let fallbackReason = "";
 
-    if (usernameVal) {
-        const cleanUsername = usernameVal.startsWith('@') ? usernameVal.substring(1) : usernameVal;
-        targetUrl = `https://ghotimarket.com/seller?@${encodeURIComponent(cleanUsername)}`;
+    if (user && typeof user === 'object') {
+        const foundKey = Object.keys(user).find(k => k.toLowerCase() === 'username');
+        if (foundKey) {
+            detectedUsername = user[foundKey];
+        }
     }
 
-    console.debug("Generated Seller URL:", targetUrl);
+    let isValidUsername = false;
+    let processedUsername = "";
+
+    if (detectedUsername !== null && detectedUsername !== undefined) {
+        processedUsername = String(detectedUsername).trim().replace(/\s+/g, ' ');
+        if (processedUsername !== "") {
+            if (processedUsername.startsWith('@')) {
+                processedUsername = processedUsername.substring(1).trim();
+            }
+            if (processedUsername !== "") {
+                isValidUsername = true;
+            }
+        }
+    }
+
+    if (isValidUsername) {
+        finalUrl = `https://ghotimarket.com/seller?@${encodeURIComponent(processedUsername)}`;
+        fallbackReason = "None (Valid username found)";
+    } else {
+        fallbackReason = "Username is missing, null, undefined, empty, or whitespace only";
+        const cleanSellerId = safeText(sellerId).trim();
+        finalUrl = `https://ghotimarket.com/seller?${encodeURIComponent(cleanSellerId)}`;
+    }
+
+    console.debug("--- Seller URL Generation Logs ---");
+    console.debug("sellerId:", sellerId);
+    console.debug("Document found:", true);
+    console.debug("detected username:", detectedUsername);
+    console.debug("final generated URL:", finalUrl);
+    console.debug("fallback reason:", fallbackReason);
+    console.debug("-----------------------------------");
 
     if (shopLink) {
-        shopLink.href = targetUrl;
+        shopLink.href = finalUrl;
         shopLink.style.pointerEvents = "auto";
         shopLink.style.opacity = "1";
-        console.debug("Current shopLink href set to:", shopLink.href);
     }
 
-    if (user.shopLogo) {
+    if (user?.shopLogo) {
         logoImg.src = user.shopLogo;
         logoImg.onerror = () => hideElement(logoImg);
         showElement(logoImg, 'inline-block');
@@ -382,14 +412,22 @@ const applyUserData = (user, sellerId, shopLink, logoImg, verifiedBadge) => {
     }
 };
 
-const applyFallbackUserData = (sellerId, shopLink) => {
-    const fallbackUrl = `https://ghotimarket.com/profile?sellerId=${encodeURIComponent(sellerId)}`;
-    console.debug("Generated Fallback Seller URL:", fallbackUrl);
+const applyFallbackUserData = (sellerId, shopLink, reason = "Graceful fallback due to missing data") => {
+    const cleanSellerId = safeText(sellerId).trim();
+    const finalUrl = `https://ghotimarket.com/seller?${encodeURIComponent(cleanSellerId)}`;
+
+    console.debug("--- Seller URL Generation Logs (Fallback) ---");
+    console.debug("sellerId:", sellerId);
+    console.debug("Document found:", false);
+    console.debug("detected username:", null);
+    console.debug("final generated URL:", finalUrl);
+    console.debug("fallback reason:", reason);
+    console.debug("-----------------------------------------------");
+
     if (shopLink) {
-        shopLink.href = fallbackUrl;
+        shopLink.href = finalUrl;
         shopLink.style.pointerEvents = "auto";
         shopLink.style.opacity = "1";
-        console.debug("Current shopLink fallback href set to:", shopLink.href);
     }
 };
 
