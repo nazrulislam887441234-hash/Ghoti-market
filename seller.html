@@ -363,7 +363,7 @@ html, body {
     <button id="seeMoreBtn" class="see-more-btn" style="display:none;" onclick="loadMore()">See More</button>
 
 <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+                import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import {
           getFirestore,
           doc,
@@ -408,7 +408,7 @@ html, body {
                 // Scan all URL keys for Facebook shares or URL-encoded attributes like ?%40luxuryshop
                 for (const [key, value] of urlParams.entries()) {
                     let cleanKey = decodeURIComponent(key.trim());
-                    if (cleanKey && cleanKey !== 'fbclid' && cleanKey !== 'utm_source' && cleanKey !== 'utm_medium' && cleanKey !== 'utm_campaign') {
+                    if (cleanKey && cleanKey !== 'fbclid' && cleanKey !== 'gclid' && !cleanKey.startsWith('utm_')) {
                         if (cleanKey.startsWith('@')) {
                             return { type: "encoded_at", value: cleanKey.substring(1) };
                         }
@@ -419,10 +419,10 @@ html, body {
                     }
                 }
 
-                // Priority 4: Fallback to raw path search string (e.g. ?115qbNBgBrheiE0AdUoDarC4JCg2 or ?luxuryshop)
+                // Priority 4: Fallback to raw path search string (e.g. ?oBalDCzGc3XxNVwPvKckosgWD5m2 or ?luxuryshop)
                 if (search && search.length > 1) {
                     const raw = decodeURIComponent(search.substring(1).split('&')[0].trim());
-                    if (raw && !raw.includes('=') && !raw.startsWith('fbclid') && !raw.startsWith('utm_')) {
+                    if (raw && !raw.includes('=') && !raw.startsWith('fbclid') && !raw.startsWith('gclid') && !raw.startsWith('utm_')) {
                         let cleanRaw = raw;
                         if (cleanRaw.startsWith('@')) cleanRaw = cleanRaw.substring(1);
                         return { type: "raw_value", value: cleanRaw };
@@ -465,7 +465,7 @@ html, body {
                 let sId = null;
                 let d = null;
 
-                // Rule-based execution according to priority and strict fallback requirements
+                // Rule-based execution according to priority and strict requirements
                 if (target.type === "explicit_sellerId") {
                     console.log("Firestore Method: getDoc(doc(db, 'users', sellerId))");
                     const userDocRef = doc(db, "users", target.value);
@@ -474,16 +474,9 @@ html, body {
                     if (userDocSnap.exists()) {
                         sId = userDocSnap.id;
                         d = userDocSnap.data();
-                        console.log("Loaded Successfully");
+                        console.log("Loaded Successfully via explicit_sellerId");
                     } else {
-                        console.warn("Fallback Used: Document ID not found, trying username query as fallback.");
-                        const fallbackQuery = query(collection(db, "users"), where("username", "==", target.value), limit(1));
-                        const fallbackSnap = await getDocs(fallbackQuery);
-                        if (!fallbackSnap.empty) {
-                            sId = fallbackSnap.docs[0].id;
-                            d = fallbackSnap.docs[0].data();
-                            console.log("Loaded Successfully via fallback username query");
-                        }
+                        console.warn("Shop Not Found for provided sellerId");
                     }
                 } else if (target.type === "explicit_username" || target.type === "explicit_at" || target.type === "encoded_at") {
                     console.log("Firestore Method: query(collection(db, 'users'), where('username', '==', username), limit(1))");
@@ -497,20 +490,12 @@ html, body {
                     if (!userSnap.empty) {
                         sId = userSnap.docs[0].id;
                         d = userSnap.docs[0].data();
-                        console.log("Loaded Successfully");
+                        console.log("Loaded Successfully via username query");
                     } else {
-                        console.warn("Fallback Used: Username not found, trying document ID lookup as fallback.");
-                        const fallbackDocRef = doc(db, "users", target.value);
-                        const fallbackDocSnap = await getDoc(fallbackDocRef);
-                        if (fallbackDocSnap.exists()) {
-                            sId = fallbackDocSnap.id;
-                            d = fallbackDocSnap.data();
-                            console.log("Loaded Successfully via fallback document ID lookup");
-                        }
+                        console.warn("Shop Not Found for provided username");
                     }
                 } else {
-                    // For raw_param, raw_value, hash_value where length check is completely prohibited:
-                    // First try as direct document ID (sellerId)
+                    // For raw values: First try getDoc, if not exists, query users where username == value
                     console.log("Firestore Method: trying document ID lookup first for raw value");
                     const userDocRef = doc(db, "users", target.value);
                     const userDocSnap = await getDoc(userDocRef);
@@ -518,7 +503,7 @@ html, body {
                     if (userDocSnap.exists()) {
                         sId = userDocSnap.id;
                         d = userDocSnap.data();
-                        console.log("Loaded Successfully as sellerId");
+                        console.log("Loaded Successfully as sellerId (Document ID)");
                     } else {
                         console.log("Document ID not found, trying username query fallback");
                         const userQuery = query(
@@ -531,9 +516,9 @@ html, body {
                         if (!userSnap.empty) {
                             sId = userSnap.docs[0].id;
                             d = userSnap.docs[0].data();
-                            console.log("Loaded Successfully as username");
+                            console.log("Loaded Successfully via username query fallback");
                         } else {
-                            console.warn("Fallback Used: Both sellerId and username lookup failed.");
+                            console.warn("Shop Not Found: Both sellerId and username lookup failed.");
                         }
                     }
                 }
