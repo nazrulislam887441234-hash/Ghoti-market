@@ -859,8 +859,16 @@
                 <div class="stat-card">
                     <div class="stat-icon"><i class="fa-solid fa-coins"></i></div>
                     <div class="stat-info">
-                        <span>Commission (20%)</span>
+                        <span>Admin Commission 20%</span>
                         <h3 id="statCommission" class="skeleton">৳0.00</h3>
+                    </div>
+                </div>
+                <!-- নতুন কার্ড: Affiliate Earning 80% (শর্ত ৫ অনুযায়ী যুক্ত করা হয়েছে) -->
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                    <div class="stat-info">
+                        <span>Affiliate Earning 80%</span>
+                        <h3 id="statAffiliateEarning" class="skeleton">৳0.00</h3>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -1231,13 +1239,13 @@
             });
         });
 
-        // Helper to format currency with ৳ and 2 decimal places
+        // টাকা ফরম্যাট করার ইউটিলিটি ফাংশন (৳ এবং ২ ঘর দশমিক)
         function formatCurrency(amount) {
             const num = Number(amount) || 0;
             return `৳${num.toLocaleString('en-BD', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         }
 
-        // Helper to format date
+        // তারিখ ফরম্যাট করার ইউটিলিটি ফাংশন
         function formatDate(timestamp) {
             if (!timestamp) return '--';
             try {
@@ -1249,46 +1257,48 @@
         }
 
         // ==========================================
-        // 7. FINANCIAL CALCULATION & ORDER LISTENER
+        // 7. NEW FINANCIAL CALCULATION & ORDER LISTENER
         // ==========================================
+        // শর্ত ২: initFinancialCalculation(uid) তৈরি যা order_tracking কালেকশনে onSnapshot ব্যবহার করে
         function initFinancialCalculation(uid) {
             if (!uid) return;
 
-            // পুরানো লিসener বন্ধ করা হচ্ছে
+            // পূর্বের কোনো অর্ডারের Realtime Listener চালু থাকলে তা বন্ধ করা হচ্ছে
             if (unsubOrders) {
                 unsubOrders();
             }
 
-            // রুলস অনুযায়ী `order_tracking` কালেকশন থেকে বর্তমান অ্যাফিলিয়েটের অর্ডার কুয়েরি করা হচ্ছে
+            // 'order_tracking' কালেকশন থেকে affiliateUserId দিয়ে কুয়েরি তৈরি
             const ordersQuery = query(
                 collection(db, "order_tracking"),
                 where("affiliateUserId", "==", uid)
             );
 
-            // রিয়েল-টাইম আপডেটের জন্য onSnapshot ব্যবহার করা হচ্ছে
+            // রিয়েল-টাইম আপডেটের জন্য onSnapshot চালুকরণ
             unsubOrders = onSnapshot(ordersQuery, (snapshot) => {
                 let deliveredOrders = 0;
                 let generalBalance = 0;
 
+                // শর্ত ৩ (a): কেবল deliveryStatus === "Delivered" এবং affiliateApplied === true ফিল্টারিং
                 snapshot.forEach((docSnap) => {
                     const order = docSnap.data();
                     const deliveryStatus = order.deliveryStatus || "";
+                    const affiliateApplied = order.affiliateApplied;
                     const affiliateDiscount = Number(order.affiliateDiscount) || 0;
 
-                    // যদি ডেলিভারি স্ট্যাটাস "Delivered" হয়
-                    if (deliveryStatus === "Delivered") {
-                        deliveredOrders++;
-                        generalBalance += affiliateDiscount;
+                    if (deliveryStatus === "Delivered" && affiliateApplied === true) {
+                        deliveredOrders++; // (b) deliveredOrders গণনাকরণ
+                        generalBalance += affiliateDiscount; // (c) generalBalance হিসাবকরণ
                     }
                 });
 
-                // হিসাব নিকাশ লজিক
-                const adminCommission = generalBalance * 0.20;
-                const affiliateEarning = generalBalance - adminCommission;
-                const withdrawn = Number(currentWithdrawn) || 0;
-                const netBalance = affiliateEarning - withdrawn;
+                // শর্ত ৩ (d, e, f, g): আর্থিক হিসাব-নিকাশ
+                const adminCommission = generalBalance * 0.20; // ২০% অ্যাডমিন কমিশন
+                const affiliateEarning = generalBalance - adminCommission; // ৮০% অ্যাফিলিয়েট আর্নিং
+                const withdrawn = Number(currentWithdrawn) || 0; // Affiliates/{uid}.withdrawn থেকে প্রাপ্ত
+                const netBalance = affiliateEarning - withdrawn; // নেট ব্যালেন্স
 
-                // UI ম্যাপ করা হচ্ছে (ড্যাশবোর্ড স্ট্যাটস এবং পারফরম্যান্স সেকশন)
+                // শর্ত ৪: UI টেক্সট এবং মান আপডেট
                 document.getElementById('statGeneralBalance').textContent = formatCurrency(generalBalance);
                 document.getElementById('statCommission').textContent = formatCurrency(adminCommission);
                 document.getElementById('statAffiliateEarning').textContent = formatCurrency(affiliateEarning); // নতুন কার্ড আপডেট
@@ -1300,43 +1310,42 @@
                 document.getElementById('perfDeliveredDiscountTotal').textContent = formatCurrency(generalBalance);
                 document.getElementById('perfGeneralBalance').textContent = formatCurrency(generalBalance);
                 document.getElementById('perfCommission').textContent = formatCurrency(adminCommission);
-                document.getElementById('perfAffiliateEarning').textContent = formatCurrency(affiliateEarning); // নতুন পারফরম্যান্স রো আপডেট
                 document.getElementById('perfWithdrawn').textContent = formatCurrency(withdrawn);
                 document.getElementById('perfNetBalance').textContent = formatCurrency(netBalance);
 
-                // ডেটা লোড হওয়ার পর স্কেলেটন ক্লাস রিমুভ করা হচ্ছে
+                // শর্ত ৬: ডেটা লোড হওয়ার পর skeleton ক্লাস মুছে ফেলা হচ্ছে
                 document.querySelectorAll('.skeleton').forEach(el => el.classList.remove('skeleton'));
             }, (error) => {
                 console.error("Order tracking listener error:", error);
-                // পার্মিশন ডিনাইড হলে পপআপ প্রদর্শন
+                // শর্ত ৬: পারমিশন ডিনাইড বা অন্যান্য ত্রুটির জন্য এরর হ্যান্ডলিং
                 if (error.code === 'permission-denied') {
-                    showPopup("অনুমতি ত্রুটি", "আপনার এই ডেটা দেখার অনুমতি নেই (Permission Denied)।", "error");
+                    showPopup("অনুমতি ত্রুটি", "আপনার অর্ডার ডেটা পড়ার কোনো অনুমতি নেই (Permission Denied)।", "error");
                 } else {
                     showPopup("ত্রুটি", `অর্ডার লোড করতে সমস্যা হয়েছে: ${error.message}`, "error");
                 }
             });
         }
 
-        // Populate Dashboard UI & Editable Profile Fields with Data
+        // প্রোফাইল ও ড্যাশবোর্ড ইউজার ইনফরমেশন আপডেট ফাংশন
         function updateDashboardUI(data) {
             const name = data.fullName || data.name || "--";
             const email = data.email || "--";
             const phone = data.phone || data.phoneNumber || "--";
             currentPromoCode = data.affiliatePromoCode || data.promoCode || data.referralCode || "GM-PROMO";
-            currentWithdrawn = Number(data.withdrawn) || 0;
+            currentWithdrawn = Number(data.withdrawn) || 0; // withdrawn ডেটা নেওয়া হচ্ছে
             const photoURL = data.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=FF6A00&color=fff`;
             const affiliateId = data.affiliateUserId || data.affiliateId || data.uid || "--";
             const joinedDate = formatDate(data.joinedDate || data.createdAt);
             const lastLogin = data.lastLogin ? formatDate(data.lastLogin) : "--";
             const active = data.active !== undefined ? data.active : true;
 
-            // Top Bar
+            // Top Bar আপডেট
             document.getElementById('topBarName').textContent = name;
             document.getElementById('topBarAvatar').src = photoURL;
             document.getElementById('topBarFullName').textContent = name;
             document.getElementById('topBarId').textContent = `ID: ${affiliateId}`;
 
-            // Profile Card (Dashboard)
+            // Profile Card আপডেট
             document.getElementById('profileAvatar').src = photoURL;
             document.getElementById('profileName').textContent = name;
             document.getElementById('profileAffiliateId').textContent = currentPromoCode;
@@ -1355,11 +1364,11 @@
             document.getElementById('profileJoinedDate').textContent = joinedDate;
             document.getElementById('profileLastLogin').textContent = lastLogin;
 
-            // Promo Card & Performance Promo Code
+            // Promo Card আপডেট
             document.getElementById('promoCodeDisplay').textContent = currentPromoCode;
             document.getElementById('perfPromoCode').textContent = currentPromoCode;
 
-            // Populate Editable Profile Form Fields
+            // ফর্ম ফিল্ড ফিলাপ
             document.getElementById('inputFullName').value = data.fullName || data.name || '';
             document.getElementById('inputPhone').value = data.phone || data.phoneNumber || '';
             document.getElementById('inputEmail').value = email;
@@ -1371,10 +1380,12 @@
             document.getElementById('inputNid').value = data.nid || '';
             document.getElementById('inputPromoCode').value = currentPromoCode;
 
-            // রিয়েল-টাইম ফিনান্সিয়াল ক্যালকুলেশন ইনিশিয়ালাইজ করা হচ্ছে (Rule অনুযায়ী auth.currentUser.uid পাস করা হচ্ছে)
-            initFinancialCalculation(currentUserUid);
+            // শর্ত ৬: currentUserUid সহ Financial Calculation কল করা হচ্ছে
+            if (currentUserUid) {
+                initFinancialCalculation(currentUserUid);
+            }
 
-            // Hide global loader smoothly once data is populated
+            // গ্লোবাল লোডার স্মুথলি হাইড করা হচ্ছে
             globalLoader.style.opacity = '0';
             setTimeout(() => { globalLoader.style.display = 'none'; }, 300);
         }
@@ -1462,6 +1473,7 @@
                 return;
             }
 
+            // লগইন করা ইউজারের UID সেভ ও রিয়েলটাইম ড্যাশবোর্ড সিঙ্ক
             currentUserUid = user.uid;
             console.log("User logged in UID:", currentUserUid);
 
