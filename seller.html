@@ -5,9 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="metaTitle">Seller Profile | Ghoti Market</title>
     
+    <!-- SEO & META TAGS -->
+    <meta name="description" id="metaDescription" content="Browse products on Ghoti Market.">
+    <meta name="keywords" id="metaKeywords" content="ghoti market, online shop">
+    
+    <!-- Open Graph SEO -->
+    <meta property="og:title" id="ogTitle" content="Seller Profile | Ghoti Market">
+    <meta property="og:description" id="ogDescription" content="Browse products on Ghoti Market.">
+    <meta property="og:image" id="ogImage" content="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
+    <meta property="og:type" id="ogType" content="website">
+    <meta property="og:url" id="ogUrl" content="">
+
+    <!-- Twitter Meta -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" id="twitterTitle" content="Seller Profile | Ghoti Market">
+    <meta name="twitter:description" id="twitterDescription" content="Browse products on Ghoti Market.">
+    <meta name="twitter:image" id="twitterImage" content="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json" id="jsonLdData">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Ghoti Market",
+      "description": "Browse products on Ghoti Market.",
+      "image": "https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png",
+      "url": "",
+      "logo": "https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png"
+    }
+    </script>
+    
     <!-- FAVICON + THEME COLOR ORANGE -->
     <link rel="icon" type="image/png" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
+    <link rel="shortcut icon" type="image/png" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
     <link rel="apple-touch-icon" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
+    <link rel="mask-icon" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png" color="#f97316">
     <meta name="theme-color" content="#f97316">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -134,6 +166,27 @@ html, body {
     box-shadow:0 3px 10px rgba(24,119,242,0.4);
 }
 .verified-badge svg { width: 12px; height: 12px; }
+
+/* Feature 1: Shop Description Section Styles */
+.shop-description-section {
+    max-width: 800px;
+    margin: 15px auto 0 auto;
+    padding: 0 15px;
+}
+.shop-description-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(249, 115, 22, 0.2);
+    border-left: 4px solid var(--accent);
+    border-radius: 12px;
+    padding: 14px 18px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    font-size: 14px;
+    color: #334155;
+    line-height: 1.6;
+    white-space: pre-line;
+    word-break: break-word;
+}
 
 .search-area { 
     padding: 15px; 
@@ -322,6 +375,10 @@ html, body {
                 </div>
             </div>
         </div>
+        <!-- Feature 1: Shop Description Container -->
+        <div id="shopDescriptionContainer" class="shop-description-section" style="display: none;">
+            <div id="shopDescriptionText" class="shop-description-card"></div>
+        </div>
     </div>
 
     <div class="search-area">
@@ -363,7 +420,7 @@ html, body {
     <button id="seeMoreBtn" class="see-more-btn" style="display:none;" onclick="loadMore()">See More</button>
 
 <script type="module">
-                import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import {
           getFirestore,
           doc,
@@ -376,6 +433,176 @@ html, body {
         } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const db = getFirestore(initializeApp({ apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket" }));
+
+        // ===== REUSABLE FAVICON & LOGO HELPER FUNCTIONS (Requirement 9, 13, 14, 15) =====
+        const FALLBACK_LOGO = "https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png";
+
+        function updateFavicons(shopLogo) {
+            // Validate shopLogo and apply fallback if empty, null, undefined, or invalid
+            let validLogo = (shopLogo && typeof shopLogo === 'string' && shopLogo.trim() !== "") 
+                ? shopLogo.trim() 
+                : FALLBACK_LOGO;
+
+            // Implement automatic cache busting with version query string (Requirement 5)
+            const timestamp = Date.now();
+            const versionedLogo = `${validLogo}${validLogo.includes('?') ? '&' : '?'}v=${timestamp}`;
+
+            // Helper to create or update head link/meta elements without duplication (Requirement 6)
+            function setOrCreateElement(selector, attributes) {
+                let el = document.querySelector(selector);
+                if (!el) {
+                    const parts = selector.split('[');
+                    const tagName = parts[0];
+                    el = document.createElement(tagName);
+                    document.head.appendChild(el);
+                }
+                for (const [key, value] of Object.entries(attributes)) {
+                    el.setAttribute(key, value);
+                }
+            }
+
+            // 1. Update <link rel="icon">
+            setOrCreateElement("link[rel='icon']", {
+                rel: "icon",
+                type: "image/png",
+                href: versionedLogo
+            });
+
+            // 2. Update <link rel="shortcut icon">
+            setOrCreateElement("link[rel='shortcut icon']", {
+                rel: "shortcut icon",
+                type: "image/png",
+                href: versionedLogo
+            });
+
+            // 3. Update <link rel="apple-touch-icon">
+            setOrCreateElement("link[rel='apple-touch-icon']", {
+                rel: "apple-touch-icon",
+                href: versionedLogo
+            });
+
+            // 4. Update <link rel="mask-icon">
+            setOrCreateElement("link[rel='mask-icon']", {
+                rel: "mask-icon",
+                href: versionedLogo,
+                color: "#f97316"
+            });
+
+            // 5. Update Open Graph Image <meta property="og:image">
+            setOrCreateElement("meta[property='og:image']", {
+                property: "og:image",
+                content: versionedLogo
+            });
+
+            // 6. Update Twitter Image <meta name="twitter:image">
+            setOrCreateElement("meta[name='twitter:image']", {
+                name: "twitter:image",
+                content: versionedLogo
+            });
+
+            // 7. Update JSON-LD Structured Data logo and image properties
+            const jsonLdScript = document.getElementById("jsonLdData");
+            if (jsonLdScript) {
+                try {
+                    let schemaData = JSON.parse(jsonLdScript.textContent);
+                    schemaData.logo = versionedLogo;
+                    schemaData.image = versionedLogo;
+                    jsonLdScript.textContent = JSON.stringify(schemaData, null, 2);
+                } catch (e) {
+                    console.error("JSON-LD Favicon Update Error:", e);
+                }
+            }
+        }
+        // ===== END FAVICON HELPER =====
+
+        // ===== REUSABLE SEO HELPER FUNCTIONS (Feature 9) =====
+        function setMetaTag(selector, attr, value) {
+            let el = document.querySelector(selector);
+            if (el) {
+                el.setAttribute(attr, value);
+            }
+        }
+
+        function setPropertyMeta(property, value) {
+            let el = document.querySelector(`meta[property="${property}"]`);
+            if (el) {
+                el.setAttribute("content", value);
+            }
+        }
+
+        function renderDescription(shopDescription) {
+            const container = document.getElementById("shopDescriptionContainer");
+            const textEl = document.getElementById("shopDescriptionText");
+            if (shopDescription && shopDescription.trim() !== "") {
+                textEl.textContent = shopDescription;
+                container.style.display = "block";
+            } else {
+                container.style.display = "none";
+            }
+        }
+
+        function updateSEO(shopData) {
+            const shopName = shopData.shopName || "Shop";
+            const shopDescriptionRaw = shopData.shopDescription || "";
+            const shopLogo = shopData.shopLogo || "https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png";
+            const shopBanner = shopData.shopBanner || shopLogo;
+            const currentUrl = window.location.href;
+
+            // Feature 2: Meta Description
+            let metaDesc = "";
+            if (shopDescriptionRaw.trim() !== "") {
+                metaDesc = shopDescriptionRaw.trim();
+            } else {
+                metaDesc = `Browse products from ${shopName} on Ghoti Market.`;
+            }
+            if (metaDesc.length > 160) {
+                metaDesc = metaDesc.substring(0, 157) + "...";
+            }
+            setMetaTag("#metaDescription", "content", metaDesc);
+
+            // Feature 3: Meta Keywords
+            let keywordsStr = shopName;
+            if (Array.isArray(shopData.shopKeywords) && shopData.shopKeywords.length > 0) {
+                keywordsStr = shopData.shopKeywords.join(", ");
+            }
+            setMetaTag("#metaKeywords", "content", keywordsStr);
+
+            // Feature 4: Open Graph SEO
+            setPropertyMeta("og:title", `${shopName} | Ghoti Market`);
+            setPropertyMeta("og:description", metaDesc);
+            setPropertyMeta("og:image", shopBanner);
+            setPropertyMeta("og:type", "website");
+            setPropertyMeta("og:url", currentUrl);
+
+            // Feature 5: Twitter Meta
+            setMetaTag("meta[name='twitter:title']", "content", `${shopName} | Ghoti Market`);
+            setMetaTag("meta[name='twitter:description']", "content", metaDesc);
+            setMetaTag("meta[name='twitter:image']", "content", shopBanner);
+            setMetaTag("meta[name='twitter:card']", "content", "summary_large_image");
+
+            // Feature 6: Document Title
+            document.getElementById("metaTitle").innerText = `${shopName} | Ghoti Market`;
+            document.title = `${shopName} | Ghoti Market`;
+
+            // Feature 7: JSON-LD Structured Data
+            const jsonLdScript = document.getElementById("jsonLdData");
+            if (jsonLdScript) {
+                const schemaData = {
+                    "@context": "https://schema.org",
+                    "@type": "LocalBusiness",
+                    "name": shopName,
+                    "description": metaDesc,
+                    "image": shopBanner,
+                    "url": currentUrl,
+                    "logo": shopLogo
+                };
+                if (shopData.sameAs) {
+                    schemaData.sameAs = shopData.sameAs;
+                }
+                jsonLdScript.textContent = JSON.stringify(schemaData, null, 2);
+            }
+        }
+        // ===== END SEO HELPERS =====
 
         // ===== ADVANCED ROBUST URL PARSER & IDENTIFIER =====
         function parseTargetFromURL() {
@@ -459,6 +686,7 @@ html, body {
                 if (!target.type || !target.value) {
                     console.warn("Fallback Used: No valid identifier found in URL");
                     document.getElementById("shopName").innerText = "Shop Not Found";
+                    updateFavicons(null); // Fallback to default favicon
                     return;
                 }
 
@@ -525,11 +753,11 @@ html, body {
 
                 if (!sId || !d) {
                     document.getElementById("shopName").innerText = "Shop Not Found";
+                    updateFavicons(null);
                     return;
                 }
 
                 document.getElementById('shopName').innerText = d.shopName || "Unknown Shop";
-                document.getElementById('metaTitle').innerText = `${d.shopName || "Shop"} | Ghoti Market`;
 
                 if (d.shopLogo) {
                     document.getElementById('shopLogoImg').src = d.shopLogo;
@@ -543,6 +771,13 @@ html, body {
                 if (d.verified) {
                     document.getElementById('verifiedBadge').style.display = "flex";
                 }
+
+                // Feature 1 & Features 2-7: Render Description and Update SEO using already loaded user document
+                renderDescription(d.shopDescription);
+                updateSEO(d);
+
+                // Requirement 1, 4, 10: Call updateFavicons immediately after successful Firestore load
+                updateFavicons(d.shopLogo);
 
                 const productQuery = query(
                     collection(db, "products"),
@@ -562,6 +797,7 @@ html, body {
             } catch (error) {
                 console.error("Profile Load Error:", error);
                 document.getElementById("shopName").innerText = "Shop Not Found";
+                updateFavicons(null);
             }
         }
 
