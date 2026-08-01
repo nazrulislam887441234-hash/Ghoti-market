@@ -45,6 +45,10 @@
             overflow-x: hidden;
         }
 
+        body.sidebar-open-fixed {
+            overflow: hidden;
+        }
+
         /* Initial Fullscreen Loading Screen */
         #globalLoader {
             position: fixed;
@@ -168,6 +172,24 @@
             background: rgba(239, 68, 68, 0.2);
         }
 
+        /* Sidebar Backdrop for Mobile */
+        .sidebar-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+        .sidebar-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* Main Content Area */
         main {
             margin-left: var(--sidebar-width);
@@ -222,6 +244,14 @@
         .user-info-text span {
             font-size: 12px;
             color: var(--text-muted);
+        }
+
+        /* Views System */
+        .dashboard-view {
+            display: none;
+        }
+        .dashboard-view.active-view {
+            display: block;
         }
 
         /* Dashboard Grid Layout */
@@ -394,12 +424,12 @@
             padding: 10px;
             border-radius: 8px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 5px;
             transition: transform 0.1s, background 0.2s;
         }
 
@@ -452,24 +482,21 @@
             margin-top: 4px;
         }
 
-        /* Referral Link Card */
-        .referral-link-card {
-            margin-bottom: 24px;
+        /* Form Controls for Editable Profile & Password */
+        .form-group {
+            margin-bottom: 16px;
         }
 
-        .referral-link-card h3 {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 12px;
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
         }
 
-        .link-box-wrapper {
-            display: flex;
-            gap: 10px;
-        }
-
-        .link-input {
-            flex: 1;
+        .form-input {
+            width: 100%;
             padding: 12px 16px;
             border: 1.5px solid var(--border-color);
             border-radius: 10px;
@@ -477,24 +504,120 @@
             background: #FAFAFA;
             color: var(--text-main);
             outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            background: #FFFFFF;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
 
         .btn-primary {
-            padding: 12px 20px;
+            padding: 12px 24px;
             background: var(--primary);
             color: #FFFFFF;
             border: none;
             border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             transition: background 0.2s;
         }
 
         .btn-primary:hover {
             background: var(--primary-hover);
+        }
+
+        /* Support Page Grid */
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .support-card {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-main);
+            border: 1px solid rgba(255, 106, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .support-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px -5px rgba(255, 106, 0, 0.12);
+        }
+
+        .support-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 106, 0, 0.1);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin-bottom: 16px;
+        }
+
+        .support-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .support-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Policy & Terms Content Cards */
+        .policy-card h2, .terms-card h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .policy-card p, .terms-card p, .policy-card li, .terms-card li {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .policy-card ul, .terms-card ul {
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        .scrollable-content {
+            max-height: 550px;
+            overflow-y: auto;
+            padding-right: 10px;
         }
 
         /* Skeleton Loading Elements */
@@ -617,18 +740,20 @@
         <div class="loader-text">লোড হচ্ছে...</div>
     </div>
 
+    <!-- Mobile Sidebar Backdrop -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
     <!-- Sidebar Navigation -->
     <aside id="sidebar">
         <div class="sidebar-header">
             <img src="https://ghotimarket.com/logo.png" alt="GHOTI MARKET" onerror="this.src='https://via.placeholder.com/130x40?text=GHOTI+MARKET';">
         </div>
         <ul class="sidebar-menu">
-            <li><a href="#" class="active"><i class="fa-solid fa-house"></i> ড্যাশবোর্ড</a></li>
-            <li><a href="#profile"><i class="fa-regular fa-user"></i> প্রোফাইল</a></li>
-            <li><a href="#change-password"><i class="fa-solid fa-key"></i> পাসওয়ার্ড পরিবর্তন</a></li>
-            <li><a href="#support"><i class="fa-solid fa-headset"></i> সাপোর্ট</a></li>
-            <li><a href="#privacy"><i class="fa-solid fa-shield-halved"></i> প্রাইভেসি পলিসি</a></li>
-            <li><a href="#terms"><i class="fa-solid fa-file-contract"></i> শর্তাবলী</a></li>
+            <li><a href="https://ghotimarket.com/termsandcondition"><i class="fa-solid fa-file-contract"></i> Terms and Condition</a></li>
+            <li><a href="https://ghotimarket.com/privacy-policy"><i class="fa-solid fa-shield-halved"></i> Privacy Policy</a></li>
+            <li><a href="https://ghotimarket.com/contact"><i class="fa-solid fa-headset"></i> Support</a></li>
+            <li><a href="https://ghotimarket.com/Affiliate/withdraw"><i class="fa-solid fa-money-bill-wave"></i> Withdraw</a></li>
+            <li><a href="https://ghotimarket.com"><i class="fa-solid fa-cart-shopping"></i> কেনাকাটা (Shopping)</a></li>
         </ul>
         <div class="sidebar-footer">
             <button class="logout-btn" id="sidebarLogoutBtn">
@@ -646,7 +771,7 @@
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <div class="topbar-title">
-                    <h1>অ্যাফিলিয়েট ড্যাশবোর্ড</h1>
+                    <h1 id="topbarMainTitle">অ্যাফিলিয়েট ড্যাশবোর্ড</h1>
                     <p>স্বাগতম, <span id="topBarName" class="skeleton">নাজরুল ইসলাম</span></p>
                 </div>
             </div>
@@ -659,132 +784,276 @@
             </div>
         </div>
 
-        <!-- Dashboard Grid -->
-        <div class="dashboard-grid">
-            <!-- Profile Card -->
-            <div class="card profile-card">
-                <img id="profileAvatar" src="https://via.placeholder.com/90" alt="Profile" class="profile-avatar-large skeleton">
-                <h3 id="profileName" class="profile-name skeleton">নাজরুল ইসলাম</h3>
-                <div id="profileAffiliateId" class="profile-id skeleton">GM-12345</div>
-                
-                <div class="profile-details-list">
-                    <div class="profile-detail-item">
-                        <span>ইমেইল:</span>
-                        <span id="profileEmail" class="skeleton">example@domain.com</span>
+        <!-- VIEW 1: Dashboard View -->
+        <div id="dashboardView" class="dashboard-view active-view">
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Profile Card -->
+                <div class="card profile-card">
+                    <img id="profileAvatar" src="https://via.placeholder.com/90" alt="Profile" class="profile-avatar-large skeleton">
+                    <h3 id="profileName" class="profile-name skeleton">নাজরুল ইসলাম</h3>
+                    <div id="profileAffiliateId" class="profile-id skeleton">GM-12345</div>
+                    
+                    <div class="profile-details-list">
+                        <div class="profile-detail-item">
+                            <span>ইমেইল:</span>
+                            <span id="profileEmail" class="skeleton">example@domain.com</span>
+                        </div>
+                        <div class="profile-detail-item">
+                            <span>ফোন নম্বর:</span>
+                            <span id="profilePhone" class="skeleton">০১৭xxxxxxxx</span>
+                        </div>
+                        <div class="profile-detail-item">
+                            <span>স্ট্যাটাস:</span>
+                            <span id="profileStatusBadge" class="status-badge active skeleton">Active</span>
+                        </div>
+                        <div class="profile-detail-item">
+                            <span>যোগদানের তারিখ:</span>
+                            <span id="profileJoinedDate" class="skeleton">--</span>
+                        </div>
+                        <div class="profile-detail-item">
+                            <span>সর্বশেষ লগইন:</span>
+                            <span id="profileLastLogin" class="skeleton">--</span>
+                        </div>
                     </div>
-                    <div class="profile-detail-item">
-                        <span>ফোন নম্বর:</span>
-                        <span id="profilePhone" class="skeleton">০১৭xxxxxxxx</span>
+                </div>
+
+                <!-- Promo Code Card -->
+                <div class="card promo-card">
+                    <div>
+                        <div class="promo-header">
+                            <h3>আপনার প্রোমো কোড</h3>
+                            <i class="fa-solid fa-tags fa-xl"></i>
+                        </div>
+                        <div id="promoCodeDisplay" class="promo-code-display skeleton">GM-PROMO</div>
                     </div>
-                    <div class="profile-detail-item">
-                        <span>স্ট্যাটাস:</span>
-                        <span id="profileStatusBadge" class="status-badge active skeleton">Active</span>
-                    </div>
-                    <div class="profile-detail-item">
-                        <span>যোগদানের তারিখ:</span>
-                        <span id="profileJoinedDate" class="skeleton">--</span>
-                    </div>
-                    <div class="profile-detail-item">
-                        <span>সর্বশেষ লগইন:</span>
-                        <span id="profileLastLogin" class="skeleton">--</span>
+                    <div class="promo-actions">
+                        <button class="promo-btn" id="copyPromoBtn">
+                            <i class="fa-regular fa-copy"></i> কপি
+                        </button>
+                        <button class="promo-btn" id="sharePromoBtn">
+                            <i class="fa-solid fa-share-nodes"></i> শেয়ার
+                        </button>
+                        <button class="promo-btn" id="sendPromoBtn">
+                            <i class="fa-solid fa-paper-plane"></i> সেন্ড
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Promo Code Card -->
-            <div class="card promo-card">
-                <div>
-                    <div class="promo-header">
-                        <h3>আপনার প্রোমো কোড</h3>
-                        <i class="fa-solid fa-tags fa-xl"></i>
+            <!-- Statistics Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
+                    <div class="stat-info">
+                        <span>কারেন্ট ব্যালেন্স</span>
+                        <h3 id="statBalance" class="skeleton">৳0.00</h3>
                     </div>
-                    <div id="promoCodeDisplay" class="promo-code-display skeleton">GM-PROMO</div>
                 </div>
-                <div class="promo-actions">
-                    <button class="promo-btn" id="copyPromoBtn">
-                        <i class="fa-regular fa-copy"></i> কপি
-                    </button>
-                    <button class="promo-btn" id="sharePromoBtn">
-                        <i class="fa-solid fa-share-nodes"></i> শেয়ার
-                    </button>
-                    <button class="promo-btn" id="sendPromoBtn">
-                        <i class="fa-solid fa-paper-plane"></i> সেন্ড
-                    </button>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-chart-line"></i></div>
+                    <div class="stat-info">
+                        <span>আজকের কমিশন</span>
+                        <h3 id="statTodayCommission" class="skeleton">৳0.00</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <div class="stat-info">
+                        <span>পেন্ডিং কমিশন</span>
+                        <h3 id="statPendingCommission" class="skeleton">৳0.00</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="stat-info">
+                        <span>অনুমোদিত কমিশন</span>
+                        <h3 id="statApprovedCommission" class="skeleton">৳0.00</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                    <div class="stat-info">
+                        <span>মোট কমিশন</span>
+                        <h3 id="statTotalCommission" class="skeleton">৳0.00</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-computer-mouse"></i></div>
+                    <div class="stat-info">
+                        <span>মোট ক্লিক</span>
+                        <h3 id="statTotalClicks" class="skeleton">0</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                    <div class="stat-info">
+                        <span>মোট অর্ডার</span>
+                        <h3 id="statTotalOrders" class="skeleton">0</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-box-archive"></i></div>
+                    <div class="stat-info">
+                        <span>সফল অর্ডার</span>
+                        <h3 id="statSuccessfulOrders" class="skeleton">0</h3>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Statistics Grid -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
-                <div class="stat-info">
-                    <span>কারেন্ট ব্যালেন্স</span>
-                    <h3 id="statBalance" class="skeleton">৳0.00</h3>
-                </div>
+        <!-- VIEW 2: Editable Profile View -->
+        <div id="profileView" class="dashboard-view">
+            <div class="card">
+                <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--primary);">প্রোফাইল তথ্য আপডেট করুন</h2>
+                <form id="editProfileForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">পূর্ণ নাম</label>
+                            <input type="text" id="inputFullName" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">ফোন নম্বর</label>
+                            <input type="text" id="inputPhone" class="form-input" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">ইমেইল (পরিবর্তনযোগ্য নয়)</label>
+                            <input type="email" id="inputEmail" class="form-input" disabled style="background:#eee; cursor:not-allowed;">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">প্রোফাইল ছবির URL</label>
+                            <input type="url" id="inputPhotoURL" class="form-input">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">জেলা</label>
+                            <input type="text" id="inputDistrict" class="form-input" placeholder="যেমন: সুনামগঞ্জ">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">বিভাগ</label>
+                            <input type="text" id="inputDivision" class="form-input" placeholder="যেমন: সিলেট">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">লিঙ্গ</label>
+                            <select id="inputGender" class="form-input">
+                                <option value="">নির্বাচন করুন</option>
+                                <option value="Male">পুরুষ</option>
+                                <option value="Female">মহিলা</option>
+                                <option value="Other">অন্যান্য</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">জন্ম তারিখ</label>
+                            <input type="date" id="inputDob" class="form-input">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">এনআইডি নম্বর (NID)</label>
+                            <input type="text" id="inputNid" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">প্রোমো কোড (স্থায়ী)</label>
+                            <input type="text" id="inputPromoCode" class="form-input" disabled style="background:#eee; cursor:not-allowed;">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i> পরিবর্তন সংরক্ষণ করুন
+                    </button>
+                </form>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fa-solid fa-chart-line"></i></div>
-                <div class="stat-info">
-                    <span>আজকের কমিশন</span>
-                    <h3 id="statTodayCommission" class="skeleton">৳0.00</h3>
-                </div>
+        </div>
+
+        <!-- VIEW 3: Change Password View -->
+        <div id="changePasswordView" class="dashboard-view">
+            <div class="card" style="max-width: 600px; margin: 0 auto;">
+                <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--primary);">পাসওয়ার্ড পরিবর্তন করুন</h2>
+                <form id="changePasswordForm">
+                    <div class="form-group">
+                        <label class="form-label">বর্তমান পাসওয়ার্ড</label>
+                        <input type="password" id="currentPassword" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">নতুন পাসওয়ার্ড (কমপক্ষে ৮ অক্ষর)</label>
+                        <input type="password" id="newPassword" class="form-input" required minlength="8">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">নতুন পাসওয়ার্ড নিশ্চিত করুন</label>
+                        <input type="password" id="confirmPassword" class="form-input" required minlength="8">
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%;">
+                        <i class="fa-solid fa-key"></i> পাসওয়ার্ড আপডেট করুন
+                    </button>
+                </form>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                <div class="stat-info">
-                    <span>পেন্ডিং কমিশন</span>
-                    <h3 id="statPendingCommission" class="skeleton">৳0.00</h3>
-                </div>
+        </div>
+
+        <!-- VIEW 4: Support View -->
+        <div id="supportView" class="dashboard-view">
+            <div class="support-grid">
+                <a href="https://api.whatsapp.com/send?phone=8801700000000" target="_blank" class="support-card">
+                    <div class="support-icon"><i class="fa-brands fa-whatsapp"></i></div>
+                    <h3>হোয়াটসঅ্যাপ সাপোর্ট</h3>
+                    <p>সরাসরি চ্যাট করুন</p>
+                </a>
+                <a href="https://m.me/ghotimarket" target="_blank" class="support-card">
+                    <div class="support-icon"><i class="fa-brands fa-facebook-messenger"></i></div>
+                    <h3>মেসেঞ্জার সাপোর্ট</h3>
+                    <p>ফেইসবুক মেসেঞ্জার</p>
+                </a>
+                <a href="mailto:support@ghotimarket.com" class="support-card">
+                    <div class="support-icon"><i class="fa-solid fa-envelope"></i></div>
+                    <h3>ইমেইল সাপোর্ট</h3>
+                    <p>support@ghotimarket.com</p>
+                </a>
+                <a href="tel:+8801700000000" class="support-card">
+                    <div class="support-icon"><i class="fa-solid fa-phone-volume"></i></div>
+                    <h3>কল করুন</h3>
+                    <p>+৮৮০ ১৭০০-০০০০০০</p>
+                </a>
+                <a href="https://www.facebook.com/ghotimarket" target="_blank" class="support-card">
+                    <div class="support-icon"><i class="fa-brands fa-facebook"></i></div>
+                    <h3>ফেইসবুক পেজ</h3>
+                    <p>অফিসিয়াল পেজ ভিজিট করুন</p>
+                </a>
+                <a href="https://t.me/ghotimarket" target="_blank" class="support-card">
+                    <div class="support-icon"><i class="fa-brands fa-telegram"></i></div>
+                    <h3>টেলিগ্রাম চ্যানেল</h3>
+                    <p>টেলিগ্রাম আপডেট</p>
+                </a>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
-                <div class="stat-info">
-                    <span>অনুমোদিত কমিশন</span>
-                    <h3 id="statApprovedCommission" class="skeleton">৳0.00</h3>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
-                <div class="stat-info">
-                    <span>মোট কমিশন</span>
-                    <h3 id="statTotalCommission" class="skeleton">৳0.00</h3>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fa-solid fa-computer-mouse"></i></div>
-                <div class="stat-info">
-                    <span>মোট ক্লিক</span>
-                    <h3 id="statTotalClicks" class="skeleton">0</h3>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fa-solid fa-cart-shopping"></i></div>
-                <div class="stat-info">
-                    <span>মোট অর্ডার</span>
-                    <h3 id="statTotalOrders" class="skeleton">0</h3>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fa-solid fa-box-archive"></i></div>
-                <div class="stat-info">
-                    <span>সফল অর্ডার</span>
-                    <h3 id="statSuccessfulOrders" class="skeleton">0</h3>
+        </div>
+
+        <!-- VIEW 5: Privacy Policy View -->
+        <div id="privacyView" class="dashboard-view">
+            <div class="card policy-card">
+                <h2>প্রাইভেসি পলিসি (Privacy Policy)</h2>
+                <div class="scrollable-content">
+                    <p>ঘোটি মার্কেট (GHOTI MARKET) আপনার গোপনীয়তা সুরক্ষায় বদ্ধপরিকর। এই প্রাইভেসি পলিসিতে আমরা ব্যাখ্যা করি কিভাবে আপনার তথ্য সংগ্রহ, ব্যবহার এবং সুরক্ষিত করা হয়।</p>
+                    <p><strong>১. তথ্য সংগ্রহ:</strong> আমরা আপনার অ্যাকাউন্ট তৈরি এবং অ্যাফিলিয়েট কার্যক্রম পরিচালনার জন্য আপনার নাম, ইমেইল, ফোন নম্বর, এবং পেমেন্ট সংক্রান্ত তথ্য সংগ্রহ করে থাকি।</p>
+                    <p><strong>২. তথ্যের ব্যবহার:</strong> সংগৃহীত তথ্য আপনার কমিশন হিসাব করতে, পেমেন্ট পাঠাতে এবং আমাদের সেবার মানোন্নয়নে ব্যবহার করা হয়।</p>
+                    <p><strong>৩. ডেটা সুরক্ষা:</strong> আমরা আপনার ব্যক্তিগত তথ্যের নিরাপত্তা নিশ্চিত করতে আধুনিক এনক্রিপশন এবং ফায়ারওয়াল প্রযুক্তি ব্যবহার করি। কোনো অবস্থাতেই আপনার তথ্য তৃতীয় পক্ষের কাছে বিক্রি করা হয় না।</p>
+                    <p><strong>৪. কুকিজ:</strong> আমাদের ওয়েবসাইট ভিজিট করার সময় ট্র্যাকিং এবং ইউজার এক্সপেরিয়েন্স উন্নত করতে কুকিজ ব্যবহার করা হতে পারে।</p>
                 </div>
             </div>
         </div>
 
-        <!-- Referral Link Card -->
-        <div class="card referral-link-card">
-            <h3>আপনার অ্যাফিলিয়েট রেফারেল লিংক</h3>
-            <div class="link-box-wrapper">
-                <input type="text" id="referralLinkInput" class="link-input skeleton" value="https://www.ghotimarket.com/?ref=PROMOCODE" readonly>
-                <button class="btn-primary" id="copyLinkBtn">
-                    <i class="fa-regular fa-copy"></i> কপি লিংক
-                </button>
-                <button class="btn-primary" id="shareLinkBtn" style="background: #25D366;">
-                    <i class="fa-brands fa-whatsapp"></i> শেয়ার
-                </button>
+        <!-- VIEW 6: Terms & Conditions View -->
+        <div id="termsView" class="dashboard-view">
+            <div class="card terms-card">
+                <h2>শর্তাবলী (Terms & Conditions)</h2>
+                <div class="scrollable-content">
+                    <p>ঘোটি মার্কেট (GHOTI MARKET) অ্যাফিলিয়েট প্রোগ্রামে স্বাগতম। আমাদের প্ল্যাটফর্ম ব্যবহার করার মাধ্যমে আপনি নিচের শর্তাবলীতে সম্মত হচ্ছেন:</p>
+                    <p><strong>১. অ্যাকাউন্ট যোগ্যতা:</strong> অ্যাফিলিয়েট হওয়ার জন্য আপনার বয়স কমপক্ষে ১৮ বছর হতে হবে এবং সঠিক তথ্য দিয়ে অ্যাকাউন্ট রেজিস্টার করতে হবে।</p>
+                    <p><strong>২. প্রমোশন নীতি:</strong> কোনো ধরনের স্প্যামিং, প্রতারণামূলক বা বিভ্রান্তিকর বিজ্ঞাপনের মাধ্যমে প্রমোশন করা সম্পূর্ণ নিষিদ্ধ। এমনটি প্রমাণিত হলে অ্যাকাউন্ট তাৎক্ষণিকভাবে বাতিল করা হবে।</p>
+                    <p><strong>৩. কমিশন ও পেমেন্ট:</strong> সফল অর্ডারের ওপর ভিত্তি করে আপনার কমিশন হিসাব করা হবে। নির্দিষ্ট থ্রেশহোল্ড অর্জিত হওয়ার পর পেমেন্টের জন্য আবেদন করা যাবে।</p>
+                    <p><strong>৪. পরিবর্তন ও সমাপ্তি:</strong> ঘোটি মার্কেট কর্তৃপক্ষ যেকোনো সময় এই শর্তাবলী পরিবর্তন বা অ্যাফিলিয়েট প্রোগ্রাম স্থগিত করার অধিকার সংরক্ষণ করে।</p>
+                </div>
             </div>
         </div>
 
@@ -803,7 +1072,7 @@
             <div class="popup-title" id="popupTitle">সফল হয়েছে</div>
             <div class="popup-message" id="popupMessage">সফলভাবে সম্পন্ন হয়েছে।</div>
             <div class="popup-btn-group" id="popupBtnGroup">
-                <button class="popup-btn success" id="popupBtn" onclick="closePopup()">ঠিক আছে</button>
+                <button class="popup-btn success" id="popupBtn">ঠিক আছে</button>
             </div>
         </div>
     </div>
@@ -814,12 +1083,17 @@
         import { 
             getAuth, 
             onAuthStateChanged, 
-            signOut 
+            signOut,
+            EmailAuthProvider,
+            reauthenticateWithCredential,
+            updatePassword
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { 
             getFirestore, 
             doc, 
-            onSnapshot 
+            onSnapshot,
+            updateDoc,
+            serverTimestamp 
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         console.log("Initializing Firebase...");
@@ -840,11 +1114,14 @@
         // Global State variables
         let currentPromoCode = "GM-PROMO";
         let unsubFirestore = null;
+        let currentUserUid = null;
 
         // DOM Elements
         const globalLoader = document.getElementById('globalLoader');
         const sidebar = document.getElementById('sidebar');
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+        const topbarMainTitle = document.getElementById('topbarMainTitle');
         
         // Popup Elements
         const popupOverlay = document.getElementById('popupOverlay');
@@ -855,18 +1132,14 @@
         const popupBtnGroup = document.getElementById('popupBtnGroup');
         const popupBtn = document.getElementById('popupBtn');
 
-        // Mobile Sidebar Toggle
-        mobileMenuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('mobile-open');
-        });
-
-        // Popup Helper Functions
-        window.showPopup = function(title, message, type = 'success', buttonsHtml = null) {
+        // ==========================================
+        // 1. ROBUST PRODUCTION-READY POPUP SYSTEM
+        // ==========================================
+        window.showPopup = function(title, message, type = 'success', customButtonsHtml = null) {
             popupTitle.textContent = title;
             popupMessage.textContent = message;
             
             popupIcon.className = `popup-icon ${type}`;
-            
             if (type === 'success') {
                 popupIconSymbol.className = "fa-solid fa-check";
             } else if (type === 'warning') {
@@ -875,10 +1148,11 @@
                 popupIconSymbol.className = "fa-solid fa-xmark";
             }
 
-            if (buttonsHtml) {
-                popupBtnGroup.innerHTML = buttonsHtml;
+            if (customButtonsHtml) {
+                popupBtnGroup.innerHTML = customButtonsHtml;
             } else {
-                popupBtnGroup.innerHTML = `<button class="popup-btn ${type === 'error' ? 'error' : 'success'}" onclick="closePopup()">ঠিক আছে</button>`;
+                popupBtnGroup.innerHTML = `<button class="popup-btn ${type === 'error' ? 'error' : 'success'}" id="popupDefaultOkBtn">ঠিক আছে</button>`;
+                document.getElementById('popupDefaultOkBtn').addEventListener('click', closePopup);
             }
 
             popupOverlay.classList.add('active');
@@ -886,7 +1160,50 @@
 
         window.closePopup = function() {
             popupOverlay.classList.remove('active');
+            setTimeout(() => {
+                popupBtnGroup.innerHTML = `<button class="popup-btn success" id="popupBtn">ঠিক আছে</button>`;
+                document.getElementById('popupBtn').addEventListener('click', closePopup);
+            }, 300);
         }
+
+        popupOverlay.addEventListener('click', (e) => {
+            if (e.target === popupOverlay) {
+                closePopup();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && popupOverlay.classList.contains('active')) {
+                closePopup();
+            }
+        });
+
+        popupBtn.addEventListener('click', closePopup);
+
+        // ==========================================
+        // 2. MOBILE SIDEBAR NAVIGATION & MANAGEMENT
+        // ==========================================
+        function toggleSidebar() {
+            sidebar.classList.toggle('mobile-open');
+            sidebarBackdrop.classList.toggle('active');
+            document.body.classList.toggle('sidebar-open-fixed');
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('mobile-open');
+            sidebarBackdrop.classList.remove('active');
+            document.body.classList.remove('sidebar-open-fixed');
+        }
+
+        mobileMenuToggle.addEventListener('click', toggleSidebar);
+        sidebarBackdrop.addEventListener('click', closeSidebar);
+
+        // Close mobile sidebar when clicking normal sidebar links on mobile
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                closeSidebar();
+            });
+        });
 
         // Helper to format currency
         function formatCurrency(amount) {
@@ -905,7 +1222,7 @@
             }
         }
 
-        // Populate Dashboard UI with Data
+        // Populate Dashboard UI & Editable Profile Fields with Data
         function updateDashboardUI(data) {
             const name = data.name || data.fullName || "--";
             const email = data.email || "--";
@@ -935,7 +1252,7 @@
             document.getElementById('topBarFullName').textContent = name;
             document.getElementById('topBarId').textContent = `ID: ${affiliateId}`;
 
-            // Profile Card
+            // Profile Card (Dashboard)
             document.getElementById('profileAvatar').src = photoURL;
             document.getElementById('profileName').textContent = name;
             document.getElementById('profileAffiliateId').textContent = affiliateId;
@@ -967,15 +1284,95 @@
             document.getElementById('statTotalOrders').textContent = totalOrders;
             document.getElementById('statSuccessfulOrders').textContent = successfulOrders;
 
-            // Referral Link
-            document.getElementById('referralLinkInput').value = `https://www.ghotimarket.com/?ref=${currentPromoCode}`;
+            // Populate Editable Profile Form Fields
+            document.getElementById('inputFullName').value = data.fullName || data.name || '';
+            document.getElementById('inputPhone').value = data.phone || data.phoneNumber || '';
+            document.getElementById('inputEmail').value = email;
+            document.getElementById('inputPhotoURL').value = data.photoURL || '';
+            document.getElementById('inputDistrict').value = data.district || '';
+            document.getElementById('inputDivision').value = data.division || '';
+            document.getElementById('inputGender').value = data.gender || '';
+            document.getElementById('inputDob').value = data.dob || '';
+            document.getElementById('inputNid').value = data.nid || '';
+            document.getElementById('inputPromoCode').value = currentPromoCode;
 
-            // Hide global loader once data is populated
+            // Hide global loader smoothly once data is populated
             globalLoader.style.opacity = '0';
             setTimeout(() => { globalLoader.style.display = 'none'; }, 300);
         }
 
-        // Authentication State Listener & Realtime Firestore Sync
+        // ==========================================
+        // 6. EDITABLE PROFILE SAVE HANDLER
+        // ==========================================
+        document.getElementById('editProfileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentUserUid) return;
+
+            const updatedData = {
+                fullName: document.getElementById('inputFullName').value.trim(),
+                name: document.getElementById('inputFullName').value.trim(),
+                phone: document.getElementById('inputPhone').value.trim(),
+                phoneNumber: document.getElementById('inputPhone').value.trim(),
+                photoURL: document.getElementById('inputPhotoURL').value.trim(),
+                district: document.getElementById('inputDistrict').value.trim(),
+                division: document.getElementById('inputDivision').value.trim(),
+                gender: document.getElementById('inputGender').value,
+                dob: document.getElementById('inputDob').value,
+                nid: document.getElementById('inputNid').value.trim(),
+                updatedAt: serverTimestamp()
+            };
+
+            try {
+                const docRef = doc(db, "Affiliates", currentUserUid);
+                await updateDoc(docRef, updatedData);
+                showPopup("সফল", "প্রোফাইল তথ্য সফলভাবে আপডেট করা হয়েছে।", "success");
+            } catch (error) {
+                console.error("Profile update error:", error);
+                showPopup("ত্রুটি", `কোড: ${error.code}\nবার্তা: ${error.message}`, "error");
+            }
+        });
+
+        // ==========================================
+        // 7. CHANGE PASSWORD HANDLER
+        // ==========================================
+        document.getElementById('changePasswordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword.length < 8) {
+                showPopup("সতর্কতা", "নতুন পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।", "warning");
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                showPopup("সতর্কতা", "নতুন পাসওয়ার্ড এবং নিশ্চিতকরণ পাসওয়ার্ড মিলছে না।", "warning");
+                return;
+            }
+
+            const user = auth.currentUser;
+            if (!user || !user.email) {
+                showPopup("ত্রুটি", "ব্যবহারকারী লগইন অবস্থায় নেই।", "error");
+                return;
+            }
+
+            try {
+                const credential = EmailAuthProvider.credential(user.email, currentPassword);
+                await reauthenticateWithCredential(user, credential);
+                await updatePassword(user, newPassword);
+                
+                showPopup("সফল", "পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে।", "success");
+                document.getElementById('changePasswordForm').reset();
+            } catch (error) {
+                console.error("Password change error:", error);
+                showPopup("Firebase Error", `Error Code:\n${error.code}\n\nError Message:\n${error.message}`, "error");
+            }
+        });
+
+        // ==========================================
+        // AUTH STATE & REALTIME FIRESTORE SYNC
+        // ==========================================
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 console.log("User not logged in. Redirecting to login...");
@@ -983,14 +1380,15 @@
                 return;
             }
 
-            console.log("User logged in UID:", user.uid);
+            currentUserUid = user.uid;
+            console.log("User logged in UID:", currentUserUid);
 
             // Realtime Firestore synchronization using onSnapshot
-            const docRef = doc(db, "Affiliates", user.uid);
+            const docRef = doc(db, "Affiliates", currentUserUid);
             
             unsubFirestore = onSnapshot(docRef, (docSnap) => {
                 if (!docSnap.exists()) {
-                    console.error("Affiliate document does not exist for UID:", user.uid);
+                    console.error("Affiliate document does not exist for UID:", currentUserUid);
                     showPopup("Error", "Affiliate account data not found.", "error");
                     return;
                 }
@@ -1004,7 +1402,9 @@
             });
         });
 
-        // Copy Promo Code Handler
+        // ==========================================
+        // 5. PROMO CODE SHARE & COPY SUITE
+        // ==========================================
         document.getElementById('copyPromoBtn').addEventListener('click', async () => {
             try {
                 await navigator.clipboard.writeText(currentPromoCode);
@@ -1015,11 +1415,11 @@
             }
         });
 
-        // Share Promo Code Handler
         document.getElementById('sharePromoBtn').addEventListener('click', async () => {
+            const shareText = `Use my GHOTI MARKET Promo Code:\n${currentPromoCode}\nhttps://www.ghotimarket.com`;
             const shareData = {
                 title: 'GHOTI MARKET Affiliate',
-                text: `Use my Promo Code:\n${currentPromoCode}`,
+                text: shareText,
                 url: 'https://www.ghotimarket.com'
             };
 
@@ -1030,9 +1430,8 @@
                     console.log("Share canceled or failed", err);
                 }
             } else {
-                // Fallback to Copy
                 try {
-                    await navigator.clipboard.writeText(`Use my Promo Code: ${currentPromoCode} at https://www.ghotimarket.com`);
+                    await navigator.clipboard.writeText(shareText);
                     showPopup("সফল", "Promo Code copied to clipboard as fallback.", "success");
                 } catch (e) {
                     showPopup("ত্রুটি", "শেয়ার করা সম্ভব হয়নি।", "error");
@@ -1040,37 +1439,24 @@
             }
         });
 
-        // Send Promo Code (Open Share Apps) Handler
         document.getElementById('sendPromoBtn').addEventListener('click', () => {
-            const text = encodeURIComponent(`Use my Promo Code: ${currentPromoCode} on GHOTI MARKET https://www.ghotimarket.com`);
+            const shareText = `Use my GHOTI MARKET Promo Code:\n${currentPromoCode}\nhttps://www.ghotimarket.com`;
+            const encodedText = encodeURIComponent(shareText);
             const buttonsHtml = `
-                <a href="https://api.whatsapp.com/send?text=${text}" target="_blank" class="popup-btn success" style="text-decoration:none; display:inline-block; text-align:center; padding:10px;">WhatsApp</a>
-                <a href="https://t.me/share/url?url=https://www.ghotimarket.com&text=${text}" target="_blank" class="popup-btn success" style="text-decoration:none; display:inline-block; text-align:center; padding:10px; background:#0088cc;">Telegram</a>
-                <a href="sms:?body=${text}" class="popup-btn secondary" style="text-decoration:none; display:inline-block; text-align:center; padding:10px;">SMS</a>
+                <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
+                    <a href="https://api.whatsapp.com/send?text=${encodedText}" target="_blank" class="popup-btn success" style="text-decoration:none; display:block; text-align:center; padding:10px; background:#25D366;">WhatsApp</a>
+                    <a href="https://m.me/share?text=${encodedText}" target="_blank" class="popup-btn success" style="text-decoration:none; display:block; text-align:center; padding:10px; background:#0084FF;">Messenger</a>
+                    <a href="https://t.me/share/url?url=https://www.ghotimarket.com&text=${encodedText}" target="_blank" class="popup-btn success" style="text-decoration:none; display:block; text-align:center; padding:10px; background:#0088cc;">Telegram</a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.ghotimarket.com&quote=${encodedText}" target="_blank" class="popup-btn success" style="text-decoration:none; display:block; text-align:center; padding:10px; background:#1877F2;">Facebook</a>
+                    <a href="sms:?body=${encodedText}" class="popup-btn secondary" style="text-decoration:none; display:block; text-align:center; padding:10px;">SMS</a>
+                </div>
             `;
             showPopup("প্রোমো কোড পাঠান", "শেয়ার করার মাধ্যম নির্বাচন করুন:", "success", buttonsHtml);
         });
 
-        // Copy Referral Link Handler
-        document.getElementById('copyLinkBtn').addEventListener('click', async () => {
-            const linkInput = document.getElementById('referralLinkInput');
-            try {
-                await navigator.clipboard.writeText(linkInput.value);
-                showPopup("সফল", "Referral link copied successfully.", "success");
-            } catch (err) {
-                console.error("Clipboard error:", err);
-                showPopup("ত্রুটি", "লিংক কপি করা সম্ভব হয়নি।", "error");
-            }
-        });
-
-        // Share Referral Link via WhatsApp
-        document.getElementById('shareLinkBtn').addEventListener('click', () => {
-            const link = document.getElementById('referralLinkInput').value;
-            const text = encodeURIComponent(`Join GHOTI MARKET using my referral link: ${link}`);
-            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
-        });
-
-        // Logout Execution Function
+        // ==========================================
+        // 11. LOGOUT & SESSION TERMINATION
+        // ==========================================
         async function handleLogout() {
             try {
                 if (unsubFirestore) unsubFirestore();
@@ -1083,31 +1469,29 @@
             }
         }
 
-        // Logout Trigger via Sidebar Button with Confirmation Popup
         const triggerLogout = () => {
             const confirmButtons = `
-                <button class="popup-btn error" onclick="window.confirmLogoutAction()">লগআউট করুন</button>
-                <button class="popup-btn secondary" onclick="closePopup()">বাতিল</button>
+                <button class="popup-btn error" id="confirmLogoutActionBtn">লগআউট করুন</button>
+                <button class="popup-btn secondary" id="cancelLogoutActionBtn">বাতিল</button>
             `;
             showPopup("লগআউট নিশ্চিতকরণ", "আপনি কি নিশ্চিতভাবে আপনার অ্যাকাউন্ট থেকে লগআউট করতে চান?", "warning", confirmButtons);
-        };
-
-        window.confirmLogoutAction = async function() {
-            closePopup();
-            await handleLogout();
+            
+            setTimeout(() => {
+                const confirmBtn = document.getElementById('confirmLogoutActionBtn');
+                const cancelBtn = document.getElementById('cancelLogoutActionBtn');
+                if (confirmBtn) {
+                    confirmBtn.addEventListener('click', async () => {
+                        closePopup();
+                        await handleLogout();
+                    });
+                }
+                if (cancelBtn) {
+                    cancelBtn.addEventListener('click', closePopup);
+                }
+            }, 100);
         };
 
         document.getElementById('sidebarLogoutBtn').addEventListener('click', triggerLogout);
-
-        // Sidebar Navigation Links Dummy Handler for completeness
-        document.querySelectorAll('.sidebar-menu a').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const text = link.textContent.trim();
-                if (text.includes('ড্যাশবোর্ড')) return;
-                showPopup("তথ্য", `${text} পেজটি শীঘ্রই আসছে।`, "success");
-            });
-        });
     </script>
 </body>
 </html>
