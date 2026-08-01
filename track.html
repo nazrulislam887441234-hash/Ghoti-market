@@ -22,8 +22,6 @@ body{background:var(--bg);color:var(--text);}
 .search-box button{width:100%;padding:14px;border:none;background:var(--orange);color:#fff;border-radius:12px;font-size:16px;font-weight:700;margin-top:12px;cursor:pointer;}
 .search-box button:disabled{opacity:0.6;cursor:not-allowed;}
 .result-card{background:var(--card);border-radius:18px;padding:20px;margin-top:20px;box-shadow:0 4px 20px rgba(255,106,0,0.08);display:none;}
-.product-info{display:flex;gap:15px;margin-bottom:20px;}
-.product-info img{width:100px;height:100px;border-radius:12px;object-fit:cover;}
 .status-tracker{display:flex;justify-content:space-between;margin:25px 0;position:relative;}
 .status-tracker::before{content:'';position:absolute;top:15px;left:0;right:0;height:3px;background:#e5e7eb;z-index:0;}
 .step{position:relative;z-index:1;text-align:center;flex:1;}
@@ -62,7 +60,7 @@ body{background:var(--bg);color:var(--text);}
 <body>
 
 <div class="header">
-  <img src="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png">
+  <img src="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png" alt="GHOTI MARKET">
   <h1>অর্ডার ট্র্যাক করুন</h1>
 </div>
 
@@ -83,20 +81,15 @@ body{background:var(--bg);color:var(--text);}
 
   <div class="result-card" id="resultCard">
     <div class="status-tracker" id="statusTracker"></div>
-    <div class="product-info">
-      <img id="rImage" src="">
-      <div>
-        <h3 id="rName"></h3>
-        <p><b>Track ID:</b> <span id="rTrack"></span></p>
-        <p><b>মোট:</b> <span id="rTotal" style="color:var(--orange);font-weight:800;"></span></p>
-        <span class="badge" id="rStatus"></span>
-      </div>
+    <div style="margin-bottom:20px; text-align:center; background:#FFF4EC; padding:15px; border-radius:12px;">
+      <p style="font-size:13px; color:var(--muted); margin-bottom:4px;">Track ID: <b id="rTrack" style="color:var(--text);"></b></p>
+      <div style="font-size:22px; font-weight:800; color:var(--orange); margin-bottom:8px;" id="rTotal"></div>
+      <div><span class="badge" id="rStatus"></span></div>
     </div>
-    <h3 style="margin-bottom:10px;">কাস্টমার তথ্য</h3>
+    <h3 style="margin-bottom:10px;">অর্ডার ও কাস্টমার তথ্য</h3>
     <div class="info-grid">
       <div class="info-item"><label>নাম</label><b id="rCustomer"></b></div>
       <div class="info-item"><label>মোবাইল</label><b id="rPhone"></b></div>
-      <div class="info-item" style="grid-column:span 2;"><label>ঠিকানা</label><b id="rAddress"></b></div>
       <div class="info-item"><label>পেমেন্ট</label><b id="rPayment"></b></div>
       <div class="info-item"><label>ডেলিভারি স্ট্যাটাস</label><b id="rDelivery"></b></div>
       <div class="info-item" style="grid-column:span 2;"><label>অর্ডারের তারিখ</label><b id="rDate"></b></div>
@@ -172,19 +165,16 @@ async function searchOrder(){
 
 function showResult(o){
   document.getElementById('resultCard').style.display = 'block';
-  document.getElementById('rImage').src = o.productImage || '';
-  document.getElementById('rName').innerText = o.productName || '';
   document.getElementById('rTrack').innerText = o.orderTrackId || '';
   document.getElementById('rTotal').innerText = '৳' + (o.grandTotal || 0);
   document.getElementById('rStatus').innerText = o.orderStatus || '';
   document.getElementById('rStatus').className = `badge badge-${o.orderStatus}`;
   document.getElementById('rCustomer').innerText = o.customerName || '';
   document.getElementById('rPhone').innerText = o.customerPhone || '';
-  document.getElementById('rAddress').innerText = `${o.division || ''}, ${o.district || ''}, ${o.upazila || ''}`;
   document.getElementById('rPayment').innerText = `${o.paymentMethod || ''} - ${o.paymentStatus || ''}`;
   document.getElementById('rDelivery').innerText = o.deliveryStatus || '';
-  document.getElementById('rDate').innerText = o.createdAt?.toDate().toLocaleString('bn-BD') || 'N/A';
-  document.getElementById('rUpdatedDate').innerText = o.updatedAt?.toDate().toLocaleString('bn-BD') || 'N/A';
+  document.getElementById('rDate').innerText = o.createdAt?.toDate ? o.createdAt.toDate().toLocaleString('bn-BD') : 'N/A';
+  document.getElementById('rUpdatedDate').innerText = o.updatedAt?.toDate ? o.updatedAt.toDate().toLocaleString('bn-BD') : 'N/A';
   document.getElementById('rNote').innerText = o.orderNote || 'কোন নোট নেই';
 
   renderTracker(o.orderStatus);
