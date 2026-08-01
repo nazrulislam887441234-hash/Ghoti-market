@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHOTI MARKET - Affiliate Dashboard</title>
+    
+    <!-- Google Fonts: Hind Siliguri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #FF6A00;
+            --primary-hover: #e55e00;
+            --bg-color: #FFF8F3;
+            --card-bg: #FFFFFF;
+            --text-main: #2D3748;
+            --text-muted: #718096;
+            --border-color: #E2E8F0;
+            --radius: 16px;
+            --shadow: 0 10px 25px -5px rgba(255, 106, 0, 0.08), 0 8px 10px -6px rgba(255, 106, 0, 0.04);
+            --success: #10B981;
+            --error: #EF4444;
+            --warning: #F59E0B;
+            --sidebar-width: 260px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Initial Fullscreen Loading Screen */
+        #globalLoader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        .loader-text {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Sidebar Navigation */
+        aside {
+            width: var(--sidebar-width);
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-header img {
+            max-width: 130px;
+            height: auto;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 20px 16px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: rgba(255, 106, 0, 0.08);
+            color: var(--primary);
+        }
+
+        .sidebar-menu a i {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            padding: 20px 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* Main Content Area */
+        main {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 30px;
+            max-width: calc(100% - var(--sidebar-width));
+        }
+
+        /* Top Bar */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: var(--card-bg);
+            padding: 16px 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .topbar-title h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .topbar-title p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .user-quick-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            background: #eee;
+        }
+
+        .user-info-text h4 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .user-info-text span {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Dashboard Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 992px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            aside {
+                transform: translateX(-100%);
+            }
+            aside.mobile-open {
+                transform: translateX(0);
+            }
+            main {
+                margin-left: 0;
+                max-width: 100%;
+                padding: 15px;
+            }
+            .mobile-menu-toggle {
+                display: block !important;
+            }
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: var(--text-main);
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 106, 0, 0.05);
+        }
+
+        /* Profile Card Styling */
+        .profile-card {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-avatar-large {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            margin-bottom: 16px;
+            background: #eee;
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .profile-id {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            background: rgba(255, 106, 0, 0.08);
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .profile-details-list {
+            width: 100%;
+            text-align: left;
+            margin-top: 16px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+        }
+
+        .profile-detail-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .profile-detail-item span:first-child {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .profile-detail-item span:last-child {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .status-badge.inactive {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+        }
+
+        /* Promo Code Card Styling */
+        .promo-card {
+            background: linear-gradient(135deg, #FF6A00 0%, #ff8c3b 100%);
+            color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .promo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .promo-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .promo-code-display {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-align: center;
+            margin: 10px 0 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .promo-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .promo-btn {
+            background: #FFFFFF;
+            color: var(--primary);
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: transform 0.1s, background 0.2s;
+        }
+
+        .promo-btn:hover {
+            background: #fdfdfd;
+            transform: translateY(-2px);
+        }
+
+        /* Statistics Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 106, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: rgba(255, 106, 0, 0.1);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .stat-info span {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .stat-info h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 4px;
+        }
+
+        /* Referral Link Card */
+        .referral-link-card {
+            margin-bottom: 24px;
+        }
+
+        .referral-link-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .link-box-wrapper {
+            display: flex;
+            gap: 10px;
+        }
+
+        .link-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 14px;
+            background: #FAFAFA;
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .btn-primary {
+            padding: 12px 20px;
+            background: var(--primary);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Skeleton Loading Elements */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loadingSkeleton 1.5s infinite;
+            border-radius: 6px;
+            color: transparent !important;
+            user-select: none;
+        }
+
+        @keyframes loadingSkeleton {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Popup Notification Modal */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-card {
+            background: #FFFFFF;
+            padding: 24px;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .popup-overlay.active .popup-card {
+            transform: translateY(0);
+        }
+
+        .popup-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 24px;
+        }
+
+        .popup-icon.success { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .popup-icon.error { background: rgba(239, 68, 68, 0.1); color: var(--error); }
+        .popup-icon.warning { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+
+        .popup-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .popup-message {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            white-space: pre-line;
+            text-align: left;
+        }
+
+        .popup-btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .popup-btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            color: #FFFFFF;
+            flex: 1;
+        }
+
+        .popup-btn.success { background: var(--success); }
+        .popup-btn.error { background: var(--error); }
+        .popup-btn.secondary { background: var(--text-muted); }
+
+        footer.dashboard-footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Initial Loading Screen -->
+    <div id="globalLoader">
+        <div class="loader-spinner"></div>
+        <div class="loader-text">লোড হচ্ছে...</div>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar">
+        <div class="sidebar-header">
+            <img src="https://ghotimarket.com/logo.png" alt="GHOTI MARKET" onerror="this.src='https://via.placeholder.com/130x40?text=GHOTI+MARKET';">
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="active"><i class="fa-solid fa-house"></i> ড্যাশবোর্ড</a></li>
+            <li><a href="#profile"><i class="fa-regular fa-user"></i> প্রোফাইল</a></li>
+            <li><a href="#change-password"><i class="fa-solid fa-key"></i> পাসওয়ার্ড পরিবর্তন</a></li>
+            <li><a href="#support"><i class="fa-solid fa-headset"></i> সাপোর্ট</a></li>
+            <li><a href="#privacy"><i class="fa-solid fa-shield-halved"></i> প্রাইভেসি পলিসি</a></li>
+            <li><a href="#terms"><i class="fa-solid fa-file-contract"></i> শর্তাবলী</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <button class="logout-btn" id="sidebarLogoutBtn">
+                <i class="fa-solid fa-right-from-bracket"></i> লগআউট
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Top Bar -->
+        <div class="topbar">
+            <div style="display: flex; align-items: center;">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="topbar-title">
+                    <h1>অ্যাফিলিয়েট ড্যাশবোর্ড</h1>
+                    <p>স্বাগতম, <span id="topBarName" class="skeleton">নাজরুল ইসলাম</span></p>
+                </div>
+            </div>
+            <div class="user-quick-profile">
+                <img id="topBarAvatar" src="https://via.placeholder.com/42" alt="Avatar" class="user-avatar skeleton">
+                <div class="user-info-text hidden-mobile">
+                    <h4 id="topBarFullName" class="skeleton">নাজরুল ইসলাম</h4>
+                    <span id="topBarId" class="skeleton">ID: GM-12345</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Profile Card -->
+            <div class="card profile-card">
+                <img id="profileAvatar" src="https://via.placeholder.com/90" alt="Profile" class="profile-avatar-large skeleton">
+                <h3 id="profileName" class="profile-name skeleton">নাজরুল ইসলাম</h3>
+                <div id="profileAffiliateId" class="profile-id skeleton">GM-12345</div>
+                
+                <div class="profile-details-list">
+                    <div class="profile-detail-item">
+                        <span>ইমেইল:</span>
+                        <span id="profileEmail" class="skeleton">example@domain.com</span>
+                    </div>
+                    <div class="profile-detail-item">
+                        <span>ফোন নম্বর:</span>
+                        <span id="profilePhone" class="skeleton">০১৭xxxxxxxx</span>
+                    </div>
+                    <div class="profile-detail-item">
+                        <span>স্ট্যাটাস:</span>
+                        <span id="profileStatusBadge" class="status-badge active skeleton">Active</span>
+                    </div>
+                    <div class="profile-detail-item">
+                        <span>যোগদানের তারিখ:</span>
+                        <span id="profileJoinedDate" class="skeleton">--</span>
+                    </div>
+                    <div class="profile-detail-item">
+                        <span>সর্বশেষ লগইন:</span>
+                        <span id="profileLastLogin" class="skeleton">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Promo Code Card -->
+            <div class="card promo-card">
+                <div>
+                    <div class="promo-header">
+                        <h3>আপনার প্রোমো কোড</h3>
+                        <i class="fa-solid fa-tags fa-xl"></i>
+                    </div>
+                    <div id="promoCodeDisplay" class="promo-code-display skeleton">GM-PROMO</div>
+                </div>
+                <div class="promo-actions">
+                    <button class="promo-btn" id="copyPromoBtn">
+                        <i class="fa-regular fa-copy"></i> কপি
+                    </button>
+                    <button class="promo-btn" id="sharePromoBtn">
+                        <i class="fa-solid fa-share-nodes"></i> শেয়ার
+                    </button>
+                    <button class="promo-btn" id="sendPromoBtn">
+                        <i class="fa-solid fa-paper-plane"></i> সেন্ড
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
+                <div class="stat-info">
+                    <span>কারেন্ট ব্যালেন্স</span>
+                    <h3 id="statBalance" class="skeleton">৳0.00</h3>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-chart-line"></i></div>
+                <div class="stat-info">
+                    <span>আজকের কমিশন</span>
+                    <h3 id="statTodayCommission" class="skeleton">৳0.00</h3>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                <div class="stat-info">
+                    <span>পেন্ডিং কমিশন</span>
+                    <h3 id="statPendingCommission" class="skeleton">৳0.00</h3>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="stat-info">
+                    <span>অনুমোদিত কমিশন</span>
+                    <h3 id="statApprovedCommission" class="skeleton">৳0.00</h3>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                <div class="stat-info">
+                    <span>মোট কমিশন</span>
+                    <h3 id="statTotalCommission" class="skeleton">৳0.00</h3>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-computer-mouse"></i></div>
+                <div class="stat-info">
+                    <span>মোট ক্লিক</span>
+                    <h3 id="statTotalClicks" class="skeleton">0</h3>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                <div class="stat-info">
+                    <span>মোট অর্ডার</span>
+                    <h3 id="statTotalOrders" class="skeleton">0</h3>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-box-archive"></i></div>
+                <div class="stat-info">
+                    <span>সফল অর্ডার</span>
+                    <h3 id="statSuccessfulOrders" class="skeleton">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Referral Link Card -->
+        <div class="card referral-link-card">
+            <h3>আপনার অ্যাফিলিয়েট রেফারেল লিংক</h3>
+            <div class="link-box-wrapper">
+                <input type="text" id="referralLinkInput" class="link-input skeleton" value="https://www.ghotimarket.com/?ref=PROMOCODE" readonly>
+                <button class="btn-primary" id="copyLinkBtn">
+                    <i class="fa-regular fa-copy"></i> কপি লিংক
+                </button>
+                <button class="btn-primary" id="shareLinkBtn" style="background: #25D366;">
+                    <i class="fa-brands fa-whatsapp"></i> শেয়ার
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            © GHOTI MARKET Affiliate Program | All Rights Reserved
+        </footer>
+    </main>
+
+    <!-- Custom Popup Modal -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-card">
+            <div class="popup-icon" id="popupIcon">
+                <i id="popupIconSymbol" class="fa-solid"></i>
+            </div>
+            <div class="popup-title" id="popupTitle">সফল হয়েছে</div>
+            <div class="popup-message" id="popupMessage">সফলভাবে সম্পন্ন হয়েছে।</div>
+            <div class="popup-btn-group" id="popupBtnGroup">
+                <button class="popup-btn success" id="popupBtn" onclick="closePopup()">ঠিক আছে</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK & Dashboard Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged, 
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { 
+            getFirestore, 
+            doc, 
+            onSnapshot 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        console.log("Initializing Firebase...");
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+            authDomain: "ghotimarket.firebaseapp.com",
+            projectId: "ghotimarket",
+            storageBucket: "ghotimarket.appspot.com",
+            messagingSenderId: "9382019283",
+            appId: "1:9382019283:web:abc12345"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        console.log("Firebase Initialized Successfully");
+
+        // Global State variables
+        let currentPromoCode = "GM-PROMO";
+        let unsubFirestore = null;
+
+        // DOM Elements
+        const globalLoader = document.getElementById('globalLoader');
+        const sidebar = document.getElementById('sidebar');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        
+        // Popup Elements
+        const popupOverlay = document.getElementById('popupOverlay');
+        const popupIcon = document.getElementById('popupIcon');
+        const popupIconSymbol = document.getElementById('popupIconSymbol');
+        const popupTitle = document.getElementById('popupTitle');
+        const popupMessage = document.getElementById('popupMessage');
+        const popupBtnGroup = document.getElementById('popupBtnGroup');
+        const popupBtn = document.getElementById('popupBtn');
+
+        // Mobile Sidebar Toggle
+        mobileMenuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('mobile-open');
+        });
+
+        // Popup Helper Functions
+        window.showPopup = function(title, message, type = 'success', buttonsHtml = null) {
+            popupTitle.textContent = title;
+            popupMessage.textContent = message;
+            
+            popupIcon.className = `popup-icon ${type}`;
+            
+            if (type === 'success') {
+                popupIconSymbol.className = "fa-solid fa-check";
+            } else if (type === 'warning') {
+                popupIconSymbol.className = "fa-solid fa-triangle-exclamation";
+            } else {
+                popupIconSymbol.className = "fa-solid fa-xmark";
+            }
+
+            if (buttonsHtml) {
+                popupBtnGroup.innerHTML = buttonsHtml;
+            } else {
+                popupBtnGroup.innerHTML = `<button class="popup-btn ${type === 'error' ? 'error' : 'success'}" onclick="closePopup()">ঠিক আছে</button>`;
+            }
+
+            popupOverlay.classList.add('active');
+        }
+
+        window.closePopup = function() {
+            popupOverlay.classList.remove('active');
+        }
+
+        // Helper to format currency
+        function formatCurrency(amount) {
+            const num = Number(amount) || 0;
+            return `৳${num.toLocaleString('en-BD', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+
+        // Helper to format date
+        function formatDate(timestamp) {
+            if (!timestamp) return '--';
+            try {
+                const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+                return date.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' });
+            } catch (e) {
+                return '--';
+            }
+        }
+
+        // Populate Dashboard UI with Data
+        function updateDashboardUI(data) {
+            const name = data.name || data.fullName || "--";
+            const email = data.email || "--";
+            const phone = data.phone || data.phoneNumber || "--";
+            currentPromoCode = data.promoCode || "GM-PROMO";
+            const photoURL = data.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=FF6A00&color=fff`;
+            const affiliateId = data.affiliateId || data.uid || "--";
+            const joinedDate = formatDate(data.joinedDate || data.createdAt);
+            const lastLogin = data.lastLogin ? formatDate(data.lastLogin) : "--";
+            const active = data.active !== undefined ? data.active : true;
+            
+            const balance = data.balance || 0;
+            const todayCommission = data.todayCommission || 0;
+            const pendingCommission = data.pendingCommission || 0;
+            const approvedCommission = data.approvedCommission || 0;
+            const totalCommission = data.totalCommission || 0;
+            const totalClicks = data.totalClicks || 0;
+            const totalOrders = data.totalOrders || 0;
+            const successfulOrders = data.successfulOrders || 0;
+
+            // Remove skeleton loaders
+            document.querySelectorAll('.skeleton').forEach(el => el.classList.remove('skeleton'));
+
+            // Top Bar
+            document.getElementById('topBarName').textContent = name;
+            document.getElementById('topBarAvatar').src = photoURL;
+            document.getElementById('topBarFullName').textContent = name;
+            document.getElementById('topBarId').textContent = `ID: ${affiliateId}`;
+
+            // Profile Card
+            document.getElementById('profileAvatar').src = photoURL;
+            document.getElementById('profileName').textContent = name;
+            document.getElementById('profileAffiliateId').textContent = affiliateId;
+            document.getElementById('profileEmail').textContent = email;
+            document.getElementById('profilePhone').textContent = phone;
+            
+            const statusBadge = document.getElementById('profileStatusBadge');
+            if (active) {
+                statusBadge.className = "status-badge active";
+                statusBadge.textContent = "Active";
+            } else {
+                statusBadge.className = "status-badge inactive";
+                statusBadge.textContent = "Inactive";
+            }
+
+            document.getElementById('profileJoinedDate').textContent = joinedDate;
+            document.getElementById('profileLastLogin').textContent = lastLogin;
+
+            // Promo Card
+            document.getElementById('promoCodeDisplay').textContent = currentPromoCode;
+
+            // Stats Grid
+            document.getElementById('statBalance').textContent = formatCurrency(balance);
+            document.getElementById('statTodayCommission').textContent = formatCurrency(todayCommission);
+            document.getElementById('statPendingCommission').textContent = formatCurrency(pendingCommission);
+            document.getElementById('statApprovedCommission').textContent = formatCurrency(approvedCommission);
+            document.getElementById('statTotalCommission').textContent = formatCurrency(totalCommission);
+            document.getElementById('statTotalClicks').textContent = totalClicks;
+            document.getElementById('statTotalOrders').textContent = totalOrders;
+            document.getElementById('statSuccessfulOrders').textContent = successfulOrders;
+
+            // Referral Link
+            document.getElementById('referralLinkInput').value = `https://www.ghotimarket.com/?ref=${currentPromoCode}`;
+
+            // Hide global loader once data is populated
+            globalLoader.style.opacity = '0';
+            setTimeout(() => { globalLoader.style.display = 'none'; }, 300);
+        }
+
+        // Authentication State Listener & Realtime Firestore Sync
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                console.log("User not logged in. Redirecting to login...");
+                window.location.replace("affiliate-login.html");
+                return;
+            }
+
+            console.log("User logged in UID:", user.uid);
+
+            // Realtime Firestore synchronization using onSnapshot
+            const docRef = doc(db, "Affiliates", user.uid);
+            
+            unsubFirestore = onSnapshot(docRef, (docSnap) => {
+                if (!docSnap.exists()) {
+                    console.error("Affiliate document does not exist for UID:", user.uid);
+                    showPopup("Error", "Affiliate account data not found.", "error");
+                    return;
+                }
+
+                const data = docSnap.data();
+                console.log("Realtime Firestore data received:", data);
+                updateDashboardUI(data);
+            }, (error) => {
+                console.error("Firestore Error:", error);
+                showPopup("Firebase Error", `Error Code:\n${error.code}\n\nError Message:\n${error.message}`, "error");
+            });
+        });
+
+        // Copy Promo Code Handler
+        document.getElementById('copyPromoBtn').addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(currentPromoCode);
+                showPopup("সফল", "Promo Code copied successfully.", "success");
+            } catch (err) {
+                console.error("Clipboard error:", err);
+                showPopup("ত্রুটি", "প্রোমো কোড কপি করা সম্ভব হয়নি।", "error");
+            }
+        });
+
+        // Share Promo Code Handler
+        document.getElementById('sharePromoBtn').addEventListener('click', async () => {
+            const shareData = {
+                title: 'GHOTI MARKET Affiliate',
+                text: `Use my Promo Code:\n${currentPromoCode}`,
+                url: 'https://www.ghotimarket.com'
+            };
+
+            if (navigator.share) {
+                try {
+                    await navigator.share(shareData);
+                } catch (err) {
+                    console.log("Share canceled or failed", err);
+                }
+            } else {
+                // Fallback to Copy
+                try {
+                    await navigator.clipboard.writeText(`Use my Promo Code: ${currentPromoCode} at https://www.ghotimarket.com`);
+                    showPopup("সফল", "Promo Code copied to clipboard as fallback.", "success");
+                } catch (e) {
+                    showPopup("ত্রুটি", "শেয়ার করা সম্ভব হয়নি।", "error");
+                }
+            }
+        });
+
+        // Send Promo Code (Open Share Apps) Handler
+        document.getElementById('sendPromoBtn').addEventListener('click', () => {
+            const text = encodeURIComponent(`Use my Promo Code: ${currentPromoCode} on GHOTI MARKET https://www.ghotimarket.com`);
+            const buttonsHtml = `
+                <a href="https://api.whatsapp.com/send?text=${text}" target="_blank" class="popup-btn success" style="text-decoration:none; display:inline-block; text-align:center; padding:10px;">WhatsApp</a>
+                <a href="https://t.me/share/url?url=https://www.ghotimarket.com&text=${text}" target="_blank" class="popup-btn success" style="text-decoration:none; display:inline-block; text-align:center; padding:10px; background:#0088cc;">Telegram</a>
+                <a href="sms:?body=${text}" class="popup-btn secondary" style="text-decoration:none; display:inline-block; text-align:center; padding:10px;">SMS</a>
+            `;
+            showPopup("প্রোমো কোড পাঠান", "শেয়ার করার মাধ্যম নির্বাচন করুন:", "success", buttonsHtml);
+        });
+
+        // Copy Referral Link Handler
+        document.getElementById('copyLinkBtn').addEventListener('click', async () => {
+            const linkInput = document.getElementById('referralLinkInput');
+            try {
+                await navigator.clipboard.writeText(linkInput.value);
+                showPopup("সফল", "Referral link copied successfully.", "success");
+            } catch (err) {
+                console.error("Clipboard error:", err);
+                showPopup("ত্রুটি", "লিংক কপি করা সম্ভব হয়নি।", "error");
+            }
+        });
+
+        // Share Referral Link via WhatsApp
+        document.getElementById('shareLinkBtn').addEventListener('click', () => {
+            const link = document.getElementById('referralLinkInput').value;
+            const text = encodeURIComponent(`Join GHOTI MARKET using my referral link: ${link}`);
+            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+        });
+
+        // Logout Execution Function
+        async function handleLogout() {
+            try {
+                if (unsubFirestore) unsubFirestore();
+                await signOut(auth);
+                console.log("Logged out successfully");
+                window.location.replace("affiliate-login.html");
+            } catch (error) {
+                console.error("Logout Error:", error);
+                showPopup("Logout Failed", `Error Code:\n${error.code}\n\nError Message:\n${error.message}`, "error");
+            }
+        }
+
+        // Logout Trigger via Sidebar Button with Confirmation Popup
+        const triggerLogout = () => {
+            const confirmButtons = `
+                <button class="popup-btn error" onclick="window.confirmLogoutAction()">লগআউট করুন</button>
+                <button class="popup-btn secondary" onclick="closePopup()">বাতিল</button>
+            `;
+            showPopup("লগআউট নিশ্চিতকরণ", "আপনি কি নিশ্চিতভাবে আপনার অ্যাকাউন্ট থেকে লগআউট করতে চান?", "warning", confirmButtons);
+        };
+
+        window.confirmLogoutAction = async function() {
+            closePopup();
+            await handleLogout();
+        };
+
+        document.getElementById('sidebarLogoutBtn').addEventListener('click', triggerLogout);
+
+        // Sidebar Navigation Links Dummy Handler for completeness
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const text = link.textContent.trim();
+                if (text.includes('ড্যাশবোর্ড')) return;
+                showPopup("তথ্য", `${text} পেজটি শীঘ্রই আসছে।`, "success");
+            });
+        });
+    </script>
+</body>
+</html>
