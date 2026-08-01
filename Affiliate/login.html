@@ -598,7 +598,7 @@
                 const user = userCredential.user;
 
                 // Firestore Check: Affiliates/{uid}
-                const userDocRef = doc(db, 'affiliate_users', user.uid);
+                const userDocRef = doc(db, 'Affiliates', user.uid);
                 const userDocSnap = await getDoc(userDocRef);
 
                 if (!userDocSnap.exists()) {
