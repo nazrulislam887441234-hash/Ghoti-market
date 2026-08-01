@@ -847,48 +847,41 @@
                 </div>
             </div>
 
-            <!-- Statistics Grid (Updated with New Affiliate Order Cards) -->
+            <!-- Statistics Grid (Updated with Auto Financial Calculation Cards) -->
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-receipt"></i></div>
+                    <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
                     <div class="stat-info">
-                        <span>Total Promo Orders</span>
-                        <h3 id="statTotalPromoOrders" class="skeleton">0</h3>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-box-open"></i></div>
-                    <div class="stat-info">
-                        <span>Delivered Orders</span>
-                        <h3 id="statDeliveredOrders" class="skeleton">0</h3>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-tags"></i></div>
-                    <div class="stat-info">
-                        <span>Total Discount Generated</span>
-                        <h3 id="statTotalDiscountGenerated" class="skeleton">৳0.00</h3>
+                        <span>General Balance</span>
+                        <h3 id="statGeneralBalance" class="skeleton">৳0.00</h3>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon"><i class="fa-solid fa-coins"></i></div>
                     <div class="stat-info">
-                        <span>Your Commission (80%)</span>
-                        <h3 id="statYourCommission" class="skeleton">৳0.00</h3>
+                        <span>Commission (20%)</span>
+                        <h3 id="statCommission" class="skeleton">৳0.00</h3>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="stat-icon"><i class="fa-solid fa-tags"></i></div>
                     <div class="stat-info">
-                        <span>Admin Review Amount (20%)</span>
-                        <h3 id="statAdminReviewAmount" class="skeleton">৳0.00</h3>
+                        <span>Delivered Discount Total</span>
+                        <h3 id="statDeliveredDiscountTotal" class="skeleton">৳0.00</h3>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
+                    <div class="stat-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
                     <div class="stat-info">
-                        <span>Available Balance</span>
-                        <h3 id="statAvailableBalance" class="skeleton">৳0.00</h3>
+                        <span>Withdrawn</span>
+                        <h3 id="statWithdrawn" class="skeleton">৳0.00</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-chart-line"></i></div>
+                    <div class="stat-info">
+                        <span>Net Balance</span>
+                        <h3 id="statNetBalance" class="skeleton">৳0.00</h3>
                     </div>
                 </div>
             </div>
@@ -904,32 +897,28 @@
                         <span id="perfPromoCode" class="skeleton">GM-PROMO</span>
                     </div>
                     <div class="profile-detail-item">
-                        <span>Total Customer Orders:</span>
-                        <span id="perfTotalOrders" class="skeleton">0</span>
+                        <span>Delivered Orders:</span>
+                        <span id="perfDeliveredOrders" class="skeleton">0</span>
                     </div>
                     <div class="profile-detail-item">
-                        <span>Delivered:</span>
-                        <span id="perfDelivered" class="skeleton">0</span>
+                        <span>Delivered Discount Total:</span>
+                        <span id="perfDeliveredDiscountTotal" class="skeleton">৳0.00</span>
                     </div>
                     <div class="profile-detail-item">
-                        <span>Pending:</span>
-                        <span id="perfPending" class="skeleton">0</span>
+                        <span>General Balance:</span>
+                        <span id="perfGeneralBalance" class="skeleton">৳0.00</span>
                     </div>
                     <div class="profile-detail-item">
-                        <span>Cancelled:</span>
-                        <span id="perfCancelled" class="skeleton">0</span>
+                        <span>Commission (20%):</span>
+                        <span id="perfCommission" class="skeleton">৳0.00</span>
                     </div>
                     <div class="profile-detail-item">
-                        <span>Generated Discount:</span>
-                        <span id="perfGeneratedDiscount" class="skeleton">৳0.00</span>
+                        <span>Withdrawn:</span>
+                        <span id="perfWithdrawn" class="skeleton">৳0.00</span>
                     </div>
                     <div class="profile-detail-item">
-                        <span>Your Earnings (80%):</span>
-                        <span id="perfYourEarnings" class="skeleton">৳0.00</span>
-                    </div>
-                    <div class="profile-detail-item">
-                        <span>Admin Review (20%):</span>
-                        <span id="perfAdminReview" class="skeleton">৳0.00</span>
+                        <span>Net Balance:</span>
+                        <span id="perfNetBalance" class="skeleton">৳0.00</span>
                     </div>
                 </div>
             </div>
@@ -1127,7 +1116,6 @@
             collection,
             query,
             where,
-            getDocs,
             onSnapshot,
             updateDoc,
             serverTimestamp 
@@ -1150,6 +1138,7 @@
 
         // Global State variables
         let currentPromoCode = "GM-PROMO";
+        let currentWithdrawn = 0;
         let unsubFirestore = null;
         let unsubOrders = null;
         let currentUserUid = null;
@@ -1262,75 +1251,70 @@
         // ==========================================
         // 6. COMMISSION CALCULATION & ORDER LISTENER LOGIC
         // ==========================================
-        function calculateAffiliateCommission(promoCode) {
-            if (!promoCode || promoCode === "GM-PROMO") return;
+        function initFinancialCalculation(referralCode) {
+            if (!referralCode) return;
 
             if (unsubOrders) {
                 unsubOrders();
             }
 
-            const ordersQuery = query(collection(db, "orders"), where("promoCode", "==", promoCode));
+            const ordersQuery = query(
+                collection(db, "Orders"),
+                where("affiliateCode", "==", referralCode)
+            );
 
             unsubOrders = onSnapshot(ordersQuery, (snapshot) => {
-                let totalOrdersCount = 0;
                 let deliveredCount = 0;
-                let pendingCount = 0;
-                let cancelledCount = 0;
-                let totalDiscount = 0;
+                let generalBalance = 0;
 
                 snapshot.forEach((docSnap) => {
                     const order = docSnap.data();
-                    totalOrdersCount++;
-
                     const orderStatus = order.orderStatus || "";
                     const discountAmount = Number(order.discountAmount) || 0;
 
                     if (orderStatus === "Delivered") {
                         deliveredCount++;
-                        totalDiscount += discountAmount;
-                    } else if (orderStatus === "Pending") {
-                        pendingCount++;
-                    } else if (orderStatus === "Cancelled") {
-                        cancelledCount++;
+                        generalBalance += discountAmount;
                     }
                 });
 
-                const affiliateShare = totalDiscount * 0.80;
-                const adminShare = totalDiscount * 0.20;
+                const commission = generalBalance * 0.20;
+                const withdrawn = Number(currentWithdrawn) || 0;
+                const netBalance = generalBalance + commission - withdrawn;
 
-                // Update UI Stats & Promo Performance Card
-                document.getElementById('statTotalPromoOrders').textContent = totalOrdersCount;
-                document.getElementById('statDeliveredOrders').textContent = deliveredCount;
-                document.getElementById('statTotalDiscountGenerated').textContent = formatCurrency(totalDiscount);
-                document.getElementById('statYourCommission').textContent = formatCurrency(affiliateShare);
-                document.getElementById('statAdminReviewAmount').textContent = formatCurrency(adminShare);
-                document.getElementById('statAvailableBalance').textContent = formatCurrency(affiliateShare);
+                // Update UI Stats Cards
+                document.getElementById('statGeneralBalance').textContent = formatCurrency(generalBalance);
+                document.getElementById('statCommission').textContent = formatCurrency(commission);
+                document.getElementById('statDeliveredDiscountTotal').textContent = formatCurrency(generalBalance);
+                document.getElementById('statWithdrawn').textContent = formatCurrency(withdrawn);
+                document.getElementById('statNetBalance').textContent = formatCurrency(netBalance);
 
-                document.getElementById('perfPromoCode').textContent = promoCode;
-                document.getElementById('perfTotalOrders').textContent = totalOrdersCount;
-                document.getElementById('perfDelivered').textContent = deliveredCount;
-                document.getElementById('perfPending').textContent = pendingCount;
-                document.getElementById('perfCancelled').textContent = cancelledCount;
-                document.getElementById('perfGeneratedDiscount').textContent = formatCurrency(totalDiscount);
-                document.getElementById('perfYourEarnings').textContent = formatCurrency(affiliateShare);
-                document.getElementById('perfAdminReview').textContent = formatCurrency(adminShare);
+                // Update Promo Performance Section
+                document.getElementById('perfPromoCode').textContent = referralCode;
+                document.getElementById('perfDeliveredOrders').textContent = deliveredCount;
+                document.getElementById('perfDeliveredDiscountTotal').textContent = formatCurrency(generalBalance);
+                document.getElementById('perfGeneralBalance').textContent = formatCurrency(generalBalance);
+                document.getElementById('perfCommission').textContent = formatCurrency(commission);
+                document.getElementById('perfWithdrawn').textContent = formatCurrency(withdrawn);
+                document.getElementById('perfNetBalance').textContent = formatCurrency(netBalance);
 
                 // Handle Empty State / Skeleton removal
                 document.querySelectorAll('.skeleton').forEach(el => el.classList.remove('skeleton'));
             }, (error) => {
                 console.error("Orders listener error:", error);
                 if (error.code === 'permission-denied') {
-                    showPopup("Security Notice", "অ্যাফিলিয়েট শুধুমাত্র নিজের প্রোমো কোডের অর্ডার দেখতে পারবেন।", "warning");
+                    showPopup("Security Notice", "অ্যাফিলিয়েট শুধুমাত্র নিজের রেফারেল কোডের অর্ডার দেখতে পারবেন।", "warning");
                 }
             });
         }
 
         // Populate Dashboard UI & Editable Profile Fields with Data
         function updateDashboardUI(data) {
-            const name = data.name || data.fullName || "--";
+            const name = data.fullName || data.name || "--";
             const email = data.email || "--";
             const phone = data.phone || data.phoneNumber || "--";
-            currentPromoCode = data.promoCode || "GM-PROMO";
+            currentPromoCode = data.referralCode || data.promoCode || "GM-PROMO";
+            currentWithdrawn = Number(data.withdrawn) || 0;
             const photoURL = data.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=FF6A00&color=fff`;
             const affiliateId = data.affiliateId || data.uid || "--";
             const joinedDate = formatDate(data.joinedDate || data.createdAt);
@@ -1349,7 +1333,7 @@
             // Profile Card (Dashboard)
             document.getElementById('profileAvatar').src = photoURL;
             document.getElementById('profileName').textContent = name;
-            document.getElementById('profileAffiliateId').textContent = affiliateId;
+            document.getElementById('profileAffiliateId').textContent = currentPromoCode;
             document.getElementById('profileEmail').textContent = email;
             document.getElementById('profilePhone').textContent = phone;
             
@@ -1381,7 +1365,7 @@
             document.getElementById('inputPromoCode').value = currentPromoCode;
 
             // Trigger Realtime Order Calculation
-            calculateAffiliateCommission(currentPromoCode);
+            initFinancialCalculation(currentPromoCode);
 
             // Hide global loader smoothly once data is populated
             globalLoader.style.opacity = '0';
@@ -1502,7 +1486,7 @@
         });
 
         document.getElementById('sharePromoBtn').addEventListener('click', async () => {
-            const shareText = `Use my GHOTI MARKET Promo Code:\n${currentPromoCode}\nhttps://www.ghotimarket.com`;
+            const shareText = `Use my GHOTI MARKET Referral Code:\n${currentPromoCode}\nhttps://www.ghotimarket.com`;
             const shareData = {
                 title: 'GHOTI MARKET Affiliate',
                 text: shareText,
@@ -1526,7 +1510,7 @@
         });
 
         document.getElementById('sendPromoBtn').addEventListener('click', () => {
-            const shareText = `Use my GHOTI MARKET Promo Code:\n${currentPromoCode}\nhttps://www.ghotimarket.com`;
+            const shareText = `Use my GHOTI MARKET Referral Code:\n${currentPromoCode}\nhttps://www.ghotimarket.com`;
             const encodedText = encodeURIComponent(shareText);
             const buttonsHtml = `
                 <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
