@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHOTI MARKET - Affiliate Registration</title>
+    
+    <!-- Google Fonts: Hind Siliguri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #FF6A00;
+            --primary-hover: #e55e00;
+            --bg-color: #FFF8F3;
+            --card-bg: #FFFFFF;
+            --text-main: #2D3748;
+            --text-muted: #718096;
+            --border-color: #E2E8F0;
+            --radius: 16px;
+            --shadow: 0 10px 25px -5px rgba(255, 106, 0, 0.08), 0 8px 10px -6px rgba(255, 106, 0, 0.04);
+            --success: #10B981;
+            --error: #EF4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            margin: auto;
+            padding: 10px 0;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 32px 24px;
+            width: 100%;
+            border: 1px solid rgba(255, 106, 0, 0.05);
+        }
+
+        .logo-area {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .logo-area img {
+            max-width: 150px;
+            width: 100%;
+            height: auto;
+            display: inline-block;
+        }
+
+        .header-title {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .header-title h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .header-title p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i.field-icon {
+            position: absolute;
+            left: 14px;
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            font-size: 15px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s ease;
+            background-color: #FAFAFA;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            background-color: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.12);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 14px;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(255, 106, 0, 0.25);
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .divider::before {
+            margin-right: .75em;
+        }
+
+        .divider::after {
+            margin-left: .75em;
+        }
+
+        .btn-outline {
+            width: 100%;
+            padding: 12px;
+            background-color: transparent;
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(255, 106, 0, 0.05);
+        }
+
+        .extra-links {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .extra-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .extra-links a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ffffff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Popup Notification Modal */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-card {
+            background: #FFFFFF;
+            padding: 24px;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 360px;
+            text-align: center;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .popup-overlay.active .popup-card {
+            transform: translateY(0);
+        }
+
+        .popup-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 24px;
+        }
+
+        .popup-icon.success {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .popup-icon.error {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+        }
+
+        .popup-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .popup-message {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .popup-btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            color: #FFFFFF;
+            width: 100%;
+        }
+
+        .popup-btn.success {
+            background-color: var(--success);
+        }
+
+        .popup-btn.error {
+            background-color: var(--error);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="card">
+            <!-- Logo -->
+            <div class="logo-area">
+                <img src="https://ghotimarket.com/logo.png" alt="GHOTI MARKET" onerror="this.style.display='none';">
+            </div>
+
+            <!-- Title & Subtitle -->
+            <div class="header-title">
+                <h2>Affiliate Registration</h2>
+                <p>নতুন অ্যাফিলিয়েট অ্যাকাউন্ট তৈরি করুন</p>
+            </div>
+
+            <!-- Registration Form -->
+            <form id="registerForm">
+                <div class="form-group">
+                    <label class="form-label" for="fullName">পূর্ণ নাম</label>
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-user field-icon"></i>
+                        <input type="text" id="fullName" class="form-control" placeholder="আপনার সম্পূর্ণ নাম লিখুন" required autocomplete="name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">ইমেইল ঠিকানা</label>
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-envelope field-icon"></i>
+                        <input type="email" id="email" class="form-control" placeholder="example@domain.com" required autocomplete="email">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">পাসওয়ার্ড</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock field-icon"></i>
+                        <input type="password" id="password" class="form-control" placeholder="কমপক্ষে ৬ ডিজিটের পাসওয়ার্ড" required autocomplete="new-password">
+                        <i class="fa-regular fa-eye password-toggle" id="togglePassword"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="confirmPassword">পাসওয়ার্ড নিশ্চিত করুন</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock field-icon"></i>
+                        <input type="password" id="confirmPassword" class="form-control" placeholder="পুনরায় পাসওয়ার্ড লিখুন" required autocomplete="new-password">
+                        <i class="fa-regular fa-eye password-toggle" id="toggleConfirmPassword"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="phoneNumber">ফোন নম্বর</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-phone field-icon"></i>
+                        <input type="tel" id="phoneNumber" class="form-control" placeholder="০১৭xxxxxxxx" required autocomplete="tel">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="promoCode">Your Promo Code</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-tag field-icon"></i>
+                        <input type="text" id="promoCode" class="form-control" placeholder="নিজের প্রোমো কোড লিখুন" required>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn-primary">
+                    <span id="btnText">একাউন্ট তৈরি করুন</span>
+                    <div class="spinner" id="btnSpinner"></div>
+                </button>
+
+                <div class="divider">অথবা</div>
+
+                <a href="affiliate-login.html" class="btn-outline">লগইন করুন</a>
+            </form>
+
+            <div class="extra-links">
+                <p>ইতিমধ্যে অ্যাকাউন্ট আছে? <a href="https://www.ghotimarket.com/Affiliate/login">লগইন করুন</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        © GHOTI MARKET Affiliate Program
+    </footer>
+
+    <!-- Custom Popup Modal -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-card">
+            <div class="popup-icon" id="popupIcon">
+                <i id="popupIconSymbol" class="fa-solid"></i>
+            </div>
+            <div class="popup-title" id="popupTitle">সফল হয়েছে</div>
+            <div class="popup-message" id="popupMessage">সফলভাবে সম্পন্ন হয়েছে।</div>
+            <button class="popup-btn" id="popupBtn" onclick="closePopup()">ঠিক আছে</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK & Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { 
+            getFirestore, 
+            doc, 
+            setDoc, 
+            getDocs, 
+            collection, 
+            query, 
+            where, 
+            serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // TODO: Replace with your actual Firebase configuration credentials
+        const firebaseConfig = {
+    apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+    authDomain: "ghotimarket.firebaseapp.com",
+    projectId: "ghotimarket",
+    storageBucket: "ghotimarket.appspot.com",
+    messagingSenderId: "9382019283",
+    appId: "1:9382019283:web:abc12345"
+};
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // DOM Elements
+        const registerForm = document.getElementById('registerForm');
+        const fullNameInput = document.getElementById('fullName');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const phoneNumberInput = document.getElementById('phoneNumber');
+        const promoCodeInput = document.getElementById('promoCode');
+        const togglePassword = document.getElementById('togglePassword');
+        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnSpinner = document.getElementById('btnSpinner');
+
+        // Popup Elements
+        const popupOverlay = document.getElementById('popupOverlay');
+        const popupIcon = document.getElementById('popupIcon');
+        const popupIconSymbol = document.getElementById('popupIconSymbol');
+        const popupTitle = document.getElementById('popupTitle');
+        const popupMessage = document.getElementById('popupMessage');
+        const popupBtn = document.getElementById('popupBtn');
+
+        // Toggle Password Visibility
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePassword.classList.toggle('fa-eye');
+            togglePassword.classList.toggle('fa-eye-slash');
+        });
+
+        toggleConfirmPassword.addEventListener('click', () => {
+            const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPasswordInput.setAttribute('type', type);
+            toggleConfirmPassword.classList.toggle('fa-eye');
+            toggleConfirmPassword.classList.toggle('fa-eye-slash');
+        });
+
+        // Show Popup Helper Function
+        window.showPopup = function(title, message, type = 'success', callback = null) {
+            popupTitle.textContent = title;
+            popupMessage.textContent = message;
+            
+            popupIcon.className = `popup-icon ${type}`;
+            popupBtn.className = `popup-btn ${type}`;
+            
+            if (type === 'success') {
+                popupIconSymbol.className = "fa-solid fa-check";
+            } else {
+                popupIconSymbol.className = "fa-solid fa-xmark";
+            }
+
+            popupOverlay.classList.add('active');
+            window.currentPopupCallback = callback;
+        }
+
+        window.closePopup = function() {
+            popupOverlay.classList.remove('active');
+            if (typeof window.currentPopupCallback === 'function') {
+                window.currentPopupCallback();
+                window.currentPopupCallback = null;
+            }
+        }
+
+        // Set Loading State
+        function setLoading(isLoading) {
+            if (isLoading) {
+                submitBtn.disabled = true;
+                btnText.style.display = 'none';
+                btnSpinner.style.display = 'inline-block';
+            } else {
+                submitBtn.disabled = false;
+                btnText.style.display = 'inline';
+                btnSpinner.style.display = 'none';
+            }
+        }
+
+        // Form Submit Handler
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const fullName = fullNameInput.value.trim();
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            const phoneNumber = phoneNumberInput.value.trim();
+            let promoCode = promoCodeInput.value.trim();
+
+            // Validations
+            if (!fullName || !email || !password || !confirmPassword || !phoneNumber || !promoCode) {
+                showPopup('ত্রুটি', 'অনুগ্রহ করে সবকটি ঘর সঠিকভাবে পূরণ করুন।', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showPopup('দুর্বল পাসওয়ার্ড', 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।', 'error');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showPopup('পাসওয়ার্ড মিলেনি', 'পাসওয়ার্ড এবং কনফার্ম পাসওয়ার্ড একই হতে হবে।', 'error');
+                return;
+            }
+
+            if (/\s/.test(promoCode)) {
+                showPopup('ত্রুটি', 'প্রোমো কোডে কোনো স্পেস বা ফাঁকা রাখা যাবে না।', 'error');
+                return;
+            }
+
+            // Convert Promo Code to Uppercase
+            promoCode = promoCode.toUpperCase();
+
+            setLoading(true);
+
+            try {
+                // Check Duplicate Promo Code in Affiliates collection
+                const promoQuery = query(collection(db, 'Affiliates'), where('promoCode', '==', promoCode));
+                const promoSnapshot = await getDocs(promoQuery);
+
+                if (!promoSnapshot.empty) {
+                    setLoading(false);
+                    showPopup('ব্যবহৃত প্রোমো কোড', 'এই Promo Code ইতোমধ্যে ব্যবহৃত হয়েছে। অন্য একটি Promo Code ব্যবহার করুন।', 'error');
+                    return;
+                }
+
+                // Check Duplicate Phone Number in Affiliates collection
+                const phoneQuery = query(collection(db, 'Affiliates'), where('phoneNumber', '==', phoneNumber));
+                const phoneSnapshot = await getDocs(phoneQuery);
+
+                if (!phoneSnapshot.empty) {
+                    setLoading(false);
+                    showPopup('ফোন নম্বর নিবন্ধিত', 'এই ফোন নম্বর দিয়ে ইতোমধ্যে একটি Affiliate Account রয়েছে।', 'error');
+                    return;
+                }
+
+                // Create Firebase Authentication User
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Create Firestore Document inside Affiliates collection
+                const affiliateData = {
+                    uid: user.uid,
+                    fullName: fullName,
+                    email: email,
+                    phoneNumber: phoneNumber,
+                    promoCode: promoCode,
+                    verified: true,
+                    active: true,
+                    createdAt: serverTimestamp()
+                };
+
+                await setDoc(doc(db, 'Affiliates', user.uid), affiliateData);
+
+                setLoading(false);
+
+                // Success Popup & Redirect
+                showPopup('অভিনন্দন!', 'Affiliate Account সফলভাবে তৈরি হয়েছে।', 'success', () => {
+                    window.location.href = 'affiliate-login.html';
+                });
+
+            } catch (error) {
+                setLoading(false);
+                let errorMsg = 'অ্যাফিলিয়েট একাউন্ট তৈরি করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।';
+                
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMsg = 'এই ইমেইল দিয়ে ইতোমধ্যে একটি অ্যাকাউন্ট রয়েছে।';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMsg = 'সঠিক ইমেইল ঠিকানা প্রদান করুন।';
+                        break;
+                    case 'auth/weak-password':
+                        errorMsg = 'পাসওয়ার্ডটি খুব দুর্বল। কমপক্ষে ৬ অক্ষরের দিন।';
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMsg = 'নেটওয়ার্ক সংযোগ সমস্যা। ইন্টারনেট কানেকশন চেক করুন।';
+                        break;
+                }
+                
+                showPopup('নিবন্ধন ব্যর্থ', errorMsg, 'error');
+            }
+        });
+    </script>
+</body>
+</html>
