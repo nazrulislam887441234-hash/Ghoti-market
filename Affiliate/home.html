@@ -1231,7 +1231,7 @@
             });
         });
 
-        // Helper to format currency
+        // Helper to format currency with ৳ and 2 decimal places
         function formatCurrency(amount) {
             const num = Number(amount) || 0;
             return `৳${num.toLocaleString('en-BD', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -1249,61 +1249,70 @@
         }
 
         // ==========================================
-        // 6. COMMISSION CALCULATION & ORDER LISTENER LOGIC
+        // 7. FINANCIAL CALCULATION & ORDER LISTENER
         // ==========================================
-        function initFinancialCalculation(referralCode) {
-            if (!referralCode) return;
+        function initFinancialCalculation(uid) {
+            if (!uid) return;
 
+            // পুরানো লিসener বন্ধ করা হচ্ছে
             if (unsubOrders) {
                 unsubOrders();
             }
 
+            // রুলস অনুযায়ী `order_tracking` কালেকশন থেকে বর্তমান অ্যাফিলিয়েটের অর্ডার কুয়েরি করা হচ্ছে
             const ordersQuery = query(
-                collection(db, "Orders"),
-                where("affiliateCode", "==", referralCode)
+                collection(db, "order_tracking"),
+                where("affiliateUserId", "==", uid)
             );
 
+            // রিয়েল-টাইম আপডেটের জন্য onSnapshot ব্যবহার করা হচ্ছে
             unsubOrders = onSnapshot(ordersQuery, (snapshot) => {
-                let deliveredCount = 0;
+                let deliveredOrders = 0;
                 let generalBalance = 0;
 
                 snapshot.forEach((docSnap) => {
                     const order = docSnap.data();
-                    const orderStatus = order.orderStatus || "";
-                    const discountAmount = Number(order.discountAmount) || 0;
+                    const deliveryStatus = order.deliveryStatus || "";
+                    const affiliateDiscount = Number(order.affiliateDiscount) || 0;
 
-                    if (orderStatus === "Delivered") {
-                        deliveredCount++;
-                        generalBalance += discountAmount;
+                    // যদি ডেলিভারি স্ট্যাটাস "Delivered" হয়
+                    if (deliveryStatus === "Delivered") {
+                        deliveredOrders++;
+                        generalBalance += affiliateDiscount;
                     }
                 });
 
-                const commission = generalBalance * 0.20;
+                // হিসাব নিকাশ লজিক
+                const adminCommission = generalBalance * 0.20;
+                const affiliateEarning = generalBalance - adminCommission;
                 const withdrawn = Number(currentWithdrawn) || 0;
-                const netBalance = generalBalance + commission - withdrawn;
+                const netBalance = affiliateEarning - withdrawn;
 
-                // Update UI Stats Cards
+                // UI ম্যাপ করা হচ্ছে (ড্যাশবোর্ড স্ট্যাটস এবং পারফরম্যান্স সেকশন)
                 document.getElementById('statGeneralBalance').textContent = formatCurrency(generalBalance);
-                document.getElementById('statCommission').textContent = formatCurrency(commission);
+                document.getElementById('statCommission').textContent = formatCurrency(adminCommission);
+                document.getElementById('statAffiliateEarning').textContent = formatCurrency(affiliateEarning); // নতুন কার্ড আপডেট
                 document.getElementById('statDeliveredDiscountTotal').textContent = formatCurrency(generalBalance);
                 document.getElementById('statWithdrawn').textContent = formatCurrency(withdrawn);
                 document.getElementById('statNetBalance').textContent = formatCurrency(netBalance);
 
-                // Update Promo Performance Section
-                document.getElementById('perfPromoCode').textContent = referralCode;
-                document.getElementById('perfDeliveredOrders').textContent = deliveredCount;
+                document.getElementById('perfDeliveredOrders').textContent = deliveredOrders;
                 document.getElementById('perfDeliveredDiscountTotal').textContent = formatCurrency(generalBalance);
                 document.getElementById('perfGeneralBalance').textContent = formatCurrency(generalBalance);
-                document.getElementById('perfCommission').textContent = formatCurrency(commission);
+                document.getElementById('perfCommission').textContent = formatCurrency(adminCommission);
+                document.getElementById('perfAffiliateEarning').textContent = formatCurrency(affiliateEarning); // নতুন পারফরম্যান্স রো আপডেট
                 document.getElementById('perfWithdrawn').textContent = formatCurrency(withdrawn);
                 document.getElementById('perfNetBalance').textContent = formatCurrency(netBalance);
 
-                // Handle Empty State / Skeleton removal
+                // ডেটা লোড হওয়ার পর স্কেলেটন ক্লাস রিমুভ করা হচ্ছে
                 document.querySelectorAll('.skeleton').forEach(el => el.classList.remove('skeleton'));
             }, (error) => {
-                console.error("Orders listener error:", error);
+                console.error("Order tracking listener error:", error);
+                // পার্মিশন ডিনাইড হলে পপআপ প্রদর্শন
                 if (error.code === 'permission-denied') {
-                    showPopup("Security Notice", "অ্যাফিলিয়েট শুধুমাত্র নিজের রেফারেল কোডের অর্ডার দেখতে পারবেন।", "warning");
+                    showPopup("অনুমতি ত্রুটি", "আপনার এই ডেটা দেখার অনুমতি নেই (Permission Denied)।", "error");
+                } else {
+                    showPopup("ত্রুটি", `অর্ডার লোড করতে সমস্যা হয়েছে: ${error.message}`, "error");
                 }
             });
         }
@@ -1313,16 +1322,13 @@
             const name = data.fullName || data.name || "--";
             const email = data.email || "--";
             const phone = data.phone || data.phoneNumber || "--";
-            currentPromoCode = data.referralCode || data.promoCode || "GM-PROMO";
+            currentPromoCode = data.affiliatePromoCode || data.promoCode || data.referralCode || "GM-PROMO";
             currentWithdrawn = Number(data.withdrawn) || 0;
             const photoURL = data.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=FF6A00&color=fff`;
-            const affiliateId = data.affiliateId || data.uid || "--";
+            const affiliateId = data.affiliateUserId || data.affiliateId || data.uid || "--";
             const joinedDate = formatDate(data.joinedDate || data.createdAt);
             const lastLogin = data.lastLogin ? formatDate(data.lastLogin) : "--";
             const active = data.active !== undefined ? data.active : true;
-
-            // Remove skeleton loaders
-            document.querySelectorAll('.skeleton').forEach(el => el.classList.remove('skeleton'));
 
             // Top Bar
             document.getElementById('topBarName').textContent = name;
@@ -1349,8 +1355,9 @@
             document.getElementById('profileJoinedDate').textContent = joinedDate;
             document.getElementById('profileLastLogin').textContent = lastLogin;
 
-            // Promo Card
+            // Promo Card & Performance Promo Code
             document.getElementById('promoCodeDisplay').textContent = currentPromoCode;
+            document.getElementById('perfPromoCode').textContent = currentPromoCode;
 
             // Populate Editable Profile Form Fields
             document.getElementById('inputFullName').value = data.fullName || data.name || '';
@@ -1364,8 +1371,8 @@
             document.getElementById('inputNid').value = data.nid || '';
             document.getElementById('inputPromoCode').value = currentPromoCode;
 
-            // Trigger Realtime Order Calculation
-            initFinancialCalculation(currentPromoCode);
+            // রিয়েল-টাইম ফিনান্সিয়াল ক্যালকুলেশন ইনিশিয়ালাইজ করা হচ্ছে (Rule অনুযায়ী auth.currentUser.uid পাস করা হচ্ছে)
+            initFinancialCalculation(currentUserUid);
 
             // Hide global loader smoothly once data is populated
             globalLoader.style.opacity = '0';
@@ -1399,7 +1406,11 @@
                 showPopup("সফল", "প্রোফাইল তথ্য সফলভাবে আপডেট করা হয়েছে।", "success");
             } catch (error) {
                 console.error("Profile update error:", error);
-                showPopup("ত্রুটি", `কোড: ${error.code}\nবার্তা: ${error.message}`, "error");
+                if (error.code === 'permission-denied') {
+                    showPopup("অনুমতি ত্রুটি", "আপনার প্রোফাইল আপডেট করার অনুমতি নেই।", "error");
+                } else {
+                    showPopup("ত্রুটি", `কোড: ${error.code}\nবার্তা: ${error.message}`, "error");
+                }
             }
         });
 
@@ -1468,7 +1479,11 @@
                 updateDashboardUI(data);
             }, (error) => {
                 console.error("Firestore Error:", error);
-                showPopup("Firebase Error", `Error Code:\n${error.code}\n\nError Message:\n${error.message}`, "error");
+                if (error.code === 'permission-denied') {
+                    showPopup("অনুমতি ত্রুটি", "অ্যাফিলিয়েট অ্যাকাউন্ট ডাটা পড়ার অনুমতি নেই।", "error");
+                } else {
+                    showPopup("Firebase Error", `Error Code:\n${error.code}\n\nError Message:\n${error.message}`, "error");
+                }
             });
         });
 
