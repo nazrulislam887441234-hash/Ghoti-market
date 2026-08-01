@@ -482,6 +482,12 @@
             margin-top: 4px;
         }
 
+        /* Promo Performance Section Specific Styles */
+        .promo-performance-section {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
         /* Form Controls for Editable Profile & Password */
         .form-group {
             margin-bottom: 16px;
@@ -841,62 +847,89 @@
                 </div>
             </div>
 
-            <!-- Statistics Grid -->
+            <!-- Statistics Grid (Updated with New Affiliate Order Cards) -->
             <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-receipt"></i></div>
+                    <div class="stat-info">
+                        <span>Total Promo Orders</span>
+                        <h3 id="statTotalPromoOrders" class="skeleton">0</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-box-open"></i></div>
+                    <div class="stat-info">
+                        <span>Delivered Orders</span>
+                        <h3 id="statDeliveredOrders" class="skeleton">0</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-tags"></i></div>
+                    <div class="stat-info">
+                        <span>Total Discount Generated</span>
+                        <h3 id="statTotalDiscountGenerated" class="skeleton">৳0.00</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-coins"></i></div>
+                    <div class="stat-info">
+                        <span>Your Commission (80%)</span>
+                        <h3 id="statYourCommission" class="skeleton">৳0.00</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="stat-info">
+                        <span>Admin Review Amount (20%)</span>
+                        <h3 id="statAdminReviewAmount" class="skeleton">৳0.00</h3>
+                    </div>
+                </div>
                 <div class="stat-card">
                     <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
                     <div class="stat-info">
-                        <span>কারেন্ট ব্যালেন্স</span>
-                        <h3 id="statBalance" class="skeleton">৳0.00</h3>
+                        <span>Available Balance</span>
+                        <h3 id="statAvailableBalance" class="skeleton">৳0.00</h3>
                     </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-chart-line"></i></div>
-                    <div class="stat-info">
-                        <span>আজকের কমিশন</span>
-                        <h3 id="statTodayCommission" class="skeleton">৳0.00</h3>
+            </div>
+
+            <!-- Promo Performance Section -->
+            <div class="card promo-performance-section">
+                <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--primary);">
+                    <i class="fa-solid fa-chart-pie"></i> Promo Performance
+                </h2>
+                <div class="profile-details-list" style="margin-top: 0; border-top: none; padding-top: 0;">
+                    <div class="profile-detail-item">
+                        <span>Promo Code:</span>
+                        <span id="perfPromoCode" class="skeleton">GM-PROMO</span>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                    <div class="stat-info">
-                        <span>পেন্ডিং কমিশন</span>
-                        <h3 id="statPendingCommission" class="skeleton">৳0.00</h3>
+                    <div class="profile-detail-item">
+                        <span>Total Customer Orders:</span>
+                        <span id="perfTotalOrders" class="skeleton">0</span>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
-                    <div class="stat-info">
-                        <span>অনুমোদিত কমিশন</span>
-                        <h3 id="statApprovedCommission" class="skeleton">৳0.00</h3>
+                    <div class="profile-detail-item">
+                        <span>Delivered:</span>
+                        <span id="perfDelivered" class="skeleton">0</span>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
-                    <div class="stat-info">
-                        <span>মোট কমিশন</span>
-                        <h3 id="statTotalCommission" class="skeleton">৳0.00</h3>
+                    <div class="profile-detail-item">
+                        <span>Pending:</span>
+                        <span id="perfPending" class="skeleton">0</span>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-computer-mouse"></i></div>
-                    <div class="stat-info">
-                        <span>মোট ক্লিক</span>
-                        <h3 id="statTotalClicks" class="skeleton">0</h3>
+                    <div class="profile-detail-item">
+                        <span>Cancelled:</span>
+                        <span id="perfCancelled" class="skeleton">0</span>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-cart-shopping"></i></div>
-                    <div class="stat-info">
-                        <span>মোট অর্ডার</span>
-                        <h3 id="statTotalOrders" class="skeleton">0</h3>
+                    <div class="profile-detail-item">
+                        <span>Generated Discount:</span>
+                        <span id="perfGeneratedDiscount" class="skeleton">৳0.00</span>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-box-archive"></i></div>
-                    <div class="stat-info">
-                        <span>সফল অর্ডার</span>
-                        <h3 id="statSuccessfulOrders" class="skeleton">0</h3>
+                    <div class="profile-detail-item">
+                        <span>Your Earnings (80%):</span>
+                        <span id="perfYourEarnings" class="skeleton">৳0.00</span>
+                    </div>
+                    <div class="profile-detail-item">
+                        <span>Admin Review (20%):</span>
+                        <span id="perfAdminReview" class="skeleton">৳0.00</span>
                     </div>
                 </div>
             </div>
@@ -1091,6 +1124,10 @@
         import { 
             getFirestore, 
             doc, 
+            collection,
+            query,
+            where,
+            getDocs,
             onSnapshot,
             updateDoc,
             serverTimestamp 
@@ -1114,6 +1151,7 @@
         // Global State variables
         let currentPromoCode = "GM-PROMO";
         let unsubFirestore = null;
+        let unsubOrders = null;
         let currentUserUid = null;
 
         // DOM Elements
@@ -1198,7 +1236,6 @@
         mobileMenuToggle.addEventListener('click', toggleSidebar);
         sidebarBackdrop.addEventListener('click', closeSidebar);
 
-        // Close mobile sidebar when clicking normal sidebar links on mobile
         document.querySelectorAll('.sidebar-menu a').forEach(link => {
             link.addEventListener('click', () => {
                 closeSidebar();
@@ -1222,6 +1259,72 @@
             }
         }
 
+        // ==========================================
+        // 6. COMMISSION CALCULATION & ORDER LISTENER LOGIC
+        // ==========================================
+        function calculateAffiliateCommission(promoCode) {
+            if (!promoCode || promoCode === "GM-PROMO") return;
+
+            if (unsubOrders) {
+                unsubOrders();
+            }
+
+            const ordersQuery = query(collection(db, "orders"), where("promoCode", "==", promoCode));
+
+            unsubOrders = onSnapshot(ordersQuery, (snapshot) => {
+                let totalOrdersCount = 0;
+                let deliveredCount = 0;
+                let pendingCount = 0;
+                let cancelledCount = 0;
+                let totalDiscount = 0;
+
+                snapshot.forEach((docSnap) => {
+                    const order = docSnap.data();
+                    totalOrdersCount++;
+
+                    const orderStatus = order.orderStatus || "";
+                    const discountAmount = Number(order.discountAmount) || 0;
+
+                    if (orderStatus === "Delivered") {
+                        deliveredCount++;
+                        totalDiscount += discountAmount;
+                    } else if (orderStatus === "Pending") {
+                        pendingCount++;
+                    } else if (orderStatus === "Cancelled") {
+                        cancelledCount++;
+                    }
+                });
+
+                const affiliateShare = totalDiscount * 0.80;
+                const adminShare = totalDiscount * 0.20;
+
+                // Update UI Stats & Promo Performance Card
+                document.getElementById('statTotalPromoOrders').textContent = totalOrdersCount;
+                document.getElementById('statDeliveredOrders').textContent = deliveredCount;
+                document.getElementById('statTotalDiscountGenerated').textContent = formatCurrency(totalDiscount);
+                document.getElementById('statYourCommission').textContent = formatCurrency(affiliateShare);
+                document.getElementById('statAdminReviewAmount').textContent = formatCurrency(adminShare);
+                document.getElementById('statAvailableBalance').textContent = formatCurrency(affiliateShare);
+
+                document.getElementById('perfPromoCode').textContent = promoCode;
+                document.getElementById('perfTotalOrders').textContent = totalOrdersCount;
+                document.getElementById('perfDelivered').textContent = deliveredCount;
+                document.getElementById('perfPending').textContent = pendingCount;
+                document.getElementById('perfCancelled').textContent = cancelledCount;
+                document.getElementById('perfGeneratedDiscount').textContent = formatCurrency(totalDiscount);
+                document.getElementById('perfYourEarnings').textContent = formatCurrency(affiliateShare);
+                document.getElementById('perfAdminReview').textContent = formatCurrency(adminShare);
+
+                // Handle Empty State / Skeleton removal
+                document.querySelectorAll('.skeleton').forEach(el => el.classList.remove('skeleton'));
+            }, (error) => {
+                console.error("Orders listener error:", error);
+                if (error.code === 'permission-denied') {
+                    showPopup("Security Notice", "অ্যাফিলিয়েট শুধুমাত্র নিজের প্রোমো কোডের অর্ডার দেখতে পারবেন।", "warning");
+                }
+            });
+        }
+
         // Populate Dashboard UI & Editable Profile Fields with Data
         function updateDashboardUI(data) {
             const name = data.name || data.fullName || "--";
@@ -1233,15 +1336,6 @@
             const joinedDate = formatDate(data.joinedDate || data.createdAt);
             const lastLogin = data.lastLogin ? formatDate(data.lastLogin) : "--";
             const active = data.active !== undefined ? data.active : true;
-            
-            const balance = data.balance || 0;
-            const todayCommission = data.todayCommission || 0;
-            const pendingCommission = data.pendingCommission || 0;
-            const approvedCommission = data.approvedCommission || 0;
-            const totalCommission = data.totalCommission || 0;
-            const totalClicks = data.totalClicks || 0;
-            const totalOrders = data.totalOrders || 0;
-            const successfulOrders = data.successfulOrders || 0;
 
             // Remove skeleton loaders
             document.querySelectorAll('.skeleton').forEach(el => el.classList.remove('skeleton'));
@@ -1274,16 +1368,6 @@
             // Promo Card
             document.getElementById('promoCodeDisplay').textContent = currentPromoCode;
 
-            // Stats Grid
-            document.getElementById('statBalance').textContent = formatCurrency(balance);
-            document.getElementById('statTodayCommission').textContent = formatCurrency(todayCommission);
-            document.getElementById('statPendingCommission').textContent = formatCurrency(pendingCommission);
-            document.getElementById('statApprovedCommission').textContent = formatCurrency(approvedCommission);
-            document.getElementById('statTotalCommission').textContent = formatCurrency(totalCommission);
-            document.getElementById('statTotalClicks').textContent = totalClicks;
-            document.getElementById('statTotalOrders').textContent = totalOrders;
-            document.getElementById('statSuccessfulOrders').textContent = successfulOrders;
-
             // Populate Editable Profile Form Fields
             document.getElementById('inputFullName').value = data.fullName || data.name || '';
             document.getElementById('inputPhone').value = data.phone || data.phoneNumber || '';
@@ -1296,13 +1380,16 @@
             document.getElementById('inputNid').value = data.nid || '';
             document.getElementById('inputPromoCode').value = currentPromoCode;
 
+            // Trigger Realtime Order Calculation
+            calculateAffiliateCommission(currentPromoCode);
+
             // Hide global loader smoothly once data is populated
             globalLoader.style.opacity = '0';
             setTimeout(() => { globalLoader.style.display = 'none'; }, 300);
         }
 
         // ==========================================
-        // 6. EDITABLE PROFILE SAVE HANDLER
+        // EDITABLE PROFILE SAVE HANDLER
         // ==========================================
         document.getElementById('editProfileForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -1333,7 +1420,7 @@
         });
 
         // ==========================================
-        // 7. CHANGE PASSWORD HANDLER
+        // CHANGE PASSWORD HANDLER
         // ==========================================
         document.getElementById('changePasswordForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -1383,7 +1470,6 @@
             currentUserUid = user.uid;
             console.log("User logged in UID:", currentUserUid);
 
-            // Realtime Firestore synchronization using onSnapshot
             const docRef = doc(db, "Affiliates", currentUserUid);
             
             unsubFirestore = onSnapshot(docRef, (docSnap) => {
@@ -1403,7 +1489,7 @@
         });
 
         // ==========================================
-        // 5. PROMO CODE SHARE & COPY SUITE
+        // PROMO CODE SHARE & COPY SUITE
         // ==========================================
         document.getElementById('copyPromoBtn').addEventListener('click', async () => {
             try {
@@ -1455,11 +1541,12 @@
         });
 
         // ==========================================
-        // 11. LOGOUT & SESSION TERMINATION
+        // LOGOUT & SESSION TERMINATION
         // ==========================================
         async function handleLogout() {
             try {
                 if (unsubFirestore) unsubFirestore();
+                if (unsubOrders) unsubOrders();
                 await signOut(auth);
                 console.log("Logged out successfully");
                 window.location.replace("affiliate-login.html");
