@@ -1131,13 +1131,13 @@
 
         console.log("Initializing Firebase...");
         const firebaseConfig = {
-            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
-            authDomain: "ghotimarket.firebaseapp.com",
-            projectId: "ghotimarket",
-            storageBucket: "ghotimarket.appspot.com",
-            messagingSenderId: "9382019283",
-            appId: "1:9382019283:web:abc12345"
-        };
+    apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+    authDomain: "ghotimarket.firebaseapp.com",
+    projectId: "ghotimarket",
+    storageBucket: "ghotimarket.appspot.com",
+    messagingSenderId: "9382019283",
+    appId: "1:9382019283:web:abc12345"
+};
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -1259,49 +1259,46 @@
         // ==========================================
         // 7. NEW FINANCIAL CALCULATION & ORDER LISTENER
         // ==========================================
-        // শর্ত ২: initFinancialCalculation(uid) তৈরি যা order_tracking কালেকশনে onSnapshot ব্যবহার করে
         function initFinancialCalculation(uid) {
             if (!uid) return;
 
-            // পূর্বের কোনো অর্ডারের Realtime Listener চালু থাকলে তা বন্ধ করা হচ্ছে
+            // যদি পূর্বের কোনো রিয়েলটাইম লিসেনার চালু থাকে, তবে তা বন্ধ করে দিচ্ছি
             if (unsubOrders) {
                 unsubOrders();
             }
 
-            // 'order_tracking' কালেকশন থেকে affiliateUserId দিয়ে কুয়েরি তৈরি
+            // অর্ডার ট্র্যাকিং কালেকশন থেকে বর্তমান অ্যাফিলিয়েট ইউজার আইডির কুয়েরি তৈরি
             const ordersQuery = query(
                 collection(db, "order_tracking"),
                 where("affiliateUserId", "==", uid)
             );
 
-            // রিয়েল-টাইম আপডেটের জন্য onSnapshot চালুকরণ
+            // রিয়েল-টাইম ডেটা সিঙ্কের জন্য onSnapshot ব্যবহার করা হচ্ছে
             unsubOrders = onSnapshot(ordersQuery, (snapshot) => {
                 let deliveredOrders = 0;
                 let generalBalance = 0;
 
-                // শর্ত ৩ (a): কেবল deliveryStatus === "Delivered" এবং affiliateApplied === true ফিল্টারিং
-                snapshot.forEach((docSnap) => {
-                    const order = docSnap.data();
-                    const deliveryStatus = order.deliveryStatus || "";
-                    const affiliateApplied = order.affiliateApplied;
-                    const affiliateDiscount = Number(order.affiliateDiscount) || 0;
-
-                    if (deliveryStatus === "Delivered" && affiliateApplied === true) {
-                        deliveredOrders++; // (b) deliveredOrders গণনাকরণ
-                        generalBalance += affiliateDiscount; // (c) generalBalance হিসাবকরণ
+                // প্রতিটি অর্ডার ডকুমেন্ট লুপ করে চেক করা হচ্ছে
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    
+                    // ডেলিভারি স্ট্যাটাস ডেলিভারড এবং অ্যাফিলিয়েট অ্যাপ্লায়েড সত্য হলে হিসাব করা হবে
+                    if (data.deliveryStatus === "Delivered" && data.affiliateApplied === true) {
+                        deliveredOrders++; // সফল ডেলিভারি অর্ডার সংখ্যা বৃদ্ধি
+                        generalBalance += Number(data.affiliateDiscount) || 0; // অ্যাফিলিয়েট ডিসকাউন্টের মোট যোগফল
                     }
                 });
 
-                // শর্ত ৩ (d, e, f, g): আর্থিক হিসাব-নিকাশ
-                const adminCommission = generalBalance * 0.20; // ২০% অ্যাডমিন কমিশন
-                const affiliateEarning = generalBalance - adminCommission; // ৮০% অ্যাফিলিয়েট আর্নিং
-                const withdrawn = Number(currentWithdrawn) || 0; // Affiliates/{uid}.withdrawn থেকে প্রাপ্ত
-                const netBalance = affiliateEarning - withdrawn; // নেট ব্যালেন্স
+                // আর্থিক হিসাব-নিকাশ নির্ধারণ
+                const adminCommission = generalBalance * 0.20; // অ্যাডমিন কমিশন (২০%)
+                const affiliateEarning = generalBalance - adminCommission; // অ্যাফিলিয়েট আর্নিং (৮০%)
+                const withdrawn = Number(currentWithdrawn) || 0; // উত্তোলনকৃত পরিমাণ
+                const netBalance = affiliateEarning - withdrawn; // নিট ব্যালেন্স
 
-                // শর্ত ৪: UI টেক্সট এবং মান আপডেট
+                // সমস্ত UI এলিমেন্টে formatCurrency ব্যবহার করে মান আপডেট করা হচ্ছে
                 document.getElementById('statGeneralBalance').textContent = formatCurrency(generalBalance);
                 document.getElementById('statCommission').textContent = formatCurrency(adminCommission);
-                document.getElementById('statAffiliateEarning').textContent = formatCurrency(affiliateEarning); // নতুন কার্ড আপডেট
+                document.getElementById('statAffiliateEarning').textContent = formatCurrency(affiliateEarning);
                 document.getElementById('statDeliveredDiscountTotal').textContent = formatCurrency(generalBalance);
                 document.getElementById('statWithdrawn').textContent = formatCurrency(withdrawn);
                 document.getElementById('statNetBalance').textContent = formatCurrency(netBalance);
@@ -1313,16 +1310,12 @@
                 document.getElementById('perfWithdrawn').textContent = formatCurrency(withdrawn);
                 document.getElementById('perfNetBalance').textContent = formatCurrency(netBalance);
 
-                // শর্ত ৬: ডেটা লোড হওয়ার পর skeleton ক্লাস মুছে ফেলা হচ্ছে
+                // সফলভাবে ডেটা লোড হওয়ার পর স্কেলেটন ইফেক্ট সরিয়ে ফেলা হচ্ছে
                 document.querySelectorAll('.skeleton').forEach(el => el.classList.remove('skeleton'));
             }, (error) => {
-                console.error("Order tracking listener error:", error);
-                // শর্ত ৬: পারমিশন ডিনাইড বা অন্যান্য ত্রুটির জন্য এরর হ্যান্ডলিং
-                if (error.code === 'permission-denied') {
-                    showPopup("অনুমতি ত্রুটি", "আপনার অর্ডার ডেটা পড়ার কোনো অনুমতি নেই (Permission Denied)।", "error");
-                } else {
-                    showPopup("ত্রুটি", `অর্ডার লোড করতে সমস্যা হয়েছে: ${error.message}`, "error");
-                }
+                console.error("Financial calculation error: ", error);
+                // ত্রুটি ঘটলে পপআপ মেসেজের মাধ্যমে প্রদর্শন করা হচ্ছে
+                showPopup("ত্রুটি", "আর্থিক হিসাব লোড করার সময় সমস্যা হয়েছে: " + error.message, "error");
             });
         }
 
@@ -1380,10 +1373,8 @@
             document.getElementById('inputNid').value = data.nid || '';
             document.getElementById('inputPromoCode').value = currentPromoCode;
 
-            // শর্ত ৬: currentUserUid সহ Financial Calculation কল করা হচ্ছে
-            if (currentUserUid) {
-                initFinancialCalculation(currentUserUid);
-            }
+            // প্রোমো কোডের পরিবর্তে UID দিয়ে ফাইন্যান্সিয়াল ক্যালকুলেশন কল করা হচ্ছে
+            initFinancialCalculation(currentUserUid);
 
             // গ্লোবাল লোডার স্মুথলি হাইড করা হচ্ছে
             globalLoader.style.opacity = '0';
@@ -1473,7 +1464,7 @@
                 return;
             }
 
-            // লগইন করা ইউজারের UID সেভ ও রিয়েলটাইম ড্যাশবোর্ড সিঙ্ক
+            // আপডেট ড্যাশবোর্ড ইউআই কল করার আগে নিশ্চিত করা হচ্ছে currentUserUid সেট করা হয়েছে
             currentUserUid = user.uid;
             console.log("User logged in UID:", currentUserUid);
 
