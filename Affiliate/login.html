@@ -621,13 +621,13 @@
 
                 // Success Sequence & Auto Redirect
                 showPopup('সফল!', 'লগইন সফল হয়েছে। ড্যাশবোর্ডে রিডাইরেক্ট করা হচ্ছে...', 'success', () => {
-                    window.location.href = 'affiliate/home.html';
+                    window.location.href = 'https://www.ghotimarket.com/affiliate/home';
                 });
 
                 // Automatic redirect backup after 1.5 seconds if modal isn't manually clicked instantly
                 setTimeout(() => {
-                    if (window.location.href.indexOf('affiliate/home.html') === -1) {
-                        window.location.href = 'affiliate/home.html';
+                    if (window.location.href.indexOf('https://www.ghotimarket.com/affiliate/home.html') === -1) {
+                        window.location.href = 'https://www.ghotimarket.com/affiliate/home';
                     }
                 }, 1500);
 
