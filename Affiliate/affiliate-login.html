@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GHOTI MARKET - অ্যাফিলিয়েট লগইন</title>
+    <title>GHOTI MARKET - Affiliate Login</title>
     
     <!-- Google Fonts: Hind Siliguri -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,7 +48,7 @@
 
         .container {
             width: 100%;
-            max-width: 440px;
+            max-width: 480px;
             margin: auto;
             padding: 10px 0;
         }
@@ -72,17 +72,6 @@
             width: 100%;
             height: auto;
             display: inline-block;
-        }
-
-        .logo-area h1 {
-            color: var(--primary);
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        .logo-area h1 span {
-            color: var(--text-main);
         }
 
         .header-title {
@@ -157,12 +146,12 @@
             color: var(--primary);
         }
 
-        .form-options {
+        .form-row-between {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
             font-size: 14px;
+            margin-bottom: 20px;
         }
 
         .remember-me {
@@ -170,9 +159,10 @@
             align-items: center;
             gap: 8px;
             cursor: pointer;
+            color: var(--text-muted);
         }
 
-        .remember-me input[type="checkbox"] {
+        .remember-me input {
             accent-color: var(--primary);
             width: 16px;
             height: 16px;
@@ -183,11 +173,9 @@
             color: var(--primary);
             text-decoration: none;
             font-weight: 600;
-            transition: opacity 0.2s;
         }
 
         .forgot-link:hover {
-            opacity: 0.8;
             text-decoration: underline;
         }
 
@@ -207,6 +195,7 @@
             align-items: center;
             gap: 8px;
             box-shadow: 0 4px 12px rgba(255, 106, 0, 0.25);
+            margin-top: 10px;
         }
 
         .btn-primary:hover {
@@ -270,19 +259,15 @@
             text-align: center;
             font-size: 14px;
             color: var(--text-muted);
-            display: flex;
-            justify-content: center;
-            gap: 16px;
         }
 
         .extra-links a {
-            color: var(--text-main);
+            color: var(--primary);
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .extra-links a:hover {
-            color: var(--primary);
             text-decoration: underline;
         }
 
@@ -380,6 +365,8 @@
             font-size: 14px;
             color: var(--text-muted);
             margin-bottom: 20px;
+            white-space: pre-line;
+            text-align: left;
         }
 
         .popup-btn {
@@ -408,14 +395,13 @@
         <div class="card">
             <!-- Logo -->
             <div class="logo-area">
-                <img src="https://ghotimarket.com/logo.png" alt="GHOTI MARKET" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                <h1 style="display: none;">GHOTI <span>MARKET</span></h1>
+                <img src="https://ghotimarket.com/logo.png" alt="GHOTI MARKET" onerror="this.style.display='none';">
             </div>
 
             <!-- Title & Subtitle -->
             <div class="header-title">
-                <h2>অ্যাফিলিয়েট লগইন</h2>
-                <p>আপনার Affiliate অ্যাকাউন্টে লগইন করুন</p>
+                <h2>Affiliate Login</h2>
+                <p>আপনার অ্যাফিলিয়েট অ্যাকাউন্টে প্রবেশ করুন</p>
             </div>
 
             <!-- Login Form -->
@@ -424,7 +410,7 @@
                     <label class="form-label" for="email">ইমেইল ঠিকানা</label>
                     <div class="input-wrapper">
                         <i class="fa-regular fa-envelope field-icon"></i>
-                        <input type="email" id="email" class="form-control" placeholder="example@gmail.com" required autocomplete="email">
+                        <input type="email" id="email" class="form-control" placeholder="example@domain.com" required autocomplete="email">
                     </div>
                 </div>
 
@@ -432,16 +418,16 @@
                     <label class="form-label" for="password">পাসওয়ার্ড</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-lock field-icon"></i>
-                        <input type="password" id="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+                        <input type="password" id="password" class="form-control" placeholder="পাসওয়ার্ড লিখুন" required autocomplete="current-password">
                         <i class="fa-regular fa-eye password-toggle" id="togglePassword"></i>
                     </div>
                 </div>
 
-                <div class="form-options">
+                <div class="form-row-between">
                     <label class="remember-me">
                         <input type="checkbox" id="rememberMe"> মনে রাখুন
                     </label>
-                    <a href="https://seller.ghotimarket.com/fogot-password" id="forgotPasswordBtn" class="forgot-link">পাসওয়ার্ড ভুলে গেছেন?</a>
+                    <a href="https://seller.ghotimarket.com/forgot-password" class="forgot-link">পাসওয়ার্ড ভুলে গেছেন?</a>
                 </div>
 
                 <button type="submit" id="submitBtn" class="btn-primary">
@@ -451,8 +437,12 @@
 
                 <div class="divider">অথবা</div>
 
-                <a href="https://www.ghotimarket.com/Affiliate/register.html" class="btn-outline">নতুন Affiliate Account খুলুন</a>
+                <a href="affiliate-register.html" class="btn-outline">অ্যাকাউন্ট তৈরি করুন</a>
             </form>
+
+            <div class="extra-links">
+                <p>অ্যাফিলিয়েট অ্যাকাউন্ট নেই? <a href="affiliate-register.html">রেজিস্ট্রেশন করুন</a></p>
+            </div>
         </div>
     </div>
 
@@ -468,20 +458,20 @@
                 <i id="popupIconSymbol" class="fa-solid"></i>
             </div>
             <div class="popup-title" id="popupTitle">সফল হয়েছে</div>
-            <div class="popup-message" id="popupMessage">লগইন সফলভাবে সম্পন্ন হয়েছে।</div>
+            <div class="popup-message" id="popupMessage">সফলভাবে সম্পন্ন হয়েছে।</div>
             <button class="popup-btn" id="popupBtn" onclick="closePopup()">ঠিক আছে</button>
         </div>
     </div>
 
     <!-- Firebase SDK & Script -->
     <script type="module">
-        // Import Firebase modules (v10 Modular SDK)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { 
             getAuth, 
-            signInWithEmailAndPassword, 
-            setPersistence, 
-            browserLocalPersistence, 
+            signInWithEmailAndPassword,
+            signOut,
+            setPersistence,
+            browserLocalPersistence,
             browserSessionPersistence
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { 
@@ -490,20 +480,20 @@
             getDoc 
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // TODO: Replace with your actual Firebase project configuration credentials
+        console.log("Initializing Firebase...");
         const firebaseConfig = {
-    apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
-    authDomain: "ghotimarket.firebaseapp.com",
-    projectId: "ghotimarket",
-    storageBucket: "ghotimarket.appspot.com",
-    messagingSenderId: "9382019283",
-    appId: "1:9382019283:web:abc12345"
-};
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+            authDomain: "ghotimarket.firebaseapp.com",
+            projectId: "ghotimarket",
+            storageBucket: "ghotimarket.appspot.com",
+            messagingSenderId: "9382019283",
+            appId: "1:9382019283:web:abc12345"
+        };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        console.log("Firebase Initialized");
 
         // DOM Elements
         const loginForm = document.getElementById('loginForm');
@@ -514,7 +504,6 @@
         const submitBtn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
         const btnSpinner = document.getElementById('btnSpinner');
-        const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
 
         // Popup Elements
         const popupOverlay = document.getElementById('popupOverlay');
@@ -543,12 +532,10 @@
             if (type === 'success') {
                 popupIconSymbol.className = "fa-solid fa-check";
             } else {
-                popupIconSymbol.className = "fa-solid fa-xmark";
+                popupIconSymbol.className = "fa-solid fa-triangle-exclamation";
             }
 
             popupOverlay.classList.add('active');
-            
-            // Handle callback execution on close
             window.currentPopupCallback = callback;
         }
 
@@ -573,90 +560,65 @@
             }
         }
 
-        // Form Submit Handler
+        // Handle Form Submit
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+            if (submitBtn.disabled) return;
+
             const email = emailInput.value.trim();
             const password = passwordInput.value;
             const rememberMe = rememberMeCheckbox.checked;
-
-            if (!email || !password) {
-                showPopup('ত্রুটি', 'অনুগ্রহ করে ইমেইল এবং পাসওয়ার্ড উভয়ই প্রদান করুন।', 'error');
-                return;
-            }
 
             setLoading(true);
 
             try {
                 // Set Auth Persistence based on Remember Me
-                const persistence = rememberMe ? browserLocalPersistence : browserSessionPersistence;
-                await setPersistence(auth, persistence);
+                const persistenceType = rememberMe ? browserLocalPersistence : browserSessionPersistence;
+                await setPersistence(auth, persistenceType);
 
-                // Firebase Authentication Login
+                console.log("Trying Login...");
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
+                console.log("Login Success");
+                console.log("User UID:", user.uid);
 
-                // Firestore Check: Affiliates/{uid}
-                const userDocRef = doc(db, 'affiliate_users', user.uid);
-                const userDocSnap = await getDoc(userDocRef);
+                console.log("Reading Firestore...");
+                const docRef = doc(db, "Affiliates", user.uid);
+                const docSnap = await getDoc(docRef);
 
-                if (!userDocSnap.exists()) {
-                    setLoading(false);
-                    showPopup('প্রবেশাধিকার সংরক্ষিত নয়', 'এই অ্যাকাউন্টটি Affiliate হিসেবে নিবন্ধিত নয়।', 'error', async () => {
-                        await auth.signOut();
-                    });
+                if (!docSnap.exists()) {
+                    console.log("Document Not Found");
+                    await signOut(auth);
+                    showPopup("Login Failed", "This account is not an Affiliate.", "error");
                     return;
                 }
 
-                const userData = userDocSnap.data();
+                console.log("Document Found");
+                const affiliateData = docSnap.data();
 
-                if (userData.active === false) {
-                    setLoading(false);
-                    showPopup('অ্যাকাউন্ট স্থগিত', 'আপনার Affiliate অ্যাকাউন্ট বন্ধ রয়েছে।', 'error', async () => {
-                        await auth.signOut();
-                    });
+                if (affiliateData.active === false) {
+                    console.log("Account Disabled");
+                    await signOut(auth);
+                    showPopup("Login Failed", "Affiliate account has been disabled.", "error");
                     return;
                 }
 
-                // Success Sequence & Auto Redirect
-                showPopup('সফল!', 'লগইন সফল হয়েছে। ড্যাশবোর্ডে রিডাইরেক্ট করা হচ্ছে...', 'success', () => {
-                    window.location.href = 'https://www.ghotimarket.com/Affiliate/home';
+                console.log("Account Active");
+                showPopup("সফল", "অ্যাফিলিয়েট লগইন সফল হয়েছে।", "success", () => {
+                    console.log("Redirecting...");
+                    window.location.replace("https://www.ghotimarket.com/Affiliate/home");
                 });
 
-                // Automatic redirect backup after 1.5 seconds if modal isn't manually clicked instantly
-                setTimeout(() => {
-                    if (window.location.href.indexOf('https://www.ghotimarket.com/affiliate/home.html') === -1) {
-                        window.location.href = 'https://www.ghotimarket.com/Affiliate/home';
-                    }
-                }, 1500);
-
             } catch (error) {
+                console.error(error);
+                const errCode = error.code || "unknown/error";
+                const errMsg = error.message || "Unknown error occurred.";
+                
+                const formattedMessage = `Error Code:\n${errCode}\n\nError Message:\n${errMsg}`;
+                showPopup("Login Failed", formattedMessage, "error");
+            } finally {
                 setLoading(false);
-                let errorMsg = 'লগইন করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।';
-                
-                switch (error.code) {
-                    case 'auth/invalid-email':
-                        errorMsg = 'সঠিক ইমেইল ঠিকানা প্রদান করুন।';
-                        break;
-                    case 'auth/user-not-found':
-                    case 'auth/wrong-password':
-                    case 'auth/invalid-credential':
-                        errorMsg = 'ইমেইল অথবা পাসওয়ার্ড সঠিক নয়।';
-                        break;
-                    case 'auth/too-many-requests':
-                        errorMsg = 'অতিরিক্ত চেষ্টার কারণে অ্যাকাউন্ট সাময়িকভাবে লক করা হয়েছে। কিছুক্ষণ পর আবার চেষ্টা করুন।';
-                        break;
-                }
-                
-                showPopup('লগইন ব্যর্থ', errorMsg, 'error');
             }
-        });
-
-        // Forgot Password Handler
-        forgotPasswordBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.location.href = "https://seller.ghotimarket.com/forgot-password";
         });
     </script>
 </body>
