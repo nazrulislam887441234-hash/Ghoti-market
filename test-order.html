@@ -45,18 +45,18 @@ input:focus,textarea:focus{outline:none;border-color:var(--orange);}
 .sticky-summary{position:fixed;bottom:0;left:0;right:0;background:#fff;padding:15px;border-top:1px solid var(--border);box-shadow:0 -5px 20px rgba(0,0,0,0.08);z-index:99;}
 .popup{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;justify-content:center;align-items:center;z-index:9999;padding:20px;}
 .popup.show{display:flex;animation:fade.2s ease;}
-.popup-box{width:100%;max-width:380px;background:#fff;border-radius:20px;padding:25px;text-align:center;animation:pop.25s ease;}
+.popup-box{width:100%;max-width:420px;background:#fff;border-radius:20px;padding:25px;text-align:center;animation:pop.25s ease;}
 @keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes fade{from{opacity:0}to{opacity:1}}
-.popup-box i{font-size:60px;margin-bottom:12px;}
+.popup-box i{font-size:50px;margin-bottom:12px;}
 .popup-box h3{font-size:19px;margin-bottom:8px;}
-.popup-box p{color:var(--muted);font-size:14px;line-height:1.6;}
+.popup-box p{color:var(--muted);font-size:14px;line-height:1.6;text-align:left;}
 .popup-btns{display:flex;gap:10px;margin-top:20px;}
 .popup-btns button{flex:1;padding:13px;border:none;border-radius:12px;font-weight:700;cursor:pointer;}
 .btn-cancel{background:#f1f1f1;}
 .btn-confirm{background:var(--orange);color:#fff;}
-.track-id{background:#FFF4EC;border:1.5px dashed var(--orange);padding:12px;border-radius:10px;font-weight:800;font-size:16px;margin:12px 0;}
-.copy-msg{color:var(--green);font-size:12px;margin-top:5px;display:none;}
+.track-id{background:#FFF4EC;border:1.5px dashed var(--orange);padding:12px;border-radius:10px;font-weight:800;font-size:16px;margin:12px 0;text-align:center;}
+.copy-msg{color:var(--green);font-size:12px;margin-top:5px;display:none;text-align:center;}
 .spinner{border:3px solid #f3f3f3;border-top:3px solid var(--orange);border-radius:50%;width:20px;height:20px;animation:spin 1s linear infinite;display:inline-block;vertical-align:middle;}
 @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
 @media(min-width:768px){.sticky-summary{position:static;box-shadow:none;border:none;}}
@@ -177,21 +177,27 @@ input:focus,textarea:focus{outline:none;border-color:var(--orange);}
   <div class="popup-box">
     <i class="fas fa-check-circle" style="color:var(--green);"></i>
     <h3>Your order has been placed successfully.</h3>
-    <p>Order Track ID</p>
+    <p style="text-align:center;">Order Track ID</p>
     <div class="track-id" id="trackIdText"></div>
-    <p style="font-size:12px;">Please save or copy this Track ID. You will need it to track your order.</p>
+    <p style="font-size:12px; text-align:center;">Please save or copy this Track ID. You will need it to track your order.</p>
     <button class="btn" id="copyTrackBtn" style="margin-top:15px;"><i class="fas fa-copy"></i> Copy Track ID</button>
     <div class="copy-msg" id="copyMsg">Track ID copied successfully.</div>
     <button class="btn" onclick="location.href='index.html'" style="background:#333;margin-top:10px;">Go Home</button>
   </div>
 </div>
 
-<!-- Error Message Popup -->
+<!-- Advanced Production Error Popup -->
 <div id="errorPopup" class="popup">
-  <div class="popup-box">
-    <i class="fas fa-exclamation-circle" style="color:#e11d48;"></i>
-    <h3 id="errorPopupTitle">Error</h3>
-    <p id="errorPopupText"></p>
+  <div class="popup-box" style="text-align:left;">
+    <div style="text-align:center;">
+      <i class="fas fa-exclamation-triangle" style="color:#e11d48; font-size:45px; margin-bottom:8px;"></i>
+      <h3 id="errorPopupTitle" style="color:#e11d48;">❌ Order Failed</h3>
+    </div>
+    <div style="margin-top:15px; font-size:14px; background:#FFF1F2; padding:12px; border-radius:10px; border:1px solid #FECDD3;">
+      <p style="margin-bottom:6px;"><b>Details:</b> <span id="errorPopupDetails" style="color:#881337; font-family:monospace;">-</span></p>
+      <p style="margin-bottom:6px;"><b>Message:</b> <span id="errorPopupText">-</span></p>
+      <p><b>Technical Info:</b> <span id="errorPopupTech" style="font-family:monospace; font-size:12px;">-</span></p>
+    </div>
     <div class="popup-btns" style="margin-top:20px;">
       <button class="btn-confirm" onclick="document.getElementById('errorPopup').classList.remove('show')" style="background:var(--orange);">OK</button>
     </div>
@@ -222,8 +228,14 @@ const firebaseConfig = {
     messagingSenderId: "9382019283",
     appId: "1:9382019283:web:abc12345"
 };
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+
+let app, db;
+try {
+  app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+} catch (configError) {
+  console.error("Firebase Initialization Error:", configError);
+}
 
 let appliedAffiliateData = {
   affiliateApplied: false,
@@ -232,67 +244,135 @@ let appliedAffiliateData = {
   affiliateUserId: ""
 };
 
-function showPopupError(title, message) {
+// 1, 11. Core Error Handlers & Functions
+function firebaseErrorHandler(error) {
+  const code = error?.code || error?.name || "unknown";
+  let message = "অজানা Firebase সমস্যা হয়েছে";
+  
+  switch(code) {
+    case 'permission-denied':
+      message = "আপনার এই কাজ করার অনুমতি নেই। Firestore Rules চেক করুন";
+      break;
+    case 'unavailable':
+      message = "Firebase Server এ সংযোগ পাওয়া যাচ্ছে না";
+      break;
+    case 'not-found':
+      message = "প্রয়োজনীয় ডাটা পাওয়া যায়নি";
+      break;
+    case 'failed-precondition':
+      message = "Firebase Configuration বা Index সমস্যা আছে";
+      break;
+    case 'already-exists':
+      message = "এই ডাটা আগে থেকেই আছে";
+      break;
+    case 'network-request-failed':
+    case 'TypeError':
+      message = "Network Error: Internet connection check করুন";
+      break;
+    default:
+      message = error?.message || "অজানা সমস্যা হয়েছে";
+  }
+  return { code, message };
+}
+
+function showError(title, message, details) {
+  console.error(`[Error] Title: ${title} | Message: ${message} | Details:`, details);
   document.getElementById('errorPopupTitle').innerText = title;
+  document.getElementById('errorPopupDetails').innerText = details || "Firebase Error / Exception";
   document.getElementById('errorPopupText').innerText = message;
+  document.getElementById('errorPopupTech').innerText = `Firebase Code: ${details || 'N/A'}`,
   document.getElementById('errorPopup').classList.add('show');
 }
 
-function getSlugFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-
-    let slug = urlParams.get("product-slug");
-    if (slug) return decodeURIComponent(slug.trim());
-
-    for (const [key, value] of urlParams.entries()) {
-        if (
-            key !== "fbclid" &&
-            key !== "utm_source" &&
-            key !== "utm_medium" &&
-            value === ""
-        ) {
-            return decodeURIComponent(key.trim());
-        }
-    }
-
-    if (window.location.search.startsWith("?")) {
-        const raw = window.location.search.substring(1).split("&")[0];
-        if (
-            raw &&
-            !raw.includes("=") &&
-            !raw.startsWith("fbclid")
-        ) {
-            return decodeURIComponent(raw.trim());
-        }
-    }
-
-    const parts = window.location.pathname.split("/");
-    const last = parts[parts.length - 1];
-
-    if (last && last !== "order.html") {
-        return decodeURIComponent(last);
-    }
-
-    if (window.location.hash) {
-        return decodeURIComponent(window.location.hash.substring(1));
-    }
-
-    return null;
+function handleGlobalError(error) {
+  console.error("Global Error Caught:", error);
+  const handled = firebaseErrorHandler(error);
+  showError("❌ System Error", handled.message, handled.code);
 }
 
-const slug = getSlugFromURL();
+async function safeFirebaseOperation(operationFn, errorMessage) {
+  try {
+    return await operationFn();
+  } catch (error) {
+    console.error("Safe Operation Exception:", error);
+    const handled = firebaseErrorHandler(error);
+    showError("❌ Operation Failed", errorMessage || handled.message, handled.code);
+    throw error;
+  }
+}
+
+// Global Listeners
+window.addEventListener('error', (event) => {
+  handleGlobalError(event.error || event.message);
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+  handleGlobalError(event.reason);
+});
+
+function getSlugFromURL() {
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        let slug = urlParams.get("product-slug");
+        if (slug) return decodeURIComponent(slug.trim());
+
+        for (const [key, value] of urlParams.entries()) {
+            if (key !== "fbclid" && key !== "utm_source" && key !== "utm_medium" && value === "") {
+                return decodeURIComponent(key.trim());
+            }
+        }
+
+        if (window.location.search.startsWith("?")) {
+            const raw = window.location.search.substring(1).split("&")[0];
+            if (raw && !raw.includes("=") && !raw.startsWith("fbclid")) {
+                return decodeURIComponent(raw.trim());
+            }
+        }
+
+        const parts = window.location.pathname.split("/");
+        const last = parts[parts.length - 1];
+        if (last && last !== "order.html") {
+            return decodeURIComponent(last);
+        }
+
+        if (window.location.hash) {
+            return decodeURIComponent(window.location.hash.substring(1));
+        }
+        return null;
+    } catch(e) {
+        console.error("Slug parsing error:", e);
+        return null;
+    }
+}
+
 let product = null;
 let quantity = 1;
 let deliveryCharge = 120;
 let isSubmitting = false;
 
+// 3. loadProduct with try/catch
 async function loadProduct() {
+  const loadingEl = document.getElementById('loading');
+  
+  // 8. Loading timeout fallback safety mechanism
+  const loadTimeout = setTimeout(() => {
+    if (loadingEl.style.display !== 'none') {
+      loadingEl.style.display = 'none';
+      showError("❌ Timeout Error", "পণ্য লোড হতে অতিরিক্ত সময় নিয়েছে। দয়া করে পেজ রিফ্রেশ করুন।", "timeout-exceeded");
+      showNotFound();
+    }
+  }, 10000);
+
+  try {
+    if (!db) {
+      throw new Error("Firebase database instance not initialized correctly.");
+    }
 
     const slug = getSlugFromURL();
-
     if (!slug) {
-        showNotFound();
-        return;
+      clearTimeout(loadTimeout);
+      showNotFound();
+      return;
     }
 
     const q = query(
@@ -302,6 +382,7 @@ async function loadProduct() {
     );
 
     const result = await getDocs(q);
+    clearTimeout(loadTimeout);
 
     if (result.empty) {
         showNotFound();
@@ -309,28 +390,35 @@ async function loadProduct() {
     }
 
     const snap = result.docs[0];
-
     product = {
         id: snap.id,
         ...snap.data()
     };
 
+    document.getElementById('pImage').src = product.images?.[0] || '';
+    document.getElementById('pName').innerText = product.name;
+    document.getElementById('pPrice').innerText = '৳' + product.price;
+    document.getElementById('pShop').innerText = product.shopName || 'GHOTI Seller';
+    document.getElementById('pStock').innerText = product.stock ? `স্টকে আছে: ${product.stock} পিস` : '';
 
-  document.getElementById('pImage').src = product.images?.[0] || '';
-  document.getElementById('pName').innerText = product.name;
-  document.getElementById('pPrice').innerText = '৳' + product.price;
-  document.getElementById('pShop').innerText = product.shopName || 'GHOTI Seller';
-  document.getElementById('pStock').innerText = product.stock? `স্টকে আছে: ${product.stock} পিস` : '';
+    if (product.affiliate === "on") {
+      document.getElementById('affiliateCard').style.display = 'block';
+    } else {
+      document.getElementById('affiliateCard').style.display = 'none';
+    }
 
-  if (product.affiliate === "on") {
-    document.getElementById('affiliateCard').style.display = 'block';
-  } else {
-    document.getElementById('affiliateCard').style.display = 'none';
+    loadingEl.style.display = 'none';
+    document.getElementById('orderForm').style.display = 'block';
+    updateSummary();
+
+  } catch (error) {
+    clearTimeout(loadTimeout);
+    loadingEl.style.display = 'none';
+    console.error("Load Product Failed:", error);
+    const handled = firebaseErrorHandler(error);
+    showError("❌ Product Load Failed", `Product Not Found / Error: ${handled.message}`, handled.code);
+    showNotFound();
   }
-
-  document.getElementById('loading').style.display = 'none';
-  document.getElementById('orderForm').style.display = 'block';
-  updateSummary();
 }
 
 function showNotFound(){
@@ -343,7 +431,7 @@ document.getElementById('qtyMinus').onclick = () => {
   if(quantity > 1){ quantity--; updateQty(); }
 }
 document.getElementById('qtyPlus').onclick = () => {
-  const max = product.stock || 999;
+  const max = product?.stock || 999;
   if(quantity < max){ quantity++; updateQty(); }
 }
 function updateQty(){
@@ -352,52 +440,65 @@ function updateQty(){
 }
 
 // Location
-window.bdLocation = new BDLocationSelector("location-selector");
+try {
+  window.bdLocation = new BDLocationSelector("location-selector");
+} catch(e) {
+  console.error("Location Selector Initialization Error:", e);
+}
+
 document.addEventListener("locationChanged", () => {
-  const loc = window.bdLocation.getSelectedLocation();
-  if(loc.division === 'Dhaka' && loc.district === 'Dhaka'){
-    deliveryCharge = 60;
-  }else{
-    deliveryCharge = 120;
+  try {
+    const loc = window.bdLocation.getSelectedLocation();
+    if(loc.division === 'Dhaka' && loc.district === 'Dhaka'){
+      deliveryCharge = 60;
+    }else{
+      deliveryCharge = 120;
+    }
+    updateSummary();
+  } catch(e) {
+    console.error("Location Change Handler Error:", e);
   }
-  updateSummary();
 });
 
 function updateSummary(){
-  const price = Number(product?.price || 0);
-  const subtotal = price * quantity;
-  
-  let currentDiscount = 0;
-  if (appliedAffiliateData.affiliateApplied) {
-    const unitDiscount = Number(product?.discount || 0);
-    currentDiscount = unitDiscount * quantity;
-    appliedAffiliateData.affiliateDiscount = currentDiscount;
-  } else {
-    currentDiscount = 0;
-    appliedAffiliateData.affiliateDiscount = 0;
+  try {
+    const price = Number(product?.price || 0);
+    const subtotal = price * quantity;
+    
+    let currentDiscount = 0;
+    if (appliedAffiliateData.affiliateApplied) {
+      const unitDiscount = Number(product?.discount || 0);
+      currentDiscount = unitDiscount * quantity;
+      appliedAffiliateData.affiliateDiscount = currentDiscount;
+    } else {
+      currentDiscount = 0;
+      appliedAffiliateData.affiliateDiscount = 0;
+    }
+
+    let total = subtotal - currentDiscount;
+    if (total < 0) total = 0;
+    total += deliveryCharge;
+
+    document.getElementById('sumPrice').innerText = '৳' + price;
+    document.getElementById('sumQty').innerText = quantity;
+    document.getElementById('sumSubtotal').innerText = '৳' + subtotal;
+    
+    const discountRow = document.getElementById('discountSummaryRow');
+    if (appliedAffiliateData.affiliateApplied && currentDiscount > 0) {
+      discountRow.style.display = 'flex';
+      document.getElementById('sumDiscount').innerText = '-৳' + currentDiscount;
+    } else {
+      discountRow.style.display = 'none';
+    }
+
+    document.getElementById('sumDelivery').innerText = '৳' + deliveryCharge;
+    document.getElementById('sumTotal').innerText = '৳' + total;
+  } catch(e) {
+    console.error("Summary update calculation error:", e);
   }
-
-  let total = subtotal - currentDiscount;
-  if (total < 0) total = 0;
-  total += deliveryCharge;
-
-  document.getElementById('sumPrice').innerText = '৳' + price;
-  document.getElementById('sumQty').innerText = quantity;
-  document.getElementById('sumSubtotal').innerText = '৳' + subtotal;
-  
-  const discountRow = document.getElementById('discountSummaryRow');
-  if (appliedAffiliateData.affiliateApplied && currentDiscount > 0) {
-    discountRow.style.display = 'flex';
-    document.getElementById('sumDiscount').innerText = '-৳' + currentDiscount;
-  } else {
-    discountRow.style.display = 'none';
-  }
-
-  document.getElementById('sumDelivery').innerText = '৳' + deliveryCharge;
-  document.getElementById('sumTotal').innerText = '৳' + total;
 }
 
-// Apply Promo Code Button Handler
+// 4. Promo Code Apply with Error Handling
 document.getElementById('applyPromoBtn').onclick = async () => {
   const promoInput = document.getElementById('promoCodeInput').value.trim();
   const promoErrorEl = document.getElementById('promoError');
@@ -424,7 +525,8 @@ document.getElementById('applyPromoBtn').onclick = async () => {
     const querySnapshot = await getDocs(affiliateQuery);
 
     if (querySnapshot.empty) {
-      showPopupError("Invalid", "Invalid Promo Code");
+      promoErrorEl.innerText = "Invalid Promo Code: এই কোডটি সঠিক নয়";
+      promoErrorEl.style.display = 'block';
       applyBtn.innerHTML = 'Apply';
       applyBtn.disabled = false;
       return;
@@ -448,109 +550,122 @@ document.getElementById('applyPromoBtn').onclick = async () => {
 
     updateSummary();
 
-  } catch (e) {
-    showPopupError("Error", "Failed to verify promo code. Please try again.");
+  } catch (error) {
+    console.error("Promo Application Error:", error);
+    const handled = firebaseErrorHandler(error);
+    promoErrorEl.innerText = `Promo Error: ${handled.message}`;
+    promoErrorEl.style.display = 'block';
+    showError("❌ Promo Code Failed", `Verification failed due to: ${handled.message}`, handled.code);
     applyBtn.innerHTML = 'Apply';
     applyBtn.disabled = false;
   }
 };
 
-// Validation
+// 9. Validation
 function validate(){
   let valid = true;
-  const name = document.getElementById('customerName').value.trim();
-  const phone = document.getElementById('customerPhone').value.trim();
-  const loc = window.bdLocation.getSelectedLocation();
+  try {
+    const name = document.getElementById('customerName').value.trim();
+    const phone = document.getElementById('customerPhone').value.trim();
+    const loc = window.bdLocation?.getSelectedLocation() || {};
 
-  if(!name){ document.getElementById('nameError').style.display='block'; valid=false; }
-  else document.getElementById('nameError').style.display='none';
+    if(!name){ document.getElementById('nameError').style.display='block'; valid=false; }
+    else document.getElementById('nameError').style.display='none';
 
-  const bdPhoneRegex = /^01[3-9]\d{8}$/;
-  if(!bdPhoneRegex.test(phone)){ document.getElementById('phoneError').style.display='block'; valid=false; }
-  else document.getElementById('phoneError').style.display='none';
+    const bdPhoneRegex = /^01[3-9]\d{8}$/;
+    if(!bdPhoneRegex.test(phone)){ document.getElementById('phoneError').style.display='block'; valid=false; }
+    else document.getElementById('phoneError').style.display='none';
 
-  if(!loc.division ||!loc.district ||!loc.upazila){ document.getElementById('locationError').style.display='block'; valid=false; }
-  else document.getElementById('locationError').style.display='none';
+    if(!loc.division || !loc.district || !loc.upazila){ document.getElementById('locationError').style.display='block'; valid=false; }
+    else document.getElementById('locationError').style.display='none';
 
-  if(quantity < 1){ valid=false; }
-
+    if(quantity < 1){ valid=false; }
+  } catch(e) {
+    console.error("Validation execution exception:", e);
+    showError("❌ Validation Error", "ফর্ম যাচাই করার সময় সমস্যা হয়েছে।", e.name);
+    valid = false;
+  }
   return valid;
 }
 
 // Confirm Flow
 document.getElementById('confirmBtn').onclick = () => {
-  if(!validate()) return;
+  if(!validate()) {
+    showError("❌ Validation Failed", "দয়া করে আপনার নাম, সঠিক মোবাইল নাম্বার এবং সম্পূর্ণ ঠিকানা পূরণ করুন।", "validation-error");
+    return;
+  }
   document.getElementById('confirmPopup').classList.add('show');
 }
 function closeConfirm(){
   document.getElementById('confirmPopup').classList.remove('show');
 }
 
+// 5. Order Submit with writeBatch error handling
 document.getElementById('finalConfirm').onclick = async () => {
   if(isSubmitting) return;
   isSubmitting = true;
   document.getElementById('finalConfirm').innerHTML = '<div class="spinner"></div>';
 
-  const loc = window.bdLocation.getSelectedLocation();
-  const orderTrackId = 'GM-' + new Date().getFullYear() + '-' + Math.random().toString(36).substr(2,6).toUpperCase();
-  const price = Number(product.price);
-  const subtotal = price * quantity;
-  
-  let currentDiscount = appliedAffiliateData.affiliateApplied ? (Number(product.discount || 0) * quantity) : 0;
-  let grandTotal = subtotal - currentDiscount;
-  if(grandTotal < 0) grandTotal = 0;
-  grandTotal += deliveryCharge;
+  try {
+    const loc = window.bdLocation.getSelectedLocation();
+    const orderTrackId = 'GM-' + new Date().getFullYear() + '-' + Math.random().toString(36).substr(2,6).toUpperCase();
+    const price = Number(product.price);
+    const subtotal = price * quantity;
+    
+    let currentDiscount = appliedAffiliateData.affiliateApplied ? (Number(product.discount || 0) * quantity) : 0;
+    let grandTotal = subtotal - currentDiscount;
+    if(grandTotal < 0) grandTotal = 0;
+    grandTotal += deliveryCharge;
 
-  const customerName = document.getElementById('customerName').value.trim();
-  const customerPhone = document.getElementById('customerPhone').value.trim();
-  const timestamp = serverTimestamp();
+    const customerName = document.getElementById('customerName').value.trim();
+    const customerPhone = document.getElementById('customerPhone').value.trim();
+    const timestamp = serverTimestamp();
 
-  const orderData = {
-    orderTrackId,
-    productId: product.id,
-    sellerId: product.sellerId,
-    shopName: product.shopName,
-    productName: product.name,
-    productImage: product.images?.[0] || '',
-    productPrice: price,
-    quantity,
-    subtotal,
-    deliveryCharge,
-    grandTotal,
-    customerName,
-    customerPhone,
-    division: loc.division,
-    district: loc.district,
-    upazila: loc.upazila,
-    orderNote: document.getElementById('orderNote').value.trim(),
-    paymentMethod: 'Cash On Delivery',
-    paymentStatus: 'Unpaid',
-    deliveryStatus: 'New',
-    orderStatus: 'Pending',
-    createdAt: timestamp,
-    affiliateApplied: appliedAffiliateData.affiliateApplied,
-    affiliatePromoCode: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliatePromoCode : "",
-    affiliateUserId: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliateUserId : "",
-    affiliateDiscount: appliedAffiliateData.affiliateApplied ? currentDiscount : 0
-  };
+    const orderData = {
+      orderTrackId,
+      productId: product.id,
+      sellerId: product.sellerId,
+      shopName: product.shopName,
+      productName: product.name,
+      productImage: product.images?.[0] || '',
+      productPrice: price,
+      quantity,
+      subtotal,
+      deliveryCharge,
+      grandTotal,
+      customerName,
+      customerPhone,
+      division: loc.division,
+      district: loc.district,
+      upazila: loc.upazila,
+      orderNote: document.getElementById('orderNote').value.trim(),
+      paymentMethod: 'Cash On Delivery',
+      paymentStatus: 'Unpaid',
+      deliveryStatus: 'New',
+      orderStatus: 'Pending',
+      createdAt: timestamp,
+      affiliateApplied: appliedAffiliateData.affiliateApplied,
+      affiliatePromoCode: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliatePromoCode : "",
+      affiliateUserId: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliateUserId : "",
+      affiliateDiscount: appliedAffiliateData.affiliateApplied ? currentDiscount : 0
+    };
 
-  const trackingData = {
-    orderTrackId,
-    sellerId: product.sellerId,
-    customerName,
-    customerPhone,
-    deliveryStatus: 'New',
-    orderStatus: 'Pending',
-    paymentMethod: 'Cash On Delivery',
-    paymentStatus: 'Unpaid',
-    createdAt: timestamp,
-    affiliateApplied: appliedAffiliateData.affiliateApplied,
-    affiliatePromoCode: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliatePromoCode : "",
-    affiliateUserId: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliateUserId : "",
-    affiliateDiscount: appliedAffiliateData.affiliateApplied ? currentDiscount : 0
-  };
+    const trackingData = {
+      orderTrackId,
+      sellerId: product.sellerId,
+      customerName,
+      customerPhone,
+      deliveryStatus: 'New',
+      orderStatus: 'Pending',
+      paymentMethod: 'Cash On Delivery',
+      paymentStatus: 'Unpaid',
+      createdAt: timestamp,
+      affiliateApplied: appliedAffiliateData.affiliateApplied,
+      affiliatePromoCode: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliatePromoCode : "",
+      affiliateUserId: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliateUserId : "",
+      affiliateDiscount: appliedAffiliateData.affiliateApplied ? currentDiscount : 0
+    };
 
-  try{
     const batch = writeBatch(db);
 
     const newOrderRef = doc(collection(db, "orders"));
@@ -564,10 +679,21 @@ document.getElementById('finalConfirm').onclick = async () => {
     closeConfirm();
     document.getElementById('trackIdText').innerText = orderTrackId;
     document.getElementById('successPopup').classList.add('show');
-  }catch(e){
-    alert('অর্ডার করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।');
+
+  } catch(error) {
+    console.error("Order Commit Failed:", error);
+    const handled = firebaseErrorHandler(error);
+    
+    // 5. Detailed structured batch error popup
+    showError(
+      "❌ Order Save Failed",
+      `Reason: ${handled.message}\nCollection: orders / order_tracking\nFirebase Code: ${handled.code}`,
+      handled.code
+    );
+    
     isSubmitting = false;
     document.getElementById('finalConfirm').innerText = 'Confirm';
+    closeConfirm();
   }
 }
 
@@ -584,7 +710,9 @@ document.getElementById('copyTrackBtn').onclick = async () => {
     }
     document.getElementById('copyMsg').style.display = 'block';
     setTimeout(()=>document.getElementById('copyMsg').style.display='none',2000);
-  }catch(e){}
+  }catch(e){
+    console.error("Clipboard copy error:", e);
+  }
 }
 
 loadProduct();
