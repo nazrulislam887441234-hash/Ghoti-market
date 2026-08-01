@@ -417,7 +417,7 @@ document.getElementById('applyPromoBtn').onclick = async () => {
 
   try {
     const affiliateQuery = query(
-      collection(db, "affiliate_users"),
+      collection(db, "Affiliates"),
       where("promoCode", "==", promoInput),
       limit(1)
     );
@@ -483,7 +483,7 @@ document.getElementById('confirmBtn').onclick = () => {
   document.getElementById('confirmPopup').classList.add('show');
 }
 function closeConfirm(){
-  document.getElementById('confirmPopup'].classList.remove('show');
+  document.getElementById('confirmPopup').classList.remove('show');
 }
 
 document.getElementById('finalConfirm').onclick = async () => {
@@ -528,10 +528,10 @@ document.getElementById('finalConfirm').onclick = async () => {
     deliveryStatus: 'New',
     orderStatus: 'Pending',
     createdAt: timestamp,
+    affiliateApplied: appliedAffiliateData.affiliateApplied,
     affiliatePromoCode: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliatePromoCode : "",
-    affiliateDiscount: appliedAffiliateData.affiliateApplied ? currentDiscount : 0,
     affiliateUserId: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliateUserId : "",
-    affiliateApplied: appliedAffiliateData.affiliateApplied
+    affiliateDiscount: appliedAffiliateData.affiliateApplied ? currentDiscount : 0
   };
 
   const trackingData = {
@@ -543,7 +543,11 @@ document.getElementById('finalConfirm').onclick = async () => {
     orderStatus: 'Pending',
     paymentMethod: 'Cash On Delivery',
     paymentStatus: 'Unpaid',
-    createdAt: timestamp
+    createdAt: timestamp,
+    affiliateApplied: appliedAffiliateData.affiliateApplied,
+    affiliatePromoCode: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliatePromoCode : "",
+    affiliateUserId: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliateUserId : "",
+    affiliateDiscount: appliedAffiliateData.affiliateApplied ? currentDiscount : 0
   };
 
   try{
