@@ -597,7 +597,7 @@
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // Firestore Check: affiliate_users/{uid}
+                // Firestore Check: Affiliates/{uid}
                 const userDocRef = doc(db, 'affiliate_users', user.uid);
                 const userDocSnap = await getDoc(userDocRef);
 
