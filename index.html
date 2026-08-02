@@ -92,6 +92,60 @@
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 </head>
 <body>
+<!-- Menu Button -->
+<button class="menu-btn" onclick="toggleMenu()">
+    <i class="fas fa-bars"></i>
+</button>
+
+<!-- Overlay -->
+<div class="menu-overlay" onclick="toggleMenu()"></div>
+
+<!-- Side Menu -->
+<div class="side-menu" id="sideMenu">
+
+    <div class="menu-header">
+        <img src="https://ghotimarket.com/logo.png" width="60">
+        <h3>GHOTI MARKET</h3>
+    </div>
+
+    <a href="https://ghotimarket.com">
+        <i class="fas fa-home"></i> Home
+    </a>
+
+    <a href="https://ghotimarket.com/categories">
+        <i class="fas fa-th-large"></i> Categories
+    </a>
+    <a href="https://ghotimarket.com/shops">
+    <i class="fas fa-store"></i> All Shops
+    <a href="https://ghotimarket.com/all-product">
+        <i class="fas fa-box"></i> All Products
+    </a>
+    <a href="https://ghotimarket.com/Affiliate/register">
+        <i class="fas fa-handshake"></i> Affiliate Account
+    </a>
+    <a href="https://seller.ghotimarket.com">
+    <i class="fas fa-shop"></i> Seller account
+    <a href="https://ghotimarket.com/contact">
+        <i class="fas fa-headset"></i> Support
+    </a>
+    <a href="https://ghotimarket.com/track">
+<i class=" fas fa-truck"></i>Order track
+    <a href="https://ghotimarket.com/privacy-policy">
+        <i class="fas fa-shield-alt"></i> Privacy Policy
+    </a>
+
+    <a href="https://ghotimarket.com/termsandcondition">
+        <i class="fas fa-file-contract"></i> Terms & Conditions
+    </a>
+<a href="https://about.ghotimarket.com">
+    <i class="fa-solid fa-circle-info"></i> About GHOTI MARKET
+</a>
+<a href="https://www.youtube.com/@ghotimarket">
+<i class="fab fa-facebook"></i> Facebook
+<a href="https://youtube.com/@ghotimarket" target="_blank">
+    <i class="fab fa-youtube"></i> YouTube
+</a>
+</div>
 
     <!-- Proper H1 for SEO -->
     <h1 style="position:absolute; left:-9999px;">Ghoti Market - বাংলাদেশের সেরা অনলাইন মার্কেটপ্লেস</h1>
@@ -106,6 +160,7 @@
     <header>
         <div class="header-container">
             <a href="https://ghotimarket.com"><img src="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png" class="logo" alt="Ghoti Market Logo" loading="lazy"></a>
+
             <div class="search-wrapper">
                 <input type="text" class="search-bar" id="smartSearch" placeholder="পণ্য, শপ বা ক্যাটাগরি খুঁজুন...">
                 <div id="search-results"></div>
@@ -230,6 +285,12 @@
         <a href="https://ghotimarket.com/privacy-policy" class="nav-item"><i data-lucide="shield-check"></i><span>Privacy</span></a>
         <a href="https://seller.ghotimarket.com/signup" class="nav-item"><i data-lucide="store"></i><span>J.Seller</span></a>
     </nav>
+<script>
+function toggleMenu(){
+    document.getElementById("sideMenu").classList.toggle("active");
+    document.querySelector(".menu-overlay").classList.toggle("active");
+}
+</script>
 
     <!-- Main JavaScript Module -->
     <script type="module" src="home.js"></script>
