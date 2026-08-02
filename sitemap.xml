@@ -5,7 +5,7 @@
   <!-- 1. হোম পেজ - সবচেয়ে ইম্পর্টেন্ট -->
   <url>
     <loc>https://ghotimarket.com/</loc>
-    <lastmod>2026-07-28</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -13,32 +13,32 @@
   <!-- 2. ক্যাটাগরি পেজ -->
   <url>
     <loc>https://ghotimarket.com/categories</loc>
-    <lastmod>2026-07-28</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
     <loc>https://ghotimarket.com/category?slug=electronics</loc>
-    <lastmod>2026-07-28</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ghotimarket.com/category?slug=smartwatch</loc>
-    <lastmod>2026-07-28</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ghotimarket.com/category?slug=shoes</loc>
-    <lastmod>2026-07-28</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ghotimarket.com/category?slug=tshirts</loc>
-    <lastmod>2026-07-28</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
@@ -46,58 +46,84 @@
   <!-- 3. নতুন যুক্ত করা পেজ -->
   <url>
     <loc>https://ghotimarket.com/all-product</loc>
-    <lastmod>2026-07-28</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
     <loc>https://ghotimarket.com/shops</loc>
-    <lastmod>2026-07-28</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
 
-  <!-- 4. অ্যাপ ডাউনলোড পেজ -->
+  <!-- 4. নতুন যুক্ত করা লিংক -->
   <url>
-    <loc>https://app.ghotimarket.com/</loc>
-    <lastmod>2026-07-28</lastmod>
+    <loc>https://ghotimarket.com/signup</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ghotimarket.com/Affiliate/register</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghotimarket.com/track</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://seller.ghotimarket.com/</loc>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!-- 5. About পেজ -->
+  <!-- 5. অ্যাপ ডাউনলোড পেজ -->
+  <url>
+    <loc>https://app.ghotimarket.com/</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 6. About পেজ -->
   <url>
     <loc>https://about.ghotimarket.com/</loc>
-    <lastmod>2026-07-28</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
-  <!-- 6. Contact পেজ -->
+  <!-- 7. Contact পেজ -->
   <url>
     <loc>https://ghotimarket.com/contact</loc>
-    <lastmod>2026-07-28</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
-  <!-- 7. Seller Login + Policy পেজ -->
+  <!-- 8. Seller Login + Policy পেজ -->
   <url>
     <loc>https://ghotimarket.com/seller</loc>
-    <lastmod>2026-07-28</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://ghotimarket.com/privacy-policy</loc>
-    <lastmod>2026-07-28</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://ghotimarket.com/termsandcondition</loc>
-    <lastmod>2026-07-28</lastmod>
+    <lastmod>2026-08-02</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
