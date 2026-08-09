@@ -1,6 +1,6 @@
 // Import Firebase v10 Modular SDK
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, getDocs, query, orderBy, limit, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 /*
   ===================================================================
@@ -50,54 +50,57 @@ const updateProgress = (val) => {
 };
 
 /**
- * Main Data Loading Function using Promise.all()
- * Fetches banners, categories, products, and users concurrently.
+ * Main Data Loading Function using Asynchronous Non-Blocking Execution & Promise.allSettled()
+ * Fetches banners, categories, products, and users independently.
+ * Each section renders immediately upon completion without waiting for slower queries.
  */
 async function loadData() {
-    updateProgress(25);
-    try {
-        // Optimized Firestore Queries with Promise.all()
-        const [bannerSnap, catSnap, prodSnap, shopSnap] = await Promise.all([
-            getDocs(query(collection(db, "banners"), orderBy("createdAt", "desc"))),
-            getDocs(query(collection(db, "categories"), limit(20))),
-            getDocs(query(collection(db, "products"), orderBy("createdAt", "desc"), limit(10))),
-            getDocs(collection(db, "users"))
-        ]);
+    updateProgress(10);
 
-        updateProgress(60);
+    let completedTasks = 0;
+    const totalTasks = 4;
+    const incrementProgress = () => {
+        completedTasks++;
+        updateProgress(10 + Math.floor((completedTasks / totalTasks) * 90));
+    };
 
-        // 1. Render Banners
-        renderBanner(bannerSnap);
+    // 1. Fetch Banners (Existing logic)
+    const fetchBanners = getDocs(query(collection(db, "banners"), orderBy("createdAt", "desc")))
+        .then(bannerSnap => renderBanner(bannerSnap))
+        .catch(err => console.error("Banners Loading Error:", err))
+        .finally(incrementProgress);
 
-        // 2. Render Categories (Exact Firestore Order, Limit 20, No Random Shuffle)
-        renderCategories(catSnap);
+    // 2. Fetch Categories (Strict Limit: 20)
+    const fetchCategories = getDocs(query(collection(db, "categories"), limit(20)))
+        .then(catSnap => renderCategories(catSnap))
+        .catch(err => console.error("Categories Loading Error:", err))
+        .finally(incrementProgress);
 
-        updateProgress(80);
+    // 3. Fetch Products (Strict Limit: 10)
+    const fetchProducts = getDocs(query(collection(db, "products"), orderBy("createdAt", "desc"), limit(10)))
+        .then(prodSnap => renderProducts(prodSnap))
+        .catch(err => console.error("Products Loading Error:", err))
+        .finally(incrementProgress);
 
-        // 3. Render Latest Products (Condition: active !== false, with Discount calculation)
-        renderProducts(prodSnap);
+    // 4. Fetch Users (Strict Limit: 20)
+    const fetchShops = getDocs(query(collection(db, "users"), limit(20)))
+        .then(shopSnap => renderShopsData(shopSnap))
+        .catch(err => console.error("Users/Shops Loading Error:", err))
+        .finally(incrementProgress);
 
-        // 4. Render Shops (Filtered with flexible verification and debugging helper)
-        renderShopsData(shopSnap);
+    // Ensure all promises settle without failing or blocking each other
+    await Promise.allSettled([fetchBanners, fetchCategories, fetchProducts, fetchShops]);
 
-        updateProgress(100);
-
-        // Smoothly Remove Loader
-        setTimeout(() => {
-            const loader = document.getElementById('loader');
-            if (loader) {
-                loader.style.opacity = '0';
-                setTimeout(() => loader.style.display = 'none', 600);
-            }
-            handleScrollAnim();
-            initSearch();
-        }, 400);
-
-    } catch (err) {
-        console.error("Firebase Optimization Error:", err);
+    // Smoothly Remove Loader
+    setTimeout(() => {
         const loader = document.getElementById('loader');
-        if (loader) loader.style.display = 'none';
-    }
+        if (loader) {
+            loader.style.opacity = '0';
+            setTimeout(() => loader.style.display = 'none', 600);
+        }
+        handleScrollAnim();
+        initSearch();
+    }, 300);
 }
 
 /**
@@ -175,7 +178,7 @@ function renderProducts(prodSnap) {
         const productPrice = p.price || 0;
 
         return `
-<a class="home-product-card" href="https://ghotimarket.com/product.html?${p.slug || p.id}">
+        <a class="home-product-card" href="https://ghotimarket.com/product.html?${p.slug || p.id}">
             <div class="product-image-box" style="position:relative;">
                 ${discount}
                 <img src="${productImage}" alt="${productName}" loading="lazy">
@@ -242,7 +245,7 @@ function renderShopsData(shopSnap) {
         .map(d => ({ id: d.id, ...d.data() }))
         .filter(shop => shop.shopName && isVerifiedShop(shop));
 
-    console.log("Total Users:", totalUsers);
+    console.log("Total Users Downloaded:", totalUsers);
     console.log("Verified Shops:", allShops.length);
     console.log("Verified Shop Names:", allShops.map(s => s.shopName));
 
@@ -312,7 +315,7 @@ function handleScrollAnim() {
 }
 
 /**
- * Smart Search Implementation (Safely handling undefined attributes & missing images)
+ * Smart Search Implementation (Operating purely on downloaded in-memory data)
  */
 function initSearch() {
     const searchInput = document.getElementById('smartSearch');
@@ -329,24 +332,16 @@ function initSearch() {
         const matchCats = allCategories.filter(c => c.categoryName && c.categoryName.toLowerCase().includes(val)).slice(0, 3);
         const matchShops = allShops.filter(s => s.shopName && s.shopName.toLowerCase().includes(val)).slice(0, 5);
         const matchProds = allProducts.filter(p => {
+            const name = p.name ? p.name.toLowerCase() : "";
+            const description = p.description ? p.description.toLowerCase() : "";
+            const keywords = Array.isArray(p.keywords) ? p.keywords.join(" ").toLowerCase() : "";
 
-    const name = p.name ? p.name.toLowerCase() : "";
-
-    const description = p.description 
-        ? p.description.toLowerCase() 
-        : "";
-
-    const keywords = Array.isArray(p.keywords)
-        ? p.keywords.join(" ").toLowerCase()
-        : "";
-
-    return (
-        name.includes(val) ||
-        description.includes(val) ||
-        keywords.includes(val)
-    );
-
-}).slice(0, 5);
+            return (
+                name.includes(val) ||
+                description.includes(val) ||
+                keywords.includes(val)
+            );
+        }).slice(0, 5);
 
         let html = '';
 
@@ -370,7 +365,7 @@ function initSearch() {
 
         if (matchProds.length) {
             html += `<div class="search-group-title">পণ্য</div>` + matchProds.map(p => `
-               <a href="https://ghotimarket.com/product?${p.slug || p.id}" class="search-item">
+               <a href="https://ghotimarket.com/product.html?${p.slug || p.id}" class="search-item">
                     <img src="${p.images?.[0] || 'https://via.placeholder.com/40'}" alt="Product" loading="lazy"> 
                     <span>${p.name || ''}</span>
                 </a>
