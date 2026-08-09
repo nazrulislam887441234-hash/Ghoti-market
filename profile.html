@@ -53,18 +53,17 @@
     --danger: #ff4757; 
     --glass: rgba(255,255,255,0.85);
 }
-* { box-sizing: border-box; } /* এটা সবচেয়ে জরুরি */
+* { box-sizing: border-box; }
 html, body { 
     font-family: 'Hind Siliguri', sans-serif; 
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); 
     margin: 0; 
-    padding: 0; /* body তে padding বাদ */
-    overflow-x: hidden; /* সাইডে স্ক্রল বন্ধ */
+    padding: 0; 
+    overflow-x: hidden; 
     width: 100%;
     padding-bottom: 80px; 
 }
 
-/* 1. NATIVE GLASS HEADER BAR */
 .native-bar {
     position: sticky;
     top: 0;
@@ -92,7 +91,6 @@ html, body {
 }
 .back-btn:active { background: var(--accent); transform:scale(0.9); }
 
-/* Profile Section - Premium */
 .profile-container { 
     position: relative; 
     background: var(--glass);
@@ -107,7 +105,7 @@ html, body {
 .banner-box { 
     position: relative; 
     width: 100%; 
-    padding-top: 40%; /* মোবাইলে একটু বেশি */
+    padding-top: 40%; 
     background: linear-gradient(135deg, #e2e8f0, #cbd5e1); 
 }
 .banner-box img { 
@@ -120,7 +118,6 @@ html, body {
     display: none; 
 }
         
-/* Logo + Name Area */
 .profile-info-box { text-align: center; padding: 15px 15px 0; margin-top:-45px; position:relative; z-index:2; }
 .shop-icon { 
     width: 90px; 
@@ -137,13 +134,12 @@ html, body {
 }
 .shop-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* VERIFIED BADGE - NAMER PASHE */
 .shop-name-area { 
     display: flex; 
     align-items: center; 
     justify-content: center; 
     gap: 8px; 
-    padding:0 10px; /* নাম যেন না কাটে */
+    padding:0 10px; 
 }
 .shop-name-area h1 { 
     font-size: 20px; 
@@ -152,7 +148,7 @@ html, body {
     background: linear-gradient(135deg, var(--primary), var(--accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    word-break: break-word; /* লম্বা নাম ভেঙে যাবে */
+    word-break: break-word; 
 }
 .verified-badge {
     width: 22px;
@@ -167,7 +163,6 @@ html, body {
 }
 .verified-badge svg { width: 12px; height: 12px; }
 
-/* Feature 1: Shop Description Section Styles */
 .shop-description-section {
     max-width: 800px;
     margin: 15px auto 0 auto;
@@ -191,9 +186,9 @@ html, body {
 .search-area { 
     padding: 15px; 
     position: sticky; 
-    top: 64px; /* Header height অনুযায়ী */
+    top: 64px; 
     z-index: 99; 
-    background: var(--bg); /* transparent বাদ দিলাম নাহলে নড়ে */
+    background: var(--bg); 
 }
 .search-bar { 
     width: 100%; 
@@ -215,29 +210,10 @@ html, body {
     box-shadow: 0 5px 20px rgba(249, 115, 22, 0.2); 
 }
 
-.wa-float { 
-    position: fixed; 
-    bottom: 90px; /* Bottom Nav এর উপরে */
-    right: 15px; 
-    background: #25D366; 
-    color: white; 
-    width: 55px; 
-    height: 55px; 
-    border-radius: 50%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    font-size: 26px; 
-    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4); 
-    z-index: 1000; 
-    text-decoration: none; 
-}
-
-/* Responsive Grid - FIXED */
 .grid { 
     display: grid; 
-    gap: 12px; /* gap কমালাম */
-    padding: 12px; /* padding কমালাম */
+    gap: 12px; 
+    padding: 12px; 
     grid-template-columns: repeat(2, 1fr); 
     max-width: 1400px; 
     margin: 0 auto; 
@@ -247,22 +223,21 @@ html, body {
 @media (min-width: 900px) { .grid { grid-template-columns: repeat(6, 1fr); gap:20px; padding:20px; } }
 
 .p-card { 
-    background: white; /* Glass বাদ দিলাম মোবাইলে lag করে */
+    background: white; 
     border-radius: 16px; 
     overflow: hidden; 
     box-shadow: 0 3px 12px rgba(0,0,0,0.06); 
     text-decoration: none; 
     color: #333; 
-    transition:0.2s; /* animation কম */
+    transition:0.2s; 
     border:1px solid #f1f5f9;
 }
-.p-card:active { transform:scale(0.96); } /* hover বাদ, শুধু tap */
+.p-card:active { transform:scale(0.96); } 
 .img-box { position: relative; padding-top: 100%; background: #f8fafc; overflow:hidden; }
 .img-box img { position: absolute; top: 0; width: 100%; height: 100%; object-fit: cover; }
 .p-info { padding: 10px; }
 .p-name { font-size: 13px; font-weight: 600; height: 36px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 5px; }
-.p-price { color: var(--danger); font-weight: 700; font-size: 14px; }
-        
+
 .see-more-btn { 
     display: block; 
     width: 200px; 
@@ -278,7 +253,6 @@ html, body {
     box-shadow:0 6px 20px rgba(249,115,22,0.3); 
 }
 
-/* Bottom Navigation - iPhone Style */
 .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -354,7 +328,6 @@ html, body {
 </head>
 <body>
 
-    <!-- 3. NATIVE GLASS BAR -->
     <div class="native-bar">
         <a href="https://ghotimarket.com" class="back-btn"><i class="fas fa-arrow-left"></i></a>
     </div>
@@ -367,7 +340,6 @@ html, body {
             </div>
             <div class="shop-name-area">
                 <h1 id="shopName">Loading...</h1>
-                <!-- VERIFIED BADGE NAMER PASHE -->
                 <div id="verifiedBadge" class="verified-badge" style="display:none;" title="Verified Shop">
                     <svg viewBox="0 0 24 24" fill="white">
                         <path d="M9.1 13.8l-2.3-2.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l3 3c.2.2.5.3.7.3.2 0 .5-.1.7-.3l5.8-5.8c.4-.4.4-1 0-1.4-.4-.4-1-.4-1.4 0L9.1 13.8z"/>
@@ -375,7 +347,6 @@ html, body {
                 </div>
             </div>
         </div>
-        <!-- Feature 1: Shop Description Container -->
         <div id="shopDescriptionContainer" class="shop-description-section" style="display: none;">
             <div id="shopDescriptionText" class="shop-description-card"></div>
         </div>
@@ -384,38 +355,34 @@ html, body {
     <div class="search-area">
         <input type="text" id="pSearch" class="search-bar" placeholder="পণ্য খুঁজুন..." oninput="handleSearch()">
     </div>
-  <!-- Bottom Navigation -->
-<nav class="bottom-nav">
-    <a href="https://ghotimarket.com" class="nav-item">
-        <i data-lucide="home"></i>
-        <span>Home</span>
-    </a>
 
-    <a href="https://ghotimarket.com/categories" class="nav-item">
-        <i data-lucide="grid"></i>
-        <span>Categories</span>
-    </a>
+    <nav class="bottom-nav">
+        <a href="https://ghotimarket.com" class="nav-item">
+            <i data-lucide="home"></i>
+            <span>Home</span>
+        </a>
+        <a href="https://ghotimarket.com/categories" class="nav-item">
+            <i data-lucide="grid"></i>
+            <span>Categories</span>
+        </a>
+        <a href="https://ghotimarket.com/all-product" class="nav-item">
+            <i data-lucide="box"></i>
+            <span>All product</span>
+        </a>
+        <a href="https://ghotimarket.com/contact" class="nav-item">
+            <i data-lucide="headphones"></i>
+            <span>Support</span>
+        </a>
+        <a href="https://ghotimarket.com/privacy-policy" class="nav-item">
+            <i data-lucide="shield-check"></i>
+            <span>Privacy</span>
+        </a>
+        <a href="https://seller.ghotimarket.com/signup" class="nav-item">
+            <i data-lucide="store"></i>
+            <span>J.Seller</span>
+        </a>
+    </nav>
 
-    <a href="https://ghotimarket.com/all-product" class="nav-item">
-        <i data-lucide="box"></i>
-        <span>All product</span>
-    </a>
-
-    <a href="https://ghotimarket.com/contact" class="nav-item">
-        <i data-lucide="headphones"></i>
-        <span>Support</span>
-    </a>
-
-    <a href="https://ghotimarket.com/privacy-policy" class="nav-item">
-        <i data-lucide="shield-check"></i>
-        <span>Privacy</span>
-    </a>
-
-    <a href="https://seller.ghotimarket.com/signup" class="nav-item">
-        <i data-lucide="store"></i>
-        <span>J.Seller</span>
-    </a>
-</nav>
     <div class="grid" id="sellerProductGrid"></div>
     <button id="seeMoreBtn" class="see-more-btn" style="display:none;" onclick="loadMore()">See More</button>
 
@@ -433,19 +400,19 @@ html, body {
         } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
-  apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
-  authDomain: "ghotimarket.firebaseapp.com",
-  databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
-  projectId: "ghotimarket",
-  storageBucket: "ghotimarket.firebasestorage.app",
-  messagingSenderId: "481257644093",
-  appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
-  measurementId: "G-4SR8V2EKC1"
-};
+          apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+          authDomain: "ghotimarket.firebaseapp.com",
+          databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+          projectId: "ghotimarket",
+          storageBucket: "ghotimarket.firebasestorage.app",
+          messagingSenderId: "481257644093",
+          appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+          measurementId: "G-4SR8V2EKC1"
+        };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-        // ===== REUSABLE FAVICON & LOGO HELPER FUNCTIONS =====
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
         const FALLBACK_LOGO = "https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png";
 
         function updateFavicons(shopLogo) {
@@ -469,38 +436,12 @@ const db = getFirestore(app);
                 }
             }
 
-            setOrCreateElement("link[rel='icon']", {
-                rel: "icon",
-                type: "image/png",
-                href: versionedLogo
-            });
-
-            setOrCreateElement("link[rel='shortcut icon']", {
-                rel: "shortcut icon",
-                type: "image/png",
-                href: versionedLogo
-            });
-
-            setOrCreateElement("link[rel='apple-touch-icon']", {
-                rel: "apple-touch-icon",
-                href: versionedLogo
-            });
-
-            setOrCreateElement("link[rel='mask-icon']", {
-                rel: "mask-icon",
-                href: versionedLogo,
-                color: "#f97316"
-            });
-
-            setOrCreateElement("meta[property='og:image']", {
-                property: "og:image",
-                content: versionedLogo
-            });
-
-            setOrCreateElement("meta[name='twitter:image']", {
-                name: "twitter:image",
-                content: versionedLogo
-            });
+            setOrCreateElement("link[rel='icon']", { rel: "icon", type: "image/png", href: versionedLogo });
+            setOrCreateElement("link[rel='shortcut icon']", { rel: "shortcut icon", type: "image/png", href: versionedLogo });
+            setOrCreateElement("link[rel='apple-touch-icon']", { rel: "apple-touch-icon", href: versionedLogo });
+            setOrCreateElement("link[rel='mask-icon']", { rel: "mask-icon", href: versionedLogo, color: "#f97316" });
+            setOrCreateElement("meta[property='og:image']", { property: "og:image", content: versionedLogo });
+            setOrCreateElement("meta[name='twitter:image']", { name: "twitter:image", content: versionedLogo });
 
             const jsonLdScript = document.getElementById("jsonLdData");
             if (jsonLdScript) {
@@ -514,21 +455,15 @@ const db = getFirestore(app);
                 }
             }
         }
-        // ===== END FAVICON HELPER =====
 
-        // ===== REUSABLE SEO HELPER FUNCTIONS =====
         function setMetaTag(selector, attr, value) {
             let el = document.querySelector(selector);
-            if (el) {
-                el.setAttribute(attr, value);
-            }
+            if (el) el.setAttribute(attr, value);
         }
 
         function setPropertyMeta(property, value) {
             let el = document.querySelector(`meta[property="${property}"]`);
-            if (el) {
-                el.setAttribute("content", value);
-            }
+            if (el) el.setAttribute("content", value);
         }
 
         function renderDescription(shopDescription) {
@@ -545,19 +480,12 @@ const db = getFirestore(app);
         function updateSEO(shopData) {
             const shopName = shopData.shopName || "Shop";
             const shopDescriptionRaw = shopData.shopDescription || "";
-            const shopLogo = shopData.shopLogo || "https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png";
+            const shopLogo = shopData.shopLogo || FALLBACK_LOGO;
             const shopBanner = shopData.shopBanner || shopLogo;
             const currentUrl = window.location.href;
 
-            let metaDesc = "";
-            if (shopDescriptionRaw.trim() !== "") {
-                metaDesc = shopDescriptionRaw.trim();
-            } else {
-                metaDesc = `Browse products from ${shopName} on Ghoti Market.`;
-            }
-            if (metaDesc.length > 160) {
-                metaDesc = metaDesc.substring(0, 157) + "...";
-            }
+            let metaDesc = shopDescriptionRaw.trim() !== "" ? shopDescriptionRaw.trim() : `Browse products from ${shopName} on Ghoti Market.`;
+            if (metaDesc.length > 160) metaDesc = metaDesc.substring(0, 157) + "...";
             setMetaTag("#metaDescription", "content", metaDesc);
 
             let keywordsStr = shopName;
@@ -591,15 +519,11 @@ const db = getFirestore(app);
                     "url": currentUrl,
                     "logo": shopLogo
                 };
-                if (shopData.sameAs) {
-                    schemaData.sameAs = shopData.sameAs;
-                }
+                if (shopData.sameAs) schemaData.sameAs = shopData.sameAs;
                 jsonLdScript.textContent = JSON.stringify(schemaData, null, 2);
             }
         }
-        // ===== END SEO HELPERS =====
 
-        // ===== ROBUST URL PARSER FOR FALLBACKS =====
         function parseTargetFromURL() {
             try {
                 const search = window.location.search;
@@ -621,22 +545,16 @@ const db = getFirestore(app);
 
                 for (const [key, value] of urlParams.entries()) {
                     let cleanKey = decodeURIComponent(key.trim());
-                    if (cleanKey && cleanKey !== 'fbclid' && cleanKey !== 'gclid' && !cleanKey.startsWith('utm_')) {
-                        if (cleanKey.startsWith('@')) {
-                            return { type: "encoded_at", value: cleanKey.substring(1) };
-                        }
-                        if (value === '' && !cleanKey.includes('=')) {
-                            let cleanVal = cleanKey.replace(/^@/, '');
-                            return { type: "raw_param", value: cleanVal };
-                        }
+                    if (cleanKey && cleanKey !== 'fbclid' && cleanKey !== 'gclid' && !cleanKey.startsWith('utm_') && cleanKey !== 'sellerId') {
+                        if (cleanKey.startsWith('@')) return { type: "encoded_at", value: cleanKey.substring(1) };
+                        if (value === '' && !cleanKey.includes('=')) return { type: "raw_param", value: cleanKey.replace(/^@/, '') };
                     }
                 }
 
                 if (search && search.length > 1) {
                     const raw = decodeURIComponent(search.substring(1).split('&')[0].trim());
                     if (raw && !raw.includes('=') && !raw.startsWith('fbclid') && !raw.startsWith('gclid') && !raw.startsWith('utm_')) {
-                        let cleanRaw = raw;
-                        if (cleanRaw.startsWith('@')) cleanRaw = cleanRaw.substring(1);
+                        let cleanRaw = raw.startsWith('@') ? raw.substring(1) : raw;
                         return { type: "raw_value", value: cleanRaw };
                     }
                 }
@@ -660,103 +578,137 @@ const db = getFirestore(app);
         let filteredProducts = [];
         let displayCount = 100;
 
+        // ===== ROBUST SELLER LOOKUP SYSTEM =====
+        async function fetchSellerProfile(targetVal) {
+            if (!targetVal || !targetVal.trim()) return null;
+            const cleanTarget = decodeURIComponent(targetVal.trim());
+            const cleanLower = cleanTarget.toLowerCase();
+
+            // Priority 1: Check public_sellers collection by Document ID
+            console.log(`[Priority 1] Checking 'public_sellers' document ID: ${cleanTarget}`);
+            try {
+                const pubDocRef = doc(db, "public_sellers", cleanTarget);
+                const pubSnap = await getDoc(pubDocRef);
+                if (pubSnap.exists()) {
+                    console.log("[Priority 1 Success] Found in public_sellers by Doc ID:", pubSnap.id);
+                    return { docId: pubSnap.id, data: pubSnap.data() };
+                }
+            } catch (err) {
+                console.warn("[Priority 1 Failed]", err.message);
+            }
+
+            // Priority 2: Check users collection by Document ID (Fallback)
+            console.log(`[Priority 2] Checking 'users' document ID: ${cleanTarget}`);
+            try {
+                const userDocRef = doc(db, "users", cleanTarget);
+                const userSnap = await getDoc(userDocRef);
+                if (userSnap.exists()) {
+                    console.log("[Priority 2 Success] Found in users by Doc ID:", userSnap.id);
+                    return { docId: userSnap.id, data: userSnap.data() };
+                }
+            } catch (err) {
+                console.warn("[Priority 2 Failed]", err.message);
+            }
+
+            // Priority 3: Check users collection by uid field query
+            console.log(`[Priority 3] Querying 'users' where uid == ${cleanTarget}`);
+            try {
+                const uidQuery = query(collection(db, "users"), where("uid", "==", cleanTarget), limit(1));
+                const uidSnap = await getDocs(uidQuery);
+                if (!uidSnap.empty) {
+                    const docObj = uidSnap.docs[0];
+                    console.log("[Priority 3 Success] Found in users via uid field query:", docObj.id);
+                    return { docId: docObj.id, data: docObj.data() };
+                }
+            } catch (err) {
+                console.warn("[Priority 3 Failed] UID field lookup failed:", err.message);
+            }
+
+            // Priority 4: Username lookup (public_sellers -> users)
+            console.log(`[Priority 4] Querying username == ${cleanLower}`);
+            try {
+                // 4a. Check public_sellers by usernameLower
+                let pubQ = query(collection(db, "public_sellers"), where("usernameLower", "==", cleanLower), limit(1));
+                let pubSnap = await getDocs(pubQ);
+                if (!pubSnap.empty) {
+                    console.log("[Priority 4a Success] Found in public_sellers by usernameLower:", pubSnap.docs[0].id);
+                    return { docId: pubSnap.docs[0].id, data: pubSnap.docs[0].data() };
+                }
+
+                // 4b. Check public_sellers by username
+                pubQ = query(collection(db, "public_sellers"), where("username", "==", cleanTarget), limit(1));
+                pubSnap = await getDocs(pubQ);
+                if (!pubSnap.empty) {
+                    console.log("[Priority 4b Success] Found in public_sellers by username:", pubSnap.docs[0].id);
+                    return { docId: pubSnap.docs[0].id, data: pubSnap.docs[0].data() };
+                }
+
+                // 4c. Check users by usernameLower
+                let userQ = query(collection(db, "users"), where("usernameLower", "==", cleanLower), limit(1));
+                let userSnap = await getDocs(userQ);
+                if (!userSnap.empty) {
+                    console.log("[Priority 4c Success] Found in users by usernameLower:", userSnap.docs[0].id);
+                    return { docId: userSnap.docs[0].id, data: userSnap.docs[0].data() };
+                }
+
+                // 4d. Check users by username
+                userQ = query(collection(db, "users"), where("username", "==", cleanTarget), limit(1));
+                userSnap = await getDocs(userQ);
+                if (!userSnap.empty) {
+                    console.log("[Priority 4d Success] Found in users by username:", userSnap.docs[0].id);
+                    return { docId: userSnap.docs[0].id, data: userSnap.docs[0].data() };
+                }
+            } catch (err) {
+                console.warn("[Priority 4 Failed] Username lookup failed:", err.message);
+            }
+
+            return null;
+        }
+
         async function loadProfile() {
             try {
                 const urlParams = new URLSearchParams(window.location.search);
-                const sellerId = urlParams.get("sellerId");
-
-                let sId = null;
-                let d = null;
-
-                // Priority 1: Direct sellerId Document & Field Lookup
-                if (sellerId && sellerId.trim() !== "") {
-                    const cleanSellerId = decodeURIComponent(sellerId.trim());
-                    console.log("URL sellerId:", cleanSellerId);
-
-                    // 1a. Primary Lookup: Direct Document ID match in 'users' collection
-                    const userDocRef = doc(db, "users", cleanSellerId);
-                    const userDocSnap = await getDoc(userDocRef);
-
-                    if (userDocSnap.exists()) {
-                        sId = userDocSnap.id;
-                        d = userDocSnap.data();
-                        console.log("Primary document lookup result: Found (Doc ID:", sId, ")");
-                        console.log("Fallback lookup result: Not needed");
-                    } else {
-                        console.log("Primary document lookup result: Not Found");
-
-                        // 1b. Fallback Lookup: Check potential seller identifier fields (uid, sellerId, userId)
-                        let fallbackFound = false;
-                        const fieldsToTry = ["uid", "sellerId", "userId"];
-
-                        for (const field of fieldsToTry) {
-                            const fallbackQuery = query(
-                                collection(db, "users"),
-                                where(field, "==", cleanSellerId),
-                                limit(1)
-                            );
-                            const fallbackSnap = await getDocs(fallbackQuery);
-                            if (!fallbackSnap.empty) {
-                                sId = fallbackSnap.docs[0].id;
-                                d = fallbackSnap.docs[0].data();
-                                fallbackFound = true;
-                                console.log(`Fallback lookup result: Found via field '${field}' (Doc ID: ${sId})`);
-                                break;
-                            }
-                        }
-
-                        if (!fallbackFound) {
-                            console.log("Fallback lookup result: Not Found");
-                        }
-                    }
-                } 
-                // Priority 2: Fallback behavior if sellerId parameter is missing
-                else {
-                    const target = parseTargetFromURL();
-                    if (target.type === "explicit_username" || target.type === "explicit_at" || target.type === "encoded_at") {
-                        const userQuery = query(
-                            collection(db, "users"),
-                            where("username", "==", target.value),
-                            limit(1)
-                        );
-                        const userSnap = await getDocs(userQuery);
-                        if (!userSnap.empty) {
-                            sId = userSnap.docs[0].id;
-                            d = userSnap.docs[0].data();
-                        }
-                    } else if (target.type && target.value) {
-                        const userDocRef = doc(db, "users", target.value);
-                        const userDocSnap = await getDoc(userDocRef);
-                        if (userDocSnap.exists()) {
-                            sId = userDocSnap.id;
-                            d = userDocSnap.data();
-                        } else {
-                            const userQuery = query(
-                                collection(db, "users"),
-                                where("username", "==", target.value),
-                                limit(1)
-                            );
-                            const userSnap = await getDocs(userQuery);
-                            if (!userSnap.empty) {
-                                sId = userSnap.docs[0].id;
-                                d = userSnap.docs[0].data();
-                            }
-                        }
-                    }
+                const explicitSellerId = urlParams.get("sellerId");
+                
+                let targetIdentifier = null;
+                if (explicitSellerId && explicitSellerId.trim() !== "") {
+                    targetIdentifier = decodeURIComponent(explicitSellerId.trim());
+                } else {
+                    const parsed = parseTargetFromURL();
+                    if (parsed && parsed.value) targetIdentifier = parsed.value;
                 }
 
-                console.log("Final seller document ID:", sId);
+                console.log("Seller lookup target identifier:", targetIdentifier);
 
-                if (!sId || !d) {
+                if (!targetIdentifier) {
+                    console.error("User document not found: No valid seller ID or username in URL");
                     document.getElementById("shopName").innerText = "Shop Not Found";
                     updateFavicons(null);
                     return;
                 }
 
+                const sellerResult = await fetchSellerProfile(targetIdentifier);
+
+                if (!sellerResult || !sellerResult.data) {
+                    console.error("User document not found across all lookup priorities.");
+                    document.getElementById("shopName").innerText = "Shop Not Found";
+                    updateFavicons(null);
+                    return;
+                }
+
+                const actualDocumentId = sellerResult.docId;
+                const d = sellerResult.data;
+
+                // Priority for Seller UID: d.uid takes priority, fallback to actualDocumentId
+                const actualSellerUid = d.uid || actualDocumentId;
+                console.log(`Seller Verified. Document ID: ${actualDocumentId} | Firebase Auth UID: ${actualSellerUid}`);
+
                 document.getElementById('shopName').innerText = d.shopName || "Unknown Shop";
 
                 if (d.shopLogo) {
                     document.getElementById('shopLogoImg').src = d.shopLogo;
+                } else {
+                    document.getElementById('shopLogoImg').src = FALLBACK_LOGO;
                 }
 
                 if (d.shopBanner) {
@@ -766,30 +718,51 @@ const db = getFirestore(app);
 
                 if (d.verified) {
                     document.getElementById('verifiedBadge').style.display = "flex";
+                } else {
+                    document.getElementById('verifiedBadge').style.display = "none";
                 }
 
                 renderDescription(d.shopDescription);
                 updateSEO(d);
                 updateFavicons(d.shopLogo);
 
-                const productQuery = query(
-                    collection(db, "products"),
-                    where("sellerId", "==", sId),
-                    where("active", "==", true)
-                );
+                // ===== PRODUCT QUERY USING ACTUAL SELLER AUTH UID =====
+                console.log("Querying products for sellerId (Firebase Auth UID):", actualSellerUid);
+                try {
+                    const productQuery = query(
+                        collection(db, "products"),
+                        where("sellerId", "==", actualSellerUid),
+                        where("active", "==", true)
+                    );
 
-                const productSnap = await getDocs(productQuery);
+                    const productSnap = await getDocs(productQuery);
 
-                allProducts = productSnap.docs.map(productDoc => ({
-                    id: productDoc.id,
-                    ...productDoc.data()
-                }));
+                    allProducts = productSnap.docs.map(productDoc => ({
+                        id: productDoc.id,
+                        ...productDoc.data()
+                    }));
 
-                filteredProducts = allProducts;
-                render();
+                    console.log(`Product Query Success: Found ${allProducts.length} active products.`);
+
+                    filteredProducts = allProducts;
+                    render();
+                } catch (prodErr) {
+                    console.error("Product query failed:", prodErr);
+                    if (prodErr.code === 'permission-denied') {
+                        console.error("Permission denied on products query");
+                    }
+                    const grid = document.getElementById('sellerProductGrid');
+                    grid.innerHTML = '<p style="text-align:center; grid-column:1/-1; padding:40px; color:#ef4444;">ডাটা লোড করতে সমস্যা হয়েছে</p>';
+                }
+
             } catch (error) {
                 console.error("Profile Load Error:", error);
-                document.getElementById("shopName").innerText = "Shop Not Found";
+                if (error.code === 'permission-denied') {
+                    console.error("Permission denied: Seller profile access denied");
+                    document.getElementById("shopName").innerText = "Seller profile access denied";
+                } else {
+                    document.getElementById("shopName").innerText = "ডাটা লোড করতে সমস্যা হয়েছে";
+                }
                 updateFavicons(null);
             }
         }
@@ -845,7 +818,7 @@ const db = getFirestore(app);
 
                     </div>
                 </a>
-            `).join('') : '<p style="text-align:center; grid-column:1/-1; padding:40px;">😔 কোনো পণ্য পাওয়া যায়নি!</p>';
+            `).join('') : '<p style="text-align:center; grid-column:1/-1; padding:40px;">এই দোকানে বর্তমানে কোনো পণ্য নেই</p>';
 
             btn.style.display = (displayCount < filteredProducts.length) ? 'block' : 'none';
         }
