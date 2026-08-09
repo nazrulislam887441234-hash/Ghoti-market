@@ -432,8 +432,19 @@ html, body {
           limit
         } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const db = getFirestore(initializeApp({ apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket" }));
+        const firebaseConfig = {
+  apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+  authDomain: "ghotimarket.firebaseapp.com",
+  databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+  projectId: "ghotimarket",
+  storageBucket: "ghotimarket.firebasestorage.app",
+  messagingSenderId: "481257644093",
+  appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+  measurementId: "G-4SR8V2EKC1"
+};
 
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
         // ===== REUSABLE FAVICON & LOGO HELPER FUNCTIONS =====
         const FALLBACK_LOGO = "https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png";
 
@@ -657,20 +668,49 @@ html, body {
                 let sId = null;
                 let d = null;
 
-                // Priority 1: Direct sellerId Document Lookup (Primary & Reliable Method)
+                // Priority 1: Direct sellerId Document & Field Lookup
                 if (sellerId && sellerId.trim() !== "") {
                     const cleanSellerId = decodeURIComponent(sellerId.trim());
+                    console.log("URL sellerId:", cleanSellerId);
+
+                    // 1a. Primary Lookup: Direct Document ID match in 'users' collection
                     const userDocRef = doc(db, "users", cleanSellerId);
                     const userDocSnap = await getDoc(userDocRef);
 
                     if (userDocSnap.exists()) {
                         sId = userDocSnap.id;
                         d = userDocSnap.data();
+                        console.log("Primary document lookup result: Found (Doc ID:", sId, ")");
+                        console.log("Fallback lookup result: Not needed");
                     } else {
-                        console.warn("Shop Not Found for sellerId:", cleanSellerId);
+                        console.log("Primary document lookup result: Not Found");
+
+                        // 1b. Fallback Lookup: Check potential seller identifier fields (uid, sellerId, userId)
+                        let fallbackFound = false;
+                        const fieldsToTry = ["uid", "sellerId", "userId"];
+
+                        for (const field of fieldsToTry) {
+                            const fallbackQuery = query(
+                                collection(db, "users"),
+                                where(field, "==", cleanSellerId),
+                                limit(1)
+                            );
+                            const fallbackSnap = await getDocs(fallbackQuery);
+                            if (!fallbackSnap.empty) {
+                                sId = fallbackSnap.docs[0].id;
+                                d = fallbackSnap.docs[0].data();
+                                fallbackFound = true;
+                                console.log(`Fallback lookup result: Found via field '${field}' (Doc ID: ${sId})`);
+                                break;
+                            }
+                        }
+
+                        if (!fallbackFound) {
+                            console.log("Fallback lookup result: Not Found");
+                        }
                     }
                 } 
-                // Priority 2: Fallback behavior if sellerId is not present
+                // Priority 2: Fallback behavior if sellerId parameter is missing
                 else {
                     const target = parseTargetFromURL();
                     if (target.type === "explicit_username" || target.type === "explicit_at" || target.type === "encoded_at") {
@@ -704,6 +744,8 @@ html, body {
                         }
                     }
                 }
+
+                console.log("Final seller document ID:", sId);
 
                 if (!sId || !d) {
                     document.getElementById("shopName").innerText = "Shop Not Found";
