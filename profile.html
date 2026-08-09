@@ -5,11 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="metaTitle">Seller Profile | Ghoti Market</title>
     
+    <!-- SEO & META TAGS -->
+    <meta name="description" id="metaDescription" content="Browse products on Ghoti Market.">
+    <meta name="keywords" id="metaKeywords" content="ghoti market, online shop">
+    
+    <!-- Open Graph SEO -->
+    <meta property="og:title" id="ogTitle" content="Seller Profile | Ghoti Market">
+    <meta property="og:description" id="ogDescription" content="Browse products on Ghoti Market.">
+    <meta property="og:image" id="ogImage" content="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
+    <meta property="og:type" id="ogType" content="website">
+    <meta property="og:url" id="ogUrl" content="">
+
+    <!-- Twitter Meta -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" id="twitterTitle" content="Seller Profile | Ghoti Market">
+    <meta name="twitter:description" id="twitterDescription" content="Browse products on Ghoti Market.">
+    <meta name="twitter:image" id="twitterImage" content="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json" id="jsonLdData">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Ghoti Market",
+      "description": "Browse products on Ghoti Market.",
+      "image": "https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png",
+      "url": "",
+      "logo": "https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png"
+    }
+    </script>
+    
     <!-- FAVICON + THEME COLOR ORANGE -->
     <link rel="icon" type="image/png" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
+    <link rel="shortcut icon" type="image/png" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
     <link rel="apple-touch-icon" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
+    <link rel="mask-icon" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png" color="#f97316">
     <meta name="theme-color" content="#f97316">
-
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
    <style>
 @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700;800&display=swap');
@@ -134,6 +166,27 @@ html, body {
     box-shadow:0 3px 10px rgba(24,119,242,0.4);
 }
 .verified-badge svg { width: 12px; height: 12px; }
+
+/* Feature 1: Shop Description Section Styles */
+.shop-description-section {
+    max-width: 800px;
+    margin: 15px auto 0 auto;
+    padding: 0 15px;
+}
+.shop-description-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(249, 115, 22, 0.2);
+    border-left: 4px solid var(--accent);
+    border-radius: 12px;
+    padding: 14px 18px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    font-size: 14px;
+    color: #334155;
+    line-height: 1.6;
+    white-space: pre-line;
+    word-break: break-word;
+}
 
 .search-area { 
     padding: 15px; 
@@ -322,141 +375,388 @@ html, body {
                 </div>
             </div>
         </div>
+        <!-- Feature 1: Shop Description Container -->
+        <div id="shopDescriptionContainer" class="shop-description-section" style="display: none;">
+            <div id="shopDescriptionText" class="shop-description-card"></div>
+        </div>
     </div>
 
     <div class="search-area">
         <input type="text" id="pSearch" class="search-bar" placeholder="পণ্য খুঁজুন..." oninput="handleSearch()">
     </div>
-    <div class="bottom-nav">
-    <a href="https://ghotimarket.com" class="nav-item active">
-        <i class="fas fa-home"></i>
+  <!-- Bottom Navigation -->
+<nav class="bottom-nav">
+    <a href="https://ghotimarket.com" class="nav-item">
+        <i data-lucide="home"></i>
         <span>Home</span>
     </a>
-    <a href="https://ghotimarket.com/contact.html" class="nav-item">
-        <i class="fas fa-headset"></i>
+
+    <a href="https://ghotimarket.com/categories" class="nav-item">
+        <i data-lucide="grid"></i>
+        <span>Categories</span>
+    </a>
+
+    <a href="https://ghotimarket.com/all-product" class="nav-item">
+        <i data-lucide="box"></i>
+        <span>All product</span>
+    </a>
+
+    <a href="https://ghotimarket.com/contact" class="nav-item">
+        <i data-lucide="headphones"></i>
         <span>Support</span>
     </a>
-    <a href="https://seller.ghotimarket.com/signup" class="nav-item">
-        <i class="fas fa-user-plus"></i>
-        <span>Join Seller</span>
-    </a>
+
     <a href="https://ghotimarket.com/privacy-policy" class="nav-item">
-        <i class="fas fa-shield-alt"></i>
+        <i data-lucide="shield-check"></i>
         <span>Privacy</span>
     </a>
-</div>
+
+    <a href="https://seller.ghotimarket.com/signup" class="nav-item">
+        <i data-lucide="store"></i>
+        <span>J.Seller</span>
+    </a>
+</nav>
     <div class="grid" id="sellerProductGrid"></div>
     <button id="seeMoreBtn" class="see-more-btn" style="display:none;" onclick="loadMore()">See More</button>
 
 <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import {
-  getFirestore,
-  doc,
-  getDoc,
-  collection,
-  query,
-  where,
-  getDocs,
-  limit
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+          getFirestore,
+          doc,
+          getDoc,
+          collection,
+          query,
+          where,
+          getDocs,
+          limit
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const db = getFirestore(initializeApp({ apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket" }));
 
-        // ===== FB PROOF USERNAME GETTER =====
-        function getUsernameFromURL(){
-            const urlParams = new URLSearchParams(window.location.search);
+        // ===== REUSABLE FAVICON & LOGO HELPER FUNCTIONS =====
+        const FALLBACK_LOGO = "https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png";
 
-            // 1. Normal:?@chainapaikari
-            let user = urlParams.get("@");
-            if(user) return decodeURIComponent(user.trim());
+        function updateFavicons(shopLogo) {
+            let validLogo = (shopLogo && typeof shopLogo === 'string' && shopLogo.trim() !== "") 
+                ? shopLogo.trim() 
+                : FALLBACK_LOGO;
 
-            // 2. FB Mয়লা:?%40chainapaikari=&fbclid=xyz
-            for(const [key, value] of urlParams.entries()){
-                if(key!== 'fbclid' && key!== 'utm_source'){
-                    let cleanKey = decodeURIComponent(key.trim()); // %40 কে @ বানাবে
-                    if(cleanKey.startsWith('@')){
-                        return cleanKey.substring(1); // @ বাদ দিয়ে শুধু নাম
-                    }
+            const timestamp = Date.now();
+            const versionedLogo = `${validLogo}${validLogo.includes('?') ? '&' : '?'}v=${timestamp}`;
+
+            function setOrCreateElement(selector, attributes) {
+                let el = document.querySelector(selector);
+                if (!el) {
+                    const parts = selector.split('[');
+                    const tagName = parts[0];
+                    el = document.createElement(tagName);
+                    document.head.appendChild(el);
+                }
+                for (const [key, value] of Object.entries(attributes)) {
+                    el.setAttribute(key, value);
                 }
             }
 
-            // 3. Last backup: URL থেকে সরাসরি
-            const raw = window.location.search;
-            if(raw.includes('@') || raw.includes('%40')){
-                return decodeURIComponent(raw.replace('?', '').split('&')[0].replace('@','').replace('%40',''));
-            }
+            setOrCreateElement("link[rel='icon']", {
+                rel: "icon",
+                type: "image/png",
+                href: versionedLogo
+            });
 
-            return null;
+            setOrCreateElement("link[rel='shortcut icon']", {
+                rel: "shortcut icon",
+                type: "image/png",
+                href: versionedLogo
+            });
+
+            setOrCreateElement("link[rel='apple-touch-icon']", {
+                rel: "apple-touch-icon",
+                href: versionedLogo
+            });
+
+            setOrCreateElement("link[rel='mask-icon']", {
+                rel: "mask-icon",
+                href: versionedLogo,
+                color: "#f97316"
+            });
+
+            setOrCreateElement("meta[property='og:image']", {
+                property: "og:image",
+                content: versionedLogo
+            });
+
+            setOrCreateElement("meta[name='twitter:image']", {
+                name: "twitter:image",
+                content: versionedLogo
+            });
+
+            const jsonLdScript = document.getElementById("jsonLdData");
+            if (jsonLdScript) {
+                try {
+                    let schemaData = JSON.parse(jsonLdScript.textContent);
+                    schemaData.logo = versionedLogo;
+                    schemaData.image = versionedLogo;
+                    jsonLdScript.textContent = JSON.stringify(schemaData, null, 2);
+                } catch (e) {
+                    console.error("JSON-LD Favicon Update Error:", e);
+                }
+            }
+        }
+        // ===== END FAVICON HELPER =====
+
+        // ===== REUSABLE SEO HELPER FUNCTIONS =====
+        function setMetaTag(selector, attr, value) {
+            let el = document.querySelector(selector);
+            if (el) {
+                el.setAttribute(attr, value);
+            }
         }
 
-        const username = getUsernameFromURL();
-        // ===== END =====
+        function setPropertyMeta(property, value) {
+            let el = document.querySelector(`meta[property="${property}"]`);
+            if (el) {
+                el.setAttribute("content", value);
+            }
+        }
+
+        function renderDescription(shopDescription) {
+            const container = document.getElementById("shopDescriptionContainer");
+            const textEl = document.getElementById("shopDescriptionText");
+            if (shopDescription && shopDescription.trim() !== "") {
+                textEl.textContent = shopDescription;
+                container.style.display = "block";
+            } else {
+                container.style.display = "none";
+            }
+        }
+
+        function updateSEO(shopData) {
+            const shopName = shopData.shopName || "Shop";
+            const shopDescriptionRaw = shopData.shopDescription || "";
+            const shopLogo = shopData.shopLogo || "https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png";
+            const shopBanner = shopData.shopBanner || shopLogo;
+            const currentUrl = window.location.href;
+
+            let metaDesc = "";
+            if (shopDescriptionRaw.trim() !== "") {
+                metaDesc = shopDescriptionRaw.trim();
+            } else {
+                metaDesc = `Browse products from ${shopName} on Ghoti Market.`;
+            }
+            if (metaDesc.length > 160) {
+                metaDesc = metaDesc.substring(0, 157) + "...";
+            }
+            setMetaTag("#metaDescription", "content", metaDesc);
+
+            let keywordsStr = shopName;
+            if (Array.isArray(shopData.shopKeywords) && shopData.shopKeywords.length > 0) {
+                keywordsStr = shopData.shopKeywords.join(", ");
+            }
+            setMetaTag("#metaKeywords", "content", keywordsStr);
+
+            setPropertyMeta("og:title", `${shopName} | Ghoti Market`);
+            setPropertyMeta("og:description", metaDesc);
+            setPropertyMeta("og:image", shopBanner);
+            setPropertyMeta("og:type", "website");
+            setPropertyMeta("og:url", currentUrl);
+
+            setMetaTag("meta[name='twitter:title']", "content", `${shopName} | Ghoti Market`);
+            setMetaTag("meta[name='twitter:description']", "content", metaDesc);
+            setMetaTag("meta[name='twitter:image']", "content", shopBanner);
+            setMetaTag("meta[name='twitter:card']", "content", "summary_large_image");
+
+            document.getElementById("metaTitle").innerText = `${shopName} | Ghoti Market`;
+            document.title = `${shopName} | Ghoti Market`;
+
+            const jsonLdScript = document.getElementById("jsonLdData");
+            if (jsonLdScript) {
+                const schemaData = {
+                    "@context": "https://schema.org",
+                    "@type": "LocalBusiness",
+                    "name": shopName,
+                    "description": metaDesc,
+                    "image": shopBanner,
+                    "url": currentUrl,
+                    "logo": shopLogo
+                };
+                if (shopData.sameAs) {
+                    schemaData.sameAs = shopData.sameAs;
+                }
+                jsonLdScript.textContent = JSON.stringify(schemaData, null, 2);
+            }
+        }
+        // ===== END SEO HELPERS =====
+
+        // ===== ROBUST URL PARSER FOR FALLBACKS =====
+        function parseTargetFromURL() {
+            try {
+                const search = window.location.search;
+                const urlParams = new URLSearchParams(search);
+
+                let usernameVal = urlParams.get("username");
+                if (usernameVal && usernameVal.trim() !== "") {
+                    let cleanU = decodeURIComponent(usernameVal.trim());
+                    if (cleanU.startsWith('@')) cleanU = cleanU.substring(1);
+                    return { type: "explicit_username", value: cleanU };
+                }
+
+                let atVal = urlParams.get("@");
+                if (atVal && atVal.trim() !== "") {
+                    let cleanU = decodeURIComponent(atVal.trim());
+                    if (cleanU.startsWith('@')) cleanU = cleanU.substring(1);
+                    return { type: "explicit_at", value: cleanU };
+                }
+
+                for (const [key, value] of urlParams.entries()) {
+                    let cleanKey = decodeURIComponent(key.trim());
+                    if (cleanKey && cleanKey !== 'fbclid' && cleanKey !== 'gclid' && !cleanKey.startsWith('utm_')) {
+                        if (cleanKey.startsWith('@')) {
+                            return { type: "encoded_at", value: cleanKey.substring(1) };
+                        }
+                        if (value === '' && !cleanKey.includes('=')) {
+                            let cleanVal = cleanKey.replace(/^@/, '');
+                            return { type: "raw_param", value: cleanVal };
+                        }
+                    }
+                }
+
+                if (search && search.length > 1) {
+                    const raw = decodeURIComponent(search.substring(1).split('&')[0].trim());
+                    if (raw && !raw.includes('=') && !raw.startsWith('fbclid') && !raw.startsWith('gclid') && !raw.startsWith('utm_')) {
+                        let cleanRaw = raw;
+                        if (cleanRaw.startsWith('@')) cleanRaw = cleanRaw.substring(1);
+                        return { type: "raw_value", value: cleanRaw };
+                    }
+                }
+
+                if (window.location.hash) {
+                    let hashVal = decodeURIComponent(window.location.hash.substring(1).trim());
+                    if (hashVal) {
+                        if (hashVal.startsWith('@')) hashVal = hashVal.substring(1);
+                        return { type: "hash_value", value: hashVal };
+                    }
+                }
+
+                return { type: null, value: null };
+            } catch (err) {
+                console.error("URL Parsing Error:", err);
+                return { type: null, value: null };
+            }
+        }
 
         let allProducts = [];
         let filteredProducts = [];
         let displayCount = 100;
 
         async function loadProfile() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const sellerId = urlParams.get("sellerId");
 
-    if (!username) {
-        document.getElementById("shopName").innerText = "Shop Not Found";
-        return;
-    }
+                let sId = null;
+                let d = null;
 
-    const userQuery = query(
-        collection(db, "users"),
-        where("username", "==", username),
-        limit(1)
-    );
+                // Priority 1: Direct sellerId Document Lookup (Primary & Reliable Method)
+                if (sellerId && sellerId.trim() !== "") {
+                    const cleanSellerId = decodeURIComponent(sellerId.trim());
+                    const userDocRef = doc(db, "users", cleanSellerId);
+                    const userDocSnap = await getDoc(userDocRef);
 
-    const userSnap = await getDocs(userQuery);
+                    if (userDocSnap.exists()) {
+                        sId = userDocSnap.id;
+                        d = userDocSnap.data();
+                    } else {
+                        console.warn("Shop Not Found for sellerId:", cleanSellerId);
+                    }
+                } 
+                // Priority 2: Fallback behavior if sellerId is not present
+                else {
+                    const target = parseTargetFromURL();
+                    if (target.type === "explicit_username" || target.type === "explicit_at" || target.type === "encoded_at") {
+                        const userQuery = query(
+                            collection(db, "users"),
+                            where("username", "==", target.value),
+                            limit(1)
+                        );
+                        const userSnap = await getDocs(userQuery);
+                        if (!userSnap.empty) {
+                            sId = userSnap.docs[0].id;
+                            d = userSnap.docs[0].data();
+                        }
+                    } else if (target.type && target.value) {
+                        const userDocRef = doc(db, "users", target.value);
+                        const userDocSnap = await getDoc(userDocRef);
+                        if (userDocSnap.exists()) {
+                            sId = userDocSnap.id;
+                            d = userDocSnap.data();
+                        } else {
+                            const userQuery = query(
+                                collection(db, "users"),
+                                where("username", "==", target.value),
+                                limit(1)
+                            );
+                            const userSnap = await getDocs(userQuery);
+                            if (!userSnap.empty) {
+                                sId = userSnap.docs[0].id;
+                                d = userSnap.docs[0].data();
+                            }
+                        }
+                    }
+                }
 
-    if (userSnap.empty) {
-        document.getElementById("shopName").innerText = "Shop Not Found";
-        return;
-    }
+                if (!sId || !d) {
+                    document.getElementById("shopName").innerText = "Shop Not Found";
+                    updateFavicons(null);
+                    return;
+                }
 
-    const docSnap = userSnap.docs[0];
-    const sId = docSnap.id;
-    const d = docSnap.data();
+                document.getElementById('shopName').innerText = d.shopName || "Unknown Shop";
 
-    document.getElementById('shopName').innerText = d.shopName;
-    document.getElementById('metaTitle').innerText = `${d.shopName} | Ghoti Market`;
+                if (d.shopLogo) {
+                    document.getElementById('shopLogoImg').src = d.shopLogo;
+                }
 
-    if (d.shopLogo)
-        document.getElementById('shopLogoImg').src = d.shopLogo;
+                if (d.shopBanner) {
+                    document.getElementById('shopBannerImg').src = d.shopBanner;
+                    document.getElementById('shopBannerImg').style.display = "block";
+                }
 
-    if (d.shopBanner) {
-        document.getElementById('shopBannerImg').src = d.shopBanner;
-        document.getElementById('shopBannerImg').style.display = "block";
-    }
+                if (d.verified) {
+                    document.getElementById('verifiedBadge').style.display = "flex";
+                }
 
-    if (d.verified)
-        document.getElementById('verifiedBadge').style.display = "flex";
+                renderDescription(d.shopDescription);
+                updateSEO(d);
+                updateFavicons(d.shopLogo);
 
-    const productQuery = query(
-        collection(db, "products"),
-        where("sellerId", "==", sId),
-        where("active", "==", true)
-    );
+                const productQuery = query(
+                    collection(db, "products"),
+                    where("sellerId", "==", sId),
+                    where("active", "==", true)
+                );
 
-    const productSnap = await getDocs(productQuery);
+                const productSnap = await getDocs(productQuery);
 
-    allProducts = productSnap.docs.map(doc => ({
-        id: doc.id,
-       ...doc.data()
-    }));
+                allProducts = productSnap.docs.map(productDoc => ({
+                    id: productDoc.id,
+                    ...productDoc.data()
+                }));
 
-    filteredProducts = allProducts;
-    render();
-}
+                filteredProducts = allProducts;
+                render();
+            } catch (error) {
+                console.error("Profile Load Error:", error);
+                document.getElementById("shopName").innerText = "Shop Not Found";
+                updateFavicons(null);
+            }
+        }
 
         window.handleSearch = () => {
             const term = document.getElementById('pSearch').value.toLowerCase().trim();
             filteredProducts = allProducts.filter(p =>
                 p.name?.toLowerCase().includes(term) ||
-                (Array.isArray(p.keywords)? p.keywords.some(k => k.toLowerCase().includes(term)) : p.keywords?.toLowerCase().includes(term))
+                (Array.isArray(p.keywords) ? p.keywords.some(k => k.toLowerCase().includes(term)) : p.keywords?.toLowerCase().includes(term))
             );
             displayCount = 100;
             render();
@@ -472,43 +772,46 @@ html, body {
             const btn = document.getElementById('seeMoreBtn');
             const dataToDisplay = filteredProducts.slice(0, displayCount);
 
-            grid.innerHTML = dataToDisplay.length? dataToDisplay.map(p => `
+            grid.innerHTML = dataToDisplay.length ? dataToDisplay.map(p => `
               <a href="${
-    p.slug
-       ? `https://ghotimarket.com/product?${p.slug}`
-        : `https://ghotimarket.com/product?id=${p.id}`
-}" class="p-card">
-                    <div class="img-box"><img src="${p.images?.[0] || ''}" alt="${p.name}"></div>
+                p.slug
+                   ? `https://ghotimarket.com/product?${p.slug}`
+                    : `https://ghotimarket.com/product?id=${p.id}`
+            }" class="p-card">
+                    <div class="img-box"><img src="${p.images?.[0] || ''}" alt="${p.name || ''}"></div>
                     <div class="p-info">
-                        <div class="p-name">${p.name}</div>
+                        <div class="p-name">${p.name || ''}</div>
                       <div class="price-box">
-    <span class="current-price">৳${p.price}</span>
+                        <span class="current-price">৳${p.price || 0}</span>
 
-    ${
-        p.oldPrice && Number(p.oldPrice) > Number(p.price)
-       ? `
-        <span class="old-price">৳${p.oldPrice}</span>
+                        ${
+                            p.oldPrice && Number(p.oldPrice) > Number(p.price)
+                           ? `
+                            <span class="old-price">৳${p.oldPrice}</span>
 
-        <span class="discount-badge">
-            ${Math.round(((p.oldPrice-p.price)/p.oldPrice)*100)}% OFF
-        </span>
+                            <span class="discount-badge">
+                                ${Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100)}% OFF
+                            </span>
 
-        <div class="save-text">
-            Save ৳${p.oldPrice-p.price}
-        </div>
-        `
-        : ""
-    }
-</div>
+                            <div class="save-text">
+                                Save ৳${p.oldPrice - p.price}
+                            </div>
+                            `
+                            : ""
+                        }
+                    </div>
 
                     </div>
                 </a>
             `).join('') : '<p style="text-align:center; grid-column:1/-1; padding:40px;">😔 কোনো পণ্য পাওয়া যায়নি!</p>';
 
-            btn.style.display = (displayCount < filteredProducts.length)? 'block' : 'none';
+            btn.style.display = (displayCount < filteredProducts.length) ? 'block' : 'none';
         }
 
         loadProfile();
     </script>
+<script>
+  lucide.createIcons();
+</script>
 </body>
 </html>
