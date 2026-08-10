@@ -1,7 +1,3 @@
-/**
- * GHOTI MARKET - Product Detail Page Script
- * Production Ready Architecture adhering to ES6 Modules, Error Handling & Universal Popups.
- */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, query, where, limit, getDocs, doc, getDoc, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -364,7 +360,13 @@ const renderProduct = (p) => {
 
     getEl("pName").innerText = name;
     getEl("pPrice").innerText = `৳ ${price}`;
-    getEl("pDesc").innerText = desc || 'কোন বিবরণ নেই';
+    const descriptionEl = getEl("pDesc");
+
+if (descriptionEl) {
+    const markdownHTML = marked.parse(desc || 'কোন বিবরণ নেই');
+
+    descriptionEl.innerHTML = DOMPurify.sanitize(markdownHTML);
+}
 
     const oldPrice = safeNumber(p.oldPrice);
     const oldPriceEl = getEl("oldPrice");
