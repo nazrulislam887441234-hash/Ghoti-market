@@ -451,3 +451,57 @@ h3#relatedTitle {
         font-size: 28px;
     }
 }
+#pDesc {
+    line-height: 1.8;
+    word-wrap: break-word;
+}
+
+#pDesc h1,
+#pDesc h2,
+#pDesc h3 {
+    margin: 18px 0 10px;
+    line-height: 1.4;
+}
+
+#pDesc p {
+    margin: 8px 0;
+}
+
+#pDesc ul,
+#pDesc ol {
+    padding-left: 25px;
+    margin: 10px 0;
+}
+
+#pDesc li {
+    margin: 5px 0;
+}
+
+#pDesc strong {
+    font-weight: 700;
+}
+
+#pDesc a {
+    text-decoration: underline;
+}
+
+#pDesc blockquote {
+    margin: 12px 0;
+    padding: 10px 15px;
+    border-left: 4px solid var(--accent);
+    background: #f5f7f9;
+}
+
+#pDesc code {
+    padding: 2px 5px;
+    border-radius: 4px;
+    background: #f1f1f1;
+}
+
+#pDesc pre {
+    padding: 12px;
+    overflow-x: auto;
+    border-radius: 8px;
+    background: #1e1e1e;
+    color: #fff;
+}
