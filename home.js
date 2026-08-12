@@ -76,14 +76,14 @@ async function loadData() {
         .catch(err => console.error("Categories Loading Error:", err))
         .finally(incrementProgress);
 
-    // 3. Fetch Products (Strict Limit: 10)
+    // 3. Fetch Products (Strict Limit: 12)
     const fetchProducts = getDocs(query(collection(db, "products"), orderBy("createdAt", "desc"), limit(12)))
         .then(prodSnap => renderProducts(prodSnap))
         .catch(err => console.error("Products Loading Error:", err))
         .finally(incrementProgress);
 
-    // 4. Fetch Users (Strict Limit: 20)
-    const fetchShops = getDocs(query(collection(db, "users"), limit(20)))
+    // 4. Fetch Users (Strict Limit: 8)
+    const fetchShops = getDocs(query(collection(db, "users"), limit(8)))
         .then(shopSnap => renderShopsData(shopSnap))
         .catch(err => console.error("Users/Shops Loading Error:", err))
         .finally(incrementProgress);
