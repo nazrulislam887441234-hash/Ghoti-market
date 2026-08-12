@@ -77,7 +77,7 @@ async function loadData() {
         .finally(incrementProgress);
 
     // 3. Fetch Products (Strict Limit: 10)
-    const fetchProducts = getDocs(query(collection(db, "products"), orderBy("createdAt", "desc"), limit(10)))
+    const fetchProducts = getDocs(query(collection(db, "products"), orderBy("createdAt", "desc"), limit(12)))
         .then(prodSnap => renderProducts(prodSnap))
         .catch(err => console.error("Products Loading Error:", err))
         .finally(incrementProgress);
