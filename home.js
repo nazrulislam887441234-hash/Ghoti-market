@@ -83,7 +83,7 @@ async function loadData() {
         .finally(incrementProgress);
 
     // 4. Fetch Users (Strict Limit: 8)
-    const fetchShops = getDocs(query(collection(db, "users"), limit(8)))
+    const fetchShops = getDocs(query(collection(db, "users"), limit(10)))
         .then(shopSnap => renderShopsData(shopSnap))
         .catch(err => console.error("Users/Shops Loading Error:", err))
         .finally(incrementProgress);
