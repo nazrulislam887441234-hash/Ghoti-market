@@ -2,7 +2,7 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>ক্যাটাগরি পণ্য | GHOTI MARKET</title>
     
     <!-- Fonts -->
@@ -21,7 +21,9 @@
             --white: #FFFFFF;
             --text-main: #1E293B;
             --text-muted: #64748B;
+            --text-sub: #64748B;
             --border: #E2E8F0;
+            --glass-border: #E2E8F0;
             --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
         }
 
@@ -35,12 +37,17 @@
         body {
             background-color: var(--bg);
             color: var(--text-main);
+            min-height: 100vh;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 15px;
+        }
+
+        main.container {
+            padding-bottom: calc(100px + env(safe-area-inset-bottom));
         }
 
         /* --- Header --- */
@@ -67,6 +74,7 @@
             color: var(--text-main);
             display: flex;
             align-items: center;
+            padding: 4px;
         }
 
         .category-title {
@@ -166,13 +174,44 @@
             overflow: hidden;
             min-height: 40px;
             color: var(--text-main);
+            word-break: break-word;
         }
 
-        .product-price {
-            color: var(--primary);
-            font-weight: 700;
+        .price-box {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+            margin: 6px 0;
+        }
+
+        .current-price {
             font-size: 17px;
-            margin-bottom: 6px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .old-price {
+            font-size: 13px;
+            color: #94A3B8;
+            text-decoration: line-through;
+        }
+
+        .discount-badge {
+            background: #EF4444;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 12px;
+        }
+
+        .save-text {
+            width: 100%;
+            margin-top: 2px;
+            color: #DC2626;
+            font-size: 12px;
+            font-weight: 600;
         }
 
         .shop-name {
@@ -200,7 +239,7 @@
             justify-content: center;
             background: #f1f5f9;
             color: var(--text-main);
-            transition: background 0.2s;
+            transition: background 0.2s, color 0.2s;
             border: 1px solid var(--border);
         }
 
@@ -224,14 +263,14 @@
         }
 
         .skeleton-card {
-            height: 320px;
+            height: 300px;
             border-radius: 12px;
         }
 
-        /* --- Load More --- */
+        /* --- Load More Container & Button --- */
         .load-more-container {
             text-align: center;
-            padding: 20px 0 40px;
+            padding: 10px 0 calc(30px + env(safe-area-inset-bottom));
         }
 
         .btn-more {
@@ -242,105 +281,95 @@
             border: none;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(22, 163, 74, 0.2);
         }
 
         .btn-more:hover {
             background: var(--primary-hover);
         }
 
-        /* --- Empty State --- */
+        .btn-more:active {
+            transform: scale(0.98);
+        }
+
+        /* --- Empty & Error States --- */
         .empty-state {
             text-align: center;
-            padding: 100px 20px;
-            display: none;
+            padding: 60px 20px calc(80px + env(safe-area-inset-bottom));
         }
 
         .empty-state i {
-            font-size: 50px;
+            width: 50px;
+            height: 50px;
             color: var(--text-muted);
             margin-bottom: 15px;
         }
 
-        .hidden { display: none; }
-/* --- Bottom Nav FIXED --- */
-.bottom-nav { 
-    position: fixed; 
-    bottom: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 70px; 
-    background: rgba(255,255,255,0.9); 
-    backdrop-filter: blur(15px); 
-    display: flex; 
-    justify-content: space-around; 
-    align-items: center; 
-    border-top: 1px solid var(--glass-border); 
-    z-index: 1000; 
-    padding-bottom: env(safe-area-inset-bottom); 
-}
+        .empty-state h3 {
+            font-size: 18px;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
 
-.nav-item { 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    text-decoration: none; 
-    color: var(--text-sub); 
-    font-size: 10px; 
-    font-weight: 800; 
-    transition: 0.3s; 
-    flex: 1; 
-}
+        .empty-state p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
 
-.nav-item i { 
-    font-size: 20px; 
-    margin-bottom: 4px; 
-    transition: 0.3s; 
-}
+        .hidden { 
+            display: none !important; 
+        }
 
-.nav-item.active { 
-    color: var(--primary); 
-}
+        /* --- Bottom Nav FIXED --- */
+        .bottom-nav { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            height: calc(65px + env(safe-area-inset-bottom)); 
+            background: rgba(255,255,255,0.95); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px);
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center; 
+            border-top: 1px solid var(--glass-border); 
+            z-index: 1000; 
+            padding-bottom: env(safe-area-inset-bottom); 
+        }
 
-.nav-item.active i { 
-    transform: translateY(-3px); 
-}
-.price-box{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:center;
-    gap:8px;
-    margin:8px 0;
-}
+        .nav-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            text-decoration: none; 
+            color: var(--text-sub); 
+            font-size: 10px; 
+            font-weight: 600; 
+            transition: 0.3s; 
+            flex: 1; 
+        }
 
-.current-price{
-    font-size:20px;
-    font-weight:700;
-    color:#16A34A;
-}
+        .nav-item i { 
+            width: 20px;
+            height: 20px;
+            margin-bottom: 4px; 
+            transition: 0.3s; 
+        }
 
-.old-price{
-    font-size:15px;
-    color:#94A3B8;
-    text-decoration:line-through;
-}
+        .nav-item.active { 
+            color: var(--primary); 
+        }
 
-.discount-badge{
-    background:#EF4444;
-    color:#fff;
-    font-size:12px;
-    font-weight:700;
-    padding:4px 8px;
-    border-radius:20px;
-}
-
-.save-text{
-    width:100%;
-    margin-top:6px;
-    color:#DC2626;
-    font-size:13px;
-    font-weight:600;
-}
+        .nav-item.active i { 
+            transform: translateY(-2px); 
+        }
     </style>
 </head>
 <body>
@@ -348,20 +377,20 @@
     <header>
         <div class="container">
             <div class="header-top">
-                <button class="back-btn" onclick="history.back()">
+                <button class="back-btn" onclick="history.back()" aria-label="Go Back">
                     <i data-lucide="arrow-left"></i>
                 </button>
                 <h1 class="category-title" id="page-title">ক্যাটাগরি</h1>
             </div>
             <div class="search-box">
                 <i data-lucide="search"></i>
-                <input type="text" id="product-search" placeholder="এই ক্যাটাগরিতে পণ্য খুঁজুন...">
+                <input type="text" id="product-search" placeholder="এই ক্যাটাগরিতে পণ্য খুঁজুন..." autocomplete="off">
             </div>
         </div>
     </header>
 
     <main class="container">
-        <!-- Skeleton Loading -->
+        <!-- Skeleton Loading Grid -->
         <div id="skeleton-grid" class="product-grid">
             <div class="skeleton skeleton-card"></div>
             <div class="skeleton skeleton-card"></div>
@@ -370,96 +399,236 @@
             <div class="skeleton skeleton-card"></div>
             <div class="skeleton skeleton-card"></div>
         </div>
-        <!-- Bottom Navigation -->
-<nav class="bottom-nav">
-    <a href="https://ghotimarket.com" class="nav-item active">
-        <i data-lucide="home"></i>
-        <span>Home</span>
-    </a>
 
-    <a href="https://ghotimarket.com/categories" class="nav-item">
-        <i data-lucide="grid"></i>
-        <span>Categories</span>
-    </a>
-
-    <a href="https://ghotimarket.com/all-product" class="nav-item">
-        <i data-lucide="box"></i>
-        <span>All product</span>
-    </a>
-
-    <a href="https://ghotimarket.com/contact" class="nav-item">
-        <i data-lucide="headphones"></i>
-        <span>Support</span>
-    </a>
-
-    <a href="https://ghotimarket.com/privacy-policy" class="nav-item">
-        <i data-lucide="shield-check"></i>
-        <span>Privacy</span>
-    </a>
-
-    <a href="https://seller.ghotimarket.com/signup" class="nav-item">
-        <i data-lucide="store"></i>
-        <span>J.Seller</span>
-    </a>
-</nav>
-        <!-- Product Container -->
+        <!-- Real Product Grid -->
         <div id="product-grid" class="product-grid hidden"></div>
 
-        <!-- Empty State -->
-        <div id="empty-state" class="empty-state">
+        <!-- Empty State (No Products Found in Category) -->
+        <div id="empty-state" class="empty-state hidden">
             <i data-lucide="shopping-bag"></i>
             <h3>এই ক্যাটাগরিতে এখনো কোনো পণ্য নেই</h3>
             <p>অন্য ক্যাটাগরি চেক করে দেখতে পারেন।</p>
         </div>
 
-        <!-- Pagination -->
+        <!-- Error State (Network / Firebase Query Error) -->
+        <div id="error-state" class="empty-state hidden">
+            <i data-lucide="wifi-off"></i>
+            <h3>পণ্য লোড করা যাচ্ছে না</h3>
+            <p>ইন্টারনেট সংযোগ বা সার্ভারের সমস্যার কারণে পণ্য লোড করা সম্ভব হয়নি।</p>
+            <button id="retry-btn" class="btn-more">আবার চেষ্টা করুন</button>
+        </div>
+
+        <!-- Pagination Load More -->
         <div id="load-more-container" class="load-more-container hidden">
             <button id="load-more-btn" class="btn-more">আরো দেখুন</button>
         </div>
     </main>
 
+    <!-- Fixed Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="https://ghotimarket.com" class="nav-item active">
+            <i data-lucide="home"></i>
+            <span>Home</span>
+        </a>
+
+        <a href="https://ghotimarket.com/categories" class="nav-item">
+            <i data-lucide="grid"></i>
+            <span>Categories</span>
+        </a>
+
+        <a href="https://ghotimarket.com/all-product" class="nav-item">
+            <i data-lucide="box"></i>
+            <span>All product</span>
+        </a>
+
+        <a href="https://ghotimarket.com/contact" class="nav-item">
+            <i data-lucide="headphones"></i>
+            <span>Support</span>
+        </a>
+
+        <a href="https://ghotimarket.com/privacy-policy" class="nav-item">
+            <i data-lucide="shield-check"></i>
+            <span>Privacy</span>
+        </a>
+
+        <a href="https://seller.ghotimarket.com/signup" class="nav-item">
+            <i data-lucide="store"></i>
+            <span>J.Seller</span>
+        </a>
+    </nav>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // --- Firebase Configuration ---
-        const firebaseConfig = { apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", authDomain: "ghotimarket.firebaseapp.com", projectId: "ghotimarket", storageBucket: "ghotimarket.firebasestorage.app", messagingSenderId: "481257644093", appId: "1:481257644093:web:0dfc3699d6b3c86afeca54" };
+        // --- Firebase Configuration (Unchanged) ---
+        const firebaseConfig = { 
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
+            authDomain: "ghotimarket.firebaseapp.com", 
+            projectId: "ghotimarket", 
+            storageBucket: "ghotimarket.firebasestorage.app", 
+            messagingSenderId: "481257644093", 
+            appId: "1:481257644093:web:0dfc3699d6b3c86afeca54" 
+        };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- Variables ---
-        const urlParams = new URLSearchParams(window.location.search);
-        const slug = urlParams.get('slug');
-        
-        let shuffledProducts = []; // র্যান্ডমাইজড লিস্ট
-        let displayedCount = 0;    // বর্তমানে কয়টি দেখানো হয়েছে
+        // --- Application State Constants ---
+        const STATES = {
+            LOADING: 'LOADING',
+            SUCCESS_WITH_PRODUCTS: 'SUCCESS_WITH_PRODUCTS',
+            SUCCESS_EMPTY: 'SUCCESS_EMPTY',
+            ERROR: 'ERROR'
+        };
+
+        // --- State Variables ---
+        let shuffledProducts = [];
+        let displayedCount = 0;
+        let isLoading = false;
         const PAGE_LIMIT = 20;
 
+        // --- DOM Elements ---
         const productGrid = document.getElementById('product-grid');
         const skeletonGrid = document.getElementById('skeleton-grid');
         const emptyState = document.getElementById('empty-state');
+        const errorState = document.getElementById('error-state');
+        const retryBtn = document.getElementById('retry-btn');
         const loadMoreBtn = document.getElementById('load-more-btn');
         const loadMoreContainer = document.getElementById('load-more-container');
         const pageTitle = document.getElementById('page-title');
         const searchInput = document.getElementById('product-search');
 
-        if (!slug) { window.location.href = 'index.html'; }
+        // --- Slug & Title Formatting ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const rawSlug = urlParams.get('slug');
+        const slug = rawSlug ? rawSlug.trim() : null;
 
-        // Set Page Title from Slug
-        pageTitle.innerText = slug.replace(/-/g, ' ');
-
-        // --- Fisher-Yates Shuffle Algorithm ---
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
+        if (!slug) { 
+            window.location.href = 'index.html'; 
         }
 
-        // --- Fetch & Randomize Products ---
+        // Set Clean Page Title
+        function formatTitle(str) {
+            if (!str) return 'ক্যাটাগরি';
+            return str
+                .split('-')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                .join(' ');
+        }
+        pageTitle.innerText = formatTitle(slug);
+
+        // --- Helper: XSS Security Escape ---
+        function escapeHTML(str) {
+            if (typeof str !== 'string') return '';
+            return str.replace(/[&<>"']/g, function(match) {
+                const map = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                };
+                return map[match];
+            });
+        }
+
+        // --- Helper: Consistent Product URL ---
+        function getProductUrl(product) {
+            if (product && product.slug) {
+                return `https://ghotimarket.com/product.html?${encodeURIComponent(product.slug)}`;
+            }
+            return `https://ghotimarket.com/product.html?id=${encodeURIComponent(product.id || '')}`;
+        }
+
+        // --- Helper: UI State Manager ---
+        function setUIState(state) {
+            skeletonGrid.classList.add('hidden');
+            productGrid.classList.add('hidden');
+            emptyState.classList.add('hidden');
+            errorState.classList.add('hidden');
+            loadMoreContainer.classList.add('hidden');
+
+            switch (state) {
+                case STATES.LOADING:
+                    skeletonGrid.classList.remove('hidden');
+                    break;
+                case STATES.SUCCESS_WITH_PRODUCTS:
+                    productGrid.classList.remove('hidden');
+                    if (displayedCount < shuffledProducts.length && searchInput.value.trim() === '') {
+                        loadMoreContainer.classList.remove('hidden');
+                    }
+                    break;
+                case STATES.SUCCESS_EMPTY:
+                    emptyState.classList.remove('hidden');
+                    break;
+                case STATES.ERROR:
+                    errorState.classList.remove('hidden');
+                    break;
+            }
+        }
+
+        // --- Fisher-Yates Shuffle ---
+        function shuffle(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // --- Helper: Create Product Card DOM Element ---
+        function createProductCard(product) {
+            const safeName = escapeHTML(product.name || 'Unnamed Product');
+            const safeShopName = escapeHTML(product.shopName || 'Ghoti Shop');
+            const price = Number(product.price) || 0;
+            const oldPrice = Number(product.oldPrice) || 0;
+            const images = Array.isArray(product.images) ? product.images : [];
+            const firstImg = images.length > 0 && typeof images[0] === 'string' ? escapeHTML(images[0]) : 'https://via.placeholder.com/300';
+            const cardUrl = getProductUrl(product);
+
+            let priceBoxHTML = `<span class="current-price">৳ ${price}</span>`;
+            
+            if (oldPrice > price && oldPrice > 0 && price >= 0) {
+                const discountPercent = Math.round(((oldPrice - price) / oldPrice) * 100);
+                const saveAmount = oldPrice - price;
+                if (discountPercent > 0 && discountPercent < 100) {
+                    priceBoxHTML += `
+                        <span class="old-price">৳ ${oldPrice}</span>
+                        <span class="discount-badge">${discountPercent}% OFF</span>
+                        <div class="save-text">Save ৳${saveAmount}</div>
+                    `;
+                }
+            }
+
+            const card = document.createElement('a');
+            card.href = cardUrl;
+            card.className = 'product-card';
+            card.innerHTML = `
+                <img src="${firstImg}" class="product-img" alt="${safeName}" loading="lazy" onerror="this.onerror=null;this.src='https://via.placeholder.com/300?text=No+Image';">
+                <div class="product-info">
+                    <h3 class="product-name">${safeName}</h3>
+                    <div class="price-box">${priceBoxHTML}</div>
+                    <p class="shop-name"><i data-lucide="store" style="width:12px; height:12px;"></i> ${safeShopName}</p>
+                    <div class="card-buttons">
+                        <span class="btn-view">বিস্তারিত</span>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        // --- Fetch & Initialize Data ---
         async function fetchAndInitialize() {
+            if (isLoading) return;
+            isLoading = true;
+
+            setUIState(STATES.LOADING);
+            productGrid.innerHTML = '';
+            shuffledProducts = [];
+            displayedCount = 0;
+
             try {
                 const q = query(
                     collection(db, "products"),
@@ -468,162 +637,113 @@
                 );
 
                 const querySnapshot = await getDocs(q);
-                
+
                 if (querySnapshot.empty) {
-                    skeletonGrid.classList.add('hidden');
-                    emptyState.style.display = 'block';
+                    setUIState(STATES.SUCCESS_EMPTY);
+                    isLoading = false;
                     return;
                 }
 
                 let tempProducts = [];
                 querySnapshot.forEach((doc) => {
-                    tempProducts.push({ id: doc.id, ...doc.data() });
+                    const data = doc.data();
+                    if (data) {
+                        tempProducts.push({ id: doc.id, ...data });
+                    }
                 });
 
-                // জাভাস্ক্রিপ্ট দিয়ে র্যান্ডম শাফেল
-                shuffledProducts = shuffle(tempProducts);
-
-                // প্রথম ব্যাচ রেন্ডার করা
-                renderBatch();
-
-                skeletonGrid.classList.add('hidden');
-                productGrid.classList.remove('hidden');
+                if (tempProducts.length === 0) {
+                    setUIState(STATES.SUCCESS_EMPTY);
+                } else {
+                    shuffledProducts = shuffle(tempProducts);
+                    renderBatch();
+                }
 
             } catch (error) {
-                console.error("Error fetching products: ", error);
+                console.error("Error fetching products from Firestore:", error);
+                setUIState(STATES.ERROR);
+            } finally {
+                isLoading = false;
             }
         }
 
-        // --- Render Batch (Pagination) ---
+        // --- Render Batch (Optimized with DocumentFragment) ---
         function renderBatch() {
             const nextBatch = shuffledProducts.slice(displayedCount, displayedCount + PAGE_LIMIT);
-            
-            nextBatch.forEach(product => {
-                const firstImg = product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/300';
-                
-                const card = document.createElement('a');
-                card.href = product.slug
-    ? `https://ghotimarket.com/product.html?${product.slug}`
-    : `https://ghotimarket.com/product.html?id=${product.id}`;
-                card.className = 'product-card';
-                card.innerHTML = `
-                    <img src="${firstImg}" class="product-img" alt="${product.name}" loading="lazy">
-                    <div class="product-info">
-                        <h3 class="product-name">${product.name}</h3>
-                        <div class="price-box">
-    <span class="current-price">৳ ${product.price}</span>
+            if (nextBatch.length === 0) return;
 
-    ${
-        product.oldPrice && product.oldPrice > product.price
-        ? `
-        <span class="old-price">৳ ${product.oldPrice}</span>
-        <span class="discount-badge">
-            ${Math.round(((product.oldPrice-product.price)/product.oldPrice)*100)}% OFF
-        </span>
-        <div class="save-text">
-            Save ৳${product.oldPrice-product.price}
-        </div>
-        `
-        : ""
-    }
-</div>
-                        <p class="shop-name"><i data-lucide="store" style="width:12px"></i> ${product.shopName || 'Ghoti Shop'}</p>
-                        <div class="card-buttons">
-                            <span class="btn-view">বিস্তারিত</span>
-                        </div>
-                    </div>
-                `;
-                productGrid.appendChild(card);
+            const fragment = document.createDocumentFragment();
+            nextBatch.forEach(product => {
+                fragment.appendChild(createProductCard(product));
             });
 
+            productGrid.appendChild(fragment);
             displayedCount += nextBatch.length;
 
-            // See More বাটন প্রদর্শন লজিক
-            if (displayedCount < shuffledProducts.length) {
-                loadMoreContainer.classList.remove('hidden');
-            } else {
-                loadMoreContainer.classList.add('hidden');
-            }
-            
+            setUIState(STATES.SUCCESS_WITH_PRODUCTS);
             lucide.createIcons();
         }
 
-        // --- Search Logic (Searching from Random List) ---
+        // --- Search Functionality ---
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase().trim();
-            
+
+            if (shuffledProducts.length === 0) return;
+
             if (term === '') {
-                // সার্চ খালি থাকলে বর্তমান ব্যাচ পর্যন্ত শাফেলড ডেটা দেখানো
+                // Restore regular paginated view
                 productGrid.innerHTML = '';
+                const fragment = document.createDocumentFragment();
                 const currentView = shuffledProducts.slice(0, displayedCount);
-                renderSpecificList(currentView);
-                if (displayedCount < shuffledProducts.length) loadMoreContainer.classList.remove('hidden');
+                currentView.forEach(product => {
+                    fragment.appendChild(createProductCard(product));
+                });
+                productGrid.appendChild(fragment);
+                
+                setUIState(STATES.SUCCESS_WITH_PRODUCTS);
+                lucide.createIcons();
                 return;
             }
 
-            const filtered = shuffledProducts.filter(p => 
-                p.name.toLowerCase().includes(term) || 
-                (p.keywords && p.keywords.some(k => k.toLowerCase().includes(term)))
-            );
+            // Filter by product name & keywords safely
+            const filtered = shuffledProducts.filter(p => {
+                const name = String(p.name || '').toLowerCase();
+                const keywords = Array.isArray(p.keywords) 
+                    ? p.keywords.map(k => String(k).toLowerCase()) 
+                    : [];
+                return name.includes(term) || keywords.some(k => k.includes(term));
+            });
 
             productGrid.innerHTML = '';
+            
             if (filtered.length === 0) {
-                emptyState.style.display = 'block';
+                skeletonGrid.classList.add('hidden');
+                productGrid.classList.add('hidden');
                 loadMoreContainer.classList.add('hidden');
+                errorState.classList.add('hidden');
+                emptyState.classList.remove('hidden');
             } else {
-                emptyState.style.display = 'none';
-                loadMoreContainer.classList.add('hidden'); // সার্চ চলাকালীন পেজিনেশন বন্ধ
-                renderSpecificList(filtered);
+                emptyState.classList.add('hidden');
+                errorState.classList.add('hidden');
+                skeletonGrid.classList.add('hidden');
+                productGrid.classList.remove('hidden');
+                loadMoreContainer.classList.add('hidden'); // Hide load more while searching
+
+                const fragment = document.createDocumentFragment();
+                filtered.forEach(p => fragment.appendChild(createProductCard(p)));
+                productGrid.appendChild(fragment);
             }
+            
+            lucide.createIcons();
         });
 
-        function renderSpecificList(list) {
-            list.forEach(product => {
-                const firstImg = product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/300';
-                const card = document.createElement('a');
-                card.href = product.slug
-    ? `https://ghotimarket.com/product?${product.slug}`
-    : `https://ghotimarket.com/product?id=${product.id}`;
-                card.className = 'product-card';
-                card.innerHTML = `
-                    <img src="${firstImg}" class="product-img" alt="${product.name}" loading="lazy">
-                    <div class="product-info">
-                        <h3 class="product-name">${product.name}</h3>
-                       <div class="price-box">
-    <span class="current-price">৳ ${product.price}</span>
-
-    ${
-        product.oldPrice && product.oldPrice > product.price
-        ? `
-        <span class="old-price">৳ ${product.oldPrice}</span>
-        <span class="discount-badge">
-            ${Math.round(((product.oldPrice-product.price)/product.oldPrice)*100)}% OFF
-        </span>
-        <div class="save-text">
-            Save ৳${product.oldPrice-product.price}
-        </div>
-        `
-        : ""
-    }
-</div>
-                        <p class="shop-name"><i data-lucide="store" style="width:12px"></i> ${product.shopName || 'Ghoti Shop'}</p>
-                        <div class="card-buttons">
-                            <span class="btn-view">বিস্তারিত</span>
-                        </div>
-                    </div>
-                `;
-                productGrid.appendChild(card);
-            });
-            lucide.createIcons();
-        }
-
-        // --- Events ---
+        // --- Event Listeners ---
         loadMoreBtn.addEventListener('click', renderBatch);
-        
-        // Start initialization
+        retryBtn.addEventListener('click', fetchAndInitialize);
+
+        // Initial Load
         fetchAndInitialize();
         lucide.createIcons();
-
     </script>
 </body>
 </html>
