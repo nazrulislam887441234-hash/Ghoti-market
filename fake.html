@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="metaTitle">Seller Profile Manager | Ghoti Market</title>
+    
+    <!-- SEO & META TAGS -->
+    <meta name="description" id="metaDescription" content="Browse products on Ghoti Market.">
+    <meta name="keywords" id="metaKeywords" content="ghoti market, online shop">
+    
+    <!-- Open Graph SEO -->
+    <meta property="og:title" id="ogTitle" content="Seller Profile | Ghoti Market">
+    <meta property="og:description" id="ogDescription" content="Browse products on Ghoti Market.">
+    <meta property="og:image" id="ogImage" content="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
+    <meta property="og:type" id="ogType" content="website">
+    <meta property="og:url" id="ogUrl" content="">
+
+    <!-- FAVICON + THEME COLOR ORANGE -->
+    <link rel="icon" type="image/png" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
+    <link rel="shortcut icon" type="image/png" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
+    <meta name="theme-color" content="#f97316">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700;800&display=swap');
+        :root { 
+            --primary: #0f172a; 
+            --bg: #f8fafc; 
+            --accent: #f97316; 
+            --accent2: #fb923c;
+            --danger: #ef4444; 
+            --success: #16a34a;
+            --glass: rgba(255,255,255,0.85);
+        }
+        * { box-sizing: border-box; }
+        html, body { 
+            font-family: 'Hind Siliguri', sans-serif; 
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); 
+            margin: 0; 
+            padding: 0; 
+            overflow-x: hidden; 
+            width: 100%;
+            padding-bottom: 90px; 
+        }
+
+        /* ADMIN MODE TOP HEADER */
+        .admin-mode-header {
+            background: #0f172a;
+            color: white;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            border-bottom: 2px solid var(--accent);
+            position: sticky;
+            top: 0;
+            z-index: 1001;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .admin-badge-info { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+        .logout-btn-sm {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 12px;
+            font-family: 'Hind Siliguri';
+        }
+
+        .native-bar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(25px) saturate(180%);
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            width: 100%;
+        }
+        .back-btn { 
+            background: rgba(255,255,255,0.1); 
+            color: white; 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            text-decoration: none; 
+            font-size: 18px; 
+            transition: 0.3s;
+        }
+
+        .profile-container { 
+            position: relative; 
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            border-radius: 0 0 25px 25px; 
+            overflow: hidden; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08); 
+            padding-bottom: 20px; 
+            border: 1px solid rgba(255,255,255,0.5);
+            width: 100%;
+        }
+        .banner-box { 
+            position: relative; 
+            width: 100%; 
+            padding-top: 56.25%; 
+            background: linear-gradient(135deg, #e2e8f0, #cbd5e1); 
+        }
+        .banner-box img { 
+            position: absolute; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            object-fit: cover; 
+            display: none; 
+        }
+                
+        .profile-info-box { text-align: center; padding: 15px 15px 0; margin-top:-45px; position:relative; z-index:2; }
+        .shop-icon { 
+            width: 90px; height: 90px; 
+            background: white; 
+            border-radius: 50%; 
+            margin: 0 auto 12px; 
+            display: flex; align-items: center; justify-content: center; 
+            border: 4px solid white; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
+            overflow: hidden; 
+        }
+        .shop-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        .shop-name-area { 
+            display: flex; align-items: center; justify-content: center; gap: 8px; padding:0 10px; 
+        }
+        .shop-name-area h1 { 
+            font-size: 20px; margin: 0; font-weight:800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            word-break: break-word; 
+        }
+        .verified-badge {
+            width: 22px; height: 22px; background: #1877F2; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; flex-shrink:0;
+            box-shadow: 0 3px 10px rgba(24,119,242,0.4);
+        }
+        .verified-badge svg { width: 12px; height: 12px; }
+
+        .edit-profile-btn {
+            margin: 12px auto 0;
+            background: linear-gradient(135deg, var(--primary), #1e293b);
+            color: white;
+            border: 1px solid var(--accent);
+            padding: 8px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: 0.2s;
+            font-family: 'Hind Siliguri';
+        }
+        .edit-profile-btn:active { transform: scale(0.95); }
+
+        /* ADMIN PANEL CONTROLS */
+        .admin-panel {
+            max-width: 1400px;
+            margin: 15px auto;
+            padding: 0 12px;
+        }
+        .admin-card-box {
+            background: white;
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f0;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        @media(min-width: 768px) { .stats-grid { grid-template-columns: repeat(5, 1fr); } }
+        
+        .stat-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .stat-item .lbl { font-size: 11px; color: #64748b; font-weight: 600; }
+        .stat-item .val { font-size: 15px; color: var(--primary); font-weight: 800; margin-top: 2px; word-break: break-all; }
+
+        .toolbar-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .action-group { display: flex; flex-wrap: wrap; gap: 8px; }
+        
+        .btn-tool {
+            padding: 9px 14px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Hind Siliguri';
+            transition: 0.2s;
+        }
+        .btn-tool:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-tool:active:not(:disabled) { transform: scale(0.95); }
+        .btn-accent { background: var(--accent); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-secondary { background: #e2e8f0; color: #334155; }
+        .btn-outline { background: white; border: 1px solid #cbd5e1; color: #334155; }
+
+        .filter-select {
+            padding: 9px 12px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            font-size: 13px;
+            font-family: 'Hind Siliguri';
+            font-weight: 600;
+            outline: none;
+            background: white;
+        }
+
+        .shop-description-section { max-width: 800px; margin: 15px auto 0; padding: 0 15px; }
+        .shop-description-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-left: 4px solid var(--accent);
+            border-radius: 12px; padding: 14px 18px;
+            font-size: 14px; color: #334155; line-height: 1.6;
+            white-space: pre-line; word-break: break-word;
+        }
+
+        .search-area { padding: 15px; position: sticky; top: 50px; z-index: 99; background: var(--bg); }
+        .search-bar { 
+            width: 100%; max-width: 800px; margin: 0 auto; display: block; 
+            padding: 12px 20px; border-radius: 50px; border: 2px solid #e2e8f0; 
+            outline: none; font-size: 15px; font-family:'Hind Siliguri'; background:white;
+        }
+        .search-bar:focus { border-color: var(--accent); }
+
+        .grid { 
+            display: grid; gap: 12px; padding: 12px; 
+            grid-template-columns: repeat(2, 1fr); max-width: 1400px; margin: 0 auto; width: 100%;
+        }
+        @media (min-width: 600px) { .grid { grid-template-columns: repeat(4, 1fr); gap:15px; padding:15px; } }
+        @media (min-width: 900px) { .grid { grid-template-columns: repeat(6, 1fr); gap:20px; padding:20px; } }
+
+        .p-card { 
+            background: white; border-radius: 16px; overflow: hidden; 
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06); text-decoration: none; color: #333; 
+            border:2px solid #f1f5f9; position: relative; transition: 0.2s;
+            display: flex; flex-direction: column;
+        }
+        .p-card.selected-card {
+            border-color: var(--accent) !important;
+            background: #fff7ed !important;
+        }
+        
+        .p-card-checkbox {
+            position: absolute;
+            top: 8px; left: 8px;
+            z-index: 10;
+            width: 22px; height: 22px;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+        .selected-indicator {
+            position: absolute;
+            top: 8px; right: 8px;
+            z-index: 10;
+            background: var(--accent);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .img-box { position: relative; padding-top: 100%; background: #f8fafc; overflow:hidden; }
+        .img-box img { position: absolute; top: 0; width: 100%; height: 100%; object-fit: cover; }
+        .p-info { padding: 10px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .p-name { font-size: 13px; font-weight: 600; height: 36px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 5px; }
+
+        .seller-id-tag {
+            font-size: 11px;
+            background: #f1f5f9;
+            color: #475569;
+            padding: 4px 6px;
+            border-radius: 6px;
+            margin-top: 6px;
+            word-break: break-all;
+            font-family: monospace;
+        }
+
+        .price-box { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:6px; }
+        .current-price { color:#16A34A; font-size:16px; font-weight:700; }
+        .old-price { color:#94A3B8; text-decoration:line-through; font-size:13px; }
+
+        /* MODALS */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+        .modal-box {
+            background: white;
+            width: 100%;
+            max-width: 480px;
+            border-radius: 20px;
+            padding: 22px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .modal-header { font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .modal-body { font-size: 14px; color: #334155; margin-bottom: 20px; line-height: 1.5; }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 10px; }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Hind Siliguri';
+            margin-top: 6px;
+            outline: none;
+        }
+        .form-input:focus { border-color: var(--accent); }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0 8px;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 60px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(25px);
+            display: flex; justify-content: space-around; align-items: center;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.08); z-index: 999;
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #64748b; font-size: 10px; font-weight: 600; }
+        .nav-item i { font-size: 18px; margin-bottom: 2px; }
+    </style>
+</head>
+<body>
+
+    <!-- ADMIN LOGGED IN HEADER -->
+    <div id="adminModeHeader" class="admin-mode-header" style="display: none;">
+        <div class="admin-badge-info">
+            <span>🛡️ ADMIN MODE</span>
+            <span style="opacity:0.6;">|</span>
+            <span id="adminEmailTxt" style="font-size:11px; font-weight:normal;"></span>
+        </div>
+        <button class="logout-btn-sm" onclick="handleLogout()">Logout</button>
+    </div>
+
+    <div class="native-bar">
+        <a href="https://ghotimarket.com" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    </div>
+
+    <div class="profile-container">
+        <div class="banner-box"><img id="shopBannerImg" src="" alt="Banner"></div>
+        <div class="profile-info-box">
+            <div class="shop-icon">
+                <img id="shopLogoImg" src="" alt="Logo">
+            </div>
+            <div class="shop-name-area">
+                <h1 id="shopName">Loading Profile...</h1>
+                <div id="verifiedBadge" class="verified-badge" style="display:none;" title="Verified Shop">
+                    <svg viewBox="0 0 24 24" fill="white">
+                        <path d="M9.1 13.8l-2.3-2.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l3 3c.2.2.5.3.7.3.2 0 .5-.1.7-.3l5.8-5.8c.4-.4.4-1 0-1.4-.4-.4-1-.4-1.4 0L9.1 13.8z"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- ADMIN EDIT / MANAGE BUTTON -->
+            <div>
+                <button class="edit-profile-btn" onclick="openLoginModal()">
+                    ✏️ Edit / Manage Products
+                </button>
+            </div>
+        </div>
+        <div id="shopDescriptionContainer" class="shop-description-section" style="display: none;">
+            <div id="shopDescriptionText" class="shop-description-card"></div>
+        </div>
+    </div>
+
+    <!-- ADMIN CONTROL PANEL (Shown when logged in) -->
+    <div id="adminControlPanel" class="admin-panel" style="display: none;">
+        <div class="admin-card-box">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="lbl">Current Seller</div>
+                    <div class="val" id="statSellerUid" style="font-size:11px;">-</div>
+                </div>
+                <div class="stat-item">
+                    <div class="lbl">Total Products</div>
+                    <div class="val" id="statTotalProds">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="lbl">Selected</div>
+                    <div class="val" id="statSelectedProds" style="color:var(--accent);">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="lbl">With Seller ID</div>
+                    <div class="val" id="statWithSellerId">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="lbl">Missing Seller ID</div>
+                    <div class="val" id="statMissingSellerId" style="color:var(--danger);">0</div>
+                </div>
+            </div>
+
+            <div class="toolbar-actions">
+                <div class="action-group">
+                    <button class="btn-tool btn-outline" onclick="selectAllFiltered()">☑ Select All</button>
+                    <button class="btn-tool btn-outline" onclick="deselectAll()">☐ Deselect All</button>
+                    <button class="btn-tool btn-secondary" onclick="refreshData()">🔄 Refresh</button>
+                    
+                    <select class="filter-select" id="filterOption" onchange="handleFilterChange()">
+                        <option value="all">Filter: All Products</option>
+                        <option value="with_id">With Seller ID</option>
+                        <option value="without_id">Without Seller ID</option>
+                        <option value="selected">Selected</option>
+                    </select>
+                </div>
+
+                <div class="action-group">
+                    <button class="btn-tool btn-accent" onclick="openChangeSellerModal()">🔄 Change Seller ID</button>
+                    <button class="btn-tool btn-danger" onclick="openDeleteModal()">🗑️ Delete Selected</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="search-area">
+        <input type="text" id="pSearch" class="search-bar" placeholder="পণ্য খুঁজুন..." oninput="handleSearch()">
+    </div>
+
+    <div class="grid" id="sellerProductGrid"></div>
+
+    <nav class="bottom-nav">
+        <a href="https://ghotimarket.com" class="nav-item"><i data-lucide="home"></i><span>Home</span></a>
+        <a href="https://ghotimarket.com/categories" class="nav-item"><i data-lucide="grid"></i><span>Categories</span></a>
+        <a href="https://ghotimarket.com/all-product" class="nav-item"><i data-lucide="box"></i><span>All product</span></a>
+        <a href="https://ghotimarket.com/contact" class="nav-item"><i data-lucide="headphones"></i><span>Support</span></a>
+    </nav>
+
+    <!-- 1. LOGIN MODAL -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">🔒 Admin Authentication</div>
+            <div class="modal-body">
+                <label style="font-size:12px; font-weight:700;">Admin Email</label>
+                <input type="email" id="adminEmailInput" class="form-input" value="support@ghotimarket.com" readonly style="background:#f1f5f9;">
+                
+                <div style="margin-top:12px;">
+                    <label style="font-size:12px; font-weight:700;">Password</label>
+                    <input type="password" id="adminPasswordInput" class="form-input" placeholder="Enter Admin Password">
+                </div>
+                <div id="loginErrorMsg" style="color:var(--danger); font-size:12px; margin-top:8px; font-weight:600;"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-tool btn-secondary" onclick="closeModal('loginModal')">Cancel</button>
+                <button class="btn-tool btn-accent" onclick="handleLogin()">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. CHANGE SELLER ID MODAL -->
+    <div id="changeSellerModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">🔄 Change Seller ID</div>
+            <div class="modal-body">
+                <p style="margin:0 0 10px 0; font-weight:600;">Selected Products: <span id="changeSelCount" style="color:var(--accent);">0</span></p>
+                
+                <label style="font-size:12px; font-weight:700;">New Seller Firebase Auth UID</label>
+                <input type="text" id="newSellerUidInput" class="form-input" placeholder="New Seller Firebase Auth UID" oninput="handleUidInputChange()">
+
+                <div id="sellerInputError" style="color:var(--danger); font-size:12px; margin-top:8px; font-weight:600; display:none;"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-tool btn-secondary" onclick="closeModal('changeSellerModal')">Cancel</button>
+                <button id="btnProceedTransfer" class="btn-tool btn-accent" disabled onclick="confirmChangeSeller()">Change Seller ID</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. CONFIRM TRANSFER WARNING MODAL -->
+    <div id="confirmTransferModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header" style="color:var(--accent);">⚠️ Confirm Seller Transfer</div>
+            <div class="modal-body">
+                <p>You are about to change the <b>sellerId</b> of: <b id="confirmProdCount">0</b> products.</p>
+                <p style="font-size:12px; background:#f1f5f9; padding:8px; border-radius:8px; font-family:monospace;">
+                    FROM: <span id="confirmOldUid"></span><br>
+                    TO: <span id="confirmNewUid" style="color:var(--accent); font-weight:bold;"></span>
+                </p>
+                <p style="font-size:12px; color:#64748b;">Product documents will NOT be deleted. Only the <b>sellerId</b> field will be updated.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-tool btn-secondary" onclick="closeModal('confirmTransferModal')">Cancel</button>
+                <button class="btn-tool btn-accent" onclick="executeBulkTransfer()">Confirm Transfer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. DELETE CONFIRMATION MODAL -->
+    <div id="deleteConfirmModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header" style="color:var(--danger);">⚠️ PERMANENT DELETE</div>
+            <div class="modal-body">
+                <p>You selected <b id="deleteProdCount" style="color:var(--danger);">0</b> products.</p>
+                <p style="color:var(--danger); font-weight:bold;">These product documents will be permanently deleted from Firestore. This action cannot be undone.</p>
+                <p>Are you absolutely sure?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-tool btn-secondary" onclick="closeModal('deleteConfirmModal')">Cancel</button>
+                <button class="btn-tool btn-danger" onclick="executeBulkDelete()">DELETE PRODUCTS</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. PROGRESS MODAL -->
+    <div id="progressModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header" id="progressTitle">Processing...</div>
+            <div class="modal-body" style="text-align:center;">
+                <div id="progressStatusTxt" style="font-weight:700; margin-bottom:5px;">Please wait...</div>
+                <div class="progress-bar-bg">
+                    <div id="progressBarFill" class="progress-bar-fill"></div>
+                </div>
+                <div id="progressPercentTxt" style="font-size:12px; color:#64748b;">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. RESULT MODAL -->
+    <div id="resultModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header" id="resultTitle">Operation Completed</div>
+            <div class="modal-body" id="resultBody"></div>
+            <div class="modal-footer">
+                <button class="btn-tool btn-accent" onclick="closeModal('resultModal'); refreshData();">OK</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            signOut, 
+            onAuthStateChanged 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            doc, 
+            getDoc, 
+            getDocs, 
+            collection, 
+            query, 
+            where, 
+            updateDoc, 
+            deleteDoc, 
+            writeBatch 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // =========================================================================
+        // 1. HARDCODED TEST SELLER UID (আপনার প্রয়োজন অনুযায়ী পরিবর্তন করুন)
+        // =========================================================================
+        const TEST_SELLER_UID = "AaC2JTxXauh1AEn9hQJgXLLn2lp2"; 
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+          authDomain: "ghotimarket.firebaseapp.com",
+          databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+          projectId: "ghotimarket",
+          storageBucket: "ghotimarket.firebasestorage.app",
+          messagingSenderId: "481257644093",
+          appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+          measurementId: "G-4SR8V2EKC1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const FALLBACK_LOGO = "https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png";
+        const ADMIN_EMAIL = "support@ghotimarket.com";
+
+        // Global States
+        let isAdminMode = false;
+        let allProducts = [];
+        let filteredProducts = [];
+        let selectedProductIds = new Set();
+        let pendingNewSellerUid = "";
+
+        // Make functions globally available
+        window.openLoginModal = openLoginModal;
+        window.closeModal = closeModal;
+        window.handleLogin = handleLogin;
+        window.handleLogout = handleLogout;
+        window.selectAllFiltered = selectAllFiltered;
+        window.deselectAll = deselectAll;
+        window.handleSearch = handleSearch;
+        window.handleFilterChange = handleFilterChange;
+        window.toggleSelectProduct = toggleSelectProduct;
+        window.openChangeSellerModal = openChangeSellerModal;
+        window.handleUidInputChange = handleUidInputChange;
+        window.confirmChangeSeller = confirmChangeSeller;
+        window.executeBulkTransfer = executeBulkTransfer;
+        window.openDeleteModal = openDeleteModal;
+        window.executeBulkDelete = executeBulkDelete;
+        window.refreshData = refreshData;
+
+        // Auth Observer
+        onAuthStateChanged(auth, (user) => {
+            if (user && user.email === ADMIN_EMAIL) {
+                isAdminMode = true;
+                document.getElementById('adminModeHeader').style.display = 'flex';
+                document.getElementById('adminControlPanel').style.display = 'block';
+                document.getElementById('adminEmailTxt').innerText = user.email;
+            } else {
+                isAdminMode = false;
+                document.getElementById('adminModeHeader').style.display = 'none';
+                document.getElementById('adminControlPanel').style.display = 'none';
+                selectedProductIds.clear();
+            }
+            renderGrid();
+            updateStatsUI();
+        });
+
+        // Load Seller Profile & Products
+        async function loadProfileAndProducts() {
+            try {
+                let sellerData = null;
+                // Fetch seller profile from users/{TEST_SELLER_UID}
+                const userDocRef = doc(db, "users", TEST_SELLER_UID);
+                const userSnap = await getDoc(userDocRef);
+
+                if (userSnap.exists()) {
+                    sellerData = userSnap.data();
+                } else {
+                    // Fallback lookup
+                    const q = query(collection(db, "users"), where("uid", "==", TEST_SELLER_UID));
+                    const qSnap = await getDocs(q);
+                    if (!qSnap.empty) {
+                        sellerData = qSnap.docs[0].data();
+                    }
+                }
+
+                if (sellerData) {
+                    document.getElementById('shopName').innerText = sellerData.shopName || "Unknown Shop";
+                    document.getElementById('shopLogoImg').src = sellerData.shopLogo || FALLBACK_LOGO;
+                    if (sellerData.shopBanner) {
+                        document.getElementById('shopBannerImg').src = sellerData.shopBanner;
+                        document.getElementById('shopBannerImg').style.display = 'block';
+                    }
+                    if (sellerData.verified) {
+                        document.getElementById('verifiedBadge').style.display = 'flex';
+                    }
+                    if (sellerData.shopDescription) {
+                        document.getElementById('shopDescriptionText').textContent = sellerData.shopDescription;
+                        document.getElementById('shopDescriptionContainer').style.display = 'block';
+                    }
+                } else {
+                    document.getElementById('shopName').innerText = "Seller Not Found";
+                }
+
+                // Fetch Products
+                const prodQuery = query(
+                    collection(db, "products"),
+                    where("sellerId", "==", TEST_SELLER_UID),
+                    where("active", "==", true)
+                );
+                const prodSnap = await getDocs(prodQuery);
+
+                allProducts = prodSnap.docs.map(docSnap => ({
+                    id: docSnap.id,
+                    ...docSnap.data()
+                }));
+
+                filteredProducts = [...allProducts];
+                updateStatsUI();
+                renderGrid();
+
+            } catch (err) {
+                console.error("Error loading seller data:", err);
+            }
+        }
+
+        // Render Product Grid
+        function renderGrid() {
+            const grid = document.getElementById('sellerProductGrid');
+            
+            if (filteredProducts.length === 0) {
+                grid.innerHTML = '<p style="text-align:center; grid-column:1/-1; padding:40px; color:#64748b;">কোনো পণ্য পাওয়া যায়নি</p>';
+                return;
+            }
+
+            grid.innerHTML = filteredProducts.map(p => {
+                const isSelected = selectedProductIds.has(p.id);
+                const cardClass = `p-card ${isAdminMode ? 'admin-card' : ''} ${isSelected ? 'selected-card' : ''}`;
+                const hasSellerId = p.sellerId && p.sellerId.trim() !== "";
+
+                return `
+                    <div class="${cardClass}" onclick="handleCardClick(event, '${p.id}')">
+                        ${isAdminMode ? `
+                            <input type="checkbox" class="p-card-checkbox" ${isSelected ? 'checked' : ''} onclick="event.stopPropagation(); toggleSelectProduct('${p.id}')">
+                            ${isSelected ? '<span class="selected-indicator">Selected</span>' : ''}
+                        ` : ''}
+
+                        <div class="img-box">
+                            <img src="${p.images?.[0] || FALLBACK_LOGO}" alt="${p.name || ''}">
+                        </div>
+
+                        <div class="p-info">
+                            <div class="p-name">${p.name || 'No Name'}</div>
+                            <div class="price-box">
+                                <span class="current-price">৳${p.price || 0}</span>
+                                ${p.oldPrice && Number(p.oldPrice) > Number(p.price) ? `<span class="old-price">৳${p.oldPrice}</span>` : ''}
+                            </div>
+
+                            ${isAdminMode ? `
+                                <div class="seller-id-tag">
+                                    Seller ID: ${hasSellerId ? p.sellerId : '<span style="color:var(--danger);">Not Found</span>'}
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.handleCardClick = (e, id) => {
+            if (isAdminMode) {
+                toggleSelectProduct(id);
+            } else {
+                window.location.href = `https://ghotimarket.com/product?id=${id}`;
+            }
+        };
+
+        function toggleSelectProduct(id) {
+            if (selectedProductIds.has(id)) {
+                selectedProductIds.delete(id);
+            } else {
+                selectedProductIds.add(id);
+            }
+            updateStatsUI();
+            renderGrid();
+        }
+
+        function selectAllFiltered() {
+            filteredProducts.forEach(p => selectedProductIds.add(p.id));
+            updateStatsUI();
+            renderGrid();
+        }
+
+        function deselectAll() {
+            selectedProductIds.clear();
+            updateStatsUI();
+            renderGrid();
+        }
+
+        function handleSearch() {
+            applyFilters();
+        }
+
+        function handleFilterChange() {
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const term = document.getElementById('pSearch').value.toLowerCase().trim();
+            const filterOpt = document.getElementById('filterOption').value;
+
+            filteredProducts = allProducts.filter(p => {
+                const matchSearch = p.name?.toLowerCase().includes(term) || 
+                    (Array.isArray(p.keywords) ? p.keywords.some(k => k.toLowerCase().includes(term)) : p.keywords?.toLowerCase().includes(term));
+                
+                let matchFilter = true;
+                if (filterOpt === 'with_id') matchFilter = p.sellerId && p.sellerId.trim() !== "";
+                if (filterOpt === 'without_id') matchFilter = !p.sellerId || p.sellerId.trim() === "";
+                if (filterOpt === 'selected') matchFilter = selectedProductIds.has(p.id);
+
+                return matchSearch && matchFilter;
+            });
+
+            renderGrid();
+        }
+
+        function updateStatsUI() {
+            const withId = allProducts.filter(p => p.sellerId && p.sellerId.trim() !== "").length;
+            const missingId = allProducts.length - withId;
+
+            document.getElementById('statSellerUid').innerText = TEST_SELLER_UID;
+            document.getElementById('statTotalProds').innerText = allProducts.length;
+            document.getElementById('statSelectedProds').innerText = selectedProductIds.size;
+            document.getElementById('statWithSellerId').innerText = withId;
+            document.getElementById('statMissingSellerId').innerText = missingId;
+        }
+
+        // Modals Logic
+        function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        async function handleLogin() {
+            const pass = document.getElementById('adminPasswordInput').value;
+            const errDiv = document.getElementById('loginErrorMsg');
+            errDiv.innerText = "";
+
+            if (!pass) {
+                errDiv.innerText = "Password required.";
+                return;
+            }
+
+            try {
+                const res = await signInWithEmailAndPassword(auth, ADMIN_EMAIL, pass);
+                if (res.user.email !== ADMIN_EMAIL) {
+                    await signOut(auth);
+                    errDiv.innerText = "Access Denied Only administrator can access this panel.";
+                    return;
+                }
+                closeModal('loginModal');
+            } catch (err) {
+                errDiv.innerText = "Login Failed: " + err.message;
+            }
+        }
+
+        async function handleLogout() {
+            await signOut(auth);
+            location.reload();
+        }
+
+        function refreshData() {
+            selectedProductIds.clear();
+            loadProfileAndProducts();
+        }
+
+        // Bulk Change Seller ID Modal
+        function openChangeSellerModal() {
+            if (selectedProductIds.size === 0) {
+                alert("Please select at least one product first!");
+                return;
+            }
+            document.getElementById('changeSelCount').innerText = selectedProductIds.size;
+            const input = document.getElementById('newSellerUidInput');
+            input.value = "";
+            pendingNewSellerUid = "";
+            
+            const errDiv = document.getElementById('sellerInputError');
+            if(errDiv) errDiv.style.display = 'none';
+            
+            document.getElementById('btnProceedTransfer').disabled = true;
+            document.getElementById('changeSellerModal').style.display = 'flex';
+        }
+
+        function handleUidInputChange() {
+            const val = document.getElementById('newSellerUidInput').value.trim();
+            const btn = document.getElementById('btnProceedTransfer');
+            const errDiv = document.getElementById('sellerInputError');
+
+            if (val.length > 0) {
+                btn.disabled = false;
+                if (errDiv) errDiv.style.display = 'none';
+            } else {
+                btn.disabled = true;
+            }
+        }
+
+        function confirmChangeSeller() {
+            const newUid = document.getElementById('newSellerUidInput').value.trim();
+            const errDiv = document.getElementById('sellerInputError');
+
+            if (!newUid) {
+                if (errDiv) {
+                    errDiv.innerText = "Please enter a Seller UID.";
+                    errDiv.style.display = 'block';
+                }
+                return;
+            }
+
+            pendingNewSellerUid = newUid;
+
+            closeModal('changeSellerModal');
+            document.getElementById('confirmProdCount').innerText = selectedProductIds.size;
+            document.getElementById('confirmOldUid').innerText = TEST_SELLER_UID;
+            document.getElementById('confirmNewUid').innerText = pendingNewSellerUid;
+            document.getElementById('confirmTransferModal').style.display = 'flex';
+        }
+
+        async function executeBulkTransfer() {
+            closeModal('confirmTransferModal');
+            const selectedItems = Array.from(selectedProductIds);
+            const total = selectedItems.length;
+            const newUid = pendingNewSellerUid;
+
+            showProgress("Changing Seller ID...", total);
+
+            let success = 0;
+            let failed = 0;
+            let failedIds = [];
+
+            const CHUNK_SIZE = 500;
+            for (let i = 0; i < total; i += CHUNK_SIZE) {
+                const chunk = selectedItems.slice(i, i + CHUNK_SIZE);
+                const batch = writeBatch(db);
+
+                chunk.forEach(id => {
+                    const docRef = doc(db, "products", id);
+                    batch.update(docRef, { sellerId: newUid });
+                });
+
+                try {
+                    await batch.commit();
+                    success += chunk.length;
+                } catch (bErr) {
+                    // Fallback item by item if batch fails
+                    for (const id of chunk) {
+                        try {
+                            await updateDoc(doc(db, "products", id), { sellerId: newUid });
+                            success++;
+                        } catch (itemErr) {
+                            failed++;
+                            failedIds.push(id);
+                        }
+                    }
+                }
+                updateProgress(Math.min(i + CHUNK_SIZE, total), total);
+            }
+
+            closeModal('progressModal');
+            showResult("✅ Transfer Completed", `
+                <p><b>Total Selected:</b> ${total}</p>
+                <p style="color:var(--success);"><b>Successfully Updated:</b> ${success}</p>
+                <p style="color:var(--danger);"><b>Failed:</b> ${failed}</p>
+                ${failedIds.length ? `<p style="font-size:11px; font-family:monospace;">Failed IDs: ${failedIds.join(', ')}</p>` : ''}
+            `);
+        }
+
+        // Bulk Delete
+        function openDeleteModal() {
+            if (selectedProductIds.size === 0) {
+                alert("Please select products to delete!");
+                return;
+            }
+            document.getElementById('deleteProdCount').innerText = selectedProductIds.size;
+            document.getElementById('deleteConfirmModal').style.display = 'flex';
+        }
+
+        async function executeBulkDelete() {
+            closeModal('deleteConfirmModal');
+            const selectedItems = Array.from(selectedProductIds);
+            const total = selectedItems.length;
+
+            showProgress("Deleting Products...", total);
+
+            let success = 0;
+            let failed = 0;
+            let failedIds = [];
+
+            const CHUNK_SIZE = 500;
+            for (let i = 0; i < total; i += CHUNK_SIZE) {
+                const chunk = selectedItems.slice(i, i + CHUNK_SIZE);
+                const batch = writeBatch(db);
+
+                chunk.forEach(id => {
+                    batch.delete(doc(db, "products", id));
+                });
+
+                try {
+                    await batch.commit();
+                    success += chunk.length;
+                } catch (bErr) {
+                    for (const id of chunk) {
+                        try {
+                            await deleteDoc(doc(db, "products", id));
+                            success++;
+                        } catch (itemErr) {
+                            failed++;
+                            failedIds.push(id);
+                        }
+                    }
+                }
+                updateProgress(Math.min(i + CHUNK_SIZE, total), total);
+            }
+
+            closeModal('progressModal');
+            showResult("🗑️ Delete Completed", `
+                <p><b>Total Selected:</b> ${total}</p>
+                <p style="color:var(--success);"><b>Successfully Deleted:</b> ${success}</p>
+                <p style="color:var(--danger);"><b>Failed:</b> ${failed}</p>
+                ${failedIds.length ? `<p style="font-size:11px; font-family:monospace;">Failed IDs: ${failedIds.join(', ')}</p>` : ''}
+            `);
+        }
+
+        function showProgress(title, total) {
+            document.getElementById('progressTitle').innerText = title;
+            document.getElementById('progressStatusTxt').innerText = `0 / ${total}`;
+            document.getElementById('progressBarFill').style.width = '0%';
+            document.getElementById('progressPercentTxt').innerText = '0%';
+            document.getElementById('progressModal').style.display = 'flex';
+        }
+
+        function updateProgress(current, total) {
+            const pct = Math.round((current / total) * 100);
+            document.getElementById('progressStatusTxt').innerText = `${current} / ${total}`;
+            document.getElementById('progressBarFill').style.width = `${pct}%`;
+            document.getElementById('progressPercentTxt').innerText = `${pct}%`;
+        }
+
+        function showResult(title, bodyHtml) {
+            document.getElementById('resultTitle').innerText = title;
+            document.getElementById('resultBody').innerHTML = bodyHtml;
+            document.getElementById('resultModal').style.display = 'flex';
+        }
+
+        // Initialize
+        loadProfileAndProducts();
+    </script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
