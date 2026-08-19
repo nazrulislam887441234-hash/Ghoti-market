@@ -3,8 +3,6 @@ import {
     getFirestore, 
     collection, 
     getDocs, 
-    getDoc,
-    doc,
     query, 
     where, 
     limit 
@@ -24,7 +22,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Global App States
+// Data Storage
 let allProducts = [];
 let allCategories = [];
 
@@ -61,35 +59,31 @@ function updateYear() {
     if (yearEl) yearEl.textContent = new Date().getFullYear();
 }
 
-// Load Initial Landing Page Data (12 Products Only)
+// Fetch Banners, Categories & Products (No Users / Shops query)
 async function loadData() {
     try {
-        // 1. Banners
+        // 1. Fetch Banners
         const bannerSnap = await getDocs(collection(db, "banners"));
         const banners = [];
-        bannerSnap.forEach(docSnap => banners.push(docSnap.data()));
+        bannerSnap.forEach(doc => banners.push(doc.data()));
         renderBanners(banners);
         updateProgress(50);
 
-        // 2. Categories
+        // 2. Fetch Categories
         const catSnap = await getDocs(collection(db, "categories"));
         allCategories = [];
-        catSnap.forEach(docSnap => {
-            allCategories.push({ id: docSnap.id, ...docSnap.data() });
+        catSnap.forEach(doc => {
+            allCategories.push({ id: doc.id, ...doc.data() });
         });
         renderCategories(allCategories);
         updateProgress(75);
 
-        // 3. Initial 12 Products
-        const prodQuery = query(
-            collection(db, "products"), 
-            where("active", "==", true), 
-            limit(12)
-        );
+        // 3. Fetch Products
+        const prodQuery = query(collection(db, "products"), limit(12));
         const prodSnap = await getDocs(prodQuery);
         allProducts = [];
-        prodSnap.forEach(docSnap => {
-            allProducts.push({ id: docSnap.id, ...docSnap.data() });
+        prodSnap.forEach(doc => {
+            allProducts.push({ id: doc.id, ...doc.data() });
         });
         renderProducts(allProducts);
 
@@ -98,7 +92,7 @@ async function loadData() {
     }
 }
 
-// Render Handlers
+// Render Banners Slider
 function renderBanners(banners) {
     const wrapper = document.getElementById("banner-wrapper");
     if (!wrapper) return;
@@ -127,6 +121,7 @@ function renderBanners(banners) {
     }
 }
 
+// Render Categories Grid
 function renderCategories(categories) {
     const grid = document.getElementById("category-grid");
     if (!grid) return;
@@ -144,6 +139,7 @@ function renderCategories(categories) {
     `).join('');
 }
 
+// Render Products Grid
 function renderProducts(products) {
     const grid = document.getElementById("latest-products");
     if (!grid) return;
@@ -162,183 +158,79 @@ function renderProducts(products) {
     `).join('');
 }
 
-// -------------------------------------------------------------------
-// HIGH-PERFORMANCE CLIENT-SIDE SEARCH SYSTEM (ZERO CLOUD FUNCTIONS)
-// -------------------------------------------------------------------
-
-// Utility: Debounce Handler
-function debounce(func, delay) {
-    let timeoutId;
-    return (...args) => {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => func.apply(this, args), delay);
-    };
-}
-
+// Search System (Only Products & Categories, Shops disabled)
 function setupSearch() {
     const input = document.getElementById("smartSearch");
     const resultsContainer = document.getElementById("search-results");
 
     if (!input || !resultsContainer) return;
 
-    // Search Engine State
-    const searchCache = new Map();
-    let currentSearchId = 0;
-
-    // Core Search Execution Logic
-    async function performSearch(rawQuery) {
-        const queryText = rawQuery.trim().toLowerCase();
-
-        // 1. Min Character Filter
+    input.addEventListener("input", (e) => {
+        const queryText = e.target.value.trim().toLowerCase();
+        
         if (queryText.length < 2) {
             resultsContainer.style.display = "none";
             resultsContainer.innerHTML = "";
             return;
         }
 
-        // 2. Check Memory Cache
-        if (searchCache.has(queryText)) {
-            const cached = searchCache.get(queryText);
-            renderSearchResults(cached.categories, cached.products, resultsContainer);
-            return;
-        }
+        // Filter Categories
+        const matchedCategories = allCategories.filter(c => 
+            (c.name && c.name.toLowerCase().includes(queryText))
+        ).slice(0, 3);
 
-        // 3. UI Loading State
-        resultsContainer.style.display = "block";
-        resultsContainer.innerHTML = `
-            <div style="padding:15px;text-align:center;color:#64748b;font-size:13px;">
-                পণ্য খোঁজা হচ্ছে...
-            </div>`;
+        // Filter Products
+        const matchedProducts = allProducts.filter(p => 
+            (p.title && p.title.toLowerCase().includes(queryText)) ||
+            (p.name && p.name.toLowerCase().includes(queryText)) ||
+            (p.category && p.category.toLowerCase().includes(queryText))
+        ).slice(0, 6);
 
-        const searchId = ++currentSearchId;
-
-        try {
-            // Local Category Filter (From pre-loaded categories)
-            const matchedCategories = allCategories.filter(c => 
-                c.name && c.name.toLowerCase().includes(queryText)
-            ).slice(0, 2);
-
-            // Generate search token to query Firestore
-            const tokens = queryText.split(/\s+/);
-            const primaryToken = tokens[0]; // First word token
-
-            // Indexed Firestore Query - Strict Limit of 10 Read Operations
-            const searchQuery = query(
-                collection(db, "products"),
-                where("active", "==", true),
-                where("searchTokens", "array-contains", primaryToken),
-                limit(10)
-            );
-
-            const querySnapshot = await getDocs(searchQuery);
-            
-            // Abort if another request was triggered
-            if (searchId !== currentSearchId) return;
-
-            let matchedProducts = [];
-            
-            querySnapshot.forEach(docSnap => {
-                const product = { id: docSnap.id, ...docSnap.data() };
-                
-                // If user typed multi-word search (e.g., "black shirt"), verify secondary tokens client-side
-                if (tokens.length > 1) {
-                    const fullText = `${product.name} ${product.description} ${product.shopName}`.toLowerCase();
-                    const matchAll = tokens.every(token => fullText.includes(token));
-                    if (matchAll) matchedProducts.push(product);
-                } else {
-                    matchedProducts.push(product);
-                }
-            });
-
-            // Limit Results
-            matchedProducts = matchedProducts.slice(0, 8);
-
-            // Cache Results
-            searchCache.set(queryText, {
-                categories: matchedCategories,
-                products: matchedProducts
-            });
-
-            // Render Output
-            renderSearchResults(matchedCategories, matchedProducts, resultsContainer);
-
-        } catch (error) {
-            if (searchId !== currentSearchId) return;
-            console.error("Firestore Search Error:", error);
-            resultsContainer.innerHTML = `
-                <div style="padding:15px;text-align:center;color:#ef4444;font-size:13px;">
-                    সার্চ করতে সমস্যা হয়েছে। দয়া করে নেটওয়ার্ক চেক করুন।
-                </div>`;
-        }
-    }
-
-    // Debounce Search Execution (300ms)
-    const debouncedSearch = debounce((q) => performSearch(q), 300);
-
-    input.addEventListener("input", (e) => {
-        debouncedSearch(e.target.value);
+        renderSearchResults(matchedCategories, matchedProducts, resultsContainer);
     });
 
-    // Close Dropdown when Clicking Outside
+    // Close search dropdown on click outside
     document.addEventListener("click", (e) => {
         if (!input.contains(e.target) && !resultsContainer.contains(e.target)) {
             resultsContainer.style.display = "none";
         }
     });
-
-    input.addEventListener("focus", () => {
-        if (input.value.trim().length >= 2) {
-            performSearch(input.value);
-        }
-    });
 }
 
-// Compatible Render Search Results Function
 function renderSearchResults(categories, products, container) {
-    if ((!categories || categories.length === 0) && (!products || products.length === 0)) {
-        container.innerHTML = `
-            <div style="padding:15px;text-align:center;color:#94a3b8;font-size:13px;">
-                কোনো ফলাফল পাওয়া যায়নি
-            </div>`;
+    if (categories.length === 0 && products.length === 0) {
+        container.innerHTML = `<div style="padding:15px;text-align:center;color:#94a3b8;font-size:13px;">কোনো ফলাফল পাওয়া যায়নি</div>`;
         container.style.display = "block";
         return;
     }
 
     let html = "";
 
-    // Render Category Items
-    if (categories && categories.length > 0) {
-        categories.forEach(c => {
-            html += `
-                <a href="https://ghotimarket.com/category/${c.slug || c.id}" class="search-result-item">
-                    <img src="${c.icon || c.image || 'https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png'}" alt="${c.name}">
-                    <div>
-                        <div class="search-result-title">${c.name}</div>
-                        <div class="search-result-type">ক্যাটাগরি</div>
-                    </div>
-                </a>
-            `;
-        });
-    }
+    // Categories Result List
+    categories.forEach(c => {
+        html += `
+            <a href="https://ghotimarket.com/category/${c.slug || c.id}" class="search-result-item">
+                <img src="${c.icon || c.image || 'https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png'}" alt="${c.name}">
+                <div>
+                    <div class="search-result-title">${c.name}</div>
+                    <div class="search-result-type">ক্যাটাগরি</div>
+                </div>
+            </a>
+        `;
+    });
 
-    // Render Product Items
-    if (products && products.length > 0) {
-        products.forEach(p => {
-            const title = p.title || p.name || 'পণ্য';
-            const price = p.price ? `৳ ${p.price}` : '';
-            const thumb = p.thumbnail || (p.images && p.images[0]) || 'https://via.placeholder.com/40';
-
-            html += `
-                <a href="https://ghotimarket.com/product/${p.id}" class="search-result-item">
-                    <img src="${thumb}" alt="${title}" loading="lazy">
-                    <div>
-                        <div class="search-result-title">${title}</div>
-                        <div class="search-result-type">${price} • পণ্য</div>
-                    </div>
-                </a>
-            `;
-        });
-    }
+    // Products Result List
+    products.forEach(p => {
+        html += `
+            <a href="https://ghotimarket.com/product/${p.id}" class="search-result-item">
+                <img src="${p.thumbnail || (p.images && p.images[0]) || 'https://via.placeholder.com/40'}" alt="${p.title || p.name}">
+                <div>
+                    <div class="search-result-title">${p.title || p.name}</div>
+                    <div class="search-result-type">৳ ${p.price || 0} • পণ্য</div>
+                </div>
+            </a>
+        `;
+    });
 
     container.innerHTML = html;
     container.style.display = "block";
