@@ -292,14 +292,28 @@ header {
     font-weight: 700; 
 }
 
-/* --- Categories (5-Columns Mobile Grid & Square Images) --- */
+/* --- Categories (2-Row Horizontal Swipe Layout with CSS Grid) --- */
 .category-grid { 
     display: grid; 
-    grid-template-columns: repeat(5, minmax(0, 1fr)); 
-    gap: 6px; 
-    padding: 0 8px; 
+    grid-auto-flow: column; 
+    grid-template-rows: repeat(2, auto); 
+    grid-auto-columns: calc((100% - 24px) / 5); 
+    gap: 8px; 
+    overflow-x: auto; 
+    overflow-y: hidden; 
+    padding: 0 8px 8px; 
     max-width: 1400px; 
     margin: 0 auto; 
+    scroll-behavior: smooth; 
+    scrollbar-width: none; 
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+}
+
+.category-grid::-webkit-scrollbar { 
+    display: none; 
 }
 
 .category-card { 
@@ -317,6 +331,7 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
+    scroll-snap-align: start;
 }
 
 @media (hover: hover) {
@@ -360,9 +375,9 @@ header {
 
 @media (min-width: 768px) { 
     .category-grid { 
-        grid-template-columns: repeat(6, minmax(0, 1fr)); 
+        grid-auto-columns: calc((100% - 75px) / 6);
         gap: 15px; 
-        padding: 0 16px; 
+        padding: 0 16px 12px; 
     } 
     .category-card { 
         padding: 10px 6px 12px; 
@@ -375,7 +390,7 @@ header {
 
 @media (min-width: 1024px) { 
     .category-grid { 
-        grid-template-columns: repeat(8, minmax(0, 1fr)); 
+        grid-auto-columns: calc((100% - 140px) / 8);
         gap: 20px; 
     } 
 }
@@ -536,137 +551,36 @@ header {
     }
 }
 
-/* --- Shop Cards --- */
-.shop-grid { 
-    display: grid; 
-    grid-template-columns: repeat(4, minmax(0, 1fr)); 
-    gap: 8px; 
-    padding: 0 8px; 
-    max-width: 1400px; 
-    margin: 0 auto; 
+/* --- All Shops Button Section --- */
+.all-shops-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px auto;
+    padding: 0 16px;
 }
 
-@media (min-width: 768px) { 
-    .shop-grid { 
-        gap: 15px; 
-        padding: 0 16px; 
-    } 
-}
-
-@media (min-width: 1024px) { 
-    .shop-grid { 
-        grid-template-columns: repeat(4, 1fr); 
-        gap: 25px; 
-    } 
-}
-
-.shop-card { 
-    background: white; 
-    border-radius: var(--radius-lg); 
-    overflow: hidden; 
-    box-shadow: var(--shadow-sm); 
-    transition: 0.3s ease; 
-    text-decoration: none; 
-    color: inherit; 
-    border: 1px solid #FFE4D6; 
-    position: relative; 
-}
-
-.shop-card:hover { 
-    transform: translateY(-8px); 
-    box-shadow: var(--shadow-lux); 
-}
-
-.shop-banner { 
-    height: 110px; 
-    background: #f1f5f9; 
-    overflow: hidden; 
-}
-
-.shop-banner img { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-}
-
-.shop-info { 
-    padding: 45px 10px 15px; 
-    text-align: center; 
-    position: relative; 
-}
-
-.shop-logo { 
-    width: 65px; 
-    height: 65px; 
-    border-radius: 50%; 
-    border: 3px solid white; 
-    background: white; 
-    position: absolute; 
-    top: -32px; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    overflow: hidden; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-    z-index: 5;
-}
-
-@media (min-width: 768px) { 
-    .shop-logo { width: 75px; height: 75px; top: -37px; } 
-    .shop-info { padding-top: 50px; } 
-}
-
-@media (min-width: 1024px) { 
-    .shop-logo { width: 85px; height: 85px; top: -42px; } 
-    .shop-info { padding-top: 55px; } 
-}
-
-.shop-logo img { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-}
-
-.verified-badge { 
-    color: #1877F2; 
-    font-size: 14px; 
-    margin-left: 4px; 
-}
-
-.shop-name { 
-    font-size: 14px; 
-    font-weight: 800; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    color: var(--secondary); 
-}
-
-.shop-cat { 
-    font-size: 11px; 
-    color: var(--text-sub); 
-    font-weight: 600; 
-    margin-top: 2px; 
-}
-
-/* --- See More & Buttons --- */
-.see-more-btn { 
+.all-shops-btn { 
     display: inline-flex; 
     align-items: center; 
+    justify-content: center; 
     gap: 8px; 
-    background: var(--gradient); 
-    color: white; 
-    padding: 12px 35px; 
+    padding: 12px 28px; 
     border-radius: 50px; 
+    background: var(--gradient); 
+    color: #fff; 
+    text-decoration: none; 
+    font-size: 14px; 
     font-weight: 800; 
-    margin: 30px auto; 
     border: none; 
+    box-shadow: 0 8px 20px rgba(255,107,53,.22); 
+    transition: all .25s ease; 
     cursor: pointer; 
-    box-shadow: 0 10px 20px rgba(255, 107, 53, 0.2); 
-    transition: 0.3s ease; 
-}
+} 
 
-.see-more-btn:hover { 
-    transform: translateY(-3px); 
+.all-shops-btn:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 12px 25px rgba(255,107,53,.30); 
 }
 
 /* --- Social Icons --- */
