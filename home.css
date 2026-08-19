@@ -536,116 +536,37 @@ header {
     }
 }
 
-/* --- Shop Cards --- */
-.shop-grid { 
-    display: grid; 
-    grid-template-columns: repeat(4, minmax(0, 1fr)); 
-    gap: 8px; 
-    padding: 0 8px; 
-    max-width: 1400px; 
-    margin: 0 auto; 
+/* --- All Shops Button Section --- */
+.all-shops-box { 
+    max-width: 400px; 
+    margin: 35px auto 25px; 
+    padding: 0 16px;
 }
 
-@media (min-width: 768px) { 
-    .shop-grid { 
-        gap: 15px; 
-        padding: 0 16px; 
-    } 
+.all-shops-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 15px 20px;
+    border-radius: 50px;
+    background: linear-gradient(135deg,#FF6B35,#FF8A00);
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 800;
+    box-shadow: 0 12px 30px rgba(255,107,53,.25);
+    transition: all .3s ease;
 }
 
-@media (min-width: 1024px) { 
-    .shop-grid { 
-        grid-template-columns: repeat(4, 1fr); 
-        gap: 25px; 
-    } 
+.all-shops-btn:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 16px 35px rgba(255,107,53,.35); 
 }
 
-.shop-card { 
-    background: white; 
-    border-radius: var(--radius-lg); 
-    overflow: hidden; 
-    box-shadow: var(--shadow-sm); 
-    transition: 0.3s ease; 
-    text-decoration: none; 
-    color: inherit; 
-    border: 1px solid #FFE4D6; 
-    position: relative; 
-}
-
-.shop-card:hover { 
-    transform: translateY(-8px); 
-    box-shadow: var(--shadow-lux); 
-}
-
-.shop-banner { 
-    height: 110px; 
-    background: #f1f5f9; 
-    overflow: hidden; 
-}
-
-.shop-banner img { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-}
-
-.shop-info { 
-    padding: 45px 10px 15px; 
-    text-align: center; 
-    position: relative; 
-}
-
-.shop-logo { 
-    width: 65px; 
-    height: 65px; 
-    border-radius: 50%; 
-    border: 3px solid white; 
-    background: white; 
-    position: absolute; 
-    top: -32px; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    overflow: hidden; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-    z-index: 5;
-}
-
-@media (min-width: 768px) { 
-    .shop-logo { width: 75px; height: 75px; top: -37px; } 
-    .shop-info { padding-top: 50px; } 
-}
-
-@media (min-width: 1024px) { 
-    .shop-logo { width: 85px; height: 85px; top: -42px; } 
-    .shop-info { padding-top: 55px; } 
-}
-
-.shop-logo img { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-}
-
-.verified-badge { 
-    color: #1877F2; 
-    font-size: 14px; 
-    margin-left: 4px; 
-}
-
-.shop-name { 
-    font-size: 14px; 
-    font-weight: 800; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    color: var(--secondary); 
-}
-
-.shop-cat { 
-    font-size: 11px; 
-    color: var(--text-sub); 
-    font-weight: 600; 
-    margin-top: 2px; 
+.all-shops-btn i { 
+    font-size: 20px; 
 }
 
 /* --- See More & Buttons --- */
