@@ -1,12 +1,20 @@
 // Import Firebase v10 Modular SDK
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { 
+    getFirestore, 
+    collection, 
+    getDocs, 
+    query, 
+    orderBy, 
+    limit, 
+    where 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 /*
   ===================================================================
   SECURITY ADVICE & BEST PRACTICES:
-  Frontend-এ শুধুমাত্র Firebase Web API Keys (apiKey, appId, messagingSenderId ইত্যাদি) রাখা সম্পূর্ণ নিরাপদ, কারণ এগুলো পাবলিকলি এক্সপোজড হওয়ার জন্যই ডিজাইন করা হয়েছে। 
-  তবে আপনার Firestore Database ও Storage এর ডেটা সুরক্ষার জন্য সর্বদা Firebase Console থেকে Strict Security Rules (Firestore Rules / Storage Rules) কনফিগার করে রাখুন যাতে unauthorised কেউ ডাটা রিড বা রাইট করতে না পারে।
+  Frontend-এ শুধুমাত্র Firebase Web API Keys রাখা সম্পূর্ণ নিরাপদ। 
+  Firestore Security Rules কনফিগার করে ডাটা এক্সেস কন্ট্রোল বজায় রাখুন।
   ===================================================================
 */
 
@@ -23,12 +31,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Global State Variables
-let allShops = [];
+// Global State Variables (Shops system completely removed)
 let allCategories = [];
 let allProducts = [];
-let currentIndex = 0;
-const perPage = 20;
+
+// Search System Optimization: Cache, Debounce Timer & Stale Request Tracking
+const searchCache = new Map();
+let searchDebounceTimer = null;
+let currentSearchRequestId = 0;
 
 // Initialize Lucide Icons & Footer Year
 if (typeof lucide !== 'undefined') {
@@ -50,21 +60,21 @@ const updateProgress = (val) => {
 };
 
 /**
- * Main Data Loading Function using Asynchronous Non-Blocking Execution & Promise.allSettled()
- * Fetches banners, categories, products, and users independently.
- * Each section renders immediately upon completion without waiting for slower queries.
+ * Main Data Loading Function using Asynchronous Non-Blocking Parallel Execution
+ * Fetches banners, categories, and products independently (Shop fetching removed).
+ * Each section renders immediately upon completion.
  */
 async function loadData() {
     updateProgress(10);
 
     let completedTasks = 0;
-    const totalTasks = 4;
+    const totalTasks = 3; // Reduced total tasks from 4 to 3
     const incrementProgress = () => {
         completedTasks++;
         updateProgress(10 + Math.floor((completedTasks / totalTasks) * 90));
     };
 
-    // 1. Fetch Banners (Existing logic)
+    // 1. Fetch Banners
     const fetchBanners = getDocs(query(collection(db, "banners"), orderBy("createdAt", "desc")))
         .then(bannerSnap => renderBanner(bannerSnap))
         .catch(err => console.error("Banners Loading Error:", err))
@@ -82,25 +92,17 @@ async function loadData() {
         .catch(err => console.error("Products Loading Error:", err))
         .finally(incrementProgress);
 
-    // 4. Fetch Users (Strict Limit: 8)
-    const fetchShops = getDocs(query(collection(db, "users"), limit(10)))
-        .then(shopSnap => renderShopsData(shopSnap))
-        .catch(err => console.error("Users/Shops Loading Error:", err))
-        .finally(incrementProgress);
+    // Ensure all promises settle independently
+    await Promise.allSettled([fetchBanners, fetchCategories, fetchProducts]);
 
-    // Ensure all promises settle without failing or blocking each other
-    await Promise.allSettled([fetchBanners, fetchCategories, fetchProducts, fetchShops]);
-
-    // Smoothly Remove Loader
-    setTimeout(() => {
-        const loader = document.getElementById('loader');
-        if (loader) {
-            loader.style.opacity = '0';
-            setTimeout(() => loader.style.display = 'none', 600);
-        }
-        handleScrollAnim();
-        initSearch();
-    }, 300);
+    // Smooth & Fast Loader Hiding (Artificial delays removed)
+    const loader = document.getElementById('loader');
+    if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.style.display = 'none', 300);
+    }
+    handleScrollAnim();
+    initSearch();
 }
 
 /**
@@ -110,12 +112,13 @@ function renderBanner(bannerSnap) {
     const bannerWrapper = document.getElementById('banner-wrapper');
     if (!bannerWrapper) return;
 
-    bannerWrapper.innerHTML = bannerSnap.docs.map(d => {
+    bannerWrapper.innerHTML = bannerSnap.docs.map((d, index) => {
         const banner = d.data();
+        const loadingAttr = index === 0 ? 'loading="eager"' : 'loading="lazy"';
         return `
         <div class="swiper-slide">
             <a href="${banner.link || '#'}" ${banner.link ? 'target="_blank"' : ''} style="display:block;width:100%;height:100%;">
-                <img src="${banner.url || 'https://via.placeholder.com/981x363'}" alt="Banner" loading="lazy">
+                <img src="${banner.url || 'https://via.placeholder.com/981x363'}" alt="Banner" ${loadingAttr}>
             </a>
         </div>
         `;
@@ -131,7 +134,7 @@ function renderBanner(bannerSnap) {
 }
 
 /**
- * Render Categories Section (Strictly following Firestore order, max 20)
+ * Render Categories Section (Strictly max 20)
  */
 function renderCategories(catSnap) {
     const catGrid = document.getElementById('category-grid');
@@ -150,16 +153,13 @@ function renderCategories(catSnap) {
 }
 
 /**
- * Render Latest Products Section (Handling active status, discount percentages & placeholders)
+ * Render Latest Products Section
  */
 function renderProducts(prodSnap) {
     const productBox = document.getElementById("latest-products");
     if (!productBox) return;
 
-    allProducts = prodSnap.docs.map(d => ({ id: d.id, ...d.data() })).filter(product => {
-        if (product.active === false) return false;
-        return true;
-    });
+    allProducts = prodSnap.docs.map(d => ({ id: d.id, ...d.data() })).filter(product => product.active !== false);
 
     if (!allProducts.length) {
         productBox.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#64748b;">কোনো পণ্য পাওয়া যায়নি</p>`;
@@ -196,109 +196,6 @@ function renderProducts(prodSnap) {
 }
 
 /**
- * Helper Function for Flexible Verified Shop Filtering
- */
-function isVerifiedShop(shop) {
-    console.log("Shop:", shop.shopName);
-    console.log("Verified Value:", shop.verified);
-    console.log("Verified Type:", typeof shop.verified);
-
-    const val = shop.verified;
-
-    // Reject explicit falsy or negative values
-    if (
-        val === false ||
-        val === "false" ||
-        val === "False" ||
-        val === "FALSE" ||
-        val === 0 ||
-        val === "0" ||
-        val === null ||
-        val === undefined ||
-        val === "" ||
-        val === "no" ||
-        val === "No" ||
-        val === "NO"
-    ) {
-        return false;
-    }
-
-    // Accept true, numbers like 1, or approved string tokens
-    if (val === true || val === 1) return true;
-
-    if (typeof val === "string") {
-        const lowerVal = val.trim().toLowerCase();
-        const validTokens = ["true", "1", "yes", "verified"];
-        return validTokens.includes(lowerVal);
-    }
-
-    return Boolean(val);
-}
-
-/**
- * Setup and Store Shops Data for Pagination
- */
-function renderShopsData(shopSnap) {
-    const totalUsers = shopSnap.size;
-
-    allShops = shopSnap.docs
-        .map(d => ({ id: d.id, ...d.data() }))
-        .filter(shop => shop.shopName && isVerifiedShop(shop));
-
-    console.log("Total Users Downloaded:", totalUsers);
-    console.log("Verified Shops:", allShops.length);
-    console.log("Verified Shop Names:", allShops.map(s => s.shopName));
-
-    renderShops();
-}
-
-/**
- * Render Shops Function with Pagination Support
- */
-window.renderShops = function() {
-    const grid = document.getElementById('shop-grid');
-    if (!grid) return;
-
-    if (currentIndex === 0) grid.innerHTML = '';
-
-    const batch = allShops.slice(currentIndex, currentIndex + perPage);
-    if (!batch.length && currentIndex === 0) {
-        grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#64748b;">কোনো শপ পাওয়া যায়নি</p>`;
-        return;
-    }
-
-    grid.innerHTML += batch.map(s => {
-        const shopBanner = s.shopBanner || 'https://via.placeholder.com/400x120';
-        const shopLogo = s.shopLogo || 'https://via.placeholder.com/80';
-        const shopName = s.shopName || 'Shop';
-        const shopCategory = s.category || 'Verified Seller';
-        const shopLink = s.username ? `https://ghotimarket.com/seller?@${encodeURIComponent(s.username)}` : `https://ghotimarket.com/profile?sellerId=${s.id}`;
-
-        return `
-        <a href="${shopLink}" class="shop-card fade-up">
-            <div class="shop-banner"><img src="${shopBanner}" alt="Shop Banner" loading="lazy"></div>
-            <div class="shop-info">
-                <div class="shop-logo"><img src="${shopLogo}" alt="Shop Logo" loading="lazy"></div>
-                <div class="shop-name">${shopName} <i class="fa-solid fa-circle-check verified-badge"></i></div>
-                <div class="shop-cat">${shopCategory}</div>
-            </div>
-        </a>
-        `;
-    }).join('');
-
-    currentIndex += perPage;
-    const loadMoreBtn = document.getElementById('load-more-shops');
-    if (loadMoreBtn) {
-        loadMoreBtn.style.display = currentIndex >= allShops.length ? 'none' : 'inline-flex';
-    }
-
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
-    handleScrollAnim();
-};
-
-/**
  * Scroll Animation Observer for Fade-Up Elements
  */
 function handleScrollAnim() {
@@ -315,7 +212,154 @@ function handleScrollAnim() {
 }
 
 /**
- * Smart Search Implementation (Operating purely on downloaded in-memory data)
+ * Render Search Results Dropdown HTML
+ */
+function renderSearchResultsHTML(resultsBox, categories = [], products = []) {
+    let html = '';
+
+    // Render Categories Group
+    if (categories.length > 0) {
+        html += `<div class="search-group-title">ক্যাটাগরি</div>` + categories.map(c => `
+            <a href="https://ghotimarket.com/category.html?slug=${c.slug || '#'}" class="search-item">
+                <img src="${c.image || 'https://via.placeholder.com/40'}" alt="${c.categoryName || ''}" loading="lazy"> 
+                <span class="search-item-title">${c.categoryName || 'Unnamed Category'}</span>
+            </a>
+        `).join('');
+    }
+
+    // Render Products Group
+    if (products.length > 0) {
+        html += `<div class="search-group-title">পণ্য</div>` + products.map(p => `
+            <a href="https://ghotimarket.com/product.html?${p.slug || p.id}" class="search-item">
+                <img src="${p.images?.[0] || 'https://via.placeholder.com/40'}" alt="${p.name || ''}" loading="lazy"> 
+                <div class="search-item-info">
+                    <span class="search-item-title">${p.name || 'Unnamed Product'}</span>
+                    <span class="search-item-price">৳${p.price || 0}</span>
+                </div>
+            </a>
+        `).join('');
+    }
+
+    if (!categories.length && !products.length) {
+        html = '<div class="search-no-result">কোনো ফলাফল পাওয়া যায়নি</div>';
+    }
+
+    resultsBox.innerHTML = html;
+    resultsBox.style.display = 'block';
+}
+
+/**
+ * Process Search Logic:
+ * 1. LOCAL-FIRST SEARCH (allCategories & allProducts)
+ * 2. CACHE CHECK
+ * 3. FIREBASE FALLBACK SEARCH (Debounced + Anti-Race-Condition)
+ */
+async function processSearch(rawQueryText) {
+    const resultsBox = document.getElementById('search-results');
+    if (!resultsBox) return;
+
+    const queryText = rawQueryText.trim();
+    const queryLower = queryText.toLowerCase();
+
+    if (queryText.length < 2) {
+        resultsBox.style.display = 'none';
+        return;
+    }
+
+    // STEP 1: LOCAL-FIRST SEARCH
+    const matchCats = allCategories.filter(c => c.categoryName && c.categoryName.toLowerCase().includes(queryLower)).slice(0, 3);
+    const matchProds = allProducts.filter(p => {
+        if (p.active === false) return false;
+        const name = p.name ? p.name.toLowerCase() : "";
+        const description = p.description ? p.description.toLowerCase() : "";
+        const keywords = Array.isArray(p.keywords) ? p.keywords.join(" ").toLowerCase() : (p.keywords || "").toLowerCase();
+
+        return name.includes(queryLower) || description.includes(queryLower) || keywords.includes(queryLower);
+    }).slice(0, 5);
+
+    // If local results exist, show immediately without querying Firebase
+    if (matchCats.length > 0 || matchProds.length > 0) {
+        renderSearchResultsHTML(resultsBox, matchCats, matchProds);
+        return;
+    }
+
+    // STEP 2: CHECK IN-MEMORY CACHE FOR FIREBASE FALLBACKS
+    const cacheKey = queryLower;
+    if (searchCache.has(cacheKey)) {
+        const cached = searchCache.get(cacheKey);
+        renderSearchResultsHTML(resultsBox, cached.categories, cached.products);
+        return;
+    }
+
+    // STEP 3: FIREBASE FALLBACK SEARCH
+    resultsBox.innerHTML = `
+        <div class="search-loading">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            <span>খুঁজছি...</span>
+        </div>
+    `;
+    resultsBox.style.display = 'block';
+
+    // Track Request ID for Race Condition Prevention
+    currentSearchRequestId++;
+    const thisRequestId = currentSearchRequestId;
+
+    try {
+        /*
+          FIRESTORE SEARCH QUERY NOTES:
+          Firestore Native Prefix Search matches string prefixes using `>=` and `<= text + \uf8ff`.
+          For enhanced multi-word search in Firestore, ensure documents include normalized fields:
+          - searchName: "iphone 15 pro max"
+          - searchKeywords: ["iphone", "mobile", "apple"]
+        */
+
+        const catQuery = query(
+            collection(db, "categories"),
+            where("categoryName", ">=", queryText),
+            where("categoryName", "<=", queryText + "\uf8ff"),
+            limit(3)
+        );
+
+        const prodQuery = query(
+            collection(db, "products"),
+            where("name", ">=", queryText),
+            where("name", "<=", queryText + "\uf8ff"),
+            limit(5)
+        );
+
+        const [catSnap, prodSnap] = await Promise.all([
+            getDocs(catQuery).catch(() => ({ docs: [] })),
+            getDocs(prodQuery).catch(() => ({ docs: [] }))
+        ]);
+
+        // Stale Request Guard (Ignore if user typed something else while fetching)
+        if (thisRequestId !== currentSearchRequestId) {
+            return;
+        }
+
+        const remoteCategories = catSnap.docs ? catSnap.docs.map(d => ({ id: d.id, ...d.data() })) : [];
+        const remoteProducts = prodSnap.docs 
+            ? prodSnap.docs.map(d => ({ id: d.id, ...d.data() })).filter(p => p.active !== false)
+            : [];
+
+        // Cache results
+        searchCache.set(cacheKey, {
+            categories: remoteCategories,
+            products: remoteProducts
+        });
+
+        renderSearchResultsHTML(resultsBox, remoteCategories, remoteProducts);
+
+    } catch (error) {
+        console.error("Firebase Search Fallback Error:", error);
+        if (thisRequestId === currentSearchRequestId) {
+            renderSearchResultsHTML(resultsBox, [], []);
+        }
+    }
+}
+
+/**
+ * Initialize Smart Search Component with Debounce
  */
 function initSearch() {
     const searchInput = document.getElementById('smartSearch');
@@ -323,57 +367,21 @@ function initSearch() {
     if (!searchInput || !resultsBox) return;
 
     searchInput.addEventListener('input', (e) => {
-        const val = e.target.value.toLowerCase().trim();
-        if (val.length < 2) {
+        const val = e.target.value;
+
+        if (searchDebounceTimer) {
+            clearTimeout(searchDebounceTimer);
+        }
+
+        if (val.trim().length < 2) {
             resultsBox.style.display = 'none';
             return;
         }
 
-        const matchCats = allCategories.filter(c => c.categoryName && c.categoryName.toLowerCase().includes(val)).slice(0, 3);
-        const matchShops = allShops.filter(s => s.shopName && s.shopName.toLowerCase().includes(val)).slice(0, 5);
-        const matchProds = allProducts.filter(p => {
-            const name = p.name ? p.name.toLowerCase() : "";
-            const description = p.description ? p.description.toLowerCase() : "";
-            const keywords = Array.isArray(p.keywords) ? p.keywords.join(" ").toLowerCase() : "";
-
-            return (
-                name.includes(val) ||
-                description.includes(val) ||
-                keywords.includes(val)
-            );
-        }).slice(0, 5);
-
-        let html = '';
-
-        if (matchCats.length) {
-            html += `<div class="search-group-title">ক্যাটাগরি</div>` + matchCats.map(c => `
-                <a href="https://ghotimarket.com/category.html?slug=${c.slug || '#'}" class="search-item">
-                    <img src="${c.image || 'https://via.placeholder.com/40'}" alt="Cat" loading="lazy"> 
-                    <span>${c.categoryName || ''}</span>
-                </a>
-            `).join('');
-        }
-
-        if (matchShops.length) {
-            html += `<div class="search-group-title">শপ সমূহ</div>` + matchShops.map(s => `
-                <a href="${s.username ? `https://ghotimarket.com/seller?@${encodeURIComponent(s.username)}` : `https://ghotimarket.com/profile?sellerId=${s.id}`}" class="search-item">
-                    <img src="${s.shopLogo || 'https://via.placeholder.com/40'}" alt="Shop" loading="lazy"> 
-                    <span>${s.shopName || ''}</span>
-                </a>
-            `).join('');
-        }
-
-        if (matchProds.length) {
-            html += `<div class="search-group-title">পণ্য</div>` + matchProds.map(p => `
-               <a href="https://ghotimarket.com/product.html?${p.slug || p.id}" class="search-item">
-                    <img src="${p.images?.[0] || 'https://via.placeholder.com/40'}" alt="Product" loading="lazy"> 
-                    <span>${p.name || ''}</span>
-                </a>
-            `).join('');
-        }
-
-        resultsBox.innerHTML = html || '<p style="text-align:center; padding:10px; color:#94a3b8">কিছু পাওয়া যায়নি</p>';
-        resultsBox.style.display = 'block';
+        // 350ms Debounce
+        searchDebounceTimer = setTimeout(() => {
+            processSearch(val);
+        }, 350);
     });
 
     // Close search results on outside click
