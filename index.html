@@ -70,7 +70,7 @@
     <meta property="twitter:description" content="ঘোটি মার্কেট - বিশ্বস্ত বিক্রেতাদের কাছ থেকে সেরা দামে পণ্য কিনুন।">
     <meta property="twitter:image" content="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png">
 
-    <!-- Google Analytics (gtag.js) - Non-Blocking Async -->
+    <!-- Google Analytics (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-P25N2WYNED"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -79,7 +79,7 @@
       gtag('config', 'G-P25N2WYNED');
     </script>
 
-    <!-- Font Preconnect & Swap Optimization for Instant First Paint -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -88,11 +88,11 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- External JS Libraries (Deferred / Async Compatible) -->
+    <!-- External JS Libraries -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
-    <!-- Optimized High-Performance Production CSS -->
+    <!-- Production CSS -->
     <style>
         :root {
             --primary: #FF6B35;
@@ -236,7 +236,7 @@
             flex-shrink: 0; 
         }
 
-        /* --- Action Icons in Header (Cart & Bell) --- */
+        /* --- Header Actions --- */
         .header-actions {
             display: flex;
             align-items: center;
@@ -416,7 +416,7 @@
             } 
         }
 
-        /* --- Upgraded Products Section --- */
+        /* --- Products Section --- */
         .product-grid-home {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -601,7 +601,7 @@
             }
         }
 
-        /* --- Buttons & Action Boxes --- */
+        /* --- Buttons --- */
         .all-shops-box, .track-order-box { 
             max-width: 380px; 
             margin: 24px auto 16px; 
@@ -693,7 +693,7 @@
             color: var(--primary); 
         }
 
-        /* --- Footer --- */
+        /* --- Footer & Updated Watermark Styling --- */
         footer { 
             background: var(--secondary); 
             color: white; 
@@ -707,15 +707,15 @@
             margin-bottom: 20px; 
         }
 
+        /* Watermark image fixed styling */
         .footer-logo-img { 
-            width: 60px; 
-            height: 60px; 
-            border-radius: 50%; 
-            background: #fff; 
-            padding: 5px; 
-            margin-bottom: 10px; 
-            box-shadow: 0 6px 20px rgba(255,107,53,.2); 
+            max-width: 180px; 
+            height: auto; 
+            max-height: 50px;
+            margin: 0 auto 10px; 
+            display: block;
             object-fit: contain; 
+            filter: drop-shadow(0 4px 10px rgba(255,107,53,0.25));
         }
 
         .footer-logo { 
@@ -873,7 +873,7 @@
             display: block;
         }
 
-        /* --- Offline Status Toast --- */
+        /* --- Toast Notification --- */
         #offline-toast {
             position: fixed;
             bottom: 70px;
@@ -923,7 +923,6 @@
         <a href="https://youtube.com/@ghotimarket" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
     </div>
 
-    <!-- Hidden Accessible H1 Heading for SEO -->
     <h1 style="position:absolute; left:-9999px;">Ghoti Market - বাংলাদেশের সেরা অনলাইন মার্কেটপ্লেস</h1>
 
     <!-- Header -->
@@ -966,9 +965,9 @@
     </div>
     <div class="category-grid" id="category-grid"></div>
 
-    <!-- Latest Products Section -->
+    <!-- Popular Products Section -->
     <div class="section-title">
-        <h2>লেটেস্ট পণ্য</h2>
+        <h2>পপুলার কালেকশন</h2>
         <a href="https://ghotimarket.com/all-product.html">সব পণ্য দেখুন</a>
     </div>
     <div class="product-grid-home" id="latest-products"></div>
@@ -984,7 +983,7 @@
     <!-- Footer Section -->
     <footer>
         <div class="footer-brand">
-            <img src="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png" alt="Ghoti Market Logo" class="footer-logo-img" loading="lazy">
+            <img src="https://ghotimarket.com/watermark.png" alt="Ghoti Market Watermark Logo" class="footer-logo-img" loading="lazy">
             <h3 class="footer-logo">GHOTI MARKET</h3>
             <div class="verified-marketplace">
                 <i class="fa-solid fa-circle-check"></i>
@@ -1047,7 +1046,6 @@
     <!-- Offline Status Toast Notification -->
     <div id="offline-toast">অফলাইন মোড — ক্যাশ থেকে তথ্য দেখানো হচ্ছে</div>
 
-    <!-- UI Helper Script -->
     <script>
     function toggleMenu(){
         const menu = document.getElementById("sideMenu");
@@ -1057,10 +1055,10 @@
     }
     </script>
 
-    <!-- Ultra-Fast Production Firebase & Progressive Rendering Application Module -->
+    <!-- Firebase Application Module -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, query, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         // Firebase Configuration
         const FIREBASE_CONFIG = {
@@ -1072,26 +1070,180 @@
             appId: "1:481257644093:web:0dfc3699d6b3c86afeca54"
         };
 
-        const CACHE_KEYS = {
-            BANNERS: 'gm_cache_banners_v1',
-            CATEGORIES: 'gm_cache_categories_v1',
-            PRODUCTS: 'gm_cache_products_v1'
-        };
-
-        const REQUEST_TIMEOUT = 7000;    // 7 Seconds Timeout
-        const SEARCH_DEBOUNCE_MS = 120;  // Optimized Search Debounce
         const FALLBACK_IMG = 'https://via.placeholder.com/300?text=Image+Unavailable';
 
         // Initialize Firebase
         const app = initializeApp(FIREBASE_CONFIG);
         const db = getFirestore(app);
 
-        // Global Memory State
+        // --- static Banners Data (এখানে ব্যানার কম-বেশি করা যাবে) ---
+        const BANNERS = [
+            {
+                url: "https://i.ibb.co/RTzNyjHX/25613.png",
+                link: "https://chat.whatsapp.com/JuKEgjxwAfVIb0fr8Tbcc4?s=cl&p=a&ilr=1"
+            },
+            {
+                url: "https://i.ibb.co/5W2fLgqw/25808.png",
+                link: "https://chat.whatsapp.com/JuKEgjxwAfVIb0fr8Tbcc4?s=cl&p=a&ilr=1"
+            }
+        ];
+
+        // --- Static Categories Data with Search Keywords (এখানে ক্যাটাগরি যুক্ত করা যাবে) ---
+        const CATEGORIES = [
+            {
+                name: "Sharee-শাড়ি",
+                slug: "sharee",
+                link: "https://www.ghotimarket.com/category.html?slug=sharee",
+                image: "https://i.ibb.co/Txsxf2JN/blob.webp",
+                keywords: ["sharee", "শাড়ি", "সাড়ি", "saree", "jamdani", "silk"]
+            },
+            {
+                name: "Three piece-ত্রি পিস",
+                slug: "three-piece",
+                link: "https://www.ghotimarket.com/category.html?slug=three-piece",
+                image: "https://i.ibb.co/ycq3cQzW/blob.webp",
+                keywords: ["three piece", "ত্রি পিস", "থ্রি পিস", "dress", "salwar kameez", "kamiz"]
+            },
+            {
+                name: "T-shirts-গেঞ্জি",
+                slug: "t-shirts",
+                link: "https://www.ghotimarket.com/category.html?slug=t-shirts",
+                image: "https://i.ibb.co/wFV3Vzjx/blob.webp",
+                keywords: ["t-shirt", "tshirts", "গেঞ্জি", "টি শার্ট", "tshirt", "polo"]
+            },
+            {
+                name: "Bad sheets-বিছানা চাদর",
+                slug: "bad-sheets",
+                link: "https://www.ghotimarket.com/category.html?slug=bad-sheets",
+                image: "https://i.ibb.co/fd1YdkcM/blob.webp",
+                keywords: ["bad sheets", "bedsheet", "বিছানা চাদর", "চাদর", "bed cover", "bedding"]
+            },
+            {
+                name: "gadgets-গ্যাজেটস",
+                slug: "gadgets",
+                link: "https://www.ghotimarket.com/category.html?slug=gadgets",
+                image: "https://i.ibb.co/dJzHppxZ/blob.webp",
+                keywords: ["gadgets", "গ্যাজেটস", "গ্যাজেট", "tech items", "electronics", "accessories"]
+            },
+            {
+                name: "Phone-মোবাইল",
+                slug: "phone",
+                link: "https://www.ghotimarket.com/category.html?slug=phone",
+                image: "https://i.ibb.co/PZqszX2y/blob.webp",
+                keywords: ["phone", "মোবাইল", "স্মার্টফোন", "smartphone", "mobile", "android"]
+            },
+            {
+                name: "shoes-জুতা",
+                slug: "shoes",
+                link: "https://www.ghotimarket.com/category.html?slug=shoes",
+                image: "https://i.ibb.co/8n8X1Ntz/blob.webp",
+                keywords: ["shoes", "জুতা", "কেডস", "sneakers", "juta", "footwear"]
+            },
+            {
+                name: "Beauty & personal care-...",
+                slug: "beauty-personal-care",
+                link: "https://www.ghotimarket.com/category.html?slug=beauty-personal-care",
+                image: "https://beauty-personal.edgeone.dev/file.png",
+                keywords: ["beauty", "personal care", "বিউটি", "প্রসাধন", "makeup", "skincare"]
+            },
+            {
+                name: "Bags-ব্যাগ",
+                slug: "bags",
+                link: "https://www.ghotimarket.com/category.html?slug=bags",
+                image: "https://i.ibb.co/C5jfDr7Y/blob.webp",
+                keywords: ["bags", "ব্যাগ", "bag", "backpack", "handbag", "school bag"]
+            },
+            {
+                name: "Kids Fashion-ছোটদের ফ্যাশন",
+                slug: "kids-fashion",
+                link: "https://www.ghotimarket.com/category.html?slug=kids-fashion",
+                image: "https://i.ibb.co/BH6P92YC/blob.webp",
+                keywords: ["kids fashion", "ছোটদের ফ্যাশন", "বাচ্চাদের কাপড়", "baby dress", "kids", "children wear"]
+            },
+            {
+                name: "Jersy-জার্সি",
+                slug: "jersey",
+                link: "https://www.ghotimarket.com/category.html?slug=jersey",
+                image: "https://i.ibb.co/GQcTFBBC/blob.webp",
+                keywords: ["jersy", "jersey", "জার্সি", "football jersey", "cricket jersey", "sports tshirt"]
+            },
+            {
+                name: "Borka-বোরকা",
+                slug: "borka",
+                link: "https://www.ghotimarket.com/category.html?slug=borka",
+                image: "https://i.ibb.co/zTLF1DB2/blob.webp",
+                keywords: ["borka", "বোরকা", "hijab", "burqa", "abaya", "হিযাব"]
+            },
+            {
+                name: "Smart watch-ঘড়ি",
+                slug: "smart-watch",
+                link: "https://www.ghotimarket.com/category.html?slug=smart-watch",
+                image: "https://i.ibb.co/LXLpT7dP/blob.webp",
+                keywords: ["smart watch", "ghori", "ঘড়ি", "স্মার্ট ওয়াচ", "watch", "hand watch"]
+            },
+            {
+                name: "Electronics-ইলেকট্রনিক্স",
+                slug: "electronics",
+                link: "https://www.ghotimarket.com/category.html?slug=electronics",
+                image: "https://i.ibb.co/m5yhyCyK/blob.webp",
+                keywords: ["electronics", "ইলেকট্রনিক্স", "home appliances", "charger", "electric"]
+            },
+            {
+                name: "Fans-ফ্যান",
+                slug: "fans",
+                link: "https://www.ghotimarket.com/category.html?slug=fans",
+                image: "https://i.ibb.co/6RwCMNGt/blob.webp",
+                keywords: ["fans", "ফ্যান", "পাখা", "ceiling fan", "rechargeable fan", "table fan"]
+            },
+            {
+                name: "Drone-ড্রোন",
+                slug: "drone",
+                link: "https://www.ghotimarket.com/category.html?slug=drone",
+                image: "https://i.ibb.co/VcyjNXsq/blob.webp",
+                keywords: ["drone", "ড্রোন", "camera drone", "mini drone", "flying camera"]
+            },
+            {
+                name: "umbrella-ছাতা",
+                slug: "umbrella",
+                link: "https://www.ghotimarket.com/category.html?slug=umbrella",
+                image: "https://i.ibb.co/B2y3wd5h/blob.webp",
+                keywords: ["umbrella", "ছাতা", "chata", "rain umbrella", "sun umbrella"]
+            },
+            {
+                name: "Health And Wellness-স্বাস্থ্য ও...",
+                slug: "health-and-wellness",
+                link: "https://www.ghotimarket.com/category.html?slug=health-and-wellness",
+                image: "https://i.ibb.co/ch4Q9Sn3/blob.webp",
+                keywords: ["health", "wellness", "স্বাস্থ্য", "চিকিৎসা", "fitness", "medicine"]
+            },
+            {
+                name: "Book-বই",
+                slug: "book",
+                link: "https://www.ghotimarket.com/category.html?slug=book",
+                image: "https://i.ibb.co/W4TnGwcN/blob.webp",
+                keywords: ["book", "বই", "boi", "novel", "story book", "books"]
+            },
+            {
+                name: "Islamic",
+                slug: "islamic",
+                link: "https://www.ghotimarket.com/category.html?slug=islamic",
+                image: "https://i.ibb.co/848tWxY4/blob.webp",
+                keywords: ["islamic", "ইসলামিক", "quran", "jaynamaz", "tasbih", "attar", "ইসলামিক পণ্য"]
+            },
+            {
+                name: "Others/অন্যান্য",
+                slug: "others",
+                link: "https://www.ghotimarket.com/category.html?slug=others",
+                image: "https://i.ibb.co/DjmqHQ4/blob.webp",
+                keywords: ["others", "অন্যান্য", "miscellaneous", "general", "onnanno"]
+            }
+        ];
+
+        // Global State
         let swiperInstance = null;
         let globalSearchIndex = { categories: [], products: [] };
-        let isFetching = { banners: false, categories: false, products: false };
 
-        // Security & Sanitization Utilities
+        // Security Utilities
         function escapeHTML(str) {
             if (!str || typeof str !== 'string') return '';
             return str.replace(/[&<>"']/g, (m) => ({
@@ -1124,46 +1276,6 @@
             };
         }
 
-        function isDataEqual(a, b) {
-            if (!a || !b) return false;
-            return JSON.stringify(a) === JSON.stringify(b);
-        }
-
-        function withTimeout(promiseMs, promise) {
-            let timeoutId;
-            const timeoutPromise = new Promise((_, reject) => {
-                timeoutId = setTimeout(() => reject(new Error("Request Timeout")), promiseMs);
-            });
-            return Promise.race([promise, timeoutPromise]).finally(() => clearTimeout(timeoutId));
-        }
-
-        // Local Storage Cache Management
-        function getCache(key) {
-            try {
-                const raw = localStorage.getItem(key);
-                if (!raw) return null;
-                const parsed = JSON.parse(raw);
-                if (!parsed || !parsed.data) return null;
-                return parsed;
-            } catch (e) {
-                console.warn(`Cache read error for ${key}:`, e);
-                localStorage.removeItem(key);
-                return null;
-            }
-        }
-
-        function setCache(key, data) {
-            try {
-                localStorage.setItem(key, JSON.stringify({
-                    data: data,
-                    timestamp: Date.now()
-                }));
-            } catch (e) {
-                console.warn(`Cache write error for ${key}:`, e);
-            }
-        }
-
-        // Image Fallback Attachment
         function attachImageErrorHandlers(container) {
             if (!container) return;
             const imgs = container.querySelectorAll('img');
@@ -1175,14 +1287,14 @@
             });
         }
 
-        // Optimized Non-Blocking Render Engines
+        // Render Functions
         function renderBanners(banners) {
             const bannerWrapper = document.getElementById('banner-wrapper');
             if (!bannerWrapper || !banners || !banners.length) return;
 
             bannerWrapper.innerHTML = banners.map((banner, index) => {
                 const targetAttr = banner.link ? 'target="_blank" rel="noopener noreferrer"' : '';
-                const loadingAttr = index === 0 ? 'loading="eager" fetchpriority="high" decoding="async"' : 'loading="lazy" decoding="async"';
+                const loadingAttr = index === 0 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"';
                 const link = safeURL(banner.link);
                 const imgUrl = safeURL(banner.url, FALLBACK_IMG);
 
@@ -1213,21 +1325,15 @@
             const catGrid = document.getElementById('category-grid');
             if (!catGrid) return;
 
-            if (!categories || !categories.length) {
-                catGrid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#94a3b8; padding:15px;">কোনো ক্যাটাগরি পাওয়া যায়নি</p>`;
-                return;
-            }
-
-            catGrid.innerHTML = categories.slice(0, 24).map(cat => {
-                const catName = escapeHTML(cat.categoryName || 'Unnamed');
-                const catSlug = escapeHTML(cat.slug || '#');
+            catGrid.innerHTML = categories.map(cat => {
+                const catName = escapeHTML(cat.name || 'Unnamed');
                 const catImage = safeURL(cat.image, FALLBACK_IMG);
-                const link = `https://ghotimarket.com/category.html?slug=${catSlug}`;
+                const link = safeURL(cat.link);
 
                 return `
                 <a href="${link}" class="category-card">
                     <div class="cat-img-box">
-                        <img src="${catImage}" alt="${catName}" loading="lazy" decoding="async" data-fallback="${FALLBACK_IMG}">
+                        <img src="${catImage}" alt="${catName}" loading="lazy" data-fallback="${FALLBACK_IMG}">
                     </div>
                     <div class="cat-name">${catName}</div>
                 </a>
@@ -1242,7 +1348,7 @@
             if (!productBox) return;
 
             if (!products || !products.length) {
-                productBox.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#64748b; padding:15px;">কোনো পণ্য পাওয়া যায়নি।</p>`;
+                productBox.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#64748b; padding:20px;">'popular' কালেকশনে কোনো পণ্য পাওয়া যায়নি।</p>`;
                 return;
             }
 
@@ -1256,11 +1362,11 @@
                     discount = `<span class="discount-badge">${percent}% ছাড়</span>`;
                 }
 
-                const productImage = safeURL(p.images?.[0], FALLBACK_IMG);
+                const productImage = safeURL(p.images?.[0] || p.image, FALLBACK_IMG);
                 const productName = escapeHTML(p.name || "Unnamed Product");
                 const productSlug = escapeHTML(p.slug || p.id || '');
                 const productLink = `https://ghotimarket.com/product.html?${productSlug}`;
-                const loadingAttr = index < 4 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy" decoding="async"';
+                const loadingAttr = index < 4 ? 'loading="eager"' : 'loading="lazy"';
 
                 return `
                 <a class="home-product-card" href="${productLink}">
@@ -1288,80 +1394,36 @@
             attachImageErrorHandlers(productBox);
         }
 
-        // Independent Parallel Firestore Fetchers
-        async function loadBanners(cachedData) {
-            if (isFetching.banners) return;
-            isFetching.banners = true;
-
+        // Fetch Products directly from Firestore Collection "popular" (No Cache)
+        async function loadPopularProducts() {
+            const productBox = document.getElementById("latest-products");
             try {
-                const q = query(collection(db, "banners"), orderBy("createdAt", "desc"), limit(10));
-                const snap = await withTimeout(REQUEST_TIMEOUT, getDocs(q));
-                const freshData = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-
-                if (!cachedData || !isDataEqual(cachedData, freshData)) {
-                    renderBanners(freshData);
-                    setCache(CACHE_KEYS.BANNERS, freshData);
-                }
-            } catch (err) {
-                console.error("Banners Fetch Error:", err);
-            } finally {
-                isFetching.banners = false;
-            }
-        }
-
-        async function loadCategories(cachedData) {
-            if (isFetching.categories) return;
-            isFetching.categories = true;
-
-            try {
-                const q = query(collection(db, "categories"), limit(24));
-                const snap = await withTimeout(REQUEST_TIMEOUT, getDocs(q));
-                const freshData = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-
-                if (!cachedData || !isDataEqual(cachedData, freshData)) {
-                    renderCategories(freshData);
-                    setCache(CACHE_KEYS.CATEGORIES, freshData);
-                    buildSearchIndexCategories(freshData);
-                }
-            } catch (err) {
-                console.error("Categories Fetch Error:", err);
-            } finally {
-                isFetching.categories = false;
-            }
-        }
-
-        async function loadProducts(cachedData) {
-            if (isFetching.products) return;
-            isFetching.products = true;
-
-            try {
-                const q = query(collection(db, "products"), orderBy("createdAt", "desc"), limit(20));
-                const snap = await withTimeout(REQUEST_TIMEOUT, getDocs(q));
-                const freshData = snap.docs
+                // Fetch limit 20 items from Firestore 'popular' collection
+                const q = query(collection(db, "popular"), limit(20));
+                const snap = await getDocs(q);
+                
+                const products = snap.docs
                     .map(d => ({ id: d.id, ...d.data() }))
-                    .filter(product => product.active !== false);
+                    .filter(p => p.active !== false);
 
-                if (!cachedData || !isDataEqual(cachedData, freshData)) {
-                    renderProducts(freshData);
-                    setCache(CACHE_KEYS.PRODUCTS, freshData);
-                    buildSearchIndexProducts(freshData);
-                }
+                renderProducts(products);
+                buildSearchIndexProducts(products);
             } catch (err) {
-                console.error("Products Fetch Error:", err);
-            } finally {
-                isFetching.products = false;
+                console.error("Popular Products Fetch Error:", err);
+                if (productBox) {
+                    productBox.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#e11d48; padding:20px;">পণ্য লোড করতে ব্যর্থ হয়েছে। ফায়ারবেস কালেকশন নাম 'popular' চেক করুন।</p>`;
+                }
             }
         }
 
-        // Instant Memory Search Indexing
+        // Search Engine Indexers
         function buildSearchIndexCategories(categories) {
-            if (!categories) return;
             globalSearchIndex.categories = categories.map(c => ({
-                id: c.id,
-                categoryName: c.categoryName || '',
-                slug: c.slug || '',
-                image: c.image || '',
-                nameLower: (c.categoryName || '').toLowerCase()
+                name: c.name,
+                slug: c.slug,
+                link: c.link,
+                image: c.image,
+                searchKey: (c.name + " " + (c.keywords ? c.keywords.join(" ") : "")).toLowerCase()
             }));
         }
 
@@ -1371,13 +1433,12 @@
                 id: p.id,
                 name: p.name || '',
                 slug: p.slug || p.id || '',
-                image: p.images?.[0] || '',
-                nameLower: (p.name || '').toLowerCase(),
-                descLower: (p.description || '').toLowerCase(),
-                keywordsLower: Array.isArray(p.keywords) ? p.keywords.join(" ").toLowerCase() : (p.keywords || '').toLowerCase()
+                image: p.images?.[0] || p.image || '',
+                searchKey: (p.name + " " + (p.description || '') + " " + (Array.isArray(p.keywords) ? p.keywords.join(" ") : (p.keywords || ''))).toLowerCase()
             }));
         }
 
+        // Search Engine
         function initSearch() {
             const searchInput = document.getElementById('smartSearch');
             const resultsBox = document.getElementById('search-results');
@@ -1390,22 +1451,24 @@
                     return;
                 }
 
+                // Matching Categories based on Category Name or Keywords
                 const matchCats = globalSearchIndex.categories
-                    .filter(c => c.nameLower.includes(val))
-                    .slice(0, 3);
+                    .filter(c => c.searchKey.includes(val))
+                    .slice(0, 4);
 
+                // Matching Products
                 const matchProds = globalSearchIndex.products
-                    .filter(p => p.nameLower.includes(val) || p.descLower.includes(val) || p.keywordsLower.includes(val))
-                    .slice(0, 5);
+                    .filter(p => p.searchKey.includes(val))
+                    .slice(0, 6);
 
                 let html = '';
 
                 if (matchCats.length) {
                     html += `<div class="search-group-title">ক্যাটাগরি</div>`;
                     html += matchCats.map(c => `
-                        <a href="https://ghotimarket.com/category.html?slug=${escapeHTML(c.slug)}" class="search-item">
-                            <img src="${safeURL(c.image, FALLBACK_IMG)}" alt="${escapeHTML(c.categoryName)}"> 
-                            <span>${escapeHTML(c.categoryName)}</span>
+                        <a href="${safeURL(c.link)}" class="search-item">
+                            <img src="${safeURL(c.image, FALLBACK_IMG)}" alt="${escapeHTML(c.name)}"> 
+                            <span>${escapeHTML(c.name)}</span>
                         </a>
                     `).join('');
                 }
@@ -1422,7 +1485,7 @@
 
                 resultsBox.innerHTML = html || '<p style="text-align:center; padding:10px; color:#94a3b8; margin:0;">কিছু পাওয়া যায়নি</p>';
                 resultsBox.style.display = 'block';
-            }, SEARCH_DEBOUNCE_MS);
+            }, 150);
 
             searchInput.addEventListener('input', (e) => executeSearch(e.target.value));
 
@@ -1433,58 +1496,35 @@
             });
         }
 
-        // Network Monitor
+        // Network Status
         function initNetworkMonitoring() {
             const toast = document.getElementById('offline-toast');
-            const updateOnlineStatus = () => {
-                if (!navigator.onLine) {
-                    if (toast) toast.style.display = 'block';
-                } else {
-                    if (toast) toast.style.display = 'none';
-                }
+            const updateStatus = () => {
+                if (toast) toast.style.display = navigator.onLine ? 'none' : 'block';
             };
-
-            window.addEventListener('online', updateOnlineStatus);
-            window.addEventListener('offline', updateOnlineStatus);
-            updateOnlineStatus();
+            window.addEventListener('online', updateStatus);
+            window.addEventListener('offline', updateStatus);
+            updateStatus();
         }
 
-        // App Initialization Flow
+        // Initialize App
         function initApp() {
             if (typeof lucide !== 'undefined') lucide.createIcons();
             
             const yearEl = document.getElementById('year');
             if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-            // 1. Instant Local Storage Cache Render (Zero Waiting Time)
-            const cachedBanners = getCache(CACHE_KEYS.BANNERS);
-            const cachedCategories = getCache(CACHE_KEYS.CATEGORIES);
-            const cachedProducts = getCache(CACHE_KEYS.PRODUCTS);
+            // 1. Render Banners & Categories Instant from Local Arrays
+            renderBanners(BANNERS);
+            renderCategories(CATEGORIES);
+            buildSearchIndexCategories(CATEGORIES);
 
-            if (cachedBanners && Array.isArray(cachedBanners.data)) {
-                renderBanners(cachedBanners.data);
-            }
-
-            if (cachedCategories && Array.isArray(cachedCategories.data)) {
-                renderCategories(cachedCategories.data);
-                buildSearchIndexCategories(cachedCategories.data);
-            }
-
-            if (cachedProducts && Array.isArray(cachedProducts.data)) {
-                renderProducts(cachedProducts.data);
-                buildSearchIndexProducts(cachedProducts.data);
-            }
-
-            // 2. Initialize Search & Offline Monitoring
+            // 2. Initialize Search & Network Monitor
             initSearch();
             initNetworkMonitoring();
 
-            // 3. Parallel Silent Firebase Background Refreshes
-            Promise.allSettled([
-                loadBanners(cachedBanners?.data),
-                loadCategories(cachedCategories?.data),
-                loadProducts(cachedProducts?.data)
-            ]);
+            // 3. Fetch 20 Products directly from Firestore 'popular' collection
+            loadPopularProducts();
         }
 
         if (document.readyState === 'loading') {
