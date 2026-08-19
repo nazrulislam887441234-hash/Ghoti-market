@@ -24,11 +24,8 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // Global State Variables
-let allShops = [];
 let allCategories = [];
 let allProducts = [];
-let currentIndex = 0;
-const perPage = 20;
 
 // Initialize Lucide Icons & Footer Year
 if (typeof lucide !== 'undefined') {
@@ -51,14 +48,14 @@ const updateProgress = (val) => {
 
 /**
  * Main Data Loading Function using Asynchronous Non-Blocking Execution & Promise.allSettled()
- * Fetches banners, categories, products, and users independently.
+ * Fetches banners, categories, and products independently.
  * Each section renders immediately upon completion without waiting for slower queries.
  */
 async function loadData() {
     updateProgress(10);
 
     let completedTasks = 0;
-    const totalTasks = 4;
+    const totalTasks = 3;
     const incrementProgress = () => {
         completedTasks++;
         updateProgress(10 + Math.floor((completedTasks / totalTasks) * 90));
@@ -70,26 +67,20 @@ async function loadData() {
         .catch(err => console.error("Banners Loading Error:", err))
         .finally(incrementProgress);
 
-    // 2. Fetch Categories (Strict Limit: 20)
-    const fetchCategories = getDocs(query(collection(db, "categories"), limit(20)))
+    // 2. Fetch Categories (Strict Limit: 24)
+    const fetchCategories = getDocs(query(collection(db, "categories"), limit(24)))
         .then(catSnap => renderCategories(catSnap))
         .catch(err => console.error("Categories Loading Error:", err))
         .finally(incrementProgress);
 
-    // 3. Fetch Products (Strict Limit: 12)
-    const fetchProducts = getDocs(query(collection(db, "products"), orderBy("createdAt", "desc"), limit(12)))
+    // 3. Fetch Products (Strict Limit: 20)
+    const fetchProducts = getDocs(query(collection(db, "products"), orderBy("createdAt", "desc"), limit(20)))
         .then(prodSnap => renderProducts(prodSnap))
         .catch(err => console.error("Products Loading Error:", err))
         .finally(incrementProgress);
 
-    // 4. Fetch Users (Strict Limit: 8)
-    const fetchShops = getDocs(query(collection(db, "users"), limit(10)))
-        .then(shopSnap => renderShopsData(shopSnap))
-        .catch(err => console.error("Users/Shops Loading Error:", err))
-        .finally(incrementProgress);
-
     // Ensure all promises settle without failing or blocking each other
-    await Promise.allSettled([fetchBanners, fetchCategories, fetchProducts, fetchShops]);
+    await Promise.allSettled([fetchBanners, fetchCategories, fetchProducts]);
 
     // Smoothly Remove Loader
     setTimeout(() => {
@@ -131,7 +122,7 @@ function renderBanner(bannerSnap) {
 }
 
 /**
- * Render Categories Section (Strictly following Firestore order, max 20)
+ * Render Categories Section (Strictly following Firestore order, max 24)
  */
 function renderCategories(catSnap) {
     const catGrid = document.getElementById('category-grid');
@@ -139,7 +130,7 @@ function renderCategories(catSnap) {
 
     allCategories = catSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-    catGrid.innerHTML = allCategories.slice(0, 20).map(cat => `
+    catGrid.innerHTML = allCategories.slice(0, 24).map(cat => `
         <a href="https://ghotimarket.com/category.html?slug=${cat.slug || '#'}" class="category-card fade-up">
             <div class="cat-img-box">
                 <img src="${cat.image || 'https://via.placeholder.com/80'}" alt="${cat.categoryName || 'Category'}" loading="lazy">
@@ -162,7 +153,7 @@ function renderProducts(prodSnap) {
     });
 
     if (!allProducts.length) {
-        productBox.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#64748b;">কোনো পণ্য পাওয়া যায়নি</p>`;
+        productBox.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#64748b;">আপনার ইন্টারনেটে সমস্যা হয়েছে। দয়া করে রিফ্রেশ দিয়ে চেষ্টা করুন</p>`;
         return;
     }
 
@@ -196,109 +187,6 @@ function renderProducts(prodSnap) {
 }
 
 /**
- * Helper Function for Flexible Verified Shop Filtering
- */
-function isVerifiedShop(shop) {
-    console.log("Shop:", shop.shopName);
-    console.log("Verified Value:", shop.verified);
-    console.log("Verified Type:", typeof shop.verified);
-
-    const val = shop.verified;
-
-    // Reject explicit falsy or negative values
-    if (
-        val === false ||
-        val === "false" ||
-        val === "False" ||
-        val === "FALSE" ||
-        val === 0 ||
-        val === "0" ||
-        val === null ||
-        val === undefined ||
-        val === "" ||
-        val === "no" ||
-        val === "No" ||
-        val === "NO"
-    ) {
-        return false;
-    }
-
-    // Accept true, numbers like 1, or approved string tokens
-    if (val === true || val === 1) return true;
-
-    if (typeof val === "string") {
-        const lowerVal = val.trim().toLowerCase();
-        const validTokens = ["true", "1", "yes", "verified"];
-        return validTokens.includes(lowerVal);
-    }
-
-    return Boolean(val);
-}
-
-/**
- * Setup and Store Shops Data for Pagination
- */
-function renderShopsData(shopSnap) {
-    const totalUsers = shopSnap.size;
-
-    allShops = shopSnap.docs
-        .map(d => ({ id: d.id, ...d.data() }))
-        .filter(shop => shop.shopName && isVerifiedShop(shop));
-
-    console.log("Total Users Downloaded:", totalUsers);
-    console.log("Verified Shops:", allShops.length);
-    console.log("Verified Shop Names:", allShops.map(s => s.shopName));
-
-    renderShops();
-}
-
-/**
- * Render Shops Function with Pagination Support
- */
-window.renderShops = function() {
-    const grid = document.getElementById('shop-grid');
-    if (!grid) return;
-
-    if (currentIndex === 0) grid.innerHTML = '';
-
-    const batch = allShops.slice(currentIndex, currentIndex + perPage);
-    if (!batch.length && currentIndex === 0) {
-        grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#64748b;">কোনো শপ পাওয়া যায়নি</p>`;
-        return;
-    }
-
-    grid.innerHTML += batch.map(s => {
-        const shopBanner = s.shopBanner || 'https://via.placeholder.com/400x120';
-        const shopLogo = s.shopLogo || 'https://via.placeholder.com/80';
-        const shopName = s.shopName || 'Shop';
-        const shopCategory = s.category || 'Verified Seller';
-        const shopLink = s.username ? `https://ghotimarket.com/seller?@${encodeURIComponent(s.username)}` : `https://ghotimarket.com/profile?sellerId=${s.id}`;
-
-        return `
-        <a href="${shopLink}" class="shop-card fade-up">
-            <div class="shop-banner"><img src="${shopBanner}" alt="Shop Banner" loading="lazy"></div>
-            <div class="shop-info">
-                <div class="shop-logo"><img src="${shopLogo}" alt="Shop Logo" loading="lazy"></div>
-                <div class="shop-name">${shopName} <i class="fa-solid fa-circle-check verified-badge"></i></div>
-                <div class="shop-cat">${shopCategory}</div>
-            </div>
-        </a>
-        `;
-    }).join('');
-
-    currentIndex += perPage;
-    const loadMoreBtn = document.getElementById('load-more-shops');
-    if (loadMoreBtn) {
-        loadMoreBtn.style.display = currentIndex >= allShops.length ? 'none' : 'inline-flex';
-    }
-
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
-    handleScrollAnim();
-};
-
-/**
  * Scroll Animation Observer for Fade-Up Elements
  */
 function handleScrollAnim() {
@@ -315,7 +203,7 @@ function handleScrollAnim() {
 }
 
 /**
- * Smart Search Implementation (Operating purely on downloaded in-memory data)
+ * Smart Search Implementation (Operating purely on downloaded in-memory data for Categories and Products)
  */
 function initSearch() {
     const searchInput = document.getElementById('smartSearch');
@@ -330,7 +218,6 @@ function initSearch() {
         }
 
         const matchCats = allCategories.filter(c => c.categoryName && c.categoryName.toLowerCase().includes(val)).slice(0, 3);
-        const matchShops = allShops.filter(s => s.shopName && s.shopName.toLowerCase().includes(val)).slice(0, 5);
         const matchProds = allProducts.filter(p => {
             const name = p.name ? p.name.toLowerCase() : "";
             const description = p.description ? p.description.toLowerCase() : "";
@@ -350,15 +237,6 @@ function initSearch() {
                 <a href="https://ghotimarket.com/category.html?slug=${c.slug || '#'}" class="search-item">
                     <img src="${c.image || 'https://via.placeholder.com/40'}" alt="Cat" loading="lazy"> 
                     <span>${c.categoryName || ''}</span>
-                </a>
-            `).join('');
-        }
-
-        if (matchShops.length) {
-            html += `<div class="search-group-title">শপ সমূহ</div>` + matchShops.map(s => `
-                <a href="${s.username ? `https://ghotimarket.com/seller?@${encodeURIComponent(s.username)}` : `https://ghotimarket.com/profile?sellerId=${s.id}`}" class="search-item">
-                    <img src="${s.shopLogo || 'https://via.placeholder.com/40'}" alt="Shop" loading="lazy"> 
-                    <span>${s.shopName || ''}</span>
                 </a>
             `).join('');
         }
