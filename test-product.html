@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHOTI MARKET - পণ্যের বিস্তারিত</title>
+    <meta name="description" content="GHOTI MARKET থেকে সেরা দামে পণ্য কিনুন">
+    <link rel="canonical" href="https://ghotimarket.com/product.html">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <meta property="og:title" content="GHOTI MARKET">
+    <meta property="og:description" content="সেরা দামে পণ্য কিনুন">
+    <meta property="og:image" content="https://ghotimarket.com/assets/logo.png">
+    <meta property="og:url" content="https://ghotimarket.com/product.html">
+    <meta property="og:type" content="product">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary: #ff1744;
+            --primary-dark: #d50000;
+            --secondary: #212121;
+            --accent: #2563eb;
+            --bg: #f4f6f8;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-sub: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding-bottom: 90px;
+        }
+
+        /* Top Navigation Bar */
+        .back-nav {
+            padding: 14px 18px;
+            background: var(--card);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-back-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text);
+        }
+
+        .nav-back-left i {
+            font-size: 18px;
+            color: var(--primary);
+        }
+
+        .nav-cart-right {
+            color: var(--primary);
+            font-size: 20px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 4px 8px;
+            transition: transform 0.2s;
+            position: relative;
+        }
+
+        .nav-cart-right:hover {
+            transform: scale(1.1);
+        }
+
+        .cart-badge-count {
+            position: absolute;
+            top: -2px;
+            right: 0;
+            background: var(--primary);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Image Slider */
+        .slider-wrapper {
+            position: relative;
+            background: #ffffff;
+        }
+
+        .slider {
+            width: 100%;
+            overflow-x: auto;
+            display: flex;
+            scroll-snap-type: x mandatory;
+            height: 360px;
+            scrollbar-width: none;
+            position: relative;
+        }
+
+        .slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slider img {
+            width: 100%;
+            flex-shrink: 0;
+            scroll-snap-align: start;
+            object-fit: contain;
+            background: #ffffff;
+            padding: 10px;
+        }
+
+        /* Content Body */
+        .content {
+            padding: 20px;
+            padding-bottom: 100px;
+            background: var(--card);
+            border-radius: 24px 24px 0 0;
+            margin-top: -20px;
+            position: relative;
+            box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        .meta-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .img-counter {
+            font-size: 12px;
+            color: var(--text-sub);
+            font-weight: 600;
+            background: #f1f5f9;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .corner-share-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .corner-share-btn:hover {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 12px;
+            color: #0f172a;
+        }
+
+        /* Price Box */
+        .price-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 0 16px;
+            flex-wrap: wrap;
+        }
+
+        .current-price {
+            color: var(--primary);
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .old-price {
+            color: var(--text-sub);
+            text-decoration: line-through;
+            font-size: 16px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .discount-badge {
+            background: #fee2e2;
+            color: var(--primary-dark);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            display: none;
+            border: 1px solid #fca5a5;
+        }
+
+        /* Variants Section */
+        .variants-container {
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .variant-group {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .variant-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .variant-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .variant-btn {
+            padding: 6px 14px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .variant-btn.active {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 2px 6px rgba(255, 23, 68, 0.25);
+        }
+
+        /* Shop Profile Box */
+        .shop-link {
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #f8fafc;
+            transition: background 0.2s;
+        }
+
+        .shop-link:hover {
+            background: #f1f5f9;
+        }
+
+        .shop-logo {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            background: #fff;
+            display: none;
+        }
+
+        .verified-badge {
+            color: var(--accent);
+            font-size: 15px;
+            display: none;
+            align-items: center;
+        }
+
+        /* Action Buttons Area */
+        .action-buttons-wrap {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .order-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+            padding: 16px 12px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 6px 18px rgba(255, 23, 68, 0.28);
+            transition: all 0.25s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cart-add-btn {
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            box-shadow: 0 6px 18px rgba(2, 132, 199, 0.28);
+        }
+
+        .order-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.95;
+        }
+
+        .order-btn.disabled, .cart-add-btn.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Policy Buttons Section */
+        .policy-section {
+            display: flex;
+            gap: 10px;
+            margin: 16px 0 24px;
+            flex-wrap: wrap;
+        }
+
+        .policy-btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 12px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: #334155;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .policy-btn:hover {
+            background: #f1f5f9;
+            color: var(--primary);
+            border-color: #cbd5e1;
+        }
+
+        /* Description Container */
+        .desc-container {
+            background: #ffffff;
+            border-top: 1px solid var(--border);
+            padding-top: 18px;
+            margin-top: 10px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        .desc {
+            color: #334155;
+            line-height: 1.8;
+            font-size: 14.5px;
+            word-wrap: break-word;
+        }
+
+        #pDesc h1, #pDesc h2, #pDesc h3 {
+            margin: 14px 0 8px;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        #pDesc p { margin: 8px 0; }
+        #pDesc ul, #pDesc ol { padding-left: 20px; margin: 8px 0; }
+        #pDesc li { margin: 4px 0; }
+        #pDesc strong { font-weight: 700; color: #0f172a; }
+
+        /* Reviews Section Styles */
+        .reviews-container {
+            margin-top: 24px;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        .reviews-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .rating-summary {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .avg-score {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .stars-wrap {
+            color: #f59e0b;
+            font-size: 14px;
+        }
+
+        .total-count {
+            font-size: 12px;
+            color: var(--text-sub);
+            font-weight: 500;
+        }
+
+        .write-review-btn {
+            background: #0284c7;
+            color: #ffffff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s;
+        }
+
+        .write-review-btn:hover {
+            background: #0369a1;
+        }
+
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .review-card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 14px;
+        }
+
+        .review-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .review-user-icon {
+            font-size: 24px;
+            color: #94a3b8;
+        }
+
+        .review-meta {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .review-user-email {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0f172a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .review-stars {
+            color: #f59e0b;
+            font-size: 12px;
+        }
+
+        .review-date {
+            font-size: 10px;
+            color: var(--text-sub);
+        }
+
+        .review-text {
+            font-size: 13.5px;
+            color: #334155;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .see-more-reviews-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px;
+            border: 1px dashed var(--accent);
+            border-radius: 12px;
+            color: var(--accent);
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            background: #eff6ff;
+            transition: all 0.2s;
+        }
+
+        .see-more-reviews-btn:hover {
+            background: #dbeafe;
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 65px;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            z-index: 1000;
+            padding-bottom: env(safe-area-inset-bottom);
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-sub);
+            font-size: 10.5px;
+            font-weight: 600;
+            transition: 0.2s;
+            flex: 1;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            margin-bottom: 3px;
+            transition: 0.2s;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        /* Popups */
+        .popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+        }
+
+        .popup.show {
+            display: flex;
+        }
+
+        .popup-box {
+            width: 88%;
+            max-width: 330px;
+            background: #fff;
+            border-radius: 20px;
+            padding: 24px 20px;
+            text-align: center;
+            animation: pop 0.22s ease-out;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .popup-box i {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .popup-box h3 {
+            margin: 8px 0;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .popup-box p {
+            color: var(--text-sub);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .popup-box button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: var(--primary);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .popup-box button:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary-action {
+            background: #2563eb !important;
+        }
+
+        .btn-cancel-action {
+            background: #64748b !important;
+        }
+
+        @keyframes pop {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--text-sub);
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .loading i {
+            color: var(--primary);
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        .main-content-wrapper {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .slider { height: 310px; }
+            h2 { font-size: 18px; }
+            .current-price { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Nav Bar -->
+    <div class="back-nav">
+        <div class="nav-back-left" id="backNavBtn">
+            <i class="fas fa-arrow-left"></i>
+            <span>ফিরে যান</span>
+        </div>
+        <a href="cart.html" class="nav-cart-right" title="Shopping Cart">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-badge-count" id="cartBadgeCount">0</span>
+        </a>
+    </div>
+
+    <!-- Loader -->
+    <div id="loader" class="loading">
+        <i class="fas fa-spinner fa-spin"></i><br>লোড হচ্ছে...
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="main-content-wrapper">
+        <div class="slider-wrapper">
+            <div class="slider" id="imgSlider"></div>
+        </div>
+
+        <div class="content">
+            <div class="meta-header">
+                <span class="img-counter" id="imgCounter">ছবি 0 টি</span>
+                <button class="corner-share-btn" id="shareBtnTrig" type="button" title="শেয়ার করুন">
+                    <i class="fas fa-share-alt"></i>
+                </button>
+            </div>
+
+            <h2 id="pName"></h2>
+
+            <div class="price-box">
+                <span class="current-price" id="pPrice"></span>
+                <span class="old-price" id="oldPrice"></span>
+                <span class="discount-badge" id="discountBadge"></span>
+            </div>
+
+            <!-- Variants Selector Section -->
+            <div id="variantsContainer" class="variants-container"></div>
+
+            <a href="#" id="pShopLink" class="shop-link">
+                <img id="pShopLogoImg" src="" class="shop-logo" alt="Shop Logo">
+                <span id="pShopName"></span>
+                <i id="verifiedBadge" class="fas fa-circle-check verified-badge" title="Verified Shop"></i>
+            </a>
+
+            <!-- ACTION BUTTONS: Add to Cart & Buy Now -->
+            <div class="action-buttons-wrap">
+                <button id="addToCartBtn" class="order-btn cart-add-btn" type="button">
+                    <i class="fas fa-cart-plus"></i> কার্টে যোগ করুন
+                </button>
+                <button id="buyNowBtn" class="order-btn" type="button">
+                    <i class="fas fa-bolt"></i> এখনই কিনুন
+                </button>
+            </div>
+
+            <!-- POLICY BUTTONS -->
+            <div class="policy-section">
+                <a href="https://ghotimarket.com/return&refund-policy" target="_blank" class="policy-btn">
+                    <i class="fas fa-rotate-left"></i> রিটার্ন ও রিফান্ড পলিসি
+                </a>
+                <a href="https://ghotimarket.com/delivery-policy.html" target="_blank" class="policy-btn">
+                    <i class="fas fa-truck-fast"></i> ডেলিভারি পলিসি
+                </a>
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div class="desc-container">
+                <h3 class="section-title"><i class="fas fa-align-left"></i> পণ্যের বিবরণ</h3>
+                <div class="desc" id="pDesc"></div>
+            </div>
+
+            <!-- REVIEWS SECTION -->
+            <div class="reviews-container">
+                <div class="reviews-header">
+                    <div>
+                        <h3 class="section-title"><i class="fas fa-star" style="color: #f59e0b;"></i> গ্রাহক রিভিউ</h3>
+                        <div class="rating-summary">
+                            <span id="avgRating" class="avg-score">0.0</span>
+                            <div id="avgStars" class="stars-wrap"></div>
+                            <span id="totalReviewsCount" class="total-count">(0 টি রিভিউ)</span>
+                        </div>
+                    </div>
+                    <button id="openReviewModalBtn" class="write-review-btn" type="button">
+                        <i class="fas fa-pen"></i> রিভিউ দিন
+                    </button>
+                </div>
+
+                <div id="reviewsList" class="reviews-list"></div>
+
+                <a id="seeMoreReviewsBtn" href="#" class="see-more-reviews-btn" style="display: none;">
+                    সব রিভিউ দেখুন <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Universal Popup -->
+    <div id="universalPopup" class="popup">
+        <div class="popup-box">
+            <i id="popupIcon" class="fas fa-info-circle"></i>
+            <h3 id="popupTitle">নোটিফিকেশন</h3>
+            <p id="popupMessage">বার্তা...</p>
+            <button id="popupCloseBtn" type="button">ঠিক আছে</button>
+        </div>
+    </div>
+
+    <!-- Share Specific Popup -->
+    <div id="sharePopup" class="popup">
+        <div class="popup-box">
+            <i class="fas fa-share-nodes" style="color:var(--accent);"></i>
+            <h3>পণ্যের লিংক শেয়ার</h3>
+            <p style="margin-bottom:12px;">সোশ্যাল মিডিয়ায় বন্ধুদের সাথে শেয়ার করুন</p>
+            <button id="shareNowBtn" type="button"><i class="fas fa-paper-plane"></i> সরাসরি শেয়ার</button>
+            <button id="copyLinkBtn" type="button" class="btn-secondary-action"><i class="fas fa-link"></i> লিংক কপি করুন</button>
+            <button id="closeSharePopupBtn" type="button" class="btn-cancel-action"><i class="fas fa-times"></i> বাতিল</button>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="popup">
+        <div class="popup-box" style="max-width: 350px; text-align: left;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3 style="margin:0; font-size:18px;">লগইন / সাইন আপ করুন</h3>
+                <i class="fas fa-times" id="closeAuthModalBtn" style="cursor:pointer; font-size:18px; color:var(--text-sub);"></i>
+            </div>
+            <p style="font-size:13px; color:var(--text-sub); margin-bottom:14px;">রিভিউ পোস্ট করতে আপনার ইমেইল ও পাসওয়ার্ড দিয়ে লগইন বা রেজিস্টার করুন।</p>
+            
+            <div style="margin-bottom:10px;">
+                <label style="font-size:12px; font-weight:600; color:var(--text);">ইমেইল ঠিকানা</label>
+                <input type="email" id="authEmail" placeholder="example@email.com" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; margin-top:4px; font-family:inherit; font-size:14px;">
+            </div>
+            <div style="margin-bottom:14px;">
+                <label style="font-size:12px; font-weight:600; color:var(--text);">পাসওয়ার্ড</label>
+                <input type="password" id="authPassword" placeholder="******" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; margin-top:4px; font-family:inherit; font-size:14px;">
+            </div>
+
+            <div id="authError" style="color:var(--primary); font-size:12px; margin-bottom:10px; display:none;"></div>
+
+            <button id="loginSubmitBtn" type="button">লগইন করুন</button>
+            <button id="signupSubmitBtn" type="button" class="btn-secondary-action">নতুন অ্যাকাউন্ট তৈরি করুন</button>
+        </div>
+    </div>
+
+    <!-- Review Submit Modal -->
+    <div id="reviewSubmitModal" class="popup">
+        <div class="popup-box" style="max-width: 350px; text-align: left;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3 style="margin:0; font-size:18px;">আপনার রিভিউ দিন</h3>
+                <i class="fas fa-times" id="closeReviewModalBtn" style="cursor:pointer; font-size:18px; color:var(--text-sub);"></i>
+            </div>
+            
+            <div style="margin-bottom:14px; text-align:center;">
+                <div style="font-size:13px; font-weight:600; margin-bottom:6px;">রেটিং নির্বাচন করুন</div>
+                <div id="starSelectContainer" style="display:flex; gap:8px; justify-content:center; font-size:24px; color:#cbd5e1; cursor:pointer;">
+                    <i class="fas fa-star" data-star="1"></i>
+                    <i class="fas fa-star" data-star="2"></i>
+                    <i class="fas fa-star" data-star="3"></i>
+                    <i class="fas fa-star" data-star="4"></i>
+                    <i class="fas fa-star" data-star="5"></i>
+                </div>
+            </div>
+
+            <div style="margin-bottom:14px;">
+                <label style="font-size:12px; font-weight:600; color:var(--text);">আপনার বক্তব্য</label>
+                <textarea id="reviewMessage" rows="3" placeholder="পণ্যটি আপনার কাছে কেমন লেগেছে লিখুন..." style="width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; margin-top:4px; font-family:inherit; resize:none; font-size:14px;"></textarea>
+            </div>
+
+            <button id="submitReviewBtn" type="button">রিভিউ পোস্ট করুন</button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="https://ghotimarket.com" class="nav-item">
+            <i data-lucide="home"></i>
+            <span>Home</span>
+        </a>
+        <a href="https://ghotimarket.com/categories" class="nav-item">
+            <i data-lucide="grid"></i>
+            <span>Categories</span>
+        </a>
+        <a href="https://ghotimarket.com/all-product" class="nav-item">
+            <i data-lucide="box"></i>
+            <span>All product</span>
+        </a>
+        <a href="https://ghotimarket.com/contact" class="nav-item">
+            <i data-lucide="headphones"></i>
+            <span>Support</span>
+        </a>
+        <a href="https://ghotimarket.com/privacy-policy" class="nav-item">
+            <i data-lucide="shield-check"></i>
+            <span>Privacy</span>
+        </a>
+        <a href="https://seller.ghotimarket.com/signup" class="nav-item">
+            <i data-lucide="store"></i>
+            <span>J.Seller</span>
+        </a>
+    </nav>
+
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, query, where, limit, getDocs, doc, getDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+          authDomain: "ghotimarket.firebaseapp.com",
+          databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+          projectId: "ghotimarket",
+          storageBucket: "ghotimarket.firebasestorage.app",
+          messagingSenderId: "481257644093",
+          appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+          measurementId: "G-4SR8V2EKC1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        const PLACEHOLDER_IMAGE = 'https://via.placeholder.com/400x350?text=No+Image';
+
+        let currentSlug = null;
+        let currentProductCache = null;
+        let isLoading = false;
+        let currentUser = null;
+        let selectedStar = 5;
+        let isSubmittingReview = false;
+        let selectedVariantsState = {};
+
+        const userCache = new Map();
+        const productCache = new Map();
+
+        const getEl = (id) => document.getElementById(id);
+        const safeText = (val, def = '') => val ?? def;
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+        });
+
+        const safeNumber = (val, def = 0) => {
+            if (val === null || val === undefined || val === '') return def;
+            if (typeof val === 'number') return isNaN(val) ? def : val;
+            if (typeof val === 'object' && typeof val.toNumber === 'function') return val.toNumber();
+            let str = String(val).trim();
+            if (!str) return def;
+            const bnDigits = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+            for (let i = 0; i < 10; i++) str = str.replaceAll(bnDigits[i], String(i));
+            str = str.replace(/,/g, '').replace(/[^0-9.-]/g, '');
+            const num = Number(str);
+            return isNaN(num) ? def : num;
+        };
+
+        const hideElement = (el) => { if (el) el.style.display = 'none'; };
+        const showElement = (el, displayType = 'inline-block') => { if (el) el.style.display = displayType; };
+
+        export const showPopup = ({ title = "সতর্কতা", message = "", type = "info" }) => {
+            try {
+                const popupEl = getEl("universalPopup");
+                const titleEl = getEl("popupTitle");
+                const msgEl = getEl("popupMessage");
+                const iconEl = getEl("popupIcon");
+
+                if (!popupEl || !titleEl || !msgEl || !iconEl) return;
+                titleEl.innerText = title;
+                msgEl.innerText = message;
+                iconEl.className = "fas";
+                switch (type) {
+                    case "success": iconEl.classList.add("fa-check-circle"); iconEl.style.color = "var(--success)"; break;
+                    case "error": iconEl.classList.add("fa-triangle-exclamation"); iconEl.style.color = "var(--primary)"; break;
+                    case "warning": iconEl.classList.add("fa-exclamation-circle"); iconEl.style.color = "var(--warning)"; break;
+                    default: iconEl.classList.add("fa-info-circle"); iconEl.style.color = "var(--accent)"; break;
+                }
+                popupEl.classList.add("show");
+            } catch (err) { console.error("Popup Error:", err); }
+        };
+
+        const closeUniversalPopup = () => { getEl("universalPopup")?.classList.remove("show"); };
+
+        const getCart = () => {
+            try {
+                return JSON.parse(localStorage.getItem('ghoti_cart')) || [];
+            } catch (e) { return []; }
+        };
+
+        const saveCart = (cart) => {
+            localStorage.setItem('ghoti_cart', JSON.stringify(cart));
+            updateCartBadge();
+        };
+
+        const updateCartBadge = () => {
+            const cart = getCart();
+            const totalCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+            const badge = getEl("cartBadgeCount");
+            if (badge) badge.innerText = totalCount;
+        };
+
+        const isProductInCart = (slug) => {
+            const cart = getCart();
+            return cart.some(item => item.slug === slug);
+        };
+
+        const isVerifiedUser = (user) => {
+            if (!user) return false;
+            const val = user.verified;
+            if (val === false || val === "false" || val === 0 || val === null || val === undefined || val === "" || val === "no") return false;
+            if (val === true || val === 1) return true;
+            if (typeof val === "string") return ["true", "1", "yes", "verified"].includes(val.trim().toLowerCase());
+            return Boolean(val);
+        };
+
+        const getValidUsername = (usernameInput) => {
+            if (usernameInput === null || usernameInput === undefined) return null;
+            let value = String(usernameInput).trim();
+            if (value === "" || value === "null" || value === "undefined" || value === "false") return null;
+            value = value.replace(/^@+/, "").trim();
+            return value === "" ? null : encodeURIComponent(value);
+        };
+
+        function updateSellerLink(sellerId, sellerData = null) {
+            const cleanSellerId = sellerId ? String(sellerId).trim() : null;
+            const validUsername = sellerData ? getValidUsername(sellerData.username) : null;
+            let targetUrl = null;
+            if (validUsername) targetUrl = `https://ghotimarket.com/seller?@${validUsername}`;
+            else if (cleanSellerId) targetUrl = `https://ghotimarket.com/profile?sellerId=${encodeURIComponent(cleanSellerId)}`;
+
+            const shopLink = getEl("pShopLink");
+            if (targetUrl && shopLink) {
+                shopLink.setAttribute('href', targetUrl);
+                shopLink.style.pointerEvents = 'auto';
+                shopLink.style.opacity = '1';
+            } else if (shopLink) {
+                shopLink.removeAttribute('href');
+                shopLink.style.pointerEvents = 'none';
+                shopLink.style.opacity = '0.5';
+            }
+        }
+
+        const getSlugFromURL = () => {
+            try {
+                const pathname = window.location.pathname;
+                const search = window.location.search;
+                const urlParams = new URLSearchParams(search);
+                let slug = urlParams.get("product-slug");
+                if (slug) return decodeURIComponent(slug.trim());
+                for (const [key, value] of urlParams.entries()) {
+                    if (key !== 'fbclid' && !key.startsWith('utm_') && value === '') return decodeURIComponent(key.trim());
+                }
+                const pathParts = pathname.split('/');
+                const lastPart = pathParts[pathParts.length - 1];
+                if (lastPart && lastPart !== 'product.html' && lastPart !== '' && !lastPart.includes('.')) return decodeURIComponent(lastPart);
+                return null;
+            } catch (err) { return null; }
+        };
+
+        const openSharePopup = () => { getEl("sharePopup")?.classList.add("show"); };
+        const closeSharePopup = () => { getEl("sharePopup")?.classList.remove("show"); };
+
+        const shareNow = async () => {
+            if (!currentProductCache) return;
+            const shareText = `🛒 ${safeText(currentProductCache.name)}\n💰 ৳${safeNumber(currentProductCache.price)}\n\nGHOTI MARKET থেকে বিস্তারিত দেখুন:`;
+            try {
+                if (navigator.share) await navigator.share({ title: safeText(currentProductCache.name), text: shareText, url: window.location.href });
+                else await copyLinkToClipboard();
+            } catch (error) { if (error.name !== 'AbortError') await copyLinkToClipboard(); }
+            finally { closeSharePopup(); }
+        };
+
+        const copyLinkToClipboard = async () => {
+            const textToCopy = window.location.href;
+            try {
+                await navigator.clipboard.writeText(textToCopy);
+                showPopup({ title: "সফল হয়েছে", message: "পণ্যের লিংক সফলভাবে কপি হয়েছে।", type: "success" });
+            } catch (e) {
+                showPopup({ title: "ব্যর্থ", message: "লিংক কপি করা সম্ভব হয়নি।", type: "error" });
+            }
+            closeSharePopup();
+        };
+
+        const loadProductBySlug = async (slug, push = true) => {
+            if (!slug || isLoading) return;
+            slug = slug.trim();
+            isLoading = true;
+
+            showElement(getEl("loader"), "block");
+            hideElement(getEl("mainContent"));
+
+            try {
+                let productData = productCache.get(slug);
+                if (!productData) {
+                    const q = query(collection(db, "products"), where("slug", "==", slug), limit(1));
+                    const snap = await getDocs(q);
+                    if (snap.empty) {
+                        showPopup({ title: "পাওয়া যায়নি", message: "কাঙ্ক্ষিত পণ্যটি খুঁজে পাওয়া যায়নি।", type: "warning" });
+                        hideElement(getEl("loader"));
+                        showElement(getEl("mainContent"), "block");
+                        isLoading = false;
+                        return;
+                    }
+                    const productDoc = snap.docs[0];
+                    productData = productDoc.data();
+                    productData.docId = productDoc.id;
+                    productCache.set(slug, productData);
+                }
+
+                currentSlug = slug;
+                currentProductCache = productData;
+
+                if (push) {
+                    history.pushState({ slug }, '', `product.html?product-slug=${encodeURIComponent(slug)}`);
+                }
+
+                renderProduct(productData);
+                await loadProductReviews(productData.docId);
+
+            } catch (error) {
+                console.error("Error:", error);
+                showPopup({ title: "নেটওয়ার্ক ত্রুটি", message: "পণ্য লোড করতে সমস্যা হয়েছে।", type: "error" });
+            } finally {
+                hideElement(getEl("loader"));
+                showElement(getEl("mainContent"), "block");
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                isLoading = false;
+            }
+        };
+
+        // Render Variants and calculate price dynamically
+        const renderVariants = (variants) => {
+            const container = getEl("variantsContainer");
+            if (!container) return;
+            container.innerHTML = "";
+            selectedVariantsState = {};
+
+            if (!Array.isArray(variants) || variants.length === 0) {
+                hideElement(container);
+                return;
+            }
+
+            showElement(container, "block");
+
+            variants.forEach(variant => {
+                const variantName = variant.name;
+                const values = variant.values;
+                if (!values || values.length === 0) return;
+
+                // Default select the first option
+                selectedVariantsState[variantName] = values[0];
+
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'variant-group';
+
+                const titleDiv = document.createElement('div');
+                titleDiv.className = 'variant-title';
+                titleDiv.innerText = `${variantName}:`;
+                groupDiv.appendChild(titleDiv);
+
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'variant-options';
+
+                values.forEach((valObj, idx) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = `variant-btn ${idx === 0 ? 'active' : ''}`;
+                    const extraTxt = valObj.extraPrice > 0 ? ` (+৳${valObj.extraPrice})` : '';
+                    btn.innerText = `${valObj.value}${extraTxt}`;
+
+                    btn.addEventListener('click', () => {
+                        optionsDiv.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        selectedVariantsState[variantName] = valObj;
+                        updateDynamicPrice();
+                    });
+
+                    optionsDiv.appendChild(btn);
+                });
+
+                groupDiv.appendChild(optionsDiv);
+                container.appendChild(groupDiv);
+            });
+
+            updateDynamicPrice();
+        };
+
+        const updateDynamicPrice = () => {
+            if (!currentProductCache) return;
+            let basePrice = safeNumber(currentProductCache.price, 0);
+            let totalExtra = 0;
+
+            for (const key in selectedVariantsState) {
+                if (selectedVariantsState[key] && selectedVariantsState[key].extraPrice) {
+                    totalExtra += safeNumber(selectedVariantsState[key].extraPrice, 0);
+                }
+            }
+
+            const finalPrice = basePrice + totalExtra;
+            getEl("pPrice").innerText = `৳ ${finalPrice}`;
+        };
+
+        const getCalculatedCurrentPrice = () => {
+            if (!currentProductCache) return 0;
+            let basePrice = safeNumber(currentProductCache.price, 0);
+            let totalExtra = 0;
+            for (const key in selectedVariantsState) {
+                if (selectedVariantsState[key] && selectedVariantsState[key].extraPrice) {
+                    totalExtra += safeNumber(selectedVariantsState[key].extraPrice, 0);
+                }
+            }
+            return basePrice + totalExtra;
+        };
+
+        const renderProduct = (p) => {
+            const name = safeText(p.name, 'Product');
+            const desc = safeText(p.description, '');
+            const images = Array.isArray(p.images) ? p.images : [];
+            const img = images[0] || PLACEHOLDER_IMAGE;
+            const basePrice = safeNumber(p.price, 0);
+            const oldPrice = safeNumber(p.oldPrice, 0);
+
+            document.title = `${name} - ৳${basePrice} | GHOTI MARKET`;
+
+            getEl("pName").innerText = name;
+            getEl("pPrice").innerText = `৳ ${basePrice}`;
+
+            const descriptionEl = getEl("pDesc");
+            if (descriptionEl) {
+                descriptionEl.innerHTML = DOMPurify.sanitize(marked.parse(desc || 'কোন বিবরণ নেই'));
+            }
+
+            const oldPriceEl = getEl("oldPrice");
+            const discountBadgeEl = getEl("discountBadge");
+
+            if (oldPrice > basePrice && basePrice > 0) {
+                const diff = oldPrice - basePrice;
+                const pct = Math.round((diff / oldPrice) * 100);
+                if (oldPriceEl) { oldPriceEl.innerText = `৳ ${oldPrice}`; showElement(oldPriceEl, 'inline'); }
+                if (discountBadgeEl) { discountBadgeEl.innerText = `৳${diff} ছাড় (${pct}% OFF)`; showElement(discountBadgeEl, 'inline-block'); }
+            } else {
+                hideElement(oldPriceEl);
+                hideElement(discountBadgeEl);
+            }
+
+            // Render Variants
+            renderVariants(p.variants);
+
+            // Check Cart Status to hide/show Add to Cart button
+            const addToCartBtn = getEl("addToCartBtn");
+            if (isProductInCart(p.slug)) {
+                hideElement(addToCartBtn);
+            } else {
+                showElement(addToCartBtn, "flex");
+            }
+
+            // Seller info
+            const sellerId = safeText(p.sellerId).trim();
+            const shopNameEl = getEl("pShopName");
+            if (shopNameEl) shopNameEl.innerText = safeText(p.shopName, "Unknown Shop");
+            if (sellerId) updateSellerLink(sellerId, null);
+
+            // Images slider
+            const slider = getEl("imgSlider");
+            if (images.length > 0) {
+                slider.innerHTML = images.map(iUrl => `<img src="${iUrl}" alt="${name}" onerror="this.src='${PLACEHOLDER_IMAGE}'">`).join("");
+                getEl("imgCounter").innerText = `ছবি ${images.length} টি`;
+            } else {
+                slider.innerHTML = `<img src="${PLACEHOLDER_IMAGE}" alt="No Image">`;
+                getEl("imgCounter").innerText = `ছবি 0 টি`;
+            }
+
+            updateCartBadge();
+        };
+
+        // Add to Cart Logic
+        const handleAddToCart = (redirect = false) => {
+            if (!currentProductCache) return;
+            let cart = getCart();
+
+            // Prepare selected variants summary object
+            let chosenVariants = {};
+            for (const key in selectedVariantsState) {
+                if (selectedVariantsState[key]) {
+                    chosenVariants[key] = selectedVariantsState[key].value;
+                }
+            }
+
+            const finalPrice = getCalculatedCurrentPrice();
+            const images = Array.isArray(currentProductCache.images) ? currentProductCache.images : [];
+
+            const cartItem = {
+                docId: currentProductCache.docId,
+                slug: currentProductCache.slug,
+                name: currentProductCache.name,
+                price: finalPrice,
+                basePrice: safeNumber(currentProductCache.price, 0),
+                selectedVariants: chosenVariants,
+                image: images[0] || PLACEHOLDER_IMAGE,
+                quantity: 1,
+                shopName: currentProductCache.shopName || '',
+                sellerId: currentProductCache.sellerId || ''
+            };
+
+            // Check if already in cart
+            const existingIndex = cart.findIndex(item => item.slug === currentProductCache.slug);
+            if (existingIndex > -1) {
+                cart[existingIndex] = cartItem; // update with new variants/price
+            } else {
+                cart.push(cartItem);
+            }
+
+            saveCart(cart);
+            hideElement(getEl("addToCartBtn"));
+
+            if (redirect) {
+                window.location.href = 'checkout.html';
+            } else {
+                showPopup({ title: "সফল!", message: "পণ্যটি আপনার কার্টে সফলভাবে যোগ করা হয়েছে।", type: "success" });
+            }
+        };
+
+        const loadProductReviews = async (productId) => {
+            if (!productId) return;
+            try {
+                const q = query(collection(db, "product_reviews"), where("productId", "==", productId));
+                const snap = await getDocs(q);
+                let reviews = [];
+                snap.forEach(docSnap => reviews.push({ id: docSnap.id, ...docSnap.data() }));
+                reviews.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
+                const total = reviews.length;
+                getEl("totalReviewsCount").innerText = `(${total} টি রিভিউ)`;
+                if (total > 0) {
+                    const sum = reviews.reduce((acc, curr) => acc + safeNumber(curr.star, 5), 0);
+                    const avg = (sum / total).toFixed(1);
+                    getEl("avgRating").innerText = avg;
+                    getEl("avgStars").innerHTML = renderStarsHTML(Math.round(avg));
+                } else {
+                    getEl("avgRating").innerText = "0.0";
+                    getEl("avgStars").innerHTML = renderStarsHTML(0);
+                }
+
+                const top5 = reviews.slice(0, 5);
+                const listEl = getEl("reviewsList");
+                listEl.innerHTML = "";
+                if (top5.length === 0) {
+                    listEl.innerHTML = `<div style="text-align:center; padding:15px; color:var(--text-sub); font-size:13px;">এখনো কোনো রিভিউ দেওয়া হয়নি।</div>`;
+                } else {
+                    top5.forEach(r => {
+                        const dateStr = r.createdAt?.seconds ? new Date(r.createdAt.seconds * 1000).toLocaleDateString('bn-BD') : 'সাম্প্রতিক';
+                        const displayEmail = r.userEmail || 'অজানা গ্রাহক';
+                        const card = document.createElement('div');
+                        card.className = 'review-card';
+                        card.innerHTML = `
+                            <div class="review-card-header">
+                                <div class="review-user-icon"><i class="fas fa-user-circle"></i></div>
+                                <div class="review-meta">
+                                    <span class="review-user-email">${safeText(displayEmail)}</span>
+                                    <div class="review-stars">${renderStarsHTML(r.star)}</div>
+                                    <div class="review-date">${dateStr}</div>
+                                </div>
+                            </div>
+                            <div class="review-text">${safeText(r.message)}</div>
+                        `;
+                        listEl.appendChild(card);
+                    });
+                }
+
+                const seeMoreBtn = getEl("seeMoreReviewsBtn");
+                if (seeMoreBtn) {
+                    seeMoreBtn.href = `product-review.html?productId=${encodeURIComponent(productId)}`;
+                    seeMoreBtn.style.display = "flex";
+                }
+            } catch (err) { console.error(err); }
+        };
+
+        const renderStarsHTML = (rating) => {
+            const starNum = Math.min(5, Math.max(1, safeNumber(rating, 5)));
+            let html = '';
+            for (let i = 1; i <= 5; i++) {
+                html += i <= starNum ? '<i class="fas fa-star"></i>' : '<i class="far fa-star" style="color:#cbd5e1;"></i>';
+            }
+            return html;
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            getEl("backNavBtn")?.addEventListener('click', () => history.back());
+            getEl("shareBtnTrig")?.addEventListener('click', openSharePopup);
+            getEl("shareNowBtn")?.addEventListener('click', shareNow);
+            getEl("copyLinkBtn")?.addEventListener('click', copyLinkToClipboard);
+            getEl("closeSharePopupBtn")?.addEventListener('click', closeSharePopup);
+            getEl("popupCloseBtn")?.addEventListener('click', closeUniversalPopup);
+
+            getEl("addToCartBtn")?.addEventListener('click', () => handleAddToCart(false));
+            getEl("buyNowBtn")?.addEventListener('click', () => handleAddToCart(true));
+
+            // Review Modal triggers
+            getEl("openReviewModalBtn")?.addEventListener('click', () => {
+                if (currentUser) getEl("reviewSubmitModal")?.classList.add("show");
+                else getEl("authModal")?.classList.add("show");
+            });
+
+            getEl("closeAuthModalBtn")?.addEventListener('click', () => getEl("authModal")?.classList.remove("show"));
+            getEl("closeReviewModalBtn")?.addEventListener('click', () => getEl("reviewSubmitModal")?.classList.remove("show"));
+
+            getEl("loginSubmitBtn")?.addEventListener('click', async () => {
+                const email = getEl("authEmail").value.trim();
+                const pass = getEl("authPassword").value.trim();
+                const err = getEl("authError");
+                try {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                    getEl("authModal")?.classList.remove("show");
+                    getEl("reviewSubmitModal")?.classList.add("show");
+                } catch (e) { err.innerText = "লগইন ব্যর্থ!"; err.style.display = 'block'; }
+            });
+
+            getEl("signupSubmitBtn")?.addEventListener('click', async () => {
+                const email = getEl("authEmail").value.trim();
+                const pass = getEl("authPassword").value.trim();
+                const err = getEl("authError");
+                try {
+                    await createUserWithEmailAndPassword(auth, email, pass);
+                    getEl("authModal")?.classList.remove("show");
+                    getEl("reviewSubmitModal")?.classList.add("show");
+                } catch (e) { err.innerText = "রেজিস্ট্রেশন ব্যর্থ!"; err.style.display = 'block'; }
+            });
+
+            getEl("submitReviewBtn")?.addEventListener('click', async () => {
+                if (isSubmittingReview || !currentUser || !currentProductCache) return;
+                const message = getEl("reviewMessage").value.trim();
+                if (!message) { showPopup({ title: "সতর্কতা", message: "বার্তা লিখুন।", type: "warning" }); return; }
+                
+                try {
+                    isSubmittingReview = true;
+                    await addDoc(collection(db, "product_reviews"), {
+                        userId: currentUser.uid,
+                        userEmail: currentUser.email || "",
+                        productId: currentProductCache.docId,
+                        sellerId: currentProductCache.sellerId || "",
+                        message,
+                        star: selectedStar,
+                        createdAt: serverTimestamp()
+                    });
+                    getEl("reviewMessage").value = '';
+                    getEl("reviewSubmitModal")?.classList.remove("show");
+                    showPopup({ title: "ধন্যবাদ!", message: "রিভিউ সফলভাবে পোস্ট হয়েছে।", type: "success" });
+                    await loadProductReviews(currentProductCache.docId);
+                } catch (e) { showPopup({ title: "ত্রুটি", message: "পোস্ট করা যায়নি।", type: "error" }); }
+                finally { isSubmittingReview = false; }
+            });
+
+            getEl("starSelectContainer")?.addEventListener('click', (e) => {
+                const star = e.target.closest("i");
+                if (star) {
+                    selectedStar = parseInt(star.getAttribute("data-star"), 10);
+                    getEl("starSelectContainer").querySelectorAll("i").forEach((s, idx) => {
+                        s.style.color = idx < selectedStar ? "#f59e0b" : "#cbd5e1";
+                    });
+                }
+            });
+
+            const slug = getSlugFromURL();
+            if (slug) loadProductBySlug(slug, false);
+            else {
+                showPopup({ title: "সতর্কতা", message: "কোনো বৈধ প্রোডাক্ট লিংক পাওয়া যায়নি।", type: "warning" });
+                hideElement(getEl("loader"));
+                showElement(getEl("mainContent"), "block");
+            }
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            updateCartBadge();
+        });
+    </script>
+</body>
+</html>
