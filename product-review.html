@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHOTI MARKET - সকল গ্রাহক রিভিউ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary: #ff1744;
+            --primary-dark: #d50000;
+            --secondary: #212121;
+            --accent: #2563eb;
+            --bg: #f4f6f8;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-sub: #64748b;
+            --border: #e2e8f0;
+            --warning: #f59e0b;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding-bottom: 90px;
+        }
+
+        /* Top Bar */
+        .back-nav {
+            padding: 14px 18px;
+            background: var(--card);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .nav-back-btn i {
+            font-size: 18px;
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* Product Header Card */
+        .product-summary-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .product-thumb {
+            width: 65px;
+            height: 65px;
+            border-radius: 10px;
+            object-fit: cover;
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .product-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.3;
+            margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-price {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        /* Rating Overview Card */
+        .overview-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .overview-grid {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .score-box {
+            text-align: center;
+            padding-right: 18px;
+            border-right: 1px solid var(--border);
+        }
+
+        .score-num {
+            font-size: 38px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1;
+        }
+
+        .stars-row {
+            color: var(--warning);
+            font-size: 13px;
+            margin: 6px 0 4px;
+        }
+
+        .total-text {
+            font-size: 12px;
+            color: var(--text-sub);
+            font-weight: 500;
+        }
+
+        /* Progress Bars Breakdown */
+        .breakdown-list {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-sub);
+            font-weight: 600;
+        }
+
+        .bar-bg {
+            flex: 1;
+            height: 7px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: var(--warning);
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .count-val {
+            min-width: 20px;
+            text-align: right;
+            font-size: 11px;
+        }
+
+        /* Reviews List */
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .reviews-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .review-card {
+            background: var(--card);
+            border-radius: 14px;
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .user-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .user-meta {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .user-email {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0f172a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .review-stars {
+            color: var(--warning);
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        .review-date {
+            font-size: 11px;
+            color: var(--text-sub);
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
+        .review-text {
+            font-size: 14px;
+            color: #334155;
+            line-height: 1.6;
+            word-wrap: break-word;
+        }
+
+        /* Load More Button */
+        .load-more-btn {
+            display: none;
+            width: 100%;
+            padding: 12px;
+            margin-top: 16px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .load-more-btn:hover {
+            background: #f8fafc;
+            border-color: var(--accent);
+        }
+
+        .load-more-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 65px;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            z-index: 1000;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-sub);
+            font-size: 10.5px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            margin-bottom: 3px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-sub);
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .loading i {
+            color: var(--primary);
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <div class="back-nav">
+        <a href="javascript:history.back()" class="nav-back-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>গ্রাহক রিভিউ</span>
+        </a>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        
+        <!-- Loader -->
+        <div id="loader" class="loading">
+            <i class="fas fa-spinner fa-spin"></i><br>রিভিউ লোড হচ্ছে...
+        </div>
+
+        <div id="content" style="display: none;">
+            
+            <!-- Product Header Summary -->
+            <div class="product-summary-card">
+                <img id="pThumb" src="" class="product-thumb" alt="Product">
+                <div class="product-info">
+                    <h3 id="pTitle">পণ্য লোড হচ্ছে...</h3>
+                    <div id="pPrice" class="product-price">৳ 0</div>
+                </div>
+            </div>
+
+            <!-- Total Rating Breakdown Card -->
+            <div class="overview-card">
+                <div class="overview-grid">
+                    <div class="score-box">
+                        <div id="avgScore" class="score-num">0.0</div>
+                        <div id="avgStars" class="stars-row"></div>
+                        <div id="totalReviewsCount" class="total-text">0 টি রিভিউ</div>
+                    </div>
+
+                    <div class="breakdown-list">
+                        <div class="breakdown-item">
+                            <span>৫</span> <i class="fas fa-star" style="color:var(--warning); font-size:10px;"></i>
+                            <div class="bar-bg"><div id="bar5" class="bar-fill"></div></div>
+                            <span id="cnt5" class="count-val">0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>৪</span> <i class="fas fa-star" style="color:var(--warning); font-size:10px;"></i>
+                            <div class="bar-bg"><div id="bar4" class="bar-fill"></div></div>
+                            <span id="cnt4" class="count-val">0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>৩</span> <i class="fas fa-star" style="color:var(--warning); font-size:10px;"></i>
+                            <div class="bar-bg"><div id="bar3" class="bar-fill"></div></div>
+                            <span id="cnt3" class="count-val">0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>২</span> <i class="fas fa-star" style="color:var(--warning); font-size:10px;"></i>
+                            <div class="bar-bg"><div id="bar2" class="bar-fill"></div></div>
+                            <span id="cnt2" class="count-val">0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>১</span> <i class="fas fa-star" style="color:var(--warning); font-size:10px;"></i>
+                            <div class="bar-bg"><div id="bar1" class="bar-fill"></div></div>
+                            <span id="cnt1" class="count-val">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews List Section -->
+            <h3 class="section-title"><i class="fas fa-comments" style="color: var(--accent);"></i> সকল মতামত</h3>
+            <div id="reviewsList" class="reviews-wrapper"></div>
+
+            <!-- Load More Button -->
+            <button id="loadMoreBtn" class="load-more-btn">
+                <i class="fas fa-spinner fa-spin" id="loadMoreSpinner" style="display:none; margin-right:6px;"></i>
+                আরও রিভিউ দেখুন
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <a href="https://ghotimarket.com" class="nav-item">
+            <i data-lucide="home"></i>
+            <span>Home</span>
+        </a>
+        <a href="https://ghotimarket.com/categories" class="nav-item">
+            <i data-lucide="grid"></i>
+            <span>Categories</span>
+        </a>
+        <a href="https://ghotimarket.com/all-product" class="nav-item">
+            <i data-lucide="box"></i>
+            <span>All product</span>
+        </a>
+        <a href="https://ghotimarket.com/contact" class="nav-item">
+            <i data-lucide="headphones"></i>
+            <span>Support</span>
+        </a>
+        <a href="https://ghotimarket.com/privacy-policy" class="nav-item">
+            <i data-lucide="shield-check"></i>
+            <span>Privacy</span>
+        </a>
+    </nav>
+
+    <!-- Firebase SDK Setup -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+          authDomain: "ghotimarket.firebaseapp.com",
+          databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+          projectId: "ghotimarket",
+          storageBucket: "ghotimarket.firebasestorage.app",
+          messagingSenderId: "481257644093",
+          appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+          measurementId: "G-4SR8V2EKC1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const PAGE_SIZE = 20;
+        let allReviewsCache = [];
+
+        const PLACEHOLDER_IMAGE = 'https://via.placeholder.com/100?text=No+Image';
+
+        const getEl = (id) => document.getElementById(id);
+
+        const safeNumber = (val, def = 0) => {
+            if (val === null || val === undefined || val === '') return def;
+            if (typeof val === 'number') return isNaN(val) ? def : val;
+            let str = String(val).trim().replace(/,/g, '');
+            const num = Number(str);
+            return isNaN(num) ? def : num;
+        };
+
+        const escapeHtml = (text) => {
+            if (!text) return '';
+            return String(text)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        };
+
+        const renderStarsHTML = (rating) => {
+            const starNum = Math.min(5, Math.max(0, safeNumber(rating, 0)));
+            let starsHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= starNum) {
+                    starsHTML += '<i class="fas fa-star"></i>';
+                } else {
+                    starsHTML += '<i class="far fa-star" style="color:#cbd5e1;"></i>';
+                }
+            }
+            return starsHTML;
+        };
+
+        // Get Product ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('productId');
+
+        const appendReviewCards = (reviewsToRender) => {
+            const reviewsListEl = getEl("reviewsList");
+
+            reviewsToRender.forEach(r => {
+                const dateStr = r.createdAt?.seconds 
+                    ? new Date(r.createdAt.seconds * 1000).toLocaleDateString('bn-BD', { year: 'numeric', month: 'short', day: 'numeric' }) 
+                    : 'সাম্প্রতিক';
+
+                // সরাসরি userEmail ফিল্ড থেকে ইমেইল নেওয়া হয়েছে
+                const displayEmail = r.userEmail || 'অজানা গ্রাহক (ইমেইল নেই)';
+
+                const card = document.createElement('div');
+                card.className = 'review-card';
+                card.innerHTML = `
+                    <div class="user-row">
+                        <div class="user-avatar"><i class="fas fa-user"></i></div>
+                        <div class="user-meta">
+                            <span class="user-email" title="${escapeHtml(displayEmail)}">${escapeHtml(displayEmail)}</span>
+                            <div class="review-stars">${renderStarsHTML(r.star)}</div>
+                        </div>
+                        <span class="review-date">${dateStr}</span>
+                    </div>
+                    <div class="review-text">${escapeHtml(r.message)}</div>
+                `;
+                reviewsListEl.appendChild(card);
+            });
+        };
+
+        let currentRenderIndex = 0;
+
+        const loadNextBatch = () => {
+            const btn = getEl("loadMoreBtn");
+            const spinner = getEl("loadMoreSpinner");
+
+            spinner.style.display = "inline-block";
+            btn.disabled = true;
+
+            setTimeout(() => {
+                const nextBatch = allReviewsCache.slice(currentRenderIndex, currentRenderIndex + PAGE_SIZE);
+                appendReviewCards(nextBatch);
+                currentRenderIndex += nextBatch.length;
+
+                if (currentRenderIndex >= allReviewsCache.length) {
+                    btn.style.display = "none";
+                } else {
+                    btn.style.display = "block";
+                    btn.disabled = false;
+                }
+                spinner.style.display = "none";
+            }, 200);
+        };
+
+        const initReviewsPage = async () => {
+            if (!productId) {
+                getEl("loader").innerHTML = `<span style="color:var(--primary);">কোনো প্রোডাক্ট আই ডি প্রদান করা হয়নি!</span>`;
+                return;
+            }
+
+            try {
+                // 1. Fetch Product Header Info
+                const pDocRef = doc(db, "products", productId);
+                const pSnap = await getDoc(pDocRef);
+
+                if (pSnap.exists()) {
+                    const pData = pSnap.data();
+                    getEl("pTitle").innerText = pData.name || 'Product Review';
+                    getEl("pPrice").innerText = `৳ ${safeNumber(pData.price, 0)}`;
+                    const img = (Array.isArray(pData.images) && pData.images[0]) ? pData.images[0] : PLACEHOLDER_IMAGE;
+                    getEl("pThumb").src = img;
+                } else {
+                    getEl("pTitle").innerText = "পণ্য পাওয়া যায়নি";
+                    getEl("pThumb").src = PLACEHOLDER_IMAGE;
+                }
+
+                // 2. Fetch Product Reviews
+                const q = query(
+                    collection(db, "product_reviews"),
+                    where("productId", "==", productId)
+                );
+                
+                const snap = await getDocs(q);
+                allReviewsCache = [];
+
+                snap.forEach(docSnap => {
+                    allReviewsCache.push({ id: docSnap.id, ...docSnap.data() });
+                });
+
+                // Client-side Sort desc by createdAt
+                allReviewsCache.sort((a, b) => {
+                    const tA = a.createdAt?.seconds || 0;
+                    const tB = b.createdAt?.seconds || 0;
+                    return tB - tA;
+                });
+
+                // 3. Calculate Ratings Breakdown
+                const total = allReviewsCache.length;
+                getEl("totalReviewsCount").innerText = `${total} টি রিভিউ`;
+
+                const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+                let sumStars = 0;
+
+                allReviewsCache.forEach(r => {
+                    const st = Math.min(5, Math.max(1, safeNumber(r.star, 5)));
+                    counts[st] = (counts[st] || 0) + 1;
+                    sumStars += st;
+                });
+
+                if (total > 0) {
+                    const avg = (sumStars / total).toFixed(1);
+                    getEl("avgScore").innerText = avg;
+                    getEl("avgStars").innerHTML = renderStarsHTML(Math.round(avg));
+
+                    // Update breakdown bars
+                    for (let i = 1; i <= 5; i++) {
+                        const count = counts[i];
+                        const pct = Math.round((count / total) * 100);
+                        getEl(`bar${i}`).style.width = `${pct}%`;
+                        getEl(`cnt${i}`).innerText = count;
+                    }
+                } else {
+                    getEl("avgScore").innerText = "0.0";
+                    getEl("avgStars").innerHTML = renderStarsHTML(0);
+                }
+
+                // 4. Initial Batch Render (First 20 items)
+                const reviewsListEl = getEl("reviewsList");
+                reviewsListEl.innerHTML = "";
+
+                if (total === 0) {
+                    reviewsListEl.innerHTML = `
+                        <div style="text-align:center; padding:30px; background:var(--card); border-radius:14px; border:1px solid var(--border); color:var(--text-sub); font-size:14px;">
+                            <i class="far fa-comment-dots" style="font-size:32px; margin-bottom:8px; color:var(--border);"></i><br>
+                            এই পণ্যের জন্য এখনো কোনো রিভিউ দেওয়া হয়নি।
+                        </div>`;
+                    getEl("loadMoreBtn").style.display = "none";
+                } else {
+                    loadNextBatch();
+                }
+
+                getEl("loader").style.display = "none";
+                getEl("content").style.display = "block";
+
+            } catch (err) {
+                console.error("Error loading reviews:", err);
+                getEl("loader").innerHTML = `<span style="color:var(--primary);">রিভিউ তথ্য পেতে সমস্যা হয়েছে!</span>`;
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initReviewsPage();
+            getEl("loadMoreBtn").addEventListener("click", loadNextBatch);
+
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+</html>
