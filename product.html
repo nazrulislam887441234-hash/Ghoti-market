@@ -83,10 +83,27 @@
             align-items: center;
             padding: 4px 8px;
             transition: transform 0.2s;
+            position: relative;
         }
 
         .nav-cart-right:hover {
             transform: scale(1.1);
+        }
+
+        .cart-badge-count {
+            position: absolute;
+            top: -2px;
+            right: 0;
+            background: var(--primary);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* Image Slider */
@@ -146,7 +163,6 @@
             display: inline-block;
         }
 
-        /* Corner Small Share Button */
         .corner-share-btn {
             width: 36px;
             height: 36px;
@@ -211,6 +227,53 @@
             border: 1px solid #fca5a5;
         }
 
+        /* Variants Section */
+        .variants-container {
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .variant-group {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .variant-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .variant-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .variant-btn {
+            padding: 6px 14px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .variant-btn.active {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 2px 6px rgba(255, 23, 68, 0.25);
+        }
+
         /* Shop Profile Box */
         .shop-link {
             color: var(--accent);
@@ -249,37 +312,44 @@
             align-items: center;
         }
 
-        /* Order Button */
+        /* Action Buttons Area */
+        .action-buttons-wrap {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
         .order-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            width: 100%;
-            padding: 16px;
+            gap: 8px;
+            flex: 1;
+            padding: 16px 12px;
             border-radius: 14px;
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: #fff;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             text-decoration: none;
             box-shadow: 0 6px 18px rgba(255, 23, 68, 0.28);
             transition: all 0.25s ease;
             border: none;
-            margin-bottom: 16px;
+            cursor: pointer;
         }
 
-        .order-btn i {
-            font-size: 18px;
+        .cart-add-btn {
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            box-shadow: 0 6px 18px rgba(2, 132, 199, 0.28);
         }
 
         .order-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 22px rgba(255, 23, 68, 0.35);
+            opacity: 0.95;
         }
 
-        .order-btn.disabled {
-            opacity: 0.6;
+        .order-btn.disabled, .cart-add-btn.disabled {
+            opacity: 0.5;
             pointer-events: none;
         }
 
@@ -355,13 +425,6 @@
         #pDesc ul, #pDesc ol { padding-left: 20px; margin: 8px 0; }
         #pDesc li { margin: 4px 0; }
         #pDesc strong { font-weight: 700; color: #0f172a; }
-        #pDesc blockquote {
-            margin: 12px 0;
-            padding: 8px 12px;
-            border-left: 4px solid var(--accent);
-            background: #f8fafc;
-            border-radius: 0 8px 8px 0;
-        }
 
         /* Reviews Section Styles */
         .reviews-container {
@@ -541,7 +604,7 @@
             color: var(--primary);
         }
 
-        /* Popups Common */
+        /* Popups */
         .popup {
             position: fixed;
             inset: 0;
@@ -643,7 +706,7 @@
     </style>
 </head>
 <body>
-    <!-- Top Nav Bar with Cart Icon -->
+    <!-- Top Nav Bar -->
     <div class="back-nav">
         <div class="nav-back-left" id="backNavBtn">
             <i class="fas fa-arrow-left"></i>
@@ -651,6 +714,7 @@
         </div>
         <a href="cart.html" class="nav-cart-right" title="Shopping Cart">
             <i class="fas fa-shopping-cart"></i>
+            <span class="cart-badge-count" id="cartBadgeCount">0</span>
         </a>
     </div>
 
@@ -666,7 +730,6 @@
         </div>
 
         <div class="content">
-            <!-- Meta Header (Image Counter & Corner Share Button) -->
             <div class="meta-header">
                 <span class="img-counter" id="imgCounter">ছবি 0 টি</span>
                 <button class="corner-share-btn" id="shareBtnTrig" type="button" title="শেয়ার করুন">
@@ -674,27 +737,32 @@
                 </button>
             </div>
 
-            <!-- Product Title -->
             <h2 id="pName"></h2>
 
-            <!-- Price & Discount Tag -->
             <div class="price-box">
                 <span class="current-price" id="pPrice"></span>
                 <span class="old-price" id="oldPrice"></span>
                 <span class="discount-badge" id="discountBadge"></span>
             </div>
 
-            <!-- Shop Info Link -->
+            <!-- Variants Selector Section -->
+            <div id="variantsContainer" class="variants-container"></div>
+
             <a href="#" id="pShopLink" class="shop-link">
                 <img id="pShopLogoImg" src="" class="shop-logo" alt="Shop Logo">
                 <span id="pShopName"></span>
                 <i id="verifiedBadge" class="fas fa-circle-check verified-badge" title="Verified Shop"></i>
             </a>
 
-            <!-- ORDER NOW BUTTON -->
-            <a href="#" id="orderNowBtn" class="order-btn">
-                <i class="fas fa-cart-shopping"></i> এখনই কিনুন
-            </a>
+            <!-- ACTION BUTTONS: Add to Cart & Buy Now -->
+            <div class="action-buttons-wrap">
+                <button id="addToCartBtn" class="order-btn cart-add-btn" type="button">
+                    <i class="fas fa-cart-plus"></i> কার্টে যোগ করুন
+                </button>
+                <button id="buyNowBtn" class="order-btn" type="button">
+                    <i class="fas fa-bolt"></i> এখনই কিনুন
+                </button>
+            </div>
 
             <!-- POLICY BUTTONS -->
             <div class="policy-section">
@@ -759,7 +827,7 @@
         </div>
     </div>
 
-    <!-- Auth Modal (Login / Signup) -->
+    <!-- Auth Modal -->
     <div id="authModal" class="popup">
         <div class="popup-box" style="max-width: 350px; text-align: left;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -849,7 +917,6 @@
         import { getFirestore, collection, query, where, limit, getDocs, doc, getDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // ===== FIREBASE CONFIGURATION =====
         const firebaseConfig = {
           apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
           authDomain: "ghotimarket.firebaseapp.com",
@@ -867,13 +934,13 @@
 
         const PLACEHOLDER_IMAGE = 'https://via.placeholder.com/400x350?text=No+Image';
 
-        // ===== GLOBAL STATE & CACHE =====
         let currentSlug = null;
         let currentProductCache = null;
         let isLoading = false;
         let currentUser = null;
         let selectedStar = 5;
-        let isSubmittingReview = false; // Prevent Duplicate Submissions
+        let isSubmittingReview = false;
+        let selectedVariantsState = {};
 
         const userCache = new Map();
         const productCache = new Map();
@@ -881,29 +948,18 @@
         const getEl = (id) => document.getElementById(id);
         const safeText = (val, def = '') => val ?? def;
 
-        // ===== AUTH MONITORING =====
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
         });
 
-        // ===== ROBUST NUMBER PARSER =====
         const safeNumber = (val, def = 0) => {
             if (val === null || val === undefined || val === '') return def;
-            
             if (typeof val === 'number') return isNaN(val) ? def : val;
-
-            if (typeof val === 'object' && typeof val.toNumber === 'function') {
-                return val.toNumber();
-            }
-
+            if (typeof val === 'object' && typeof val.toNumber === 'function') return val.toNumber();
             let str = String(val).trim();
             if (!str) return def;
-
             const bnDigits = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
-            for (let i = 0; i < 10; i++) {
-                str = str.replaceAll(bnDigits[i], String(i));
-            }
-
+            for (let i = 0; i < 10; i++) str = str.replaceAll(bnDigits[i], String(i));
             str = str.replace(/,/g, '').replace(/[^0-9.-]/g, '');
             const num = Number(str);
             return isNaN(num) ? def : num;
@@ -912,7 +968,6 @@
         const hideElement = (el) => { if (el) el.style.display = 'none'; };
         const showElement = (el, displayType = 'inline-block') => { if (el) el.style.display = displayType; };
 
-        // ===== UNIVERSAL POPUP SYSTEM =====
         export const showPopup = ({ title = "সতর্কতা", message = "", type = "info" }) => {
             try {
                 const popupEl = getEl("universalPopup");
@@ -921,57 +976,50 @@
                 const iconEl = getEl("popupIcon");
 
                 if (!popupEl || !titleEl || !msgEl || !iconEl) return;
-
                 titleEl.innerText = title;
                 msgEl.innerText = message;
-
                 iconEl.className = "fas";
                 switch (type) {
-                    case "success":
-                        iconEl.classList.add("fa-check-circle");
-                        iconEl.style.color = "var(--success)";
-                        break;
-                    case "error":
-                        iconEl.classList.add("fa-triangle-exclamation");
-                        iconEl.style.color = "var(--primary)";
-                        break;
-                    case "warning":
-                        iconEl.classList.add("fa-exclamation-circle");
-                        iconEl.style.color = "var(--warning)";
-                        break;
-                    case "info":
-                    default:
-                        iconEl.classList.add("fa-info-circle");
-                        iconEl.style.color = "var(--accent)";
-                        break;
+                    case "success": iconEl.classList.add("fa-check-circle"); iconEl.style.color = "var(--success)"; break;
+                    case "error": iconEl.classList.add("fa-triangle-exclamation"); iconEl.style.color = "var(--primary)"; break;
+                    case "warning": iconEl.classList.add("fa-exclamation-circle"); iconEl.style.color = "var(--warning)"; break;
+                    default: iconEl.classList.add("fa-info-circle"); iconEl.style.color = "var(--accent)"; break;
                 }
-
                 popupEl.classList.add("show");
-            } catch (err) {
-                console.error("Popup Error:", err);
-            }
+            } catch (err) { console.error("Popup Error:", err); }
         };
 
-        const closeUniversalPopup = () => {
-            const popupEl = getEl("universalPopup");
-            if (popupEl) popupEl.classList.remove("show");
+        const closeUniversalPopup = () => { getEl("universalPopup")?.classList.remove("show"); };
+
+        const getCart = () => {
+            try {
+                return JSON.parse(localStorage.getItem('ghoti_cart')) || [];
+            } catch (e) { return []; }
         };
 
-        // ===== VERIFIED CHECK FUNCTION =====
+        const saveCart = (cart) => {
+            localStorage.setItem('ghoti_cart', JSON.stringify(cart));
+            updateCartBadge();
+        };
+
+        const updateCartBadge = () => {
+            const cart = getCart();
+            const totalCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+            const badge = getEl("cartBadgeCount");
+            if (badge) badge.innerText = totalCount;
+        };
+
+        const isProductInCart = (slug) => {
+            const cart = getCart();
+            return cart.some(item => item.slug === slug);
+        };
+
         const isVerifiedUser = (user) => {
             if (!user) return false;
             const val = user.verified;
-            if (
-                val === false || val === "false" || val === "False" || val === "FALSE" ||
-                val === 0 || val === "0" || val === null || val === undefined ||
-                val === "" || val === "no" || val === "No" || val === "NO"
-            ) return false;
-
+            if (val === false || val === "false" || val === 0 || val === null || val === undefined || val === "" || val === "no") return false;
             if (val === true || val === 1) return true;
-            if (typeof val === "string") {
-                const lowerVal = val.trim().toLowerCase();
-                return ["true", "1", "yes", "verified"].includes(lowerVal);
-            }
+            if (typeof val === "string") return ["true", "1", "yes", "verified"].includes(val.trim().toLowerCase());
             return Boolean(val);
         };
 
@@ -980,164 +1028,69 @@
             let value = String(usernameInput).trim();
             if (value === "" || value === "null" || value === "undefined" || value === "false") return null;
             value = value.replace(/^@+/, "").trim();
-            if (value === "") return null;
-            return encodeURIComponent(value);
+            return value === "" ? null : encodeURIComponent(value);
         };
 
         function updateSellerLink(sellerId, sellerData = null) {
             const cleanSellerId = sellerId ? String(sellerId).trim() : null;
             const validUsername = sellerData ? getValidUsername(sellerData.username) : null;
             let targetUrl = null;
-
-            if (validUsername) {
-                targetUrl = `https://ghotimarket.com/seller?@${validUsername}`;
-            } else if (cleanSellerId && cleanSellerId !== "") {
-                targetUrl = `https://ghotimarket.com/profile?sellerId=${encodeURIComponent(cleanSellerId)}`;
-            }
+            if (validUsername) targetUrl = `https://ghotimarket.com/seller?@${validUsername}`;
+            else if (cleanSellerId) targetUrl = `https://ghotimarket.com/profile?sellerId=${encodeURIComponent(cleanSellerId)}`;
 
             const shopLink = getEl("pShopLink");
-            const links = document.querySelectorAll('a.seller-profile-link, [data-seller-profile-url], .shop-name-area a');
-
-            if (targetUrl) {
-                if (shopLink) {
-                    shopLink.setAttribute('href', targetUrl);
-                    shopLink.style.pointerEvents = 'auto';
-                    shopLink.style.opacity = '1';
-                    shopLink.style.cursor = 'pointer';
-                }
-                links.forEach(link => {
-                    link.setAttribute('href', targetUrl);
-                    link.style.pointerEvents = 'auto';
-                    link.style.opacity = '1';
-                    link.style.cursor = 'pointer';
-                });
-            } else {
-                if (shopLink) {
-                    shopLink.removeAttribute('href');
-                    shopLink.style.pointerEvents = 'none';
-                    shopLink.style.opacity = '0.5';
-                    shopLink.style.cursor = 'default';
-                }
-                links.forEach(link => {
-                    link.removeAttribute('href');
-                    link.style.pointerEvents = 'none';
-                    link.style.opacity = '0.5';
-                    link.style.cursor = 'default';
-                });
+            if (targetUrl && shopLink) {
+                shopLink.setAttribute('href', targetUrl);
+                shopLink.style.pointerEvents = 'auto';
+                shopLink.style.opacity = '1';
+            } else if (shopLink) {
+                shopLink.removeAttribute('href');
+                shopLink.style.pointerEvents = 'none';
+                shopLink.style.opacity = '0.5';
             }
-            return targetUrl;
         }
 
         const getSlugFromURL = () => {
             try {
                 const pathname = window.location.pathname;
                 const search = window.location.search;
-
-                if (pathname.includes('seller') || pathname.includes('profile') || pathname.includes('order') || pathname.includes('contact') || pathname.includes('privacy') || pathname.includes('categories') || pathname.includes('all-product')) {
-                    return null;
-                }
-
                 const urlParams = new URLSearchParams(search);
                 let slug = urlParams.get("product-slug");
                 if (slug) return decodeURIComponent(slug.trim());
-
                 for (const [key, value] of urlParams.entries()) {
-                    if (key !== 'fbclid' && key !== 'utm_source' && key !== 'utm_medium' && value === '') {
-                        return decodeURIComponent(key.trim());
-                    }
+                    if (key !== 'fbclid' && !key.startsWith('utm_') && value === '') return decodeURIComponent(key.trim());
                 }
-
-                if (search.startsWith('?') && search.length > 1) {
-                    const raw = search.substring(1).split('&')[0];
-                    if (raw && !raw.includes('=') && !raw.startsWith('fbclid')) {
-                        return decodeURIComponent(raw.trim());
-                    }
-                }
-
                 const pathParts = pathname.split('/');
                 const lastPart = pathParts[pathParts.length - 1];
-                if (lastPart && lastPart !== 'product.html' && lastPart !== '' && !lastPart.includes('.')) {
-                    return decodeURIComponent(lastPart);
-                }
-                if (window.location.hash) return decodeURIComponent(window.location.hash.substring(1));
-
+                if (lastPart && lastPart !== 'product.html' && lastPart !== '' && !lastPart.includes('.')) return decodeURIComponent(lastPart);
                 return null;
-            } catch (err) {
-                console.error("URL Parsing Error:", err);
-                return null;
-            }
+            } catch (err) { return null; }
         };
 
-        // ===== SHARE POPUP =====
-        const openSharePopup = () => {
-            getEl("sharePopup")?.classList.add("show");
-        };
-
-        const closeSharePopup = () => {
-            getEl("sharePopup")?.classList.remove("show");
-        };
+        const openSharePopup = () => { getEl("sharePopup")?.classList.add("show"); };
+        const closeSharePopup = () => { getEl("sharePopup")?.classList.remove("show"); };
 
         const shareNow = async () => {
-            if (!currentProductCache) {
-                showPopup({ title: "শেয়ার ব্যর্থ", message: "শেয়ার করার মতো কোনো পণ্য পাওয়া যায়নি।", type: "warning" });
-                return;
-            }
-
+            if (!currentProductCache) return;
             const shareText = `🛒 ${safeText(currentProductCache.name)}\n💰 ৳${safeNumber(currentProductCache.price)}\n\nGHOTI MARKET থেকে বিস্তারিত দেখুন:`;
-
             try {
-                if (navigator.share) {
-                    await navigator.share({
-                        title: safeText(currentProductCache.name),
-                        text: shareText,
-                        url: window.location.href
-                    });
-                } else {
-                    await copyLinkToClipboard();
-                }
-            } catch (error) {
-                if (error.name !== 'AbortError') {
-                    await copyLinkToClipboard();
-                }
-            } finally {
-                closeSharePopup();
-            }
+                if (navigator.share) await navigator.share({ title: safeText(currentProductCache.name), text: shareText, url: window.location.href });
+                else await copyLinkToClipboard();
+            } catch (error) { if (error.name !== 'AbortError') await copyLinkToClipboard(); }
+            finally { closeSharePopup(); }
         };
 
         const copyLinkToClipboard = async () => {
             const textToCopy = window.location.href;
-            let success = false;
-
-            if (navigator.clipboard && window.isSecureContext) {
-                try {
-                    await navigator.clipboard.writeText(textToCopy);
-                    success = true;
-                } catch (err) { success = false; }
-            }
-
-            if (!success) {
-                try {
-                    const textArea = document.createElement("textarea");
-                    textArea.value = textToCopy;
-                    textArea.style.position = "fixed";
-                    textArea.style.left = "-999999px";
-                    document.body.appendChild(textArea);
-                    textArea.focus();
-                    textArea.select();
-                    success = document.execCommand('copy');
-                    textArea.remove();
-                } catch (e) { success = false; }
-            }
-
-            if (success) {
+            try {
+                await navigator.clipboard.writeText(textToCopy);
                 showPopup({ title: "সফল হয়েছে", message: "পণ্যের লিংক সফলভাবে কপি হয়েছে।", type: "success" });
-            } else {
-                showPopup({ title: "ক্লিপবোর্ড ব্যর্থ", message: "ক্লিপবোর্ডে লিংক কপি করা সম্ভব হয়নি। লিংকটি ম্যানুয়ালি কপি করুন।", type: "error" });
+            } catch (e) {
+                showPopup({ title: "ব্যর্থ", message: "লিংক কপি করা সম্ভব হয়নি।", type: "error" });
             }
             closeSharePopup();
         };
 
-        // ===== LOAD PRODUCT BY SLUG =====
         const loadProductBySlug = async (slug, push = true) => {
             if (!slug || isLoading) return;
             slug = slug.trim();
@@ -1148,11 +1101,9 @@
 
             try {
                 let productData = productCache.get(slug);
-
                 if (!productData) {
                     const q = query(collection(db, "products"), where("slug", "==", slug), limit(1));
                     const snap = await getDocs(q);
-
                     if (snap.empty) {
                         showPopup({ title: "পাওয়া যায়নি", message: "কাঙ্ক্ষিত পণ্যটি খুঁজে পাওয়া যায়নি।", type: "warning" });
                         hideElement(getEl("loader"));
@@ -1160,7 +1111,6 @@
                         isLoading = false;
                         return;
                     }
-
                     const productDoc = snap.docs[0];
                     productData = productDoc.data();
                     productData.docId = productDoc.id;
@@ -1171,20 +1121,15 @@
                 currentProductCache = productData;
 
                 if (push) {
-                    const newUrl = `product.html?product-slug=${encodeURIComponent(slug)}`;
-                    history.pushState({ slug }, '', newUrl);
+                    history.pushState({ slug }, '', `product.html?product-slug=${encodeURIComponent(slug)}`);
                 }
 
                 renderProduct(productData);
                 await loadProductReviews(productData.docId);
 
             } catch (error) {
-                console.error("Product Load Error:", error);
-                showPopup({
-                    title: "নেটওয়ার্ক ত্রুটি",
-                    message: "সার্ভার থেকে পণ্য লোড করার সময় সমস্যা হয়েছে। দয়া করে ইন্টারনেট সংযোগ পরীক্ষা করুন।",
-                    type: "error"
-                });
+                console.error("Error:", error);
+                showPopup({ title: "নেটওয়ার্ক ত্রুটি", message: "পণ্য লোড করতে সমস্যা হয়েছে।", type: "error" });
             } finally {
                 hideElement(getEl("loader"));
                 showElement(getEl("mainContent"), "block");
@@ -1193,132 +1138,139 @@
             }
         };
 
-        // ===== RENDER PRODUCT & DISCOUNT LOGIC =====
+        // Render Variants and calculate price dynamically
+        const renderVariants = (variants) => {
+            const container = getEl("variantsContainer");
+            if (!container) return;
+            container.innerHTML = "";
+            selectedVariantsState = {};
+
+            if (!Array.isArray(variants) || variants.length === 0) {
+                hideElement(container);
+                return;
+            }
+
+            showElement(container, "block");
+
+            variants.forEach(variant => {
+                const variantName = variant.name;
+                const values = variant.values;
+                if (!values || values.length === 0) return;
+
+                // Default select the first option
+                selectedVariantsState[variantName] = values[0];
+
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'variant-group';
+
+                const titleDiv = document.createElement('div');
+                titleDiv.className = 'variant-title';
+                titleDiv.innerText = `${variantName}:`;
+                groupDiv.appendChild(titleDiv);
+
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'variant-options';
+
+                values.forEach((valObj, idx) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = `variant-btn ${idx === 0 ? 'active' : ''}`;
+                    const extraTxt = valObj.extraPrice > 0 ? ` (+৳${valObj.extraPrice})` : '';
+                    btn.innerText = `${valObj.value}${extraTxt}`;
+
+                    btn.addEventListener('click', () => {
+                        optionsDiv.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        selectedVariantsState[variantName] = valObj;
+                        updateDynamicPrice();
+                    });
+
+                    optionsDiv.appendChild(btn);
+                });
+
+                groupDiv.appendChild(optionsDiv);
+                container.appendChild(groupDiv);
+            });
+
+            updateDynamicPrice();
+        };
+
+        const updateDynamicPrice = () => {
+            if (!currentProductCache) return;
+            let basePrice = safeNumber(currentProductCache.price, 0);
+            let totalExtra = 0;
+
+            for (const key in selectedVariantsState) {
+                if (selectedVariantsState[key] && selectedVariantsState[key].extraPrice) {
+                    totalExtra += safeNumber(selectedVariantsState[key].extraPrice, 0);
+                }
+            }
+
+            const finalPrice = basePrice + totalExtra;
+            getEl("pPrice").innerText = `৳ ${finalPrice}`;
+        };
+
+        const getCalculatedCurrentPrice = () => {
+            if (!currentProductCache) return 0;
+            let basePrice = safeNumber(currentProductCache.price, 0);
+            let totalExtra = 0;
+            for (const key in selectedVariantsState) {
+                if (selectedVariantsState[key] && selectedVariantsState[key].extraPrice) {
+                    totalExtra += safeNumber(selectedVariantsState[key].extraPrice, 0);
+                }
+            }
+            return basePrice + totalExtra;
+        };
+
         const renderProduct = (p) => {
             const name = safeText(p.name, 'Product');
-            const desc = safeText(p.description, 'GHOTI MARKET Product');
+            const desc = safeText(p.description, '');
             const images = Array.isArray(p.images) ? p.images : [];
             const img = images[0] || PLACEHOLDER_IMAGE;
-            
-            const price = safeNumber(p.price, 0);
+            const basePrice = safeNumber(p.price, 0);
             const oldPrice = safeNumber(p.oldPrice, 0);
 
-            // Update Meta Tags
-            document.title = `${name} - ৳${price} | GHOTI MARKET`;
-            setMetaTag('meta[name="description"]', desc.substring(0, 160));
-            setMetaTag('meta[property="og:title"]', name);
-            setMetaTag('meta[property="og:description"]', desc.substring(0, 160));
-            setMetaTag('meta[property="og:image"]', img);
-            setMetaTag('meta[property="og:url"]', window.location.href);
-
-            const canonicalEl = document.querySelector('link[rel="canonical"]');
-            if (canonicalEl) canonicalEl.setAttribute('href', window.location.href);
+            document.title = `${name} - ৳${basePrice} | GHOTI MARKET`;
 
             getEl("pName").innerText = name;
-            getEl("pPrice").innerText = `৳ ${price}`;
+            getEl("pPrice").innerText = `৳ ${basePrice}`;
 
             const descriptionEl = getEl("pDesc");
             if (descriptionEl) {
-                const markdownHTML = marked.parse(desc || 'কোন বিবরণ নেই');
-                descriptionEl.innerHTML = DOMPurify.sanitize(markdownHTML);
+                descriptionEl.innerHTML = DOMPurify.sanitize(marked.parse(desc || 'কোন বিবরণ নেই'));
             }
 
-            // DISCOUNT LOGIC
             const oldPriceEl = getEl("oldPrice");
             const discountBadgeEl = getEl("discountBadge");
 
-            if (oldPrice > price && price > 0) {
-                const discountAmount = oldPrice - price;
-                const discountPercent = Math.round((discountAmount / oldPrice) * 100);
-
-                if (oldPriceEl) {
-                    oldPriceEl.innerText = `৳ ${oldPrice}`;
-                    showElement(oldPriceEl, 'inline');
-                }
-                if (discountBadgeEl) {
-                    discountBadgeEl.innerText = `৳${discountAmount} ছাড় (${discountPercent}% OFF)`;
-                    showElement(discountBadgeEl, 'inline-block');
-                }
+            if (oldPrice > basePrice && basePrice > 0) {
+                const diff = oldPrice - basePrice;
+                const pct = Math.round((diff / oldPrice) * 100);
+                if (oldPriceEl) { oldPriceEl.innerText = `৳ ${oldPrice}`; showElement(oldPriceEl, 'inline'); }
+                if (discountBadgeEl) { discountBadgeEl.innerText = `৳${diff} ছাড় (${pct}% OFF)`; showElement(discountBadgeEl, 'inline-block'); }
             } else {
                 hideElement(oldPriceEl);
                 hideElement(discountBadgeEl);
             }
 
-            // Seller Details
-            const sellerId = safeText(p.sellerId).trim();
-            const logoImg = getEl("pShopLogoImg");
-            const verifiedBadge = getEl("verifiedBadge");
-            const shopNameEl = getEl("pShopName");
+            // Render Variants
+            renderVariants(p.variants);
 
-            if (shopNameEl) {
-                shopNameEl.innerText = safeText(p.shopName, "Unknown Shop");
-            }
-
-            hideElement(logoImg);
-            hideElement(verifiedBadge);
-
-            if (sellerId) {
-                updateSellerLink(sellerId, null);
-
-                if (userCache.has(sellerId)) {
-                    const cachedUser = userCache.get(sellerId);
-                    if (!p.shopName && cachedUser.shopName && shopNameEl) {
-                        shopNameEl.innerText = cachedUser.shopName;
-                    }
-
-                    updateSellerLink(sellerId, cachedUser);
-
-                    if (cachedUser.shopLogo) {
-                        logoImg.src = cachedUser.shopLogo;
-                        logoImg.onerror = () => hideElement(logoImg);
-                        showElement(logoImg, 'inline-block');
-                    } else {
-                        hideElement(logoImg);
-                    }
-
-                    if (isVerifiedUser(cachedUser)) {
-                        showElement(verifiedBadge, 'inline-flex');
-                    } else {
-                        hideElement(verifiedBadge);
-                    }
-                } else {
-                    getDoc(doc(db, "users", sellerId)).then(userSnap => {
-                        if (userSnap.exists()) {
-                            const userData = userSnap.data();
-                            userCache.set(sellerId, userData);
-
-                            if (!p.shopName && userData.shopName && shopNameEl) {
-                                shopNameEl.innerText = userData.shopName;
-                            }
-
-                            updateSellerLink(sellerId, userData);
-
-                            if (userData.shopLogo) {
-                                logoImg.src = userData.shopLogo;
-                                logoImg.onerror = () => hideElement(logoImg);
-                                showElement(logoImg, 'inline-block');
-                            } else {
-                                hideElement(logoImg);
-                            }
-
-                            if (isVerifiedUser(userData)) {
-                                showElement(verifiedBadge, 'inline-flex');
-                            } else {
-                                hideElement(verifiedBadge);
-                            }
-                        } else {
-                            updateSellerLink(sellerId, null);
-                        }
-                    }).catch(err => {
-                        console.error("Seller Profile Load Error:", err);
-                        updateSellerLink(sellerId, null);
-                    });
-                }
+            // Check Cart Status to hide/show Add to Cart button
+            const addToCartBtn = getEl("addToCartBtn");
+            if (isProductInCart(p.slug)) {
+                hideElement(addToCartBtn);
             } else {
-                updateSellerLink(null, null);
+                showElement(addToCartBtn, "flex");
             }
 
-            // Image Slider
+            // Seller info
+            const sellerId = safeText(p.sellerId).trim();
+            const shopNameEl = getEl("pShopName");
+            if (shopNameEl) shopNameEl.innerText = safeText(p.shopName, "Unknown Shop");
+            if (sellerId) updateSellerLink(sellerId, null);
+
+            // Images slider
             const slider = getEl("imgSlider");
             if (images.length > 0) {
                 slider.innerHTML = images.map(iUrl => `<img src="${iUrl}" alt="${name}" onerror="this.src='${PLACEHOLDER_IMAGE}'">`).join("");
@@ -1328,64 +1280,76 @@
                 getEl("imgCounter").innerText = `ছবি 0 টি`;
             }
 
-            // Order Button Link
-            const orderBtn = getEl("orderNowBtn");
-            if (p.slug) {
-                orderBtn.href = `order.html?product-slug=${encodeURIComponent(p.slug)}`;
-                orderBtn.classList.remove('disabled');
-            } else {
-                orderBtn.href = '#';
-                orderBtn.classList.add('disabled');
-            }
+            updateCartBadge();
         };
 
-        const setMetaTag = (selector, content) => {
-            const el = document.querySelector(selector);
-            if (el) el.setAttribute('content', content);
-        };
+        // Add to Cart Logic (Affiliate status check included)
+const handleAddToCart = (redirect = false) => {
+    if (!currentProductCache) return;
+    let cart = getCart();
 
-        // ===== REVIEWS SYSTEM LOGIC =====
-        const renderStarsHTML = (rating) => {
-            const starNum = Math.min(5, Math.max(1, safeNumber(rating, 5)));
-            let starsHTML = '';
-            for (let i = 1; i <= 5; i++) {
-                if (i <= starNum) {
-                    starsHTML += '<i class="fas fa-star"></i>';
-                } else {
-                    starsHTML += '<i class="far fa-star" style="color:#cbd5e1;"></i>';
-                }
-            }
-            return starsHTML;
-        };
+    // Prepare selected variants summary object
+    let chosenVariants = {};
+    for (const key in selectedVariantsState) {
+        if (selectedVariantsState[key]) {
+            chosenVariants[key] = selectedVariantsState[key].value;
+        }
+    }
+
+    const finalPrice = getCalculatedCurrentPrice();
+    const images = Array.isArray(currentProductCache.images) ? currentProductCache.images : [];
+
+    // Check if affiliate is "on", otherwise set to "off"
+    const affiliateStatus = (currentProductCache.affiliate === "on") ? "on" : "off";
+
+    const cartItem = {
+        docId: currentProductCache.docId,
+        slug: currentProductCache.slug,
+        name: currentProductCache.name,
+        price: finalPrice,
+        basePrice: safeNumber(currentProductCache.price, 0),
+        selectedVariants: chosenVariants,
+        image: images[0] || PLACEHOLDER_IMAGE,
+        quantity: 1,
+        shopName: currentProductCache.shopName || '',
+        sellerId: currentProductCache.sellerId || '',
+        affiliate: affiliateStatus,
+        discount: safeNumber(currentProductCache.discount, 0),
+        oldPrice: safeNumber(currentProductCache.oldPrice, 0)
+    };
+
+    // Check if already in cart
+    const existingIndex = cart.findIndex(item => item.slug === currentProductCache.slug);
+    if (existingIndex > -1) {
+        cart[existingIndex] = cartItem; // update with new variants/price
+    } else {
+        cart.push(cartItem);
+    }
+
+    saveCart(cart);
+    hideElement(getEl("addToCartBtn"));
+
+    if (redirect) {
+        window.location.href = 'checkout.html';
+    } else {
+        showPopup({ title: "সফল!", message: "পণ্যটি আপনার কার্টে সফলভাবে যোগ করা হয়েছে।", type: "success" });
+    }
+};
 
         const loadProductReviews = async (productId) => {
             if (!productId) return;
             try {
-                const q = query(
-                    collection(db, "product_reviews"),
-                    where("productId", "==", productId)
-                );
-                
+                const q = query(collection(db, "product_reviews"), where("productId", "==", productId));
                 const snap = await getDocs(q);
                 let reviews = [];
-
-                snap.forEach(docSnap => {
-                    reviews.push({ id: docSnap.id, ...docSnap.data() });
-                });
-
-                // Client side sort by createdAt desc
-                reviews.sort((a, b) => {
-                    const tA = a.createdAt?.seconds || 0;
-                    const tB = b.createdAt?.seconds || 0;
-                    return tB - tA;
-                });
+                snap.forEach(docSnap => reviews.push({ id: docSnap.id, ...docSnap.data() }));
+                reviews.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
 
                 const total = reviews.length;
                 getEl("totalReviewsCount").innerText = `(${total} টি রিভিউ)`;
-
                 if (total > 0) {
-                    const sumStars = reviews.reduce((acc, curr) => acc + (safeNumber(curr.star, 5)), 0);
-                    const avg = (sumStars / total).toFixed(1);
+                    const sum = reviews.reduce((acc, curr) => acc + safeNumber(curr.star, 5), 0);
+                    const avg = (sum / total).toFixed(1);
                     getEl("avgRating").innerText = avg;
                     getEl("avgStars").innerHTML = renderStarsHTML(Math.round(avg));
                 } else {
@@ -1393,294 +1357,135 @@
                     getEl("avgStars").innerHTML = renderStarsHTML(0);
                 }
 
-                // Load top 5 reviews
                 const top5 = reviews.slice(0, 5);
-                const reviewsListEl = getEl("reviewsList");
-                reviewsListEl.innerHTML = "";
-
+                const listEl = getEl("reviewsList");
+                listEl.innerHTML = "";
                 if (top5.length === 0) {
-                    reviewsListEl.innerHTML = `<div style="text-align:center; padding:15px; color:var(--text-sub); font-size:13px;">এখনো কোনো রিভিউ দেওয়া হয়নি। প্রথম রিভিউটি আপনি দিন!</div>`;
+                    listEl.innerHTML = `<div style="text-align:center; padding:15px; color:var(--text-sub); font-size:13px;">এখনো কোনো রিভিউ দেওয়া হয়নি।</div>`;
                 } else {
                     top5.forEach(r => {
                         const dateStr = r.createdAt?.seconds ? new Date(r.createdAt.seconds * 1000).toLocaleDateString('bn-BD') : 'সাম্প্রতিক';
-                        
-                        // ইমেইল বা ইউজার ডিসপ্লে
-                        const displayEmail = r.userEmail || r.email || r.user || 'অজানা গ্রাহক (ইমেইল নেই)';
-
+                        const displayEmail = r.userEmail || 'অজানা গ্রাহক';
                         const card = document.createElement('div');
                         card.className = 'review-card';
                         card.innerHTML = `
                             <div class="review-card-header">
                                 <div class="review-user-icon"><i class="fas fa-user-circle"></i></div>
                                 <div class="review-meta">
-                                    <span class="review-user-email" title="${safeText(displayEmail)}">${safeText(displayEmail)}</span>
+                                    <span class="review-user-email">${safeText(displayEmail)}</span>
                                     <div class="review-stars">${renderStarsHTML(r.star)}</div>
                                     <div class="review-date">${dateStr}</div>
                                 </div>
                             </div>
                             <div class="review-text">${safeText(r.message)}</div>
                         `;
-                        reviewsListEl.appendChild(card);
+                        listEl.appendChild(card);
                     });
                 }
 
-                // Update "See More Reviews" Link with productId
                 const seeMoreBtn = getEl("seeMoreReviewsBtn");
                 if (seeMoreBtn) {
                     seeMoreBtn.href = `product-review.html?productId=${encodeURIComponent(productId)}`;
                     seeMoreBtn.style.display = "flex";
                 }
-
-            } catch (err) {
-                console.error("Reviews Loading Error:", err);
-            }
+            } catch (err) { console.error(err); }
         };
 
-        // Modal Controls
-        const openAuthModal = () => {
-            getEl("authError").style.display = 'none';
-            getEl("authModal")?.classList.add("show");
+        const renderStarsHTML = (rating) => {
+            const starNum = Math.min(5, Math.max(1, safeNumber(rating, 5)));
+            let html = '';
+            for (let i = 1; i <= 5; i++) {
+                html += i <= starNum ? '<i class="fas fa-star"></i>' : '<i class="far fa-star" style="color:#cbd5e1;"></i>';
+            }
+            return html;
         };
-
-        const closeAuthModal = () => {
-            getEl("authModal")?.classList.remove("show");
-        };
-
-        const openReviewModal = () => {
-            getEl("reviewMessage").value = '';
-            updateStarSelectUI(5);
-            getEl("reviewSubmitModal")?.classList.add("show");
-        };
-
-        const closeReviewModal = () => {
-            getEl("reviewSubmitModal")?.classList.remove("show");
-        };
-
-        const updateStarSelectUI = (starCount) => {
-            selectedStar = starCount;
-            const stars = getEl("starSelectContainer")?.querySelectorAll("i");
-            if (!stars) return;
-            stars.forEach((star, index) => {
-                if (index < starCount) {
-                    star.style.color = "#f59e0b";
-                } else {
-                    star.style.color = "#cbd5e1";
-                }
-            });
-        };
-
-        // ===== AUTHENTICATION HANDLERS =====
-        const handleLogin = async () => {
-            const email = getEl("authEmail").value.trim();
-            const password = getEl("authPassword").value.trim();
-            const errEl = getEl("authError");
-
-            if (!email || !password) {
-                errEl.innerText = "ইমেইল ও পাসওয়ার্ড প্রদান করুন।";
-                errEl.style.display = 'block';
-                return;
-            }
-
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                closeAuthModal();
-                openReviewModal();
-            } catch (err) {
-                console.error("Login Error:", err);
-                errEl.innerText = "লগইন ব্যর্থ হয়েছে! ইমেইল বা পাসওয়ার্ড সঠিক নয়।";
-                errEl.style.display = 'block';
-            }
-        };
-
-        const handleSignup = async () => {
-            const email = getEl("authEmail").value.trim();
-            const password = getEl("authPassword").value.trim();
-            const errEl = getEl("authError");
-
-            if (!email || !password) {
-                errEl.innerText = "ইমেইল ও পাসওয়ার্ড প্রদান করুন।";
-                errEl.style.display = 'block';
-                return;
-            }
-
-            if (password.length < 6) {
-                errEl.innerText = "পাসওয়ার্ড অন্তত ৬ অক্ষরের হতে হবে।";
-                errEl.style.display = 'block';
-                return;
-            }
-
-            try {
-                await createUserWithEmailAndPassword(auth, email, password);
-                closeAuthModal();
-                openReviewModal();
-            } catch (err) {
-                console.error("Signup Error:", err);
-                errEl.innerText = "রেজিস্ট্রেশন ব্যর্থ হয়েছে! হয়তো ইমেইলটি আগে থেকেই ব্যবহৃত।";
-                errEl.style.display = 'block';
-            }
-        };
-
-        // ===== REVIEW SUBMISSION HANDLER (FIXED DOUBLE SUBMISSION) =====
-        const handleReviewSubmit = async () => {
-            if (isSubmittingReview) return; // Prevent double trigger
-
-            if (!currentUser) {
-                closeReviewModal();
-                openAuthModal();
-                return;
-            }
-
-            const message = getEl("reviewMessage").value.trim();
-            if (!message) {
-                showPopup({ title: "সতর্কতা", message: "রিভিউ বার্তা প্রদান করুন।", type: "warning" });
-                return;
-            }
-
-            if (!currentProductCache || !currentProductCache.docId) {
-                showPopup({ title: "ত্রুটি", message: "প্রোডাক্ট আইডি পাওয়া যায়নি।", type: "error" });
-                return;
-            }
-
-            const submitBtn = getEl("submitReviewBtn");
-
-            try {
-                isSubmittingReview = true;
-                if (submitBtn) {
-                    submitBtn.disabled = true;
-                    submitBtn.innerText = "পোস্ট হচ্ছে...";
-                    submitBtn.style.opacity = "0.7";
-                    submitBtn.style.cursor = "not-allowed";
-                }
-
-                const reviewData = {
-                    userId: currentUser.uid,
-                    userEmail: currentUser.email || "",
-                    productId: currentProductCache.docId,
-                    sellerId: currentProductCache.sellerId || "",
-                    message: message,
-                    star: selectedStar,
-                    createdAt: serverTimestamp()
-                };
-
-                await addDoc(collection(db, "product_reviews"), reviewData);
-                
-                getEl("reviewMessage").value = ''; // Reset form input
-                closeReviewModal();
-                showPopup({ title: "ধন্যবাদ!", message: "আপনার রিভিউ সফলভাবে পোস্ট হয়েছে।", type: "success" });
-                await loadProductReviews(currentProductCache.docId);
-
-            } catch (err) {
-                console.error("Review Submit Error:", err);
-                showPopup({ title: "ত্রুটি", message: "রিভিউ পোস্ট করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।", type: "error" });
-            } finally {
-                isSubmittingReview = false;
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = "রিভিউ পোস্ট করুন";
-                    submitBtn.style.opacity = "1";
-                    submitBtn.style.cursor = "pointer";
-                }
-            }
-        };
-
-        // ===== EVENT LISTENERS & INITIALIZATION =====
-        window.addEventListener('popstate', (event) => {
-            const slug = event.state?.slug || getSlugFromURL();
-            if (slug) {
-                loadProductBySlug(slug, false);
-            } else {
-                const currentUrlSlug = getSlugFromURL();
-                if (currentUrlSlug) {
-                    loadProductBySlug(currentUrlSlug, false);
-                }
-            }
-        });
 
         document.addEventListener('DOMContentLoaded', () => {
-            getEl("backNavBtn")?.addEventListener('click', () => {
-                history.back();
-            });
-
+            getEl("backNavBtn")?.addEventListener('click', () => history.back());
             getEl("shareBtnTrig")?.addEventListener('click', openSharePopup);
             getEl("shareNowBtn")?.addEventListener('click', shareNow);
             getEl("copyLinkBtn")?.addEventListener('click', copyLinkToClipboard);
             getEl("closeSharePopupBtn")?.addEventListener('click', closeSharePopup);
             getEl("popupCloseBtn")?.addEventListener('click', closeUniversalPopup);
 
-            // Review & Auth Trigger Events
+            getEl("addToCartBtn")?.addEventListener('click', () => handleAddToCart(false));
+            getEl("buyNowBtn")?.addEventListener('click', () => handleAddToCart(true));
+
+            // Review Modal triggers
             getEl("openReviewModalBtn")?.addEventListener('click', () => {
-                if (currentUser) {
-                    openReviewModal();
-                } else {
-                    openAuthModal();
-                }
+                if (currentUser) getEl("reviewSubmitModal")?.classList.add("show");
+                else getEl("authModal")?.classList.add("show");
             });
 
-            getEl("closeAuthModalBtn")?.addEventListener('click', closeAuthModal);
-            getEl("closeReviewModalBtn")?.addEventListener('click', closeReviewModal);
+            getEl("closeAuthModalBtn")?.addEventListener('click', () => getEl("authModal")?.classList.remove("show"));
+            getEl("closeReviewModalBtn")?.addEventListener('click', () => getEl("reviewSubmitModal")?.classList.remove("show"));
 
-            getEl("loginSubmitBtn")?.addEventListener('click', handleLogin);
-            getEl("signupSubmitBtn")?.addEventListener('click', handleSignup);
-            getEl("submitReviewBtn")?.addEventListener('click', handleReviewSubmit);
+            getEl("loginSubmitBtn")?.addEventListener('click', async () => {
+                const email = getEl("authEmail").value.trim();
+                const pass = getEl("authPassword").value.trim();
+                const err = getEl("authError");
+                try {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                    getEl("authModal")?.classList.remove("show");
+                    getEl("reviewSubmitModal")?.classList.add("show");
+                } catch (e) { err.innerText = "লগইন ব্যর্থ!"; err.style.display = 'block'; }
+            });
 
-            // Star Rating Selection Event
+            getEl("signupSubmitBtn")?.addEventListener('click', async () => {
+                const email = getEl("authEmail").value.trim();
+                const pass = getEl("authPassword").value.trim();
+                const err = getEl("authError");
+                try {
+                    await createUserWithEmailAndPassword(auth, email, pass);
+                    getEl("authModal")?.classList.remove("show");
+                    getEl("reviewSubmitModal")?.classList.add("show");
+                } catch (e) { err.innerText = "রেজিস্ট্রেশন ব্যর্থ!"; err.style.display = 'block'; }
+            });
+
+            getEl("submitReviewBtn")?.addEventListener('click', async () => {
+                if (isSubmittingReview || !currentUser || !currentProductCache) return;
+                const message = getEl("reviewMessage").value.trim();
+                if (!message) { showPopup({ title: "সতর্কতা", message: "বার্তা লিখুন।", type: "warning" }); return; }
+                
+                try {
+                    isSubmittingReview = true;
+                    await addDoc(collection(db, "product_reviews"), {
+                        userId: currentUser.uid,
+                        userEmail: currentUser.email || "",
+                        productId: currentProductCache.docId,
+                        sellerId: currentProductCache.sellerId || "",
+                        message,
+                        star: selectedStar,
+                        createdAt: serverTimestamp()
+                    });
+                    getEl("reviewMessage").value = '';
+                    getEl("reviewSubmitModal")?.classList.remove("show");
+                    showPopup({ title: "ধন্যবাদ!", message: "রিভিউ সফলভাবে পোস্ট হয়েছে।", type: "success" });
+                    await loadProductReviews(currentProductCache.docId);
+                } catch (e) { showPopup({ title: "ত্রুটি", message: "পোস্ট করা যায়নি।", type: "error" }); }
+                finally { isSubmittingReview = false; }
+            });
+
             getEl("starSelectContainer")?.addEventListener('click', (e) => {
-                const starEl = e.target.closest("i");
-                if (starEl) {
-                    const rating = parseInt(starEl.getAttribute("data-star"), 10);
-                    if (rating) updateStarSelectUI(rating);
-                }
-            });
-
-            document.addEventListener('click', (e) => {
-                const anchor = e.target.closest('a');
-                if (!anchor) return;
-
-                const href = anchor.getAttribute('href');
-                if (!href || href === '#' || href.startsWith('javascript:')) return;
-
-                const isExternalOrNonProduct =
-                    href.includes('seller') ||
-                    href.includes('profile') ||
-                    href.includes('order') ||
-                    href.includes('contact') ||
-                    href.includes('privacy') ||
-                    href.includes('categories') ||
-                    href.includes('all-product') ||
-                    href.includes('cart.html') ||
-                    href.includes('product-review.html') ||
-                    href.includes('://');
-
-                if (isExternalOrNonProduct) return;
-
-                if (href.includes('product.html') || (!href.includes('/') && !href.includes('.'))) {
-                    let targetSlug = null;
-                    if (href.includes('product-slug=')) {
-                        const urlParams = new URLSearchParams(href.split('?')[1]);
-                        targetSlug = urlParams.get('product-slug');
-                    } else if (!href.includes('.')) {
-                        targetSlug = href;
-                    }
-
-                    if (targetSlug) {
-                        e.preventDefault();
-                        loadProductBySlug(targetSlug, true);
-                    }
+                const star = e.target.closest("i");
+                if (star) {
+                    selectedStar = parseInt(star.getAttribute("data-star"), 10);
+                    getEl("starSelectContainer").querySelectorAll("i").forEach((s, idx) => {
+                        s.style.color = idx < selectedStar ? "#f59e0b" : "#cbd5e1";
+                    });
                 }
             });
 
             const slug = getSlugFromURL();
-            if (slug) {
-                loadProductBySlug(slug, false);
-            } else {
+            if (slug) loadProductBySlug(slug, false);
+            else {
                 showPopup({ title: "সতর্কতা", message: "কোনো বৈধ প্রোডাক্ট লিংক পাওয়া যায়নি।", type: "warning" });
                 hideElement(getEl("loader"));
                 showElement(getEl("mainContent"), "block");
             }
 
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            updateCartBadge();
         });
     </script>
 </body>
