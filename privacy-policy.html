@@ -1,235 +1,912 @@
 <!DOCTYPE html>
 <html lang="bn">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Privacy Policy Buyer & seller | Ghoti Market</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet" />
-    <meta name="description" content="Ghoti market Seller and buyer প্রাইভেসি পলিসি দেখুন" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="manifest" href="manifest.json">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>গোপনীয়তা নীতি — GHOTI MARKET</title>
+    <meta name="description" content="GHOTI MARKET-এর Buyer, Seller এবং Affiliate ব্যবহারকারীদের জন্য প্রযোজ্য গোপনীয়তা নীতি, তথ্য সংগ্রহ, ব্যবহার, সংরক্ষণ ও নিরাপত্তা সংক্রান্ত বিস্তারিত তথ্য।">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://ghotimarket.com/privacy-policy">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ghotimarket.com/privacy-policy">
+    <meta property="og:title" content="গোপনীয়তা নীতি — GHOTI MARKET">
+    <meta property="og:description" content="GHOTI MARKET-এর Buyer, Seller এবং Affiliate ব্যবহারকারীদের জন্য প্রযোজ্য গোপনীয়তা নীতি, তথ্য সংগ্রহ, ব্যবহার, সংরক্ষণ ও নিরাপত্তা সংক্রান্ত বিস্তারিত তথ্য।">
+    <meta property="og:image" content="https://ghotimarket.com/logo.png">
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="https://ghotimarket.com/logo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://ghotimarket.com/logo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="https://ghotimarket.com/logo.png">
+    <meta name="theme-color" content="#F97316">
 
-    <!-- PWA এর জন্য -->
-    <meta name="theme-color" content="#f97316">
+    <!-- Google Fonts: Hind Siliguri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": "https://ghotimarket.com/privacy-policy#webpage",
+          "url": "https://ghotimarket.com/privacy-policy",
+          "name": "গোপনীয়তা নীতি — GHOTI MARKET",
+          "description": "GHOTI MARKET প্ল্যাটফর্মের গোপনীয়তা নীতি।"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "হোম",
+              "item": "https://ghotimarket.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "গোপনীয়তা নীতি",
+              "item": "https://ghotimarket.com/privacy-policy"
+            }
+          ]
+        },
+        {
+          "@type": "Organization",
+          "name": "GHOTI MARKET",
+          "url": "https://ghotimarket.com/",
+          "logo": "https://ghotimarket.com/logo.png"
+        }
+      ]
+    }
+    </script>
+
     <style>
-      :root { --primary: #1a2a3a; --accent: #25D366; --bg: #f4f7f6; --text: #444; }
-      body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg); line-height: 1.7; color: var(--text); margin: 0; padding: 0; }
-      .header { background: var(--primary); color: white; padding: 50px 20px; text-align: center; }
-      .container { max-width: 750px; margin: -30px auto 50px; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-      h1 { margin: 0; font-size: 28px; }
-      h2 { color: var(--primary); font-size: 19px; border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 30px; }
-      .contact-box { background: #e8f5e9; padding: 25px; border-radius: 15px; text-align: center; border: 1px solid #c8e6c9; margin-top: 30px; }
-     .btn {
-      padding: 12px 30px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: bold;
-      display: inline-block;
-      margin-top: 15px;
-      background: #1a2a3a;
-      color: white;
-      }
-      ul { padding-left: 20px; }
-/* --- Bottom Nav FIXED --- */
-.bottom-nav { 
-    position: fixed; 
-    bottom: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 70px; 
-    background: rgba(255,255,255,0.9); 
-    backdrop-filter: blur(15px); 
-    display: flex; 
-    justify-content: space-around; 
-    align-items: center; 
-    border-top: 1px solid var(--glass-border); 
-    z-index: 1000; 
-    padding-bottom: env(safe-area-inset-bottom); 
-}
+        :root {
+            --primary: #F97316;
+            --primary-dark: #EA580C;
+            --dark: #0F172A;
+            --secondary: #1E293B;
+            --light-orange: #FFF7ED;
+            --white: #FFFFFF;
+            --gray: #475569;
+            --light-gray: #F8FAFC;
+            --border: #E2E8F0;
+        }
 
-.nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    color: #666;
-    font-size: 10px;
-    font-weight: 800;
-    flex: 1;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.nav-item svg {
-    width: 22px;
-    height: 22px;
-    margin-bottom: 4px;
-    stroke: currentColor;
-    transition: .3s;
-}
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--secondary);
+            line-height: 1.7;
+            padding-bottom: 90px;
+            overflow-x: hidden;
+        }
 
-.nav-item.active {
-    color: #f97316;
-}
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-.nav-item.active svg {
-    stroke: #f97316;
-    transform: translateY(-3px);
-}
+        ul {
+            list-style: none;
+        }
 
-.nav-item.active span {
-    color: #f97316;
-}
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            z-index: 999;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+            display: block;
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .header-nav {
+            display: none;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        @media(min-width: 992px) {
+            .header-nav {
+                display: flex;
+            }
+        }
+
+        .header-nav-link {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--gray);
+            transition: color 0.2s;
+        }
+
+        .header-nav-link:hover, .header-nav-link.active {
+            color: var(--primary);
+        }
+
+        .header-btn {
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .header-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--light-orange) 0%, #FFFFFF 100%);
+            padding: 3.5rem 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--light-orange);
+            color: var(--primary);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            padding: 0.35rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .hero-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.75rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-date {
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        /* Main Container & Cards */
+        .main-container {
+            max-width: 900px;
+            margin: 2.5rem auto;
+            padding: 0 1.25rem;
+        }
+
+        .notice-card {
+            background: var(--light-orange);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-left: 5px solid var(--primary);
+            border-radius: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+            color: var(--secondary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .policy-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 1.75rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .policy-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--light-orange);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .card-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: var(--primary);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .card-body p, .card-body ul, .card-body h3 {
+            font-size: 1.05rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .card-body h3 {
+            font-size: 1.15rem;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-body ul {
+            padding-left: 1.5rem;
+            list-style: disc;
+        }
+
+        .card-body li {
+            margin-bottom: 0.5rem;
+        }
+
+        .card-body p:last-child, .card-body ul:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Buttons & Actions */
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-dark {
+            background: var(--dark);
+            color: var(--white);
+        }
+
+        .btn-dark:hover {
+            background: var(--secondary);
+        }
+
+        /* Contact Box inside card */
+        .contact-box {
+            background: var(--light-gray);
+            border: 1px solid var(--border);
+            padding: 1.75rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .contact-box h3 {
+            font-size: 1.2rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        /* Legal Navigation Links at bottom */
+        .legal-nav-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.75rem;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .legal-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .legal-link {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--gray);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            background: var(--light-gray);
+            transition: all 0.2s;
+        }
+
+        .legal-link:hover, .legal-link.active {
+            background: var(--light-orange);
+            color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: var(--white);
+            padding: 4rem 1.5rem 2rem 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            color: var(--white);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-col p {
+            color: #94A3B8;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-link {
+            color: #94A3B8;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--primary);
+            padding-left: 4px;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            text-align: center;
+            font-size: 0.95rem;
+            color: #94A3B8;
+        }
+
+        @media(min-width: 768px) {
+            .footer-bottom {
+                flex-direction: row;
+            }
+        }
+
+        .footer-bottom a {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Bottom Fixed Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            z-index: 1000;
+            padding-bottom: env(safe-area-inset-bottom);
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 11px;
+            font-weight: 600;
+            flex: 1;
+            transition: color 0.2s;
+        }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            margin-bottom: 3px;
+            stroke: currentColor;
+            transition: transform 0.2s;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item.active svg {
+            stroke: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+        }
+
+        @media(max-width: 480px) {
+            .hero-title {
+                font-size: 1.85rem;
+            }
+            .policy-card {
+                padding: 1.25rem;
+            }
+        }
     </style>
-  </head>
-  <body>
-    <div class="header">
-      <h1>গোপনীয়তা নীতি (Privacy Policy)</h1>
-      <p>GHOTI MARKET App - আপনার কেনা-বেচার বিস্বস্ত ঠিকানা</p>
-      <p style="font-size: 14px; opacity: 0.9;">সর্বশেষ: ০২ আগস্ট, ২০২৬</p>
-    </div>
- <!-- Bottom Navigation -->
-<nav class="bottom-nav">
-    <a href="https://ghotimarket.com" class="nav-item">
-        <i data-lucide="home"></i>
-        <span>Home</span>
-    </a>
+</head>
+<body>
 
-    <a href="https://ghotimarket.com/categories" class="nav-item">
-        <i data-lucide="grid"></i>
-        <span>Categories</span>
-    </a>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="https://ghotimarket.com" class="logo-container">
+                <img src="https://ghotimarket.com/logo.png" alt="GHOTI MARKET Logo" class="logo-img">
+                <span class="logo-text">GHOTI MARKET</span>
+            </a>
 
-    <a href="https://ghotimarket.com/all-product" class="nav-item">
-        <i data-lucide="box"></i>
-        <span>All product</span>
-    </a>
+            <nav class="header-nav">
+                <a href="https://ghotimarket.com" class="header-nav-link">হোম</a>
+                <a href="https://ghotimarket.com/categories" class="header-nav-link">ক্যাটাগরি</a>
+                <a href="https://ghotimarket.com/all-product" class="header-nav-link">সকল পণ্য</a>
+                <a href="https://ghotimarket.com/contact" class="header-nav-link">সাপোর্ট</a>
+                <a href="https://ghotimarket.com/privacy-policy" class="header-nav-link active">প্রাইভেসি পলিসি</a>
+                <a href="https://seller.ghotimarket.com/signup" class="header-btn">সেলার সাইনআপ</a>
+            </nav>
+        </div>
+    </header>
 
-    <a href="https://ghotimarket.com/contact" class="nav-item">
-        <i data-lucide="headphones"></i>
-        <span>Support</span>
-    </a>
+    <!-- Page Hero -->
+    <section class="hero-section">
+        <div class="hero-container">
+            <div class="hero-badge">
+                <i data-lucide="shield-check" style="width: 16px; height: 16px;"></i>
+                <span>আইনি ও গোপনীয়তা নীতিমালা</span>
+            </div>
+            <h1 class="hero-title">গোপনীয়তা নীতি (Privacy Policy)</h1>
+            <p class="hero-subtitle">GHOTI MARKET-এর Buyer, Seller ও Affiliate ব্যবহারকারীদের তথ্যের গোপনীয়তা ও নিরাপত্তা সংক্রান্ত নীতিমালা।</p>
+            <p class="hero-date">সর্বশেষ হালনাগাদ: ২৫ আগস্ট, ২০২৬</p>
+        </div>
+    </section>
 
-    <a href="https://ghotimarket.com/privacy-policy" class="nav-item active">
-        <i data-lucide="shield-check"></i>
-        <span>Privacy</span>
-    </a>
+    <!-- Main Content -->
+    <main class="main-container">
 
-    <a href="https://seller.ghotimarket.com/signup" class="nav-item">
-        <i data-lucide="store"></i>
-        <span>J.Seller</span>
-    </a>
-</nav>
-   <div class="container">
+        <!-- Notice Card -->
+        <div class="notice-card">
+            <strong>প্রযোজ্যতা:</strong> এই Privacy Policy <strong>GHOTI MARKET</strong> App/Website ব্যবহারকারী সকল <strong>Buyer</strong>, <strong>Seller</strong> এবং <strong>Affiliate marketer</strong>-দের জন্য প্রযোজ্য।
+        </div>
 
-  <p style="background:#f1f8ff; border-left:4px solid #1a2a3a; padding:15px; border-radius:8px;">
-    <strong>প্রযোজ্যতা:</strong> এই Privacy Policy <strong>GHOTI MARKET </strong> App/Website ব্যবহারকারী সকল <strong>Buyer</strong> ও <strong>Seller</strong> ও <strong>Affiliate marketer দের </strong>জন্য প্রযোজ্য।
-  </p>
+        <p style="margin-bottom: 2rem; font-size: 1.1rem; color: var(--secondary);">
+            <strong>GHOTI MARKET</strong> আপনার গোপনীয়তাকে সর্বোচ্চ গুরুত্ব দেয়। এই নীতিতে ব্যাখ্যা করা হয়েছে যে আমরা কীভাবে আপনার তথ্য সংগ্রহ, ব্যবহার, শেয়ার এবং সুরক্ষা করি।
+        </p>
 
-  <p><strong>GHOTI MARKET</strong> আপনার গোপনীয়তাকে সর্বোচ্চ গুরুত্ব দেয়। এই নীতিতে ব্যাখ্যা করা হয়েছে যে আমরা কীভাবে আপনার তথ্য সংগ্রহ, ব্যবহার, শেয়ার এবং সুরক্ষা করি।</p>
+        <!-- Section 1 -->
+        <div class="policy-card" id="section-1">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i data-lucide="database"></i>
+                </div>
+                <h2 class="card-title">১. আমরা কী তথ্য সংগ্রহ করি?</h2>
+            </div>
+            <div class="card-body">
+                <p>সেবা প্রদানের উদ্দেশ্যে আমরা নিম্নোক্ত তথ্যসমূহ সংগ্রহ করি:</p>
+                <ul>
+                    <li><strong>কাষ্টমারের ব্যক্তিগত তথ্য ডেলিভারির জন্য:</strong> কাষ্টমারের নাম, বৈধ ফোন নম্বর, বর্তমান ঠিকানা, হাউস নাম্বার (যদি থাকে), রোড নাম্বার (যদি থাকে)।</li>
+                    <li><strong>সেলার একাউন্ট খোলার তথ্য:</strong> শপের নাম, ঠিকানা, শপের লগো ও ব্যানার, এবং ভেরিফিকেশনের জন্য NID কার্ডের ছবি (শুধুমাত্র পরিচয় যাচাই বা ভেরিফিকেশনের উদ্দেশ্যে)। সচল ইমেইল এড্রেস এবং ফোন নাম্বার, এবং সচল হোয়াটসঅ্যাপ নাম্বার।</li>
+                </ul>
+            </div>
+        </div>
 
-  <!-- এরপর আপনার বাকি কোড থাকবে -->
-      
-      <h2>১. আমরা কী তথ্য সংগ্রহ করি?</h2>
-      <p>সেবা প্রদানের উদ্দেশ্যে আমরা নিম্নোক্ত তথ্যসমূহ সংগ্রহ করি:</p>
-      <ul>
-        <li><strong>কাষ্টমারের ব্যক্তিগত তথ্য ডেলিভারির জন্য:</strong> কাষ্টমারের নাম, বৈধ ফোন নম্বর, বর্তমান ঠিকানা, হাউস নাম্বার (যদি থাকে), রোড নাম্বার (যদি থাকে)।</li>
-        <li><strong>সেলার একাউন্ট খোলার তথ্য:</strong> শপের নাম, ঠিকানা, শপের লগো ও ব্যানার, এবং ভেরিফিকেশনের জন্য NID কার্ডের ছবি (শুধুমাত্র পরিচয় যাচাই বা ভেরিফিকেশনের উদ্দেশ্যে) । সচল ইমেইল এড্রেস এবং ফোন নাম্বার, এবং সচল হোয়াটসঅ্যাপ নাম্বার ।</li>
-      </ul>
+        <!-- Section 2 -->
+        <div class="policy-card" id="section-2">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i data-lucide="info"></i>
+                </div>
+                <h2 class="card-title">২. কেন এই তথ্য সংগ্রহ করা হয়?</h2>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li>অ্যাকাউন্ট তৈরি, ব্যবহারকারী শনাক্তকরণ ও সেবা প্রদান।</li>
+                    <li>Google Firebase Analytics এর মাধ্যমে অ্যাপের/ওয়েবসাইটের পারফরম্যান্স উন্নত করা।</li>
+                    <li>নিরাপদ কেনাকাটা নিশ্চিত করতে সেলার ভেরিফিকেশন ও প্রতারণা রোধ।</li>
+                    <li>অর্ডার ডেলিভারি প্রক্রিয়া সম্পন্ন করা।</li>
+                </ul>
+            </div>
+        </div>
 
-      <h2>২. কেন এই তথ্য সংগ্রহ করা হয়?</h2>
-      <ul>
-        <li>অ্যাকাউন্ট তৈরি, ব্যবহারকারী শনাক্তকরণ ও সেবা প্রদান।</li>
-        <li>Google Firebase Analytics এর মাধ্যমে অ্যাপের/ওয়েবসাইটের পারফরম্যান্স উন্নত করা।</li>
-        <li>নিরাপদ কেনাকাটা নিশ্চিত করতে সেলার ভেরিফিকেশন ও প্রতারণা রোধ।</li>
-        <li>অর্ডার ডেলিভারি প্রক্রিয়া সম্পন্ন করা।</li>
-      </ul>
-<h2>৩. Affiliate Program-এর গোপনীয়তা নীতি</h2>
+        <!-- Section 3 -->
+        <div class="policy-card" id="section-3">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i data-lucide="users"></i>
+                </div>
+                <h2 class="card-title">৩. Affiliate Program-এর গোপনীয়তা নীতি</h2>
+            </div>
+            <div class="card-body">
+                <p>GHOTI MARKET Affiliate Program ব্যবহারকারীদের ক্ষেত্রে নিচের নীতিমালা প্রযোজ্য হবে:</p>
+                <ul>
+                    <li><strong>Affiliate Account</strong> খোলার সময় আপনার নাম, মোবাইল নম্বর, ইমেইল ঠিকানা, বিকাশ/নগদ নম্বর (যদি প্রদান করা হয়) এবং অন্যান্য প্রয়োজনীয় তথ্য সংগ্রহ করা হতে পারে।</li>
+                    <li>Affiliate কমিশন শুধুমাত্র সফলভাবে <strong>Delivered</strong> হওয়া অর্ডারের জন্য গণনা করা হয়। পণ্য সফলভাবে ডেলিভারি সম্পন্ন হওয়ার পরই কমিশন আপনার Affiliate Account-এর Net Balance-এ যোগ করা হবে।</li>
+                    <li>Affiliate Payment সম্পন্ন করার জন্য প্রয়োজন হলে আপনার পরিচয় ও পেমেন্ট তথ্য (যেমন: বিকাশ বা নগদ নম্বর) যাচাই করা হতে পারে।</li>
+                    <li>আপনার ব্যক্তিগত তথ্য শুধুমাত্র Affiliate Program পরিচালনা, কমিশন গণনা, প্রতারণা প্রতিরোধ এবং পেমেন্ট সম্পন্ন করার উদ্দেশ্যে ব্যবহার করা হবে।</li>
+                    <li>আপনার ব্যক্তিগত তথ্য কোনো তৃতীয় পক্ষের কাছে বিক্রি বা বিপণনের উদ্দেশ্যে শেয়ার করা হবে না। তবে আইনগত বাধ্যবাধকতা বা পেমেন্ট প্রক্রিয়ার প্রয়োজনে সীমিত তথ্য শেয়ার করা হতে পারে।</li>
+                    <li>Fake Order, Self Referral, কমিশন জালিয়াতি বা অন্য কোনো প্রতারণামূলক কার্যকলাপ শনাক্ত হলে GHOTI MARKET আপনার Affiliate Account সাময়িকভাবে স্থগিত বা স্থায়ীভাবে বাতিল করার অধিকার সংরক্ষণ করে।</li>
+                    <li>Affiliate Account বন্ধ করার অনুরোধ করলে আইনগতভাবে সংরক্ষণ করা বাধ্যতামূলক তথ্য ব্যতীত আপনার ব্যক্তিগত তথ্য নির্ধারিত সময়ের মধ্যে নিরাপদভাবে মুছে ফেলা হবে।</li>
+                </ul>
 
-<p>GHOTI MARKET Affiliate Program ব্যবহারকারীদের ক্ষেত্রে নিচের নীতিমালা প্রযোজ্য হবে:</p>
+                <div class="btn-group">
+                    <a href="https://ghotimarket.com/Affiliate/register" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                        <i data-lucide="user-plus"></i>
+                        Affiliate Account খুলুন
+                    </a>
+                    <a href="https://ghotimarket.com/termsandcondition" target="_blank" rel="noopener noreferrer" class="btn btn-dark">
+                        <i data-lucide="file-text"></i>
+                        Affiliate Terms
+                    </a>
+                </div>
+            </div>
+        </div>
 
-<ul>
-    <li><strong>Affiliate Account</strong> খোলার সময় আপনার নাম, মোবাইল নম্বর, ইমেইল ঠিকানা, বিকাশ/নগদ নম্বর (যদি প্রদান করা হয়) এবং অন্যান্য প্রয়োজনীয় তথ্য সংগ্রহ করা হতে পারে।</li>
+        <!-- Section 4 -->
+        <div class="policy-card" id="section-4">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i data-lucide="share-2"></i>
+                </div>
+                <h2 class="card-title">৪. তৃতীয় পক্ষের সাথে তথ্য শেয়ার</h2>
+            </div>
+            <div class="card-body">
+                <p>আমরা আপনার ব্যক্তিগত তথ্য কোনো বিজ্ঞাপনদাতার কাছে বিক্রি করি না। তবে, সেবা পরিচালনার জন্য নিম্নোক্ত তৃতীয় পক্ষের সাথে সীমিত তথ্য শেয়ার করা হয়:</p>
+                <ul>
+                    <li><strong>Google Firebase:</strong> Authentication, Database, Storage এবং Analytics সেবা প্রদানের জন্য প্রয়োজনীয় তথ্য নিরাপদভাবে সংরক্ষণ ও প্রক্রিয়াকরণ করা হয়।</li>
+                    <li><strong>কুরিয়ার সার্ভিস:</strong> শুধুমাত্র অর্ডার ডেলিভারির জন্য প্রয়োজনীয় নাম ও ঠিকানা।</li>
+                </ul>
+            </div>
+        </div>
 
-    <li>Affiliate কমিশন শুধুমাত্র সফলভাবে <strong>Delivered</strong> হওয়া অর্ডারের জন্য গণনা করা হয়। পণ্য সফলভাবে ডেলিভারি সম্পন্ন হওয়ার পরই কমিশন আপনার Affiliate Account-এর Net Balance-এ যোগ করা হবে।</li>
+        <!-- Section 5 -->
+        <div class="policy-card" id="section-5">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i data-lucide="trash-2"></i>
+                </div>
+                <h2 class="card-title">৫. তথ্য সংরক্ষণ, মুছে ফেলা ও ব্যবহারকারীর অধিকার</h2>
+            </div>
+            <div class="card-body">
+                <p><strong>Buyer:</strong> যেহেতু Buyer-দের জন্য কোনো অ্যাকাউন্ট সিস্টেম নেই, তাই শুধুমাত্র অর্ডার সম্পন্ন করা, ডেলিভারি নিশ্চিত করা এবং প্রয়োজনীয় গ্রাহকসেবা প্রদানের জন্য যতদিন প্রয়োজন ততদিন Buyer-এর তথ্য সংরক্ষণ করা হয়। প্রয়োজন শেষ হলে অপ্রয়োজনীয় ব্যক্তিগত তথ্য নিরাপদভাবে মুছে ফেলা হয়।</p>
+                <p><strong>Seller:</strong> আপনার সেলার অ্যাকাউন্ট সক্রিয় থাকা পর্যন্ত আমরা তথ্য সংরক্ষণ করি। অ্যাকাউন্ট ডিলিট করার অনুরোধ পাওয়ার পর সর্বোচ্চ ৭ দিনের মধ্যে আপনার সকল তথ্য আমাদের সার্ভার থেকে স্থায়ীভাবে মুছে ফেলা হবে। আপনি Support Center-এর মাধ্যমে যেকোনো সময় আপনার তথ্য দেখতে, সংশোধন করতে বা মুছে ফেলার অনুরোধ করতে পারেন।</p>
+                
+                <h3>সেলার অ্যাকাউন্ট ডিলিট করার শর্তাবলী</h3>
+                <ul>
+                    <li>সেলার অ্যাকাউন্ট ডিলিট করার আগে আপনার সেলার অ্যাপ থেকে প্রকাশিত সকল পণ্য (Products) মুছে ফেলতে হবে।</li>
+                    <li>GHOTI MARKET-এর কাছে আপনার কোনো বকেয়া বা ঋণ থাকা যাবে না। ১ (এক) টাকা বকেয়া থাকলেও তা সম্পূর্ণ পরিশোধ করতে হবে।</li>
+                    <li>উপরের সকল শর্ত পূরণ করার পর Support Center-এর মাধ্যমে অ্যাকাউন্ট ডিলিট করার অনুরোধ করতে হবে।</li>
+                    <li>যাচাই-বাছাই শেষে অনুরোধ গ্রহণযোগ্য হলে সর্বোচ্চ ৭ দিনের মধ্যে আপনার সেলার অ্যাকাউন্ট এবং সংশ্লিষ্ট ব্যক্তিগত তথ্য স্থায়ীভাবে মুছে ফেলা হবে, যদি আইনগত কারণে কোনো তথ্য সংরক্ষণ করা বাধ্যতামূলক না হয়।</li>
+                </ul>
+            </div>
+        </div>
 
-    <li>Affiliate Payment সম্পন্ন করার জন্য প্রয়োজন হলে আপনার পরিচয় ও পেমেন্ট তথ্য (যেমন: বিকাশ বা নগদ নম্বর) যাচাই করা হতে পারে।</li>
+        <!-- Section 6 -->
+        <div class="policy-card" id="section-6">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i data-lucide="lock"></i>
+                </div>
+                <h2 class="card-title">৬. তথ্যের নিরাপত্তা ও ডেটা ব্রিচ</h2>
+            </div>
+            <div class="card-body">
+                <p>আপনার তথ্য SSL এনক্রিপশন এবং Firebase এর সুরক্ষিত সার্ভারে সংরক্ষিত থাকে। যদি কখনো কোনো অননুমোদিত ডেটা অ্যাক্সেস বা লিক হয়, আমরা তাৎক্ষণিকভাবে প্রয়োজনীয় নিরাপত্তা ব্যবস্থা গ্রহণ করব এবং ক্ষতিগ্রস্ত ব্যবহারকারীদের অবহিত করব।</p>
+            </div>
+        </div>
 
-    <li>আপনার ব্যক্তিগত তথ্য শুধুমাত্র Affiliate Program পরিচালনা, কমিশন গণনা, প্রতারণা প্রতিরোধ এবং পেমেন্ট সম্পন্ন করার উদ্দেশ্যে ব্যবহার করা হবে।</li>
+        <!-- Section 7 -->
+        <div class="policy-card" id="section-7">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i data-lucide="shield-alert"></i>
+                </div>
+                <h2 class="card-title">৭. শিশুদের গোপনীয়তা</h2>
+            </div>
+            <div class="card-body">
+                <p>আমাদের সেবা ১৮ বছরের কম বয়সী ব্যক্তিদের জন্য নয়। আমরা জেনে-শুনে ১৮ বছরের কম বয়সী কোনো ব্যক্তির তথ্য সংগ্রহ করি না।</p>
+            </div>
+        </div>
 
-    <li>আপনার ব্যক্তিগত তথ্য কোনো তৃতীয় পক্ষের কাছে বিক্রি বা বিপণনের উদ্দেশ্যে শেয়ার করা হবে না। তবে আইনগত বাধ্যবাধকতা বা পেমেন্ট প্রক্রিয়ার প্রয়োজনে সীমিত তথ্য শেয়ার করা হতে পারে।</li>
+        <!-- Section 8 -->
+        <div class="policy-card" id="section-8">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i data-lucide="refresh-cw"></i>
+                </div>
+                <h2 class="card-title">৮. পলিসি পরিবর্তন</h2>
+            </div>
+            <div class="card-body">
+                <p>প্রয়োজনে আমরা এই নীতিতে পরিবর্তন আনতে পারি। কোনো গুরুত্বপূর্ণ পরিবর্তন হলে তা এই পৃষ্ঠায় নতুন তারিখ সহ প্রকাশ করা হবে।</p>
+            </div>
+        </div>
 
-    <li>Fake Order, Self Referral, কমিশন জালিয়াতি বা অন্য কোনো প্রতারণামূলক কার্যকলাপ শনাক্ত হলে GHOTI MARKET আপনার Affiliate Account সাময়িকভাবে স্থগিত বা স্থায়ীভাবে বাতিল করার অধিকার সংরক্ষণ করে।</li>
+        <!-- New Reseller Section -->
+        <div class="policy-card" id="reseller-section">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i data-lucide="store"></i>
+                </div>
+                <h2 class="card-title">GHOTI RESELLER</h2>
+            </div>
+            <div class="card-body">
+                <p>আপনি চাইলে GHOTI MARKET-এর RESELLER প্ল্যাটফর্মে একটি RESELLER অ্যাকাউন্ট তৈরি করে রিসেলিং শুরু করতে পারেন।</p>
+                <div class="btn-group" style="margin-top: 1.25rem;">
+                    <a href="https://reseller.ghotimarket.com" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                        <i data-lucide="external-link"></i>
+                        RESELLER অ্যাকাউন্ট খুলুন
+                    </a>
+                </div>
+            </div>
+        </div>
 
-    <li>Affiliate Account বন্ধ করার অনুরোধ করলে আইনগতভাবে সংরক্ষণ করা বাধ্যতামূলক তথ্য ব্যতীত আপনার ব্যক্তিগত তথ্য নির্ধারিত সময়ের মধ্যে নিরাপদভাবে মুছে ফেলা হবে।</li>
-</ul>
-<div style="text-align:center; margin-top:25px;">
+        <!-- Reseller Privacy Policy Link Section -->
+        <div class="policy-card" id="reseller-privacy-section">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i data-lucide="file-check"></i>
+                </div>
+                <h2 class="card-title">GHOTI RESELLER-এর গোপনীয়তা নীতি</h2>
+            </div>
+            <div class="card-body">
+                <p>GHOTI RESELLER প্ল্যাটফর্ম ব্যবহারকারীদের জন্য আলাদা Privacy Policy প্রযোজ্য। RESELLER অ্যাকাউন্ট, তথ্য সংরক্ষণ, ব্যবহার এবং গোপনীয়তা সংক্রান্ত বিস্তারিত নীতিমালা দেখতে নিচের বাটনে ক্লিক করুন।</p>
+                <div class="btn-group" style="margin-top: 1.25rem;">
+                    <a href="https://reseller.ghotimarket.com/privacy-policy" target="_blank" rel="noopener noreferrer" class="btn btn-dark">
+                        <i data-lucide="shield"></i>
+                        RESELLER Privacy Policy দেখুন
+                    </a>
+                </div>
+            </div>
+        </div>
 
-    <a href="https://ghotimarket.com/Affiliate/register"
-       class="btn"
-       style="background:#f97316; margin-right:10px;">
-        <i class="fa-solid fa-user-plus"></i>
-        Affiliate Account খুলুন
-    </a>
+        <!-- Section 9: Contact -->
+        <div class="policy-card" id="section-9">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i data-lucide="headset"></i>
+                </div>
+                <h2 class="card-title">৯. যোগাযোগ করুন</h2>
+            </div>
+            <div class="card-body">
+                <p>গোপনীয়তা নীতি, Data Delete বা অন্যান্য সহায়তার জন্য আমাদের Support Center-এ যোগাযোগ করুন: <strong>support@ghotimarket.com</strong></p>
 
-    <a href="https://ghotimarket.com/termsandcondition"
-       class="btn"
-       style="background:#1a2a3a;">
-        <i class="fa-solid fa-file-contract"></i>
-        Affiliate Terms
-    </a>
+                <div class="contact-box">
+                    <h3>গুরুত্বপূর্ণ লিংক</h3>
+                    <div class="btn-group" style="justify-content: center;">
+                        <a href="https://ghotimarket.com/contact" class="btn btn-dark">
+                            <i data-lucide="headset"></i> সাপোর্ট সেন্টার
+                        </a>
+                        <a href="https://ghotimarket.com/termsandcondition" class="btn btn-primary">
+                            <i data-lucide="file-text"></i> টার্মস এন্ড কন্ডিশন
+                        </a>
+                    </div>
+                    <h3 style="margin-top: 1.5rem; font-size: 1rem; font-weight: 600; color: var(--secondary);">এই গোপনীয়তা নীতি বাংলাদেশের প্রচলিত আইনের অধীনে পরিচালিত হবে।</h3>
+                </div>
+            </div>
+        </div>
 
-</div>
+        <!-- Legal Navigation Section -->
+        <div class="legal-nav-card">
+            <span style="font-weight: 700; color: var(--dark);">আইনি পাতা সমূহ:</span>
+            <div class="legal-links">
+                <a href="https://ghotimarket.com/privacy-policy" class="legal-link active">Privacy Policy</a>
+                <a href="https://ghotimarket.com/termsandcondition" class="legal-link">Terms & Conditions</a>
+                <a href="https://ghotimarket.com/contact" class="legal-link">Contact Support</a>
+            </div>
+        </div>
 
-      <h2>৪. তৃতীয় পক্ষের সাথে তথ্য শেয়ার</h2>
-      <p>আমরা আপনার ব্যক্তিগত তথ্য কোনো বিজ্ঞাপনদাতার কাছে বিক্রি করি না। তবে, সেবা পরিচালনার জন্য নিম্নোক্ত তৃতীয় পক্ষের সাথে সীমিত তথ্য শেয়ার করা হয়:</p>
-      <ul>
-        <li><strong>Google Firebase:</strong>Authentication, Database, Storage এবং Analytics সেবা প্রদানের জন্য প্রয়োজনীয় তথ্য নিরাপদভাবে সংরক্ষণ ও প্রক্রিয়াকরণ করা হয়।</li>
-        <li><strong>কুরিয়ার সার্ভিস:</strong> শুধুমাত্র অর্ডার ডেলিভারির জন্য প্রয়োজনীয় নাম ও ঠিকানা।</li>
-      </ul>
-      <h2>৫. তথ্য সংরক্ষণ, মুছে ফেলা ও ব্যবহারকারীর অধিকার</h2>
-      <p><strong>Buyer:</strong> যেহেতু Buyer-দের জন্য কোনো অ্যাকাউন্ট সিস্টেম নেই, তাই শুধুমাত্র অর্ডার সম্পন্ন করা, ডেলিভারি নিশ্চিত করা এবং প্রয়োজনীয় গ্রাহকসেবা প্রদানের জন্য যতদিন প্রয়োজন ততদিন Buyer-এর তথ্য সংরক্ষণ করা হয়। প্রয়োজন শেষ হলে অপ্রয়োজনীয় ব্যক্তিগত তথ্য নিরাপদভাবে মুছে ফেলা হয়।</p>
-      <p><strong>Seller:</strong> আপনার সেলার অ্যাকাউন্ট সক্রিয় থাকা পর্যন্ত আমরা তথ্য সংরক্ষণ করি। অ্যাকাউন্ট ডিলিট করার অনুরোধ পাওয়ার পর সর্বোচ্চ ৭ দিনের মধ্যে আপনার সকল তথ্য আমাদের সার্ভার থেকে স্থায়ীভাবে মুছে ফেলা হবে। আপনি Support Center-এর মাধ্যমে যেকোনো সময় আপনার তথ্য দেখতে, সংশোধন করতে বা মুছে ফেলার অনুরোধ করতে পারেন।</p>
-      <h3>সেলার অ্যাকাউন্ট ডিলিট করার শর্তাবলী</h3>
-      <ul>
-      <li>সেলার অ্যাকাউন্ট ডিলিট করার আগে আপনার সেলার অ্যাপ থেকে প্রকাশিত সকল পণ্য (Products) মুছে ফেলতে হবে।</li>
-      <li>GHOTI MARKET-এর কাছে আপনার কোনো বকেয়া বা ঋণ থাকা যাবে না। ১ (এক) টাকা বকেয়া থাকলেও তা সম্পূর্ণ পরিশোধ করতে হবে।</li>
-      <li>উপরের সকল শর্ত পূরণ করার পর Support Center-এর মাধ্যমে অ্যাকাউন্ট ডিলিট করার অনুরোধ করতে হবে।</li>
-      <li>যাচাই-বাছাই শেষে অনুরোধ গ্রহণযোগ্য হলে সর্বোচ্চ ৭ দিনের মধ্যে আপনার সেলার অ্যাকাউন্ট এবং সংশ্লিষ্ট ব্যক্তিগত তথ্য স্থায়ীভাবে মুছে ফেলা হবে, যদি আইনগত কারণে কোনো তথ্য সংরক্ষণ করা বাধ্যতামূলক না হয়।</li>
-      </ul>
-      <h2>৬. তথ্যের নিরাপত্তা ও ডেটা ব্রিচ</h2>
-      <p>আপনার তথ্য SSL এনক্রিপশন এবং Firebase এর সুরক্ষিত সার্ভারে সংরক্ষিত থাকে। যদি কখনো কোনো অননুমোদিত ডেটা অ্যাক্সেস বা লিক হয়, আমরা তাৎক্ষণিকভাবে প্রয়োজনীয় নিরাপত্তা ব্যবস্থা গ্রহণ করব এবং ক্ষতিগ্রস্ত ব্যবহারকারীদের অবহিত করব।</p>
+    </main>
 
-      <h2>৭. শিশুদের গোপনীয়তা</h2>
-      <p>আমাদের সেবা ১৮ বছরের কম বয়সী ব্যক্তিদের জন্য নয়। আমরা জেনে-শুনে ১৮ বছরের কম বয়সী কোনো ব্যক্তির তথ্য সংগ্রহ করি না।</p>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>GHOTI MARKET</h4>
+                <p>GHOTI MARKET App - আপনার কেনা-বেচার বিশ্বস্ত ঠিকানা। সহজে কিনুন এবং বিক্রি করুন নিরাপদ প্ল্যাটফর্মে।</p>
+            </div>
+            <div class="footer-col">
+                <h4>দ্রুত লিংক</h4>
+                <div class="footer-links">
+                    <a href="https://ghotimarket.com" class="footer-link">হোম</a>
+                    <a href="https://ghotimarket.com/categories" class="footer-link">ক্যাটাগরি</a>
+                    <a href="https://ghotimarket.com/all-product" class="footer-link">সকল পণ্য</a>
+                    <a href="https://ghotimarket.com/contact" class="footer-link">সাপোর্ট</a>
+                    <a href="https://ghotimarket.com/privacy-policy" class="footer-link">গোপনীয়তা নীতি</a>
+                    <a href="https://ghotimarket.com/termsandcondition" class="footer-link">শর্তাবলী</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>রিসেলার প্ল্যাটফর্ম</h4>
+                <div class="footer-links">
+                    <a href="https://reseller.ghotimarket.com" target="_blank" rel="noopener noreferrer" class="footer-link">RESELLER প্ল্যাটফর্ম</a>
+                    <a href="https://reseller.ghotimarket.com/privacy-policy" target="_blank" rel="noopener noreferrer" class="footer-link">RESELLER Privacy Policy</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>যোগাযোগ</h4>
+                <p>ইমেইল: support@ghotimarket.com</p>
+                <p>সাপোর্ট সেন্টার ২৪/৭ সক্রিয় রয়েছে।</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span id="currentYear">2026</span> GHOTI MARKET. সর্বস্বত্ব সংরক্ষিত।</p>
+            <p>Powered by <a href="https://ghotimarket.com" target="_blank" rel="noopener">GHOTI MARKET</a></p>
+        </div>
+    </footer>
 
-      <h2>৮. পলিসি পরিবর্তন</h2>
-      <p>প্রয়োজনে আমরা এই নীতিতে পরিবর্তন আনতে পারি। কোনো গুরুত্বপূর্ণ পরিবর্তন হলে তা এই পৃষ্ঠায় নতুন তারিখ সহ প্রকাশ করা হবে।</p>
+    <!-- Fixed Bottom Navigation -->
+    <nav class="bottom-nav" aria-label="Bottom Navigation">
+        <a href="https://ghotimarket.com" class="nav-item">
+            <i data-lucide="home"></i>
+            <span>Home</span>
+        </a>
 
-      <h2>৯. যোগাযোগ করুন</h2>
-      <p>গোপনীয়তা নীতি, Data Delete বা অন্যান্য সহায়তার জন্য আমাদের Support Center-এ যোগাযোগ করুন:</p>
-    <div class="contact-box">
-  <h3>গুরুত্বপূর্ণ লিংক</h3>
-  
-  <a href="https://ghotimarket.com/contact" class="btn">
-    <i class="fa-solid fa-headset"></i> সাপোর্ট সেন্টার
-  </a>
+        <a href="https://ghotimarket.com/categories" class="nav-item">
+            <i data-lucide="grid"></i>
+            <span>Categories</span>
+        </a>
 
-  <a href="https://ghotimarket.com/termsandcondition" class="btn" style="background:#f97316; margin-top:12px;">
-    <i class="fa-solid fa-file-contract"></i> টার্মস এন্ড কন্ডিশন
-  </a>
+        <a href="https://ghotimarket.com/all-product" class="nav-item">
+            <i data-lucide="box"></i>
+            <span>All product</span>
+        </a>
 
-  <h2 style="margin-top:25px; font-size:16px;">এই গোপনীয়তা নীতি বাংলাদেশের প্রচলিত আইনের অধীনে পরিচালিত হবে।</h2>
-</div>
-    </div>
-<script src="https://unpkg.com/lucide@latest"></script>
+        <a href="https://ghotimarket.com/contact" class="nav-item">
+            <i data-lucide="headphones"></i>
+            <span>Support</span>
+        </a>
 
-<script>
-document.addEventListener("DOMContentLoaded",()=>{
-    lucide.createIcons();
-});
-</script>
-  </body>
+        <a href="https://ghotimarket.com/privacy-policy" class="nav-item active">
+            <i data-lucide="shield-check"></i>
+            <span>Privacy</span>
+        </a>
+
+        <a href="https://seller.ghotimarket.com/signup" class="nav-item">
+            <i data-lucide="store"></i>
+            <span>J.Seller</span>
+        </a>
+    </nav>
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
 </html>
