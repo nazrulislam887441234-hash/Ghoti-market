@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমার অর্ডারসমূহ | Ghoti Market</title>
+    <!-- Google Fonts: Hind Siliguri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E55A24;
+            --primary-light: #FFF2ED;
+            --bg-color: #F8F9FA;
+            --card-bg: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+            --border-color: #E5E7EB;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --transition: all 0.25s ease-in-out;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: #FFFFFF;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        /* Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 16px;
+            width: 100%;
+            flex: 1;
+        }
+
+        /* Page Header */
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .page-title h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .page-title p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* States Container */
+        .state-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 48px 24px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            margin-top: 20px;
+        }
+
+        .state-box svg {
+            width: 54px;
+            height: 54px;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .state-box h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .state-box p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Skeleton Loader */
+        .skeleton-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .skeleton-line {
+            height: 16px;
+            background: #E5E7EB;
+            border-radius: 4px;
+        }
+
+        /* Order Cards */
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .order-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .order-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: #CBD5E1;
+        }
+
+        .order-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+            gap: 12px;
+        }
+
+        .order-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .track-id {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .order-date {
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-pending { background: #FEF3C7; color: #D97706; }
+        .status-confirmed { background: #E0E7FF; color: #4338CA; }
+        .status-processing { background: #E0F2FE; color: #0284C7; }
+        .status-shipped { background: #F3E8FF; color: #7E22CE; }
+        .status-delivered { background: #DCFCE7; color: #15803D; }
+        .status-cancelled { background: #FEE2E2; color: #B91C1C; }
+        .status-returned { background: #F3F4F6; color: #4B5563; }
+
+        /* Product Preview inside Card */
+        .order-product-preview {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .product-thumb {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-sm);
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+            background: #F3F4F6;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-shop {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .order-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .order-total-price {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Timeline */
+        .timeline-container {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 20px 0;
+            padding: 0 10px;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 24px;
+            right: 24px;
+            height: 3px;
+            background: var(--border-color);
+            z-index: 1;
+        }
+
+        .timeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            flex: 1;
+        }
+
+        .timeline-dot {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #E5E7EB;
+            border: 3px solid #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9CA3AF;
+            font-size: 10px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .timeline-step.completed .timeline-dot {
+            background: var(--success);
+            color: #FFFFFF;
+        }
+
+        .timeline-step.active .timeline-dot {
+            background: var(--primary);
+            color: #FFFFFF;
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        .timeline-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        .timeline-step.active .timeline-label {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            padding: 16px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 650px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-md);
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: var(--card-bg);
+            z-index: 10;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .modal-close-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: 4px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close-btn:hover {
+            background: var(--bg-color);
+            color: var(--danger);
+        }
+
+        .modal-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .modal-section {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            background: #FAFAFA;
+        }
+
+        .modal-section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            font-size: 13px;
+        }
+
+        .info-item label {
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .info-item span {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* Items List inside Modal */
+        .modal-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .modal-item-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #FFFFFF;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+
+        .modal-item-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 6px;
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-item-details {
+            flex: 1;
+            font-size: 13px;
+        }
+
+        .modal-item-name {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .modal-item-variants {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .modal-item-price {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 14px;
+        }
+
+        /* Price Summary Table */
+        .price-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+        }
+
+        .price-row.total {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            border-top: 1px dashed var(--border-color);
+            padding-top: 8px;
+            margin-top: 4px;
+        }
+
+        /* Load More Button Container */
+        .load-more-container {
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 640px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            .timeline-container {
+                display: none;
+            }
+        }
+  /* --- Bottom Nav --- */
+        .bottom-nav { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 60px; 
+            background: rgba(255,255,255,0.96); 
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center; 
+            border-top: 1px solid var(--glass-border); 
+            z-index: 1000; 
+            padding-bottom: env(safe-area-inset-bottom); 
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+        }
+
+        .nav-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            text-decoration: none; 
+            color: var(--text-sub); 
+            font-size: 10px; 
+            font-weight: 800; 
+            transition: color 0.15s ease; 
+            flex: 1; 
+        }
+
+        .nav-item i { 
+            font-size: 17px; 
+            margin-bottom: 2px; 
+        }
+
+        .nav-item.active { 
+            color: var(--primary); 
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <a href="/" class="nav-brand">
+            <!-- Order Icon SVG -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+            Ghoti Market
+        </a>
+        <div class="nav-actions">
+            <button class="btn btn-outline" id="refreshBtn" title="রিফ্রেশ করুন" aria-label="রিফ্রেশ করুন">
+                <!-- Refresh SVG -->
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                রিফ্রেশ
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        
+        <div class="page-header">
+            <div class="page-title">
+                <h1>আমার অর্ডার</h1>
+                <p>আপনার সকল অর্ডারের তথ্য ও বর্তমান অবস্থা এখানে দেখুন</p>
+            </div>
+        </div>
+
+        <!-- Dynamic Content Wrapper -->
+        <div id="appContainer">
+            <!-- Initial Loading Skeleton State -->
+            <div id="skeletonContainer">
+                <div class="skeleton-card">
+                    <div style="display:flex; justify-content:space-between;"><div class="skeleton-line" style="width: 120px;"></div><div class="skeleton-line" style="width: 80px;"></div></div>
+                    <div class="skeleton-line" style="width: 60%;"></div>
+                    <div class="skeleton-line" style="width: 40%;"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div style="display:flex; justify-content:space-between;"><div class="skeleton-line" style="width: 120px;"></div><div class="skeleton-line" style="width: 80px;"></div></div>
+                    <div class="skeleton-line" style="width: 60%;"></div>
+                    <div class="skeleton-line" style="width: 40%;"></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+   <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <a href="https://ghotimarket.com" class="nav-item"><i data-lucide="home"></i><span>Home</span></a>
+        <a href="https://ghotimarket.com/categories" class="nav-item"><i data-lucide="grid"></i><span>Categories</span></a>
+        <a href="https://ghotimarket.com/all-product" class="nav-item"><i data-lucide="box"></i><span>products</span></a>
+        <a href="https://ghotimarket.com/contact" class="nav-item"><i data-lucide="headphones"></i><span>Support</span></a>
+        <a href="https://ghotimarket.com/privacy-policy" class="nav-item"><i data-lucide="shield-check"></i><span>Privacy</span></a>
+        <a href="profile.html" class="nav-item active">
+    <i data-lucide="circle-user-round"></i>
+    <span>Profile</span>
+</a> 
+        <a href="https://seller.ghotimarket.com/signup" class="nav-item"><i data-lucide="store"></i><span>J.Seller</span></a>
+    </nav>
+
+    <!-- Order Details Modal -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">অর্ডারের বিস্তারিত</div>
+                <button class="modal-close-btn" id="modalCloseBtn" aria-label="বন্ধ করুন">
+                    <!-- Close SVG -->
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Dynamically filled details -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK Modular Import & App Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, query, where, orderBy, limit, startAfter, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Existing Firebase Configuration
+        const firebaseConfig = {
+  apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+  authDomain: "ghotimarket.firebaseapp.com",
+  databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+  projectId: "ghotimarket",
+  storageBucket: "ghotimarket.firebasestorage.app",
+  messagingSenderId: "481257644093",
+  appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+  measurementId: "G-4SR8V2EKC1"
+};
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let lastVisibleDoc = null;
+        let isLoading = false;
+        let hasMoreOrders = true;
+        let currentUser = null;
+        const renderedOrderIds = new Set();
+
+        const appContainer = document.getElementById('appContainer');
+        const skeletonContainer = document.getElementById('skeletonContainer');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const orderModal = document.getElementById('orderModal');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const modalBody = document.getElementById('modalBody');
+        const modalTitle = document.getElementById('modalTitle');
+
+        // Modal Controls
+        function closeModal() {
+            orderModal.classList.remove('active');
+        }
+        modalCloseBtn.addEventListener('click', closeModal);
+        orderModal.addEventListener('click', (e) => {
+            if (e.target === orderModal) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Translate Status to Bengali
+        function translateStatus(status) {
+            const map = {
+                'Pending': 'পেন্ডিং এ আছে⏰',
+                'Confirmed': 'কনফার্ম করা হয়েছে🎉',
+                'Processing': 'প্রসেস করা হচ্ছে..',
+                'Shipped': 'ডেলিভারি করতে পাঠানো হয়েছে🚛',
+                'Delivered': 'ডেলিভারি হয়েগেছে🎉🎉',
+                'Cancelled': 'বাতিল',
+                'Returned': 'রিটার্ন করা হয়েছে'
+            };
+            return map[status] || status || 'পেন্ডিং এ আছে⏰';
+        }
+
+        function getStatusClass(status) {
+            const map = {
+                'Pending': 'status-pending',
+                'Confirmed': 'status-confirmed',
+                'Processing': 'status-processing',
+                'Shipped': 'status-shipped',
+                'Delivered': 'status-delivered',
+                'Cancelled': 'status-cancelled',
+                'Returned': 'status-returned'
+            };
+            return map[status] || 'status-pending';
+        }
+
+        function translateDeliveryStatus(status) {
+            const map = {
+                'New': 'নতুন',
+                'On The Way': 'পথে আছে',
+                'Delivered': 'ডেলিভারি সম্পন্ন'
+            };
+            return map[status] || status || 'নতুন';
+        }
+
+        // Format Date safely
+        function formatDate(timestamp) {
+            try {
+                if (!timestamp) return 'তারিখ উপলব্ধ নেই';
+                let date;
+                if (typeof timestamp.toDate === 'function') {
+                    date = timestamp.toDate();
+                } else if (timestamp.seconds) {
+                    date = new Date(timestamp.seconds * 1000);
+                } else {
+                    date = new Date(timestamp);
+                }
+                if (isNaN(date.getTime())) return 'তারিখ উপলব্ধ নেই';
+                
+                return date.toLocaleDateString('bn-BD', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+            } catch (e) {
+                return 'তারিখ উপলব্ধ নেই';
+            }
+        }
+
+        // Auth State Listener
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            if (user) {
+                loadOrders(true);
+            } else {
+                renderLoginPrompt();
+            }
+        });
+
+        // Login Prompt State
+        function renderLoginPrompt() {
+            appContainer.innerHTML = `
+                <div class="state-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                    <h3>লগইন প্রয়োজন</h3>
+                    <p>আপনার অর্ডার দেখতে প্রথমে আপনার অ্যাকাউন্টে লগইন করুন।</p>
+                    <a href="login.html" class="btn btn-primary">লগইন করুন</a>
+                </div>
+            `;
+        }
+
+        // Empty State
+        function renderEmptyState() {
+            appContainer.innerHTML = `
+                <div class="state-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                    <h3>কোনো অর্ডার পাওয়া যায়নি</h3>
+                    <p>আপনার এখনো কোনো অর্ডার নেই। আমাদের শপ থেকে পছন্দের পণ্য কেনাকাটা শুরু করুন।</p>
+                    <a href="index.html" class="btn btn-primary">কেনাকাটা শুরু করুন</a>
+                </div>
+            `;
+        }
+
+        // Error State
+        function renderErrorState(message, indexUrl = null) {
+            let actionHtml = `<button class="btn btn-primary" onclick="window.location.reload()">আবার চেষ্টা করুন</button>`;
+            
+            if (indexUrl) {
+                actionHtml = `<a href="${indexUrl}" target="_blank" class="btn btn-primary">Firebase Index তৈরি করুন</a>`;
+            }
+
+            appContainer.innerHTML = `
+                <div class="state-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    <h3>তথ্য লোড করতে সমস্যা হয়েছে</h3>
+                    <p>${message}</p>
+                    ${actionHtml}
+                </div>
+            `;
+        }
+
+        // Main Load Orders Function
+        async function loadOrders(isInitial = false) {
+            if (!currentUser || isLoading) return;
+            isLoading = true;
+
+            if (isInitial) {
+                appContainer.innerHTML = `<div class="orders-list" id="ordersList"></div><div class="load-more-container" id="loadMoreContainer" style="display:none;"></div>`;
+                lastVisibleDoc = null;
+                renderedOrderIds.clear();
+            }
+
+            const ordersListEl = document.getElementById('ordersList');
+            const loadMoreContainerEl = document.getElementById('loadMoreContainer');
+
+            if (isInitial) {
+                ordersListEl.innerHTML = `
+                    <div class="skeleton-card">
+                        <div style="display:flex; justify-content:space-between;"><div class="skeleton-line" style="width: 120px;"></div><div class="skeleton-line" style="width: 80px;"></div></div>
+                        <div class="skeleton-line" style="width: 60%;"></div>
+                    </div>
+                `;
+            }
+
+            try {
+                let q = query(
+                    collection(db, "orders"),
+                    where("uid", "==", currentUser.uid),
+                    orderBy("createdAt", "desc"),
+                    limit(20)
+                );
+
+                if (!isInitial && lastVisibleDoc) {
+                    q = query(
+                        collection(db, "orders"),
+                        where("uid", "==", currentUser.uid),
+                        orderBy("createdAt", "desc"),
+                        startAfter(lastVisibleDoc),
+                        limit(20)
+                    );
+                }
+
+                const querySnapshot = await getDocs(q);
+
+                if (isInitial) {
+                    ordersListEl.innerHTML = '';
+                }
+
+                if (querySnapshot.empty && isInitial) {
+                    renderEmptyState();
+                    isLoading = false;
+                    return;
+                }
+
+                if (querySnapshot.empty) {
+                    hasMoreOrders = false;
+                    if (loadMoreContainerEl) loadMoreContainerEl.innerHTML = '<p style="color:var(--text-muted); font-size:13px; margin-top:16px;">আর কোনো অর্ডার পাওয়া যায়নি</p>';
+                    isLoading = false;
+                    return;
+                }
+
+                let newOrdersCount = 0;
+
+                querySnapshot.forEach((docSnap) => {
+                    const orderId = docSnap.id;
+                    
+                    if (renderedOrderIds.has(orderId)) return;
+                    renderedOrderIds.add(orderId);
+
+                    const order = docSnap.data();
+
+                    const orderUid = order.uid;
+                    if (orderUid !== currentUser.uid) {
+                        return;
+                    }
+
+                    newOrdersCount++;
+                    lastVisibleDoc = docSnap;
+
+                    const card = createOrderCard(orderId, order);
+                    ordersListEl.appendChild(card);
+                });
+
+                if (querySnapshot.docs.length < 20) {
+                    hasMoreOrders = false;
+                    if (loadMoreContainerEl) loadMoreContainerEl.innerHTML = '<p style="color:var(--text-muted); font-size:13px; margin-top:16px;">আর কোনো অর্ডার পাওয়া যায়নি</p>';
+                } else {
+                    hasMoreOrders = true;
+                    if (loadMoreContainerEl) {
+                        loadMoreContainerEl.innerHTML = `
+                            <button class="btn btn-outline" id="loadMoreBtn">আরও অর্ডার দেখুন</button>
+                        `;
+                        document.getElementById('loadMoreBtn').addEventListener('click', () => loadOrders(false));
+                    }
+                }
+
+            } catch (error) {
+                console.error("Error loading orders:", error);
+                
+                if (error.message && (error.message.includes("FAILED_PRECONDITION") || error.message.includes("requires an index"))) {
+                    let indexUrl = null;
+                    const urlMatch = error.message.match(/https:\/\/console\.firebase\.google\.com[^\s]+/);
+                    if (urlMatch) {
+                        indexUrl = urlMatch[0];
+                    }
+                    renderErrorState("এই অর্ডার তালিকা চালানোর জন্য Firebase Index প্রয়োজন।", indexUrl);
+                } else {
+                    if (isInitial) {
+                        renderErrorState("অর্ডারের তথ্য লোড করা সম্ভব হয়নি। দয়া করে আবার চেষ্টা করুন।");
+                    }
+                }
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        // Create Order Card Element
+        function createOrderCard(docId, order) {
+            const card = document.createElement('div');
+            card.className = 'order-card';
+
+            const trackId = order.orderTrackId || 'N/A';
+            const dateStr = formatDate(order.createdAt);
+            const status = order.orderStatus || 'Pending';
+            const statusLabel = translateStatus(status);
+            const statusClass = getStatusClass(status);
+
+            let productName = order.productName || 'অর্ডারকৃত পণ্য';
+            let productImage = order.productImage || 'https://via.placeholder.com/50';
+            let shopName = order.shopName || 'Ghoti Market Shop';
+            let grandTotal = order.grandTotal || order.subtotal || 0;
+
+            if (Array.isArray(order.items) && order.items.length > 0) {
+                const firstItem = order.items[0];
+                productName = firstItem.name || productName;
+                productImage = firstItem.image || productImage;
+                shopName = firstItem.shopName || shopName;
+            }
+
+            card.innerHTML = `
+                <div class="order-card-header">
+                    <div class="order-meta">
+                        <span class="track-id">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.89 1.45l8 4A2 2 0 0 1 22 7.24v9.53a2 2 0 0 1-1.11 1.79l-8 4a2 2 0 0 1-1.78 0l-8-4A2 2 0 0 1 2 16.77V7.24a2 2 0 0 1 1.11-1.79l8-4a2 2 0 0 1 1.78 0z"></path><polyline points="2.32 6.16 12 11 21.68 6.16"></polyline><line x1="12" y1="22.76" x2="12" y2="11"></line></svg>
+                            অর্ডার ট্র্যাকিং: #${trackId}
+                        </span>
+                        <span class="order-date">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            ${dateStr}
+                        </span>
+                    </div>
+                    <span class="status-badge ${statusClass}">${statusLabel}</span>
+                </div>
+
+                <div class="order-product-preview">
+                    <img src="${productImage}" alt="${productName}" class="product-thumb" onerror="this.src='https://via.placeholder.com/50'">
+                    <div class="product-info">
+                        <div class="product-name">${productName} ${Array.isArray(order.items) && order.items.length > 1 ? `এবং আরও ${order.items.length - 1}টি পণ্য` : ''}</div>
+                        <div class="product-shop">শপ: ${shopName}</div>
+                    </div>
+                </div>
+
+                <div class="order-card-footer">
+                    <div class="order-total-price">সর্বমোট: ৳ ${grandTotal}</div>
+                    <button class="btn btn-outline view-details-btn">বিস্তারিত দেখুন</button>
+                </div>
+            `;
+
+            card.querySelector('.view-details-btn').addEventListener('click', () => {
+                openOrderDetailsModal(order);
+            });
+
+            return card;
+        }
+
+        // Open Order Details Modal
+        function openOrderDetailsModal(order) {
+            modalTitle.innerText = `অর্ডার ট্র্যাকিং: #${order.orderTrackId || 'N/A'}`;
+
+            const status = order.orderStatus || 'Pending';
+            const deliveryStatus = order.deliveryStatus || 'New';
+            
+            let step1 = 'completed';
+            let step2 = status !== 'Pending' && status !== 'Cancelled' && status !== 'Returned' ? 'completed' : (status === 'Pending' ? 'active' : '');
+            let step3 = status === 'Processing' || status === 'Shipped' || status === 'Delivered' ? 'completed' : (status === 'Confirmed' ? 'active' : '');
+            let step4 = status === 'Shipped' || status === 'Delivered' ? 'completed' : (status === 'Processing' ? 'active' : '');
+            let step5 = status === 'Delivered' ? 'completed' : (status === 'Shipped' ? 'active' : '');
+
+            if (status === 'Cancelled' || status === 'Returned') {
+                step1 = step2 = step3 = step4 = step5 = '';
+            }
+
+            let timelineHtml = `
+                <div class="timeline-container">
+                    <div class="timeline-step ${step1}">
+                        <div class="timeline-dot">✓</div>
+                        <div class="timeline-label">অর্ডার করা</div>
+                    </div>
+                    <div class="timeline-step ${step2}">
+                        <div class="timeline-dot">✓</div>
+                        <div class="timeline-label">নিশ্চিত</div>
+                    </div>
+                    <div class="timeline-step ${step3}">
+                        <div class="timeline-dot">✓</div>
+                        <div class="timeline-label">প্রক্রিয়াজাত</div>
+                    </div>
+                    <div class="timeline-step ${step4}">
+                        <div class="timeline-dot">✓</div>
+                        <div class="timeline-label">পাঠানো হয়েছে</div>
+                    </div>
+                    <div class="timeline-step ${step5}">
+                        <div class="timeline-dot">✓</div>
+                        <div class="timeline-label">ডেলিভারি সম্পন্ন</div>
+                    </div>
+                </div>
+            `;
+
+            if (status === 'Cancelled') {
+                timelineHtml = `
+                    <div style="text-align:center; padding:12px; background:#FEE2E2; color:#B91C1C; border-radius:8px; font-weight:700; margin-bottom:16px;">
+                        এই অর্ডারটি বাতিল করা হয়েছে
+                    </div>
+                `;
+            } else if (status === 'Returned') {
+                timelineHtml = `
+                    <div style="text-align:center; padding:12px; background:#F3F4F6; color:#4B5563; border-radius:8px; font-weight:700; margin-bottom:16px;">
+                        এই অর্ডারটি রিটার্ন করা হয়েছে
+                    </div>
+                `;
+            }
+
+            let itemsHtml = '';
+            if (Array.isArray(order.items) && order.items.length > 0) {
+                itemsHtml = order.items.map(item => {
+                    let variantsText = '';
+                    if (item.selectedVariants && typeof item.selectedVariants === 'object' && Object.keys(item.selectedVariants).length > 0) {
+                        variantsText = Object.entries(item.selectedVariants)
+                            .map(([key, val]) => `${key}: ${val}`)
+                            .join(', ');
+                    }
+
+                    return `
+                        <div class="modal-item-row">
+                            <img src="${item.image || 'https://via.placeholder.com/45'}" alt="${item.name || 'Product'}" class="modal-item-img" onerror="this.src='https://via.placeholder.com/45'">
+                            <div class="modal-item-details">
+                                <div class="modal-item-name">${item.name || 'পণ্যের নাম নেই'}</div>
+                                ${variantsText ? `<div class="modal-item-variants">${variantsText}</div>` : ''}
+                                <div style="font-size: 12px; color: var(--text-muted);">পরিমাণ: ${item.quantity || 1}</div>
+                            </div>
+                            <div class="modal-item-price">৳ ${(item.price || 0) * (item.quantity || 1)}</div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                let variantsText = '';
+                if (order.selectedVariants && typeof order.selectedVariants === 'object' && Object.keys(order.selectedVariants).length > 0) {
+                    variantsText = Object.entries(order.selectedVariants)
+                        .map(([key, val]) => `${key}: ${val}`)
+                        .join(', ');
+                }
+
+                itemsHtml = `
+                    <div class="modal-item-row">
+                        <img src="${order.productImage || 'https://via.placeholder.com/45'}" alt="${order.productName || 'Product'}" class="modal-item-img" onerror="this.src='https://via.placeholder.com/45'">
+                        <div class="modal-item-details">
+                            <div class="modal-item-name">${order.productName || 'পণ্যের নাম নেই'}</div>
+                            ${variantsText ? `<div class="modal-item-variants">${variantsText}</div>` : ''}
+                            <div style="font-size: 12px; color: var(--text-muted);">পরিমাণ: ${order.quantity || 1}</div>
+                        </div>
+                        <div class="modal-item-price">৳ ${(order.productPrice || 0) * (order.quantity || 1)}</div>
+                    </div>
+                `;
+            }
+
+            const subtotal = order.subtotal || order.originalSubtotal || 0;
+            const discount = order.productDiscount || 0;
+            const grandTotal = order.grandTotal || subtotal;
+            const deliveryCharge = grandTotal - subtotal + discount >= 0 ? grandTotal - subtotal + discount : 0;
+
+            modalBody.innerHTML = `
+                ${timelineHtml}
+
+                <div class="modal-section">
+                    <div class="modal-section-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        ডেলিভারি ঠিকানা ও তথ্য
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item"><label>গ্রাহকের নাম</label><span>${order.customerName || 'প্রযোজ্য নয়'}</span></div>
+                        <div class="info-item"><label>ফোন নম্বর</label><span>${order.customerPhone || 'প্রযোজ্য নয়'}</span></div>
+                        <div class="info-item"><label>জেলা</label><span>${order.district || 'প্রযোজ্য নয়'}</span></div>
+                        <div class="info-item"><label>উপজেলা</label><span>${order.upazila || 'প্রযোজ্য নয়'}</span></div>
+                        <div class="info-item" style="grid-column: span 2;"><label>সম্পূর্ণ ঠিকানা</label><span>${order.fullAddress || 'প্রযোজ্য নয়'}</span></div>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <div class="modal-section-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line></svg>
+                        অর্ডারকৃত পণ্যসমূহ
+                    </div>
+                    <div class="modal-items-list">
+                        ${itemsHtml}
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <div class="modal-section-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                        পেমেন্ট ও মূল্য বিবরণী
+                    </div>
+                    <div class="info-grid" style="margin-bottom: 12px;">
+                        <div class="info-item"><label>পেমেন্ট পদ্ধতি</label><span>${order.paymentMethod || 'ক্যাশ অন ডেলিভারি'}</span></div>
+                        <div class="info-item"><label>পেমেন্ট অবস্থা</label><span>${order.paymentStatus === 'Paid' ? 'পরিশোধিত' : 'অপরিশোধিত'}</span></div>
+                        <div class="info-item"><label>ডেলিভারি অবস্থা</label><span>${translateDeliveryStatus(deliveryStatus)}</span></div>
+                        <div class="info-item"><label>শপের নাম</label><span>${order.shopName || 'Ghoti Market'}</span></div>
+                    </div>
+                    <div class="price-summary">
+                        <div class="price-row"><span>মূল মূল্য</span><span>৳ ${subtotal}</span></div>
+                        ${discount > 0 ? `<div class="price-row"><span>পণ্যের ছাড়</span><span>- ৳ ${discount}</span></div>` : ''}
+                        <div class="price-row"><span>ডেলিভারি চার্জ</span><span>৳ ${deliveryCharge}</span></div>
+                        <div class="price-row total"><span>সর্বমোট</span><span>৳ ${grandTotal}</span></div>
+                    </div>
+                </div>
+
+                ${order.orderNote ? `
+                    <div class="modal-section">
+                        <div class="modal-section-title">অর্ডার নোট</div>
+                        <p style="font-size: 13px; color: var(--text-muted);">${order.orderNote}</p>
+                    </div>
+                ` : ''}
+            `;
+
+            orderModal.classList.add('active');
+        }
+
+        refreshBtn.addEventListener('click', () => {
+            if (!isLoading && currentUser) {
+                loadOrders(true);
+            }
+        });
+    </script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+    lucide.createIcons();
+</script>
+</body>
+</html>
