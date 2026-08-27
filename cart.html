@@ -13,17 +13,17 @@
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
 
         :root {
-            --primary: #ff1744;
-            --primary-dark: #d50000;
+            --primary: #FF6A00;
+            --primary-dark: #E55F00;
             --secondary: #212121;
             --accent: #2563eb;
-            --bg: #f4f6f8;
+            --bg: #FFF4EC;
             --card: #ffffff;
             --text: #1e293b;
             --text-sub: #64748b;
-            --border: #e2e8f0;
+            --border: rgba(255, 106, 0, 0.15);
             --success: #10b981;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 12px rgba(255, 106, 0, 0.06);
         }
 
         * {
@@ -34,14 +34,16 @@
 
         body {
             font-family: 'Hind Siliguri', sans-serif;
-            background: var(--bg);
+            background: linear-gradient(135deg, #FFF4EC 0%, #FFF9F5 50%, #FFFFFF 100%);
             color: var(--text);
             padding-bottom: 90px;
+            min-height: 100vh;
         }
 
         .back-nav {
             padding: 14px 18px;
-            background: var(--card);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -238,7 +240,7 @@
             font-size: 17px;
             font-weight: 700;
             text-decoration: none;
-            box-shadow: 0 6px 18px rgba(255, 23, 68, 0.28);
+            box-shadow: 0 6px 18px rgba(255, 106, 0, 0.25);
             transition: all 0.25s ease;
             border: none;
             cursor: pointer;
@@ -281,7 +283,7 @@
         .shop-now-btn {
             display: inline-block;
             padding: 10px 20px;
-            background: var(--accent);
+            background: var(--primary);
             color: #fff;
             font-size: 14px;
             font-weight: 700;
@@ -291,8 +293,37 @@
         }
 
         .shop-now-btn:hover {
-            background: #1d4ed8;
+            background: var(--primary-dark);
         }
+
+        /* Toast Popup */
+        .ghoti-toast {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #1A1A1A;
+            color: #FFFFFF;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 100000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+        .ghoti-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .ghoti-toast.success { background: var(--primary); color: #FFFFFF; }
+        .ghoti-toast.error { background: #FF416C; color: #FFFFFF; }
 
         /* Bottom Navigation Bar */
         .bottom-nav {
@@ -346,7 +377,7 @@
     </div>
 
     <div class="container" id="cartContainer">
-        <!-- Cart content will be loaded dynamically -->
+        <div style="text-align:center; padding: 40px; color: var(--text-sub);">কার্ট লোড হচ্ছে...</div>
     </div>
 
     <!-- Bottom Navigation -->
@@ -373,25 +404,82 @@
         </a>
     </nav>
 
-    <script>
-        const getEl = (id) => document.getElementById(id);
+    <!-- Firebase & Cart Script Module -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import {
+          collection,
+          getDocs,
+          query,
+          where,
+          updateDoc,
+          deleteDoc,
+          doc,
+          getFirestore
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const getCart = () => {
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+            authDomain: "ghotimarket.firebaseapp.com",
+            databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+            projectId: "ghotimarket",
+            storageBucket: "ghotimarket.firebasestorage.app",
+            messagingSenderId: "481257644093",
+            appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+            measurementId: "G-4SR8V2EKC1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let currentUser = null;
+        let cartItems = [];
+
+        function showToast(message, type = 'success') {
+            let toast = document.getElementById('ghotiToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'ghotiToast';
+                toast.className = 'ghoti-toast';
+                document.body.appendChild(toast);
+            }
+            toast.innerHTML = type === 'success' ? `<i class="fa-solid fa-circle-check"></i> ${message}` : `<i class="fa-solid fa-circle-exclamation"></i> ${message}`;
+            toast.className = `ghoti-toast ${type} show`;
+            
+            clearTimeout(toast.timer);
+            toast.timer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        async function fetchUserCart() {
+            if (!currentUser) return;
             try {
-                return JSON.parse(localStorage.getItem('ghoti_cart')) || [];
-            } catch (e) { return []; }
-        };
-
-        const saveCart = (cart) => {
-            localStorage.setItem('ghoti_cart', JSON.stringify(cart));
-            renderCart();
-        };
+                const q = query(collection(db, "carts"), where("uid", "==", currentUser.uid));
+                const querySnapshot = await getDocs(q);
+                cartItems = [];
+                querySnapshot.forEach((docSnap) => {
+                    cartItems.push({ cartDocId: docSnap.id, ...docSnap.data() });
+                });
+                renderCart();
+            } catch (err) {
+                console.error("Error loading cart from Firestore:", err);
+                document.getElementById("cartContainer").innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>ডাটা লোড করতে সমস্যা হয়েছে</h3>
+                        <p>দয়া করে আপনার ইন্টারনেট কানেকশন চেক করুন।</p>
+                    </div>
+                `;
+            }
+        }
 
         const renderCart = () => {
-            const container = getEl("cartContainer");
-            const cart = getCart();
+            const container = document.getElementById("cartContainer");
 
-            if (cart.length === 0) {
+            if (cartItems.length === 0) {
                 container.innerHTML = `
                     <div class="empty-cart">
                         <i class="fas fa-shopping-cart"></i>
@@ -406,8 +494,8 @@
             let subtotal = 0;
             let itemsHTML = '';
 
-            cart.forEach((item, index) => {
-                const itemTotal = (item.price || 0) * (item.quantity || 1);
+            cartItems.forEach((item) => {
+                const itemTotal = (Number(item.price) || 0) * (Number(item.quantity) || 1);
                 subtotal += itemTotal;
 
                 // Format variants text (e.g., Size: M, Color: Blue)
@@ -421,18 +509,18 @@
 
                 itemsHTML += `
                     <div class="cart-item-card">
-                        <img src="${item.image || 'https://via.placeholder.com/80'}" alt="${item.name}" class="cart-item-img">
+                        <img src="${escapeHtml(item.image) || 'https://via.placeholder.com/80'}" alt="${escapeHtml(item.name)}" class="cart-item-img" onerror="this.src='https://via.placeholder.com/80?text=GHOTI'">
                         <div class="cart-item-details">
-                            <div class="cart-item-name">${item.name}</div>
-                            ${variantsStr ? `<div class="cart-item-variants">${variantsStr}</div>` : ''}
+                            <div class="cart-item-name">${escapeHtml(item.name)}</div>
+                            ${variantsStr ? `<div class="cart-item-variants">${escapeHtml(variantsStr)}</div>` : ''}
                             <div class="cart-item-price">৳ ${item.price}</div>
                             <div class="cart-item-actions">
                                 <div class="qty-control">
-                                    <button class="qty-btn" onclick="updateQty(${index}, -1)">-</button>
+                                    <button class="qty-btn" onclick="updateQty('${item.cartDocId}', -1)">-</button>
                                     <span class="qty-val">${item.quantity || 1}</span>
-                                    <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
+                                    <button class="qty-btn" onclick="updateQty('${item.cartDocId}', 1)">+</button>
                                 </div>
-                                <button class="remove-btn" onclick="removeItem(${index})" title="ডিলিট করুন">
+                                <button class="remove-btn" onclick="removeItem('${item.cartDocId}')" title="ডিলিট করুন">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
@@ -442,7 +530,7 @@
             });
 
             container.innerHTML = `
-                <div class="cart-title"><i class="fas fa-shopping-bag"></i> কার্টে থাকা পণ্যসমূহ (${cart.length} টি)</div>
+                <div class="cart-title"><i class="fas fa-shopping-bag"></i> কার্টে থাকা পণ্যসমূহ (${cartItems.length} টি)</div>
                 <div class="cart-items-list">${itemsHTML}</div>
                 <div class="cart-summary-card">
                     <div class="summary-row">
@@ -464,27 +552,54 @@
             `;
         };
 
-        window.updateQty = (index, change) => {
-            let cart = getCart();
-            if (cart[index]) {
-                cart[index].quantity = (cart[index].quantity || 1) + change;
-                if (cart[index].quantity < 1) {
-                    cart[index].quantity = 1;
-                }
-                saveCart(cart);
+        window.updateQty = async (cartDocId, change) => {
+            const item = cartItems.find(i => i.cartDocId === cartDocId);
+            if (!item) return;
+
+            let newQty = (Number(item.quantity) || 1) + change;
+            if (newQty < 1) newQty = 1;
+
+            try {
+                const docRef = doc(db, "carts", cartDocId);
+                await updateDoc(docRef, { quantity: newQty });
+                item.quantity = newQty;
+                renderCart();
+            } catch (err) {
+                console.error("Error updating quantity:", err);
+                showToast('পরিমাণ আপডেট করতে সমস্যা হয়েছে!', 'error');
             }
         };
 
-        window.removeItem = (index) => {
-            let cart = getCart();
-            cart.splice(index, 1);
-            saveCart(cart);
+        window.removeItem = async (cartDocId) => {
+            try {
+                await deleteDoc(doc(db, "carts", cartDocId));
+                cartItems = cartItems.filter(i => i.cartDocId !== cartDocId);
+                renderCart();
+                showToast('পণ্যটি কার트 থেকে মুছে ফেলা হয়েছে!', 'success');
+            } catch (err) {
+                console.error("Error deleting cart item:", err);
+                showToast('পণ্য মুছতে সমস্যা হয়েছে!', 'error');
+            }
         };
 
+        function escapeHtml(text) {
+            if (!text) return '';
+            return String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            getEl("backNavBtn")?.addEventListener('click', () => history.back());
-            renderCart();
+            document.getElementById("backNavBtn")?.addEventListener('click', () => history.back());
             if (typeof lucide !== 'undefined') lucide.createIcons();
+        });
+
+        // Firebase Auth state listener
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = "login.html";
+                return;
+            }
+            currentUser = user;
+            await fetchUserCart();
         });
     </script>
 </body>
