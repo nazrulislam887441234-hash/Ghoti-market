@@ -136,31 +136,6 @@
         .popup-box h3{font-size:19px;margin-bottom:8px;}
         .popup-box p{color:var(--muted);font-size:14px;line-height:1.6;}
         
-        .track-box-container {
-            margin: 15px 0;
-            text-align: left;
-        }
-        .track-id-item {
-            background: #FFF4EC;
-            border: 1.5px dashed var(--orange);
-            padding: 10px 14px;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .track-id-item .store-name {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--orange-dark);
-        }
-        .track-id-item .t-id {
-            font-weight: 800;
-            font-size: 15px;
-            color: var(--text);
-        }
-        .copy-msg{color:var(--green);font-size:12px;margin-top:5px;display:none;text-align:center;}
         .spinner{border:3px solid #f3f3f3;border-top:3px solid var(--orange);border-radius:50%;width:20px;height:20px;animation:spin 1s linear infinite;display:inline-block;vertical-align:middle;}
         @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
         @media(min-width:768px){.sticky-summary{position:static;box-shadow:none;border:none;}}
@@ -288,7 +263,7 @@
         <div class="popup-box">
             <i class="fas fa-shopping-bag" style="color:var(--orange);"></i>
             <h3>আপনি কি অর্ডারটি কনফার্ম করতে চান?</h3>
-            <p>প্রতিটি পণ্যের জন্য আলাদা আলাদা অর্ডার এবং ট্র্যাকিং আইডি তৈরি করা হবে।</p>
+            <p>আপনার অর্ডারটি সফলভাবে প্রসেস করা হবে।</p>
             <div class="popup-btns" style="display:flex;gap:10px;margin-top:20px;">
                 <button class="btn" onclick="closeConfirm()" style="background:#f1f1f1;color:#333;">বাতিল</button>
                 <button class="btn" id="finalConfirm" style="background:var(--orange);">কনফার্ম</button>
@@ -299,18 +274,14 @@
     <!-- Success Popup -->
     <div id="successPopup" class="popup">
         <div class="popup-box">
-            <i class="fas fa-check-circle" style="color:var(--green);"></i>
+            <i class="fas fa-check-circle" style="color:var(--green); font-size:45px; margin-bottom:12px;"></i>
             <h3>আপনার অর্ডার সফলভাবে সম্পন্ন হয়েছে!</h3>
-            <p style="font-size:13px;">প্রতিটি পণ্যের জন্য আলাদা ট্র্যাকিং আইডিগুলো নিচে দেওয়া হলো:</p>
+            <p style="font-size:14px; color:var(--muted); margin:10px 0 20px 0;">আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। ধন্যবাদ আমাদের সাথে থাকার জন্য।</p>
             
-            <div class="track-box-container" id="trackIdContainerList"></div>
-
-            <button class="btn" id="copyAllTrackBtn" style="margin-top:10px;">
-                <i class="fas fa-copy"></i> সব ট্র্যাকিং আইডি কপি করুন
-            </button>
-            <div class="copy-msg" id="copyMsg">সব ট্র্যাকিং আইডি সফলভাবে কপি হয়েছে।</div>
-            
-            <button class="btn" onclick="location.href='index.html'" style="background:#333;margin-top:10px;">হোমে ফিরে যান</button>
+            <div style="display:flex; gap:10px; margin-top:15px;">
+                <button class="btn" onclick="location.href='https://ghotimarket.com/my-orders'" style="background:var(--orange); font-size:14px; padding:12px; box-shadow:none;">আমার অর্ডারস সমূহ</button>
+                <button class="btn" onclick="location.href='https://ghotimarket.com/all-product'" style="background:#333; font-size:14px; padding:12px; box-shadow:none;">আরোও কেনাকাটা</button>
+            </div>
         </div>
     </div>
 
@@ -348,7 +319,6 @@
 
         let app, db, auth;
         let currentUser = null;
-        let generatedTracks = [];
 
         try {
             app = initializeApp(firebaseConfig);
@@ -500,7 +470,7 @@
                 querySnapshot.forEach((docSnap) => {
                     let data = docSnap.data();
                     cartItems.push({
-                        cartDocId: docSnap.id, // ফায়ারবেসের অটো-জেনারেটেড আইডি সংরক্ষণ
+                        cartDocId: docSnap.id,
                         ...data
                     });
                 });
@@ -662,7 +632,6 @@
                 const timestamp = serverTimestamp();
 
                 const batch = writeBatch(db);
-                generatedTracks = [];
 
                 const userUid = currentUser ? currentUser.uid : '';
                 const userEmail = currentUser ? currentUser.email : '';
@@ -728,60 +697,12 @@
                         affiliateUserId: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliateUserId : ""
                     };
 
-                    const trackingData = {
-                        orderTrackId,
-                        uid: userUid,
-                        email: userEmail,
-                        productName: item.name || '',
-                        productImage: item.image || '',
-                        productPrice: unitPrice,
-                        quantity: qty,
-                        selectedVariants: item.selectedVariants || {},
-                        oldPrice: oldPriceVal,
-                        sellerId: item.sellerId || 'default_seller',
-                        shopName: item.shopName || 'GHOTI Seller',
-                        subtotal: itemSubtotal,
-                        originalSubtotal: itemOriginalSubtotal,
-                        discountedSubtotal: itemDiscountedSubtotal,
-                        affiliateDiscount: itemDiscount,
-                        productDiscount: itemDiscount,
-                        deliveryCharge: itemDeliveryCharge,
-                        grandTotal: itemGrandTotal,
-                        customerName,
-                        customerPhone,
-                        division: loc.division || '',
-                        district: loc.district || '',
-                        upazila: loc.upazila || '',
-                        fullAddress: fullAddressStr,
-                        address: loc.address || fullAddressStr,
-                        deliveryStatus: 'New',
-                        orderStatus: 'Pending',
-                        paymentMethod: 'Cash On Delivery',
-                        paymentStatus: 'Unpaid',
-                        createdAt: timestamp,
-                        updatedAt: timestamp,
-                        affiliateApplied: appliedAffiliateData.affiliateApplied,
-                        affiliatePromoCode: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliatePromoCode : "",
-                        affiliateUserId: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliateUserId : ""
-                    };
-
                     const newOrderRef = doc(collection(db, "orders"));
                     batch.set(newOrderRef, orderData);
-
-                    const trackingRef = doc(db, "order_tracking", orderTrackId);
-                    batch.set(trackingRef, trackingData);
-
-                    generatedTracks.push({
-                        shopName: item.shopName || 'GHOTI Seller',
-                        itemName: item.name,
-                        trackId: orderTrackId
-                    });
                 });
 
-                // অর্ডার ডেটা কমিট করা হলো
                 await batch.commit();
 
-                // অর্ডার সফল হওয়ার পর স্বয়ংক্রিয়ভাবে carts কালেকশন থেকে আইটেমগুলো ডিলিট করা হচ্ছে
                 for (const item of cartItems) {
                     if (item.cartDocId) {
                         try {
@@ -796,7 +717,7 @@
                 isSubmitting = false;
                 document.getElementById('finalConfirm').innerText = 'কনফার্ম';
 
-                showSuccessPopup();
+                document.getElementById('successPopup').classList.add('show');
 
             } catch (e) {
                 console.error("Order Commit Error:", e);
@@ -804,38 +725,6 @@
                 isSubmitting = false;
                 document.getElementById('finalConfirm').innerText = 'কনফার্ম';
                 showError("❌ অর্ডার সংরক্ষণ ব্যর্থ হয়েছে", e.message || "নেটওয়ার্ক বা ডাটাবেজ সমস্যা হয়েছে।");
-            }
-        };
-
-        function showSuccessPopup() {
-            let trackHTML = '';
-            generatedTracks.forEach(t => {
-                trackHTML += `
-                    <div class="track-id-item">
-                        <div>
-                            <div class="store-name">${t.shopName} (${t.itemName})</div>
-                            <div class="t-id">${t.trackId}</div>
-                        </div>
-                        <button onclick="navigator.clipboard.writeText('${t.trackId}')" style="background:var(--orange);color:#fff;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:12px;">কপি</button>
-                    </div>
-                `;
-            });
-            document.getElementById('trackIdContainerList').innerHTML = trackHTML;
-            document.getElementById('successPopup').classList.add('show');
-        }
-
-        document.getElementById('copyAllTrackBtn').onclick = async () => {
-            try {
-                const items = document.querySelectorAll('.track-id-item .t-id');
-                let allIds = [];
-                items.forEach(el => allIds.push(el.innerText));
-                
-                await navigator.clipboard.writeText(allIds.join(', '));
-                const msg = document.getElementById('copyMsg');
-                msg.style.display = 'block';
-                setTimeout(() => msg.style.display = 'none', 2500);
-            } catch (e) {
-                console.error("Copy error:", e);
             }
         };
     </script>
