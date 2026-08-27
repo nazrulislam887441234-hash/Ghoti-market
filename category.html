@@ -274,6 +274,18 @@
             background: var(--danger-hover);
         }
 
+        /* Loading state for buttons */
+        .btn-loading {
+            opacity: 0.75;
+            cursor: not-allowed !important;
+            pointer-events: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* --- Variant Selection Modal --- */
         .modal-overlay {
             position: fixed;
@@ -687,44 +699,26 @@
     <!-- Toast Notification -->
     <div id="toast" class="toast hidden"></div>
 
-    <!-- Fixed Bottom Navigation -->
+   <!-- Bottom Navigation Bar -->
     <nav class="bottom-nav">
-        <a href="https://ghotimarket.com" class="nav-item active">
-            <i data-lucide="home"></i>
-            <span>Home</span>
-        </a>
-
-        <a href="https://ghotimarket.com/categories" class="nav-item">
-            <i data-lucide="grid"></i>
-            <span>Categories</span>
-        </a>
-
-        <a href="https://ghotimarket.com/all-product" class="nav-item">
-            <i data-lucide="box"></i>
-            <span>All product</span>
-        </a>
-
-        <a href="https://ghotimarket.com/contact" class="nav-item">
-            <i data-lucide="headphones"></i>
-            <span>Support</span>
-        </a>
-
-        <a href="https://ghotimarket.com/privacy-policy" class="nav-item">
-            <i data-lucide="shield-check"></i>
-            <span>Privacy</span>
-        </a>
-
-        <a href="https://seller.ghotimarket.com/signup" class="nav-item">
-            <i data-lucide="store"></i>
-            <span>J.Seller</span>
-        </a>
+        <a href="https://ghotimarket.com" class="nav-item active"><i data-lucide="home"></i><span>Home</span></a>
+        <a href="https://ghotimarket.com/categories" class="nav-item"><i data-lucide="grid"></i><span>Categories</span></a>
+        <a href="https://ghotimarket.com/all-product" class="nav-item"><i data-lucide="box"></i><span>products</span></a>
+        <a href="https://ghotimarket.com/contact" class="nav-item"><i data-lucide="headphones"></i><span>Support</span></a>
+        <a href="https://ghotimarket.com/privacy-policy" class="nav-item"><i data-lucide="shield-check"></i><span>Privacy</span></a>
+        <a href="profile.html" class="nav-item">
+    <i data-lucide="circle-user-round"></i>
+    <span>Profile</span>
+</a> 
+        <a href="https://seller.ghotimarket.com/signup" class="nav-item"><i data-lucide="store"></i><span>J.Seller</span></a>
     </nav>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // --- Firebase Configuration (Unchanged) ---
+        // --- Firebase Configuration ---
         const firebaseConfig = { 
             apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
             authDomain: "ghotimarket.firebaseapp.com", 
@@ -736,6 +730,7 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
 
         // --- Application State Constants ---
         const STATES = {
@@ -753,6 +748,10 @@
 
         // Product cache map for quick lookups
         const productMap = new Map();
+
+        // Auth & User Cart State
+        let currentUser = null;
+        let userCartItems = [];
 
         // Variant Modal & Selection State
         let activeModalProduct = null;
@@ -783,6 +782,32 @@
         const modalBuynowBtn = document.getElementById('modal-buynow-btn');
         const toast = document.getElementById('toast');
 
+        // --- Auth State Observer ---
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                fetchUserCart(user.uid);
+            } else {
+                currentUser = null;
+                userCartItems = [];
+            }
+        });
+
+        // --- Fetch User Cart from Firestore ---
+        async function fetchUserCart(uid) {
+            try {
+                const q = query(collection(db, "carts"), where("uid", "==", uid));
+                const querySnapshot = await getDocs(q);
+                userCartItems = [];
+                querySnapshot.forEach((docSnap) => {
+                    userCartItems.push({ cartDocId: docSnap.id, ...docSnap.data() });
+                });
+                updateAllCardButtons();
+            } catch (error) {
+                console.error("Error fetching cart from Firestore:", error);
+            }
+        }
+
         // --- Slug & Title Formatting ---
         const urlParams = new URLSearchParams(window.location.search);
         const rawSlug = urlParams.get('slug');
@@ -792,7 +817,6 @@
             window.location.href = 'index.html'; 
         }
 
-        // Set Clean Page Title
         function formatTitle(str) {
             if (!str) return 'ক্যাটাগরি';
             return str
@@ -827,8 +851,7 @@
 
         // --- Helper: Check if product is in cart ---
         function isProductInCart(productId) {
-            const cart = JSON.parse(localStorage.getItem('ghoti_cart')) || [];
-            return cart.some(item => item.id === productId || item.docId === productId);
+            return userCartItems.some(item => item.id === productId || item.docId === productId);
         }
 
         // --- Helper: UI State Manager ---
@@ -982,21 +1005,35 @@
             lucide.createIcons();
         }
 
-        // --- Cart & Checkout Management (Single addition rule) ---
-        function addProductToCart(product, chosenVariants = {}, finalPrice = null) {
-            let cart = JSON.parse(localStorage.getItem('ghoti_cart')) || [];
+        // --- Cart & Checkout Management (Firestore Carts Collection with Loading Feedback) ---
+        async function addProductToCart(product, chosenVariants = {}, finalPrice = null, buttonEl = null) {
+            if (!currentUser) {
+                window.location.href = 'https://ghotimarket.com/login';
+                return;
+            }
 
-            const exists = cart.some(item => item.id === product.id || item.docId === product.id);
+            const exists = isProductInCart(product.id);
             if (exists) {
                 updateProductCardButtons(product.id);
                 return;
+            }
+
+            // Show Loading State on Button
+            let originalHTML = '';
+            if (buttonEl) {
+                originalHTML = buttonEl.innerHTML;
+                buttonEl.disabled = true;
+                buttonEl.classList.add('btn-loading');
+                buttonEl.innerHTML = `<span style="display:inline-block; width:14px; height:14px; border:2px solid #fff; border-top-color:transparent; border-radius:50%; animation: spin 0.8s linear infinite; vertical-align:middle; margin-right:6px;"></span> সেভ হচ্ছে...`;
             }
 
             const basePrice = Number(product.price) || 0;
             const price = finalPrice !== null ? finalPrice : basePrice;
             const firstImg = (Array.isArray(product.images) && product.images[0]) ? product.images[0] : 'https://via.placeholder.com/300';
 
-            const cartItem = {
+            const cartItemData = {
+                uid: currentUser.uid,
+                email: currentUser.email || '',
                 id: product.id,
                 docId: product.id,
                 slug: product.slug || '',
@@ -1010,12 +1047,26 @@
                 affiliate: product.affiliate === "on" ? "on" : "off",
                 oldPrice: Number(product.oldPrice) || 0,
                 discount: Number(product.discount) || 0,
-                quantity: 1
+                quantity: 1,
+                createdAt: new Date().toISOString()
             };
 
-            cart.push(cartItem);
-            localStorage.setItem('ghoti_cart', JSON.stringify(cart));
-            updateProductCardButtons(product.id);
+            try {
+                const docRef = await addDoc(collection(db, "carts"), cartItemData);
+                userCartItems.push({ cartDocId: docRef.id, ...cartItemData });
+                updateProductCardButtons(product.id);
+                showToast('পণ্যটি আপনার কার্টে সফলভাবে যোগ করা হয়েছে।');
+            } catch (error) {
+                console.error("Error adding to carts collection:", error);
+                showToast('কার্টে যোগ করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।');
+            } finally {
+                // Restore Button State
+                if (buttonEl) {
+                    buttonEl.disabled = false;
+                    buttonEl.classList.remove('btn-loading');
+                    buttonEl.innerHTML = originalHTML;
+                }
+            }
         }
 
         function updateProductCardButtons(productId) {
@@ -1025,6 +1076,12 @@
                 if (cartBtn) {
                     cartBtn.classList.add('hidden');
                 }
+            });
+        }
+
+        function updateAllCardButtons() {
+            userCartItems.forEach(item => {
+                updateProductCardButtons(item.id || item.docId);
             });
         }
 
@@ -1132,9 +1189,14 @@
         }
 
         // --- Event Delegation for Product Card Actions ---
-        productGrid.addEventListener('click', (e) => {
+        productGrid.addEventListener('click', async (e) => {
             const cartBtn = e.target.closest('[data-action="cart"]');
             const buyNowBtn = e.target.closest('[data-action="buynow"]');
+
+            if (!currentUser) {
+                window.location.href = 'https://ghotimarket.com/login';
+                return;
+            }
 
             if (cartBtn) {
                 e.preventDefault();
@@ -1150,8 +1212,7 @@
                         modalActionType = 'cart';
                         renderVariantModal(product);
                     } else {
-                        addProductToCart(product, {}, Number(product.price) || 0);
-                        showToast('পণ্যটি আপনার কার্টে সফলভাবে যোগ করা হয়েছে।');
+                        await addProductToCart(product, {}, Number(product.price) || 0, cartBtn);
                     }
                 }
             } else if (buyNowBtn) {
@@ -1166,7 +1227,7 @@
                             renderVariantModal(product);
                             return;
                         } else {
-                            addProductToCart(product, {}, Number(product.price) || 0);
+                            await addProductToCart(product, {}, Number(product.price) || 0, buyNowBtn);
                         }
                     }
                     window.location.href = 'checkout.html';
@@ -1174,8 +1235,12 @@
             }
         });
 
-        // Modal Action Handlers
-        modalCartBtn.addEventListener('click', () => {
+        // Modal Action Handlers with Loading Feedback
+        modalCartBtn.addEventListener('click', async () => {
+            if (!currentUser) {
+                window.location.href = 'https://ghotimarket.com/login';
+                return;
+            }
             if (!activeModalProduct) return;
             if (isProductInCart(activeModalProduct.id)) {
                 modalOverlay.classList.remove('active');
@@ -1189,12 +1254,15 @@
                 return;
             }
             const finalPrice = getCalculatedCurrentPrice();
-            addProductToCart(activeModalProduct, chosenVariants, finalPrice);
+            await addProductToCart(activeModalProduct, chosenVariants, finalPrice, modalCartBtn);
             modalOverlay.classList.remove('active');
-            showToast('পণ্যটি আপনার কার্টে সফলভাবে যোগ করা হয়েছে।');
         });
 
-        modalBuynowBtn.addEventListener('click', () => {
+        modalBuynowBtn.addEventListener('click', async () => {
+            if (!currentUser) {
+                window.location.href = 'https://ghotimarket.com/login';
+                return;
+            }
             if (!activeModalProduct) return;
             if (!isProductInCart(activeModalProduct.id)) {
                 const chosenVariants = validateAndGetChosenVariants();
@@ -1204,7 +1272,7 @@
                     return;
                 }
                 const finalPrice = getCalculatedCurrentPrice();
-                addProductToCart(activeModalProduct, chosenVariants, finalPrice);
+                await addProductToCart(activeModalProduct, chosenVariants, finalPrice, modalBuynowBtn);
             }
             modalOverlay.classList.remove('active');
             window.location.href = 'checkout.html';
