@@ -1136,8 +1136,17 @@
                 if (existingItem) {
                     const newQuantity = (existingItem.quantity || 1) + 1;
                     const cartDocRef = doc(db, "carts", existingItem.cartDocId);
-                    await updateDoc(cartDocRef, { quantity: newQuantity });
+                    
+                    const updateData = { quantity: newQuantity };
+                    if ((product.affiliate === "on" || product.affiliate === true) && product.discount) {
+                        updateData.discount = Number(product.discount) || 0;
+                    }
+                    
+                    await updateDoc(cartDocRef, updateData);
                     existingItem.quantity = newQuantity;
+                    if (updateData.discount !== undefined) {
+                        existingItem.discount = updateData.discount;
+                    }
                 } else {
                     const newCartData = {
                         uid: currentUser.uid,
@@ -1155,6 +1164,7 @@
                         shopName: product.shopName || '',
                         sellerId: product.sellerId || '',
                         affiliate: product.affiliate || false,
+                        discount: (product.affiliate === "on" || product.affiliate === true) && product.discount ? Number(product.discount) || 0 : 0,
                         createdAt: serverTimestamp()
                     };
 
