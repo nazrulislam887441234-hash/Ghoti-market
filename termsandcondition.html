@@ -56,11 +56,6 @@ body{
     border-bottom: 2px solid var(--border);
 }
 
-.logo{
-    width: 130px;
-    margin-bottom: 16px;
-}
-
 .terms-label {
     display: inline-block;
     background: #ffedd5;
@@ -165,16 +160,22 @@ li{
     border: 1px solid var(--warning-border);
     border-left: 5px solid var(--primary);
     border-radius: 14px;
-    padding: 20px;
+    padding: 22px 25px;
     color: var(--warning-text);
     margin-bottom: 25px;
     display: flex;
-    align-items: flex-start;
-    gap: 12px;
+    flex-direction: column;
+    gap: 16px;
     font-size: 16px;
 }
 
-.highlight-card svg{
+.highlight-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.highlight-row svg{
     flex-shrink: 0;
     width: 20px;
     height: 20px;
@@ -253,10 +254,6 @@ a{
         border-radius: 18px;
     }
 
-    .logo{
-        width: 100px;
-    }
-
     h1{
         font-size: 26px;
     }
@@ -331,7 +328,6 @@ a{
 
 <div class="main-wrapper">
     <div class="header-section">
-        <img src="https://www.ghotimarket.com/logo.png" alt="Ghoti Market Logo" class="logo">
         <div class="terms-label">Terms & Conditions</div>
         <div class="update-badge">
             <i data-lucide="calendar"></i> 
@@ -340,14 +336,16 @@ a{
         <h1>শর্তাবলী এবং ব্যবহারবিধি</h1>
     </div>
 
+    <!-- Combined Warning Box -->
     <div class="highlight-card">
-        <i data-lucide="users"></i> 
-        <div><strong>প্রযোজ্যতা:</strong> এই শর্তাবলী GHOTI MARKET App/Website এর সকল <strong>Buyer</strong>, <strong>Seller</strong> ও <strong>Affiliate</strong>-এর জন্য প্রযোজ্য।</div>
-    </div>
-
-    <div class="highlight-card">
-        <i data-lucide="info"></i> 
-        <div><strong>সতর্কতা:</strong> ঘটি মার্কেট কর্তৃপক্ষ যেকোনো সময় নোটিশ ছাড়াই এই শর্তাবলী পরিবর্তন, পরিমার্জন বা সংশোধন করার অধিকার সংরক্ষণ করে। নিয়মিত এই পেজটি ভিজিট করার অনুরোধ রইল।</div>
+        <div class="highlight-row">
+            <i data-lucide="users"></i> 
+            <div><strong>প্রযোজ্যতা:</strong> এই শর্তাবলী GHOTI MARKET App/Website এর সকল <strong>Buyer</strong>, <strong>Seller</strong> ও <strong>Affiliate</strong>-এর জন্য প্রযোজ্য।</div>
+        </div>
+        <div class="highlight-row" style="border-top: 1px dashed var(--warning-border); padding-top: 14px;">
+            <i data-lucide="info"></i> 
+            <div><strong>সতর্কতা:</strong> ঘটি মার্কেট কর্তৃপক্ষ যেকোনো সময় নোটিশ ছাড়াই এই শর্তাবলী পরিবর্তন, পরিমার্জন বা সংশোধন করার অধিকার সংরক্ষণ করে। নিয়মিত এই পেজটি ভিজিট করার অনুরোধ রইল।</div>
+        </div>
     </div>
 
     <div class="section">
@@ -378,11 +376,13 @@ a{
         </ul>
     </div>
 
-    <div class="highlight-card">
-        <i data-lucide="info"></i>
-        <div>
-            <strong>Affiliate নোট:</strong>
-            Affiliate কমিশন শুধুমাত্র সফলভাবে <strong>Delivered</strong> হওয়া অর্ডারের জন্য গণনা করা হয়। পণ্য ডেলিভারি সম্পন্ন হওয়ার পরই কমিশন Affiliate Account-এর Net Balance-এ যোগ হবে।
+    <div class="card" style="background: var(--warning-bg); border-color: var(--warning-border); color: var(--warning-text);">
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <i data-lucide="info" style="flex-shrink: 0; width: 20px; height: 20px; stroke: var(--primary); margin-top: 3px;"></i>
+            <div>
+                <strong>Affiliate নোট:</strong>
+                Affiliate কমিশন শুধুমাত্র সফলভাবে <strong>Delivered</strong> হওয়া অর্ডারের জন্য গণনা করা হয়। পণ্য ডেলিভারি সম্পন্ন হওয়ার পরই কমিশন Affiliate Account-এর Net Balance-এ যোগ হবে।
+            </div>
         </div>
     </div>
 
@@ -519,38 +519,19 @@ a{
     &copy; <script>document.write(new Date().getFullYear())</script> GHOTI MARKET. সর্বস্বত্ব সংরক্ষিত।
 </footer>
 
-<!-- Bottom Navigation -->
-<nav class="bottom-nav" aria-label="Bottom Navigation">
-    <a href="https://ghotimarket.com" class="nav-item">
-        <i data-lucide="home"></i>
-        <span>Home</span>
-    </a>
-
-    <a href="https://ghotimarket.com/categories" class="nav-item">
-        <i data-lucide="grid"></i>
-        <span>Categories</span>
-    </a>
-
-    <a href="https://ghotimarket.com/all-product" class="nav-item">
-        <i data-lucide="box"></i>
-        <span>All product</span>
-    </a>
-
-    <a href="https://ghotimarket.com/contact" class="nav-item">
-        <i data-lucide="headphones"></i>
-        <span>Support</span>
-    </a>
-
-    <a href="https://ghotimarket.com/privacy-policy" class="nav-item active">
-        <i data-lucide="shield-check"></i>
-        <span>Privacy</span>
-    </a>
-
-    <a href="https://seller.ghotimarket.com/signup" class="nav-item">
-        <i data-lucide="store"></i>
-        <span>J.Seller</span>
-    </a>
-</nav>
+   <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <a href="https://ghotimarket.com" class="nav-item active"><i data-lucide="home"></i><span>Home</span></a>
+        <a href="https://ghotimarket.com/categories" class="nav-item"><i data-lucide="grid"></i><span>Categories</span></a>
+        <a href="https://ghotimarket.com/all-product" class="nav-item"><i data-lucide="box"></i><span>products</span></a>
+        <a href="https://ghotimarket.com/contact" class="nav-item"><i data-lucide="headphones"></i><span>Support</span></a>
+        <a href="https://ghotimarket.com/privacy-policy" class="nav-item"><i data-lucide="shield-check"></i><span>Privacy</span></a>
+        <a href="profile.html" class="nav-item">
+            <i data-lucide="circle-user-round"></i>
+            <span>Profile</span>
+        </a> 
+        <a href="https://seller.ghotimarket.com/signup" class="nav-item"><i data-lucide="store"></i><span>J.Seller</span></a>
+    </nav>
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
