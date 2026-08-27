@@ -163,6 +163,12 @@
             display: inline-block;
         }
 
+        .action-icon-btns {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
         .corner-share-btn {
             width: 36px;
             height: 36px;
@@ -310,6 +316,7 @@
             font-size: 15px;
             display: none;
             align-items: center;
+            margin-left: 4px;
         }
 
         /* Action Buttons Area */
@@ -338,19 +345,20 @@
             cursor: pointer;
         }
 
+        .order-btn:disabled {
+            opacity: 0.85;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
         .cart-add-btn {
             background: linear-gradient(135deg, #0284c7, #0369a1);
             box-shadow: 0 6px 18px rgba(2, 132, 199, 0.28);
         }
 
-        .order-btn:hover {
+        .order-btn:hover:not(:disabled) {
             transform: translateY(-2px);
             opacity: 0.95;
-        }
-
-        .order-btn.disabled, .cart-add-btn.disabled {
-            opacity: 0.5;
-            pointer-events: none;
         }
 
         /* Policy Buttons Section */
@@ -415,18 +423,7 @@
             word-wrap: break-word;
         }
 
-        #pDesc h1, #pDesc h2, #pDesc h3 {
-            margin: 14px 0 8px;
-            color: #0f172a;
-            font-weight: 700;
-        }
-
-        #pDesc p { margin: 8px 0; }
-        #pDesc ul, #pDesc ol { padding-left: 20px; margin: 8px 0; }
-        #pDesc li { margin: 4px 0; }
-        #pDesc strong { font-weight: 700; color: #0f172a; }
-
-        /* Reviews Section Styles */
+        /* Reviews Section */
         .reviews-container {
             margin-top: 24px;
             border-top: 1px solid var(--border);
@@ -663,17 +660,8 @@
             transition: 0.2s;
         }
 
-        .popup-box button:hover {
-            background: var(--primary-dark);
-        }
-
-        .btn-secondary-action {
-            background: #2563eb !important;
-        }
-
-        .btn-cancel-action {
-            background: #64748b !important;
-        }
+        .btn-secondary-action { background: #2563eb !important; }
+        .btn-cancel-action { background: #64748b !important; }
 
         @keyframes pop {
             from { transform: scale(0.92); opacity: 0; }
@@ -688,15 +676,7 @@
             font-weight: 600;
         }
 
-        .loading i {
-            color: var(--primary);
-            font-size: 26px;
-            margin-bottom: 8px;
-        }
-
-        .main-content-wrapper {
-            display: none;
-        }
+        .main-content-wrapper { display: none; }
 
         @media (max-width: 600px) {
             .slider { height: 310px; }
@@ -732,9 +712,12 @@
         <div class="content">
             <div class="meta-header">
                 <span class="img-counter" id="imgCounter">ছবি 0 টি</span>
-                <button class="corner-share-btn" id="shareBtnTrig" type="button" title="শেয়ার করুন">
-                    <i class="fas fa-share-alt"></i>
-                </button>
+                <div class="action-icon-btns">
+                    <!-- Share Button -->
+                    <button class="corner-share-btn" id="shareBtnTrig" type="button" title="শেয়ার করুন">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
+                </div>
             </div>
 
             <h2 id="pName"></h2>
@@ -811,6 +794,9 @@
             <i id="popupIcon" class="fas fa-info-circle"></i>
             <h3 id="popupTitle">নোটিফিকেশন</h3>
             <p id="popupMessage">বার্তা...</p>
+            <div id="popupActionContainer" style="margin-top: 12px; display: none;">
+                <a id="popupActionBtn" href="#" target="_blank" style="display: block; width: 100%; padding: 12px; border-radius: 10px; background: var(--success); color: #fff; font-size: 15px; font-weight: 700; text-decoration: none; margin-bottom: 8px;">ইনডেক্স তৈরি করুন</a>
+            </div>
             <button id="popupCloseBtn" type="button">ঠিক আছে</button>
         </div>
     </div>
@@ -827,70 +813,13 @@
         </div>
     </div>
 
-    <!-- Auth Modal -->
-    <div id="authModal" class="popup">
-        <div class="popup-box" style="max-width: 350px; text-align: left;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                <h3 style="margin:0; font-size:18px;">লগইন / সাইন আপ করুন</h3>
-                <i class="fas fa-times" id="closeAuthModalBtn" style="cursor:pointer; font-size:18px; color:var(--text-sub);"></i>
-            </div>
-            <p style="font-size:13px; color:var(--text-sub); margin-bottom:14px;">রিভিউ পোস্ট করতে আপনার ইমেইল ও পাসওয়ার্ড দিয়ে লগইন বা রেজিস্টার করুন।</p>
-            
-            <div style="margin-bottom:10px;">
-                <label style="font-size:12px; font-weight:600; color:var(--text);">ইমেইল ঠিকানা</label>
-                <input type="email" id="authEmail" placeholder="example@email.com" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; margin-top:4px; font-family:inherit; font-size:14px;">
-            </div>
-            <div style="margin-bottom:14px;">
-                <label style="font-size:12px; font-weight:600; color:var(--text);">পাসওয়ার্ড</label>
-                <input type="password" id="authPassword" placeholder="******" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; margin-top:4px; font-family:inherit; font-size:14px;">
-            </div>
-
-            <div id="authError" style="color:var(--primary); font-size:12px; margin-bottom:10px; display:none;"></div>
-
-            <button id="loginSubmitBtn" type="button">লগইন করুন</button>
-            <button id="signupSubmitBtn" type="button" class="btn-secondary-action">নতুন অ্যাকাউন্ট তৈরি করুন</button>
-        </div>
-    </div>
-
-    <!-- Review Submit Modal -->
-    <div id="reviewSubmitModal" class="popup">
-        <div class="popup-box" style="max-width: 350px; text-align: left;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                <h3 style="margin:0; font-size:18px;">আপনার রিভিউ দিন</h3>
-                <i class="fas fa-times" id="closeReviewModalBtn" style="cursor:pointer; font-size:18px; color:var(--text-sub);"></i>
-            </div>
-            
-            <div style="margin-bottom:14px; text-align:center;">
-                <div style="font-size:13px; font-weight:600; margin-bottom:6px;">রেটিং নির্বাচন করুন</div>
-                <div id="starSelectContainer" style="display:flex; gap:8px; justify-content:center; font-size:24px; color:#cbd5e1; cursor:pointer;">
-                    <i class="fas fa-star" data-star="1"></i>
-                    <i class="fas fa-star" data-star="2"></i>
-                    <i class="fas fa-star" data-star="3"></i>
-                    <i class="fas fa-star" data-star="4"></i>
-                    <i class="fas fa-star" data-star="5"></i>
-                </div>
-            </div>
-
-            <div style="margin-bottom:14px;">
-                <label style="font-size:12px; font-weight:600; color:var(--text);">আপনার বক্তব্য</label>
-                <textarea id="reviewMessage" rows="3" placeholder="পণ্যটি আপনার কাছে কেমন লেগেছে লিখুন..." style="width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; margin-top:4px; font-family:inherit; resize:none; font-size:14px;"></textarea>
-            </div>
-
-            <button id="submitReviewBtn" type="button">রিভিউ পোস্ট করুন</button>
-        </div>
-    </div>
-
-       <!-- Bottom Navigation Bar -->
+    <!-- Bottom Navigation Bar -->
     <nav class="bottom-nav">
         <a href="https://ghotimarket.com" class="nav-item active"><i data-lucide="home"></i><span>Home</span></a>
         <a href="https://ghotimarket.com/categories" class="nav-item"><i data-lucide="grid"></i><span>Categories</span></a>
         <a href="https://ghotimarket.com/all-product" class="nav-item"><i data-lucide="box"></i><span>products</span></a>
         <a href="https://ghotimarket.com/contact" class="nav-item"><i data-lucide="headphones"></i><span>Support</span></a>
-        <a href="https://ghotimarket.com/privacy-policy" class="nav-item"><i data-lucide="shield-check"></i><span>Privacy</span></a>
-        <a href="profile.html" class="nav-item">
-    <i data-lucide="circle-user-round"></i>
-    <span>Profile</span>
-</a> 
+        <a href="profile.html" class="nav-item"><i data-lucide="circle-user-round"></i><span>Profile</span></a> 
         <a href="https://seller.ghotimarket.com/signup" class="nav-item"><i data-lucide="store"></i><span>J.Seller</span></a>
     </nav>
 
@@ -898,10 +827,11 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
 
+    <!-- Firebase & Main Logic Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, query, where, limit, getDocs, doc, getDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, query, where, limit, getDocs, doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
@@ -924,24 +854,14 @@
         let currentProductCache = null;
         let isLoading = false;
         let currentUser = null;
-        let selectedStar = 5;
-        let isSubmittingReview = false;
         let selectedVariantsState = {};
-
-        const userCache = new Map();
         const productCache = new Map();
 
         const getEl = (id) => document.getElementById(id);
         const safeText = (val, def = '') => val ?? def;
-
-        onAuthStateChanged(auth, (user) => {
-            currentUser = user;
-        });
-
         const safeNumber = (val, def = 0) => {
             if (val === null || val === undefined || val === '') return def;
             if (typeof val === 'number') return isNaN(val) ? def : val;
-            if (typeof val === 'object' && typeof val.toNumber === 'function') return val.toNumber();
             let str = String(val).trim();
             if (!str) return def;
             const bnDigits = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
@@ -954,12 +874,14 @@
         const hideElement = (el) => { if (el) el.style.display = 'none'; };
         const showElement = (el, displayType = 'inline-block') => { if (el) el.style.display = displayType; };
 
-        export const showPopup = ({ title = "সতর্কতা", message = "", type = "info" }) => {
+        export const showPopup = ({ title = "সতর্কতা", message = "", type = "info", actionText = null, actionUrl = null }) => {
             try {
                 const popupEl = getEl("universalPopup");
                 const titleEl = getEl("popupTitle");
                 const msgEl = getEl("popupMessage");
                 const iconEl = getEl("popupIcon");
+                const actionContainer = getEl("popupActionContainer");
+                const actionBtn = getEl("popupActionBtn");
 
                 if (!popupEl || !titleEl || !msgEl || !iconEl) return;
                 titleEl.innerText = title;
@@ -971,70 +893,125 @@
                     case "warning": iconEl.classList.add("fa-exclamation-circle"); iconEl.style.color = "var(--warning)"; break;
                     default: iconEl.classList.add("fa-info-circle"); iconEl.style.color = "var(--accent)"; break;
                 }
+
+                if (actionUrl && actionText && actionContainer && actionBtn) {
+                    actionBtn.innerText = actionText;
+                    actionBtn.href = actionUrl;
+                    actionContainer.style.display = "block";
+                } else if (actionContainer) {
+                    actionContainer.style.display = "none";
+                }
+
                 popupEl.classList.add("show");
             } catch (err) { console.error("Popup Error:", err); }
         };
 
         const closeUniversalPopup = () => { getEl("universalPopup")?.classList.remove("show"); };
 
-        const getCart = () => {
-            try {
-                return JSON.parse(localStorage.getItem('ghoti_cart')) || [];
-            } catch (e) { return []; }
-        };
-
-        const saveCart = (cart) => {
-            localStorage.setItem('ghoti_cart', JSON.stringify(cart));
-            updateCartBadge();
-        };
-
-        const updateCartBadge = () => {
-            const cart = getCart();
-            const totalCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-            const badge = getEl("cartBadgeCount");
-            if (badge) badge.innerText = totalCount;
-        };
-
-        const isProductInCart = (slug) => {
-            const cart = getCart();
-            return cart.some(item => item.slug === slug);
-        };
-
-        const isVerifiedUser = (user) => {
-            if (!user) return false;
-            const val = user.verified;
-            if (val === false || val === "false" || val === 0 || val === null || val === undefined || val === "" || val === "no") return false;
-            if (val === true || val === 1) return true;
-            if (typeof val === "string") return ["true", "1", "yes", "verified"].includes(val.trim().toLowerCase());
-            return Boolean(val);
-        };
-
-        const getValidUsername = (usernameInput) => {
-            if (usernameInput === null || usernameInput === undefined) return null;
-            let value = String(usernameInput).trim();
-            if (value === "" || value === "null" || value === "undefined" || value === "false") return null;
-            value = value.replace(/^@+/, "").trim();
-            return value === "" ? null : encodeURIComponent(value);
-        };
-
-        function updateSellerLink(sellerId, sellerData = null) {
-            const cleanSellerId = sellerId ? String(sellerId).trim() : null;
-            const validUsername = sellerData ? getValidUsername(sellerData.username) : null;
-            let targetUrl = null;
-            if (validUsername) targetUrl = `https://ghotimarket.com/seller?@${validUsername}`;
-            else if (cleanSellerId) targetUrl = `https://ghotimarket.com/shop?sellerId=${encodeURIComponent(cleanSellerId)}`;
-
-            const shopLink = getEl("pShopLink");
-            if (targetUrl && shopLink) {
-                shopLink.setAttribute('href', targetUrl);
-                shopLink.style.pointerEvents = 'auto';
-                shopLink.style.opacity = '1';
-            } else if (shopLink) {
-                shopLink.removeAttribute('href');
-                shopLink.style.pointerEvents = 'none';
-                shopLink.style.opacity = '0.5';
+        const handleFirebaseError = (err, defaultMsg) => {
+            console.error("Firebase Error:", err);
+            const errMsg = err?.message || String(err);
+            if (errMsg.includes("index") || err?.code === 'failed-precondition' || errMsg.includes("requires an index")) {
+                const urlMatch = errMsg.match(/https:\/\/[^\s]+/);
+                const indexUrl = urlMatch ? urlMatch[0] : 'https://console.firebase.google.com/';
+                showPopup({
+                    title: "ফায়ারবেস ইনডেক্স প্রয়োজন",
+                    message: "এই কুয়েরির জন্য ফায়ারবেস ডাটাবেসে একটি ইনডেক্স তৈরি করতে হবে। নিচের বাটনে ক্লিক করে সরাসরি ইনডেক্স তৈরি করুন:",
+                    type: "warning",
+                    actionText: "ইনডেক্স তৈরি করুন",
+                    actionUrl: indexUrl
+                });
+            } else {
+                showPopup({ title: "ত্রুটি", message: defaultMsg, type: "error" });
             }
-        }
+        };
+
+        const copyTextToClipboard = async (text) => {
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(text);
+                    return true;
+                } else {
+                    const textArea = document.createElement("textarea");
+                    textArea.value = text;
+                    textArea.style.position = "fixed";
+                    textArea.style.top = "0";
+                    textArea.style.left = "0";
+                    textArea.style.opacity = "0";
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    const successful = document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    if (successful) return true;
+                    throw new Error("execCommand copy failed");
+                }
+            } catch (err) {
+                console.error("Clipboard copy error:", err);
+                return false;
+            }
+        };
+
+        const getProductShareUrl = () => {
+            if (!currentProductCache || !currentProductCache.slug) return 'http://ghotimarket.com/product';
+            return `http://ghotimarket.com/product?${encodeURIComponent(currentProductCache.slug)}`;
+        };
+
+        const updateCartBadge = async () => {
+            if (!currentUser) {
+                if (getEl("cartBadgeCount")) getEl("cartBadgeCount").innerText = "0";
+                return;
+            }
+            try {
+                const q = query(collection(db, "carts"), where("uid", "==", currentUser.uid));
+                const snap = await getDocs(q);
+                let totalCount = 0;
+                snap.forEach(docSnap => {
+                    totalCount += Number(docSnap.data().quantity) || 1;
+                });
+                const badge = getEl("cartBadgeCount");
+                if (badge) badge.innerText = totalCount;
+            } catch (e) {
+                handleFirebaseError(e, "কার্ট আপডেট করতে সমস্যা হয়েছে।");
+            }
+        };
+
+        // Check if product is already in cart to update button state
+        const checkIfInCart = async () => {
+            const addToCartBtn = getEl("addToCartBtn");
+            if (!addToCartBtn) return;
+
+            if (!currentUser || !currentProductCache) {
+                addToCartBtn.disabled = false;
+                addToCartBtn.innerHTML = `<i class="fas fa-cart-plus"></i> কার্টে যোগ করুন`;
+                addToCartBtn.style.background = "linear-gradient(135deg, #0284c7, #0369a1)";
+                addToCartBtn.style.boxShadow = "0 6px 18px rgba(2, 132, 199, 0.28)";
+                return;
+            }
+
+            try {
+                const q = query(
+                    collection(db, "carts"),
+                    where("uid", "==", currentUser.uid),
+                    where("slug", "==", currentProductCache.slug)
+                );
+                const snap = await getDocs(q);
+
+                if (!snap.empty) {
+                    addToCartBtn.disabled = true;
+                    addToCartBtn.innerHTML = `<i class="fas fa-check-circle"></i> এই পণ্যটি কার্টে যোগ করা হয়েছে`;
+                    addToCartBtn.style.background = "linear-gradient(135deg, #10b981, #059669)";
+                    addToCartBtn.style.boxShadow = "0 6px 18px rgba(16, 185, 129, 0.28)";
+                } else {
+                    addToCartBtn.disabled = false;
+                    addToCartBtn.innerHTML = `<i class="fas fa-cart-plus"></i> কার্টে যোগ করুন`;
+                    addToCartBtn.style.background = "linear-gradient(135deg, #0284c7, #0369a1)";
+                    addToCartBtn.style.boxShadow = "0 6px 18px rgba(2, 132, 199, 0.28)";
+                }
+            } catch (err) {
+                console.error("Error checking cart status:", err);
+            }
+        };
 
         const getSlugFromURL = () => {
             try {
@@ -1058,23 +1035,103 @@
 
         const shareNow = async () => {
             if (!currentProductCache) return;
-            const shareText = `🛒 ${safeText(currentProductCache.name)}\n💰 ৳${safeNumber(currentProductCache.price)}\n\nGHOTI MARKET থেকে বিস্তারিত দেখুন:`;
+            const shareUrl = getProductShareUrl();
+            const shareText = `🛒 ${safeText(currentProductCache.name)}\n💰 ৳${safeNumber(currentProductCache.price)}\n\nGHOTI MARKET থেকে বিস্তারিত দেখুন: ${shareUrl}`;
             try {
-                if (navigator.share) await navigator.share({ title: safeText(currentProductCache.name), text: shareText, url: window.location.href });
-                else await copyLinkToClipboard();
-            } catch (error) { if (error.name !== 'AbortError') await copyLinkToClipboard(); }
-            finally { closeSharePopup(); }
+                if (navigator.share) {
+                    await navigator.share({ title: safeText(currentProductCache.name), text: shareText, url: shareUrl });
+                } else {
+                    const success = await copyTextToClipboard(shareUrl);
+                    if (success) {
+                        showPopup({ title: "সফল হয়েছে", message: "পণ্যের লিংক সফলভাবে কপি হয়েছে।", type: "success" });
+                    } else {
+                        showPopup({ title: "ব্যর্থ", message: "লিংক কপি করা সম্ভব হয়নি।", type: "error" });
+                    }
+                }
+            } catch (error) {
+                if (error.name !== 'AbortError') {
+                    const success = await copyTextToClipboard(shareUrl);
+                    if (success) {
+                        showPopup({ title: "সফল হয়েছে", message: "পণ্যের লিংক সফলভাবে কপি হয়েছে।", type: "success" });
+                    } else {
+                        showPopup({ title: "ব্যর্থ", message: "লিংক কপি করা সম্ভব হয়নি।", type: "error" });
+                    }
+                }
+            } finally {
+                closeSharePopup();
+            }
         };
 
         const copyLinkToClipboard = async () => {
-            const textToCopy = window.location.href;
-            try {
-                await navigator.clipboard.writeText(textToCopy);
+            if (!currentProductCache) return;
+            const textToCopy = getProductShareUrl();
+            const success = await copyTextToClipboard(textToCopy);
+            if (success) {
                 showPopup({ title: "সফল হয়েছে", message: "পণ্যের লিংক সফলভাবে কপি হয়েছে।", type: "success" });
-            } catch (e) {
+            } else {
                 showPopup({ title: "ব্যর্থ", message: "লিংক কপি করা সম্ভব হয়নি।", type: "error" });
             }
             closeSharePopup();
+        };
+
+        const setupShopLink = async (sellerId) => {
+            const shopLinkEl = getEl("pShopLink");
+            const shopLogoImg = getEl("pShopLogoImg");
+            const verifiedBadge = getEl("verifiedBadge");
+            const shopNameEl = getEl("pShopName");
+
+            if (!shopLinkEl) return;
+
+            shopLinkEl.href = sellerId ? `https://ghotimarket.com/shop?sellerId=${sellerId}` : "https://ghotimarket.com";
+            hideElement(shopLogoImg);
+            hideElement(verifiedBadge);
+
+            if (!sellerId) return;
+
+            try {
+                const userDocRef = doc(db, "users", sellerId);
+                const userSnap = await getDoc(userDocRef);
+
+                if (userSnap.exists()) {
+                    const userData = userSnap.data();
+                    const username = userData.username || userData.userName;
+                    const shopLogo = userData.shopLogo || userData.photoURL || userData.logo;
+                    const isVerified = userData.isVerified || userData.verified;
+                    const shopName = userData.shopName || userData.name || currentProductCache?.shopName || "Unknown Shop";
+
+                    if (shopNameEl) shopNameEl.innerText = safeText(shopName);
+
+                    if (username) {
+                        let cleanUser = username.trim();
+                        if (!cleanUser.startsWith('@')) {
+                            cleanUser = `@${cleanUser}`;
+                        }
+                        shopLinkEl.href = `https://ghotimarket.com/seller?${cleanUser}`;
+                    } else {
+                        shopLinkEl.href = `https://ghotimarket.com/shop?sellerId=${sellerId}`;
+                    }
+
+                    if (shopLogo && shopLogoImg) {
+                        shopLogoImg.src = shopLogo;
+                        showElement(shopLogoImg, 'inline-block');
+                    }
+
+                    if (isVerified && verifiedBadge) {
+                        showElement(verifiedBadge, 'inline-flex');
+                    }
+                } else {
+                    shopLinkEl.href = `https://ghotimarket.com/shop?sellerId=${sellerId}`;
+                    if (shopNameEl && currentProductCache) {
+                        shopNameEl.innerText = safeText(currentProductCache.shopName, "Unknown Shop");
+                    }
+                }
+            } catch (err) {
+                console.error("Error fetching seller details:", err);
+                shopLinkEl.href = `https://ghotimarket.com/shop?sellerId=${sellerId}`;
+                if (shopNameEl && currentProductCache) {
+                    shopNameEl.innerText = safeText(currentProductCache.shopName, "Unknown Shop");
+                }
+            }
         };
 
         const loadProductBySlug = async (slug, push = true) => {
@@ -1107,15 +1164,16 @@
                 currentProductCache = productData;
 
                 if (push) {
-                    history.pushState({ slug }, '', `product.html?product-slug=${encodeURIComponent(slug)}`);
+                    history.pushState({ slug }, '', `product.html?${encodeURIComponent(slug)}`);
                 }
 
                 renderProduct(productData);
+                await setupShopLink(productData.sellerId);
                 await loadProductReviews(productData.docId);
+                await checkIfInCart();
 
             } catch (error) {
-                console.error("Error:", error);
-                showPopup({ title: "নেটওয়ার্ক ত্রুটি", message: "পণ্য লোড করতে সমস্যা হয়েছে।", type: "error" });
+                handleFirebaseError(error, "পণ্য লোড করতে সমস্যা হয়েছে।");
             } finally {
                 hideElement(getEl("loader"));
                 showElement(getEl("mainContent"), "block");
@@ -1124,7 +1182,6 @@
             }
         };
 
-        // Render Variants and calculate price dynamically
         const renderVariants = (variants) => {
             const container = getEl("variantsContainer");
             if (!container) return;
@@ -1143,7 +1200,6 @@
                 const values = variant.values;
                 if (!values || values.length === 0) return;
 
-                // Default select the first option
                 selectedVariantsState[variantName] = values[0];
 
                 const groupDiv = document.createElement('div');
@@ -1212,7 +1268,6 @@
             const name = safeText(p.name, 'Product');
             const desc = safeText(p.description, '');
             const images = Array.isArray(p.images) ? p.images : [];
-            const img = images[0] || PLACEHOLDER_IMAGE;
             const basePrice = safeNumber(p.price, 0);
             const oldPrice = safeNumber(p.oldPrice, 0);
 
@@ -1239,24 +1294,11 @@
                 hideElement(discountBadgeEl);
             }
 
-            // Render Variants
             renderVariants(p.variants);
 
-            // Check Cart Status to hide/show Add to Cart button
-            const addToCartBtn = getEl("addToCartBtn");
-            if (isProductInCart(p.slug)) {
-                hideElement(addToCartBtn);
-            } else {
-                showElement(addToCartBtn, "flex");
-            }
-
-            // Seller info
-            const sellerId = safeText(p.sellerId).trim();
             const shopNameEl = getEl("pShopName");
             if (shopNameEl) shopNameEl.innerText = safeText(p.shopName, "Unknown Shop");
-            if (sellerId) updateSellerLink(sellerId, null);
 
-            // Images slider
             const slider = getEl("imgSlider");
             if (images.length > 0) {
                 slider.innerHTML = images.map(iUrl => `<img src="${iUrl}" alt="${name}" onerror="this.src='${PLACEHOLDER_IMAGE}'">`).join("");
@@ -1269,58 +1311,92 @@
             updateCartBadge();
         };
 
-        // Add to Cart Logic (Affiliate status check included)
-const handleAddToCart = (redirect = false) => {
-    if (!currentProductCache) return;
-    let cart = getCart();
+        const handleAddToCart = async (redirect = false) => {
+            if (!currentUser) {
+                window.location.href = "https://ghotimarket.com/login";
+                return;
+            }
+            if (!currentProductCache) return;
 
-    // Prepare selected variants summary object
-    let chosenVariants = {};
-    for (const key in selectedVariantsState) {
-        if (selectedVariantsState[key]) {
-            chosenVariants[key] = selectedVariantsState[key].value;
-        }
-    }
+            const addToCartBtn = getEl("addToCartBtn");
+            const buyNowBtn = getEl("buyNowBtn");
+            const activeBtn = redirect ? buyNowBtn : addToCartBtn;
+            const originalHTML = activeBtn ? activeBtn.innerHTML : '';
 
-    const finalPrice = getCalculatedCurrentPrice();
-    const images = Array.isArray(currentProductCache.images) ? currentProductCache.images : [];
+            try {
+                // Double check if already in cart before adding
+                const q = query(
+                    collection(db, "carts"),
+                    where("uid", "==", currentUser.uid),
+                    where("slug", "==", currentProductCache.slug)
+                );
+                const snap = await getDocs(q);
 
-    // Check if affiliate is "on", otherwise set to "off"
-    const affiliateStatus = (currentProductCache.affiliate === "on") ? "on" : "off";
+                if (!snap.empty) {
+                    await checkIfInCart();
+                    if (!redirect) {
+                        showPopup({ title: "সতর্কতা", message: "এই পণ্যটি ইতিমধ্যে আপনার কার্টে যোগ করা হয়েছে।", type: "warning" });
+                        return;
+                    } else {
+                        window.location.href = 'checkout.html';
+                        return;
+                    }
+                }
 
-    const cartItem = {
-        docId: currentProductCache.docId,
-        slug: currentProductCache.slug,
-        name: currentProductCache.name,
-        price: finalPrice,
-        basePrice: safeNumber(currentProductCache.price, 0),
-        selectedVariants: chosenVariants,
-        image: images[0] || PLACEHOLDER_IMAGE,
-        quantity: 1,
-        shopName: currentProductCache.shopName || '',
-        sellerId: currentProductCache.sellerId || '',
-        affiliate: affiliateStatus,
-        discount: safeNumber(currentProductCache.discount, 0),
-        oldPrice: safeNumber(currentProductCache.oldPrice, 0)
-    };
+                if (activeBtn) {
+                    activeBtn.disabled = true;
+                    activeBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> অপেক্ষা করুন...`;
+                }
 
-    // Check if already in cart
-    const existingIndex = cart.findIndex(item => item.slug === currentProductCache.slug);
-    if (existingIndex > -1) {
-        cart[existingIndex] = cartItem; // update with new variants/price
-    } else {
-        cart.push(cartItem);
-    }
+                let chosenVariants = {};
+                let totalExtra = 0;
+                for (const key in selectedVariantsState) {
+                    if (selectedVariantsState[key]) {
+                        chosenVariants[key] = selectedVariantsState[key].value;
+                        totalExtra += safeNumber(selectedVariantsState[key].extraPrice, 0);
+                    }
+                }
 
-    saveCart(cart);
-    hideElement(getEl("addToCartBtn"));
+                const finalPrice = getCalculatedCurrentPrice();
+                const images = Array.isArray(currentProductCache.images) ? currentProductCache.images : [];
+                const affiliateStatus = (currentProductCache.affiliate === "on") ? "on" : "off";
 
-    if (redirect) {
-        window.location.href = 'checkout.html';
-    } else {
-        showPopup({ title: "সফল!", message: "পণ্যটি আপনার কার্টে সফলভাবে যোগ করা হয়েছে।", type: "success" });
-    }
-};
+                const cartItemData = {
+                    affiliate: affiliateStatus,
+                    basePrice: safeNumber(currentProductCache.price, 0),
+                    createdAt: serverTimestamp(),
+                    docId: currentProductCache.docId,
+                    email: currentUser.email || "",
+                    extraPrice: totalExtra,
+                    id: currentProductCache.docId,
+                    image: images[0] || PLACEHOLDER_IMAGE,
+                    name: currentProductCache.name,
+                    price: finalPrice,
+                    quantity: 1,
+                    selectedVariants: chosenVariants,
+                    sellerId: currentProductCache.sellerId || "",
+                    shopName: currentProductCache.shopName || "",
+                    slug: currentProductCache.slug,
+                    uid: currentUser.uid
+                };
+                await addDoc(collection(db, "carts"), cartItemData);
+
+                await updateCartBadge();
+                await checkIfInCart();
+
+                if (redirect) {
+                    window.location.href = 'checkout.html';
+                } else {
+                    showPopup({ title: "সফল!", message: "পণ্যটি আপনার কার্টে সফলভাবে যোগ করা হয়েছে।", type: "success" });
+                }
+            } catch (err) {
+                handleFirebaseError(err, "কার্টে পণ্য যোগ করতে সমস্যা হয়েছে।");
+                if (activeBtn && !redirect) {
+                    activeBtn.disabled = false;
+                    activeBtn.innerHTML = originalHTML;
+                }
+            }
+        };
 
         const loadProductReviews = async (productId) => {
             if (!productId) return;
@@ -1374,7 +1450,7 @@ const handleAddToCart = (redirect = false) => {
                     seeMoreBtn.href = `product-review.html?productId=${encodeURIComponent(productId)}`;
                     seeMoreBtn.style.display = "flex";
                 }
-            } catch (err) { console.error(err); }
+            } catch (err) { handleFirebaseError(err, "রিভিউ লোড করতে সমস্যা হয়েছে।"); }
         };
 
         const renderStarsHTML = (rating) => {
@@ -1397,68 +1473,11 @@ const handleAddToCart = (redirect = false) => {
             getEl("addToCartBtn")?.addEventListener('click', () => handleAddToCart(false));
             getEl("buyNowBtn")?.addEventListener('click', () => handleAddToCart(true));
 
-            // Review Modal triggers
-            getEl("openReviewModalBtn")?.addEventListener('click', () => {
-                if (currentUser) getEl("reviewSubmitModal")?.classList.add("show");
-                else getEl("authModal")?.classList.add("show");
-            });
-
-            getEl("closeAuthModalBtn")?.addEventListener('click', () => getEl("authModal")?.classList.remove("show"));
-            getEl("closeReviewModalBtn")?.addEventListener('click', () => getEl("reviewSubmitModal")?.classList.remove("show"));
-
-            getEl("loginSubmitBtn")?.addEventListener('click', async () => {
-                const email = getEl("authEmail").value.trim();
-                const pass = getEl("authPassword").value.trim();
-                const err = getEl("authError");
-                try {
-                    await signInWithEmailAndPassword(auth, email, pass);
-                    getEl("authModal")?.classList.remove("show");
-                    getEl("reviewSubmitModal")?.classList.add("show");
-                } catch (e) { err.innerText = "লগইন ব্যর্থ!"; err.style.display = 'block'; }
-            });
-
-            getEl("signupSubmitBtn")?.addEventListener('click', async () => {
-                const email = getEl("authEmail").value.trim();
-                const pass = getEl("authPassword").value.trim();
-                const err = getEl("authError");
-                try {
-                    await createUserWithEmailAndPassword(auth, email, pass);
-                    getEl("authModal")?.classList.remove("show");
-                    getEl("reviewSubmitModal")?.classList.add("show");
-                } catch (e) { err.innerText = "রেজিস্ট্রেশন ব্যর্থ!"; err.style.display = 'block'; }
-            });
-
-            getEl("submitReviewBtn")?.addEventListener('click', async () => {
-                if (isSubmittingReview || !currentUser || !currentProductCache) return;
-                const message = getEl("reviewMessage").value.trim();
-                if (!message) { showPopup({ title: "সতর্কতা", message: "বার্তা লিখুন।", type: "warning" }); return; }
-                
-                try {
-                    isSubmittingReview = true;
-                    await addDoc(collection(db, "product_reviews"), {
-                        userId: currentUser.uid,
-                        userEmail: currentUser.email || "",
-                        productId: currentProductCache.docId,
-                        sellerId: currentProductCache.sellerId || "",
-                        message,
-                        star: selectedStar,
-                        createdAt: serverTimestamp()
-                    });
-                    getEl("reviewMessage").value = '';
-                    getEl("reviewSubmitModal")?.classList.remove("show");
-                    showPopup({ title: "ধন্যবাদ!", message: "রিভিউ সফলভাবে পোস্ট হয়েছে।", type: "success" });
-                    await loadProductReviews(currentProductCache.docId);
-                } catch (e) { showPopup({ title: "ত্রুটি", message: "পোস্ট করা যায়নি।", type: "error" }); }
-                finally { isSubmittingReview = false; }
-            });
-
-            getEl("starSelectContainer")?.addEventListener('click', (e) => {
-                const star = e.target.closest("i");
-                if (star) {
-                    selectedStar = parseInt(star.getAttribute("data-star"), 10);
-                    getEl("starSelectContainer").querySelectorAll("i").forEach((s, idx) => {
-                        s.style.color = idx < selectedStar ? "#f59e0b" : "#cbd5e1";
-                    });
+            onAuthStateChanged(auth, async (user) => {
+                currentUser = user;
+                if (currentUser) {
+                    await updateCartBadge();
+                    await checkIfInCart();
                 }
             });
 
@@ -1471,7 +1490,6 @@ const handleAddToCart = (redirect = false) => {
             }
 
             if (typeof lucide !== 'undefined') lucide.createIcons();
-            updateCartBadge();
         });
     </script>
 </body>
