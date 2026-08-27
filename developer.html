@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Developer Ghoti Market</title>
+    <title>Nazrul Islam - Developer Profile | Ghoti Market</title>
     <meta name="description" content="Nazrul Islam - YouTuber, Graphics Designer, App & Web Developer from Bangladesh. Founder of Ghoti Market & AMR Technology." />
     
     <!-- Favicon Add -->
     <link rel="icon" type="image/png" href="https://www.ghotimarket.com/logo.png">
     <link rel="apple-touch-icon" href="https://mathematical-teal-pr4bbtrqs8.edgeone.app/47863.png">
     <link rel="canonical" href="https://www.ghotimarket.com/developer.html">
-    <meta name="theme-color" content="#1e293b">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <meta name="theme-color" content="#f97316">
+    
     <!-- Facebook/WhatsApp Share Preview -->
     <meta property="og:type" content="profile">
     <meta property="og:title" content="Nazrul Islam | Developer Profile">
@@ -22,238 +22,346 @@
     <meta name="author" content="Nazrul Islam">
     <meta name="keywords" content="Nazrul Islam, Ghoti Market, Web Developer Bangladesh, App Developer, Graphics Designer, YouTuber, AMR Technology">
     
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Lucide Icons for Clean SVG Rendering -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     
    <style>
-    /* পেজ নড়াচড়া বন্ধ করার জন্য স্টাইল */
-    body, html {
+    :root {
+        --primary-bg: #0f172a;
+        --card-bg: #1e293b;
+        --accent: #f97316; /* Professional Orange Theme */
+        --accent-hover: #ea580c;
+        --text-main: #f8fafc;
+        --text-sub: #94a3b8;
+        --border-color: rgba(249, 115, 22, 0.2);
+    }
+
+    * {
+        box-sizing: border-box;
         margin: 0;
         padding: 0;
+    }
+
+    body, html {
         width: 100%;
-        height: 100%;
+        min-height: 100vh;
         overflow-x: hidden;
-        background-color: #0f172a; /* ডার্ক থিম */
-        font-family: 'Hind Siliguri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--primary-bg);
+        font-family: 'Hind Siliguri', sans-serif;
+        color: var(--text-main);
+        padding-bottom: 90px; /* Space for bottom nav */
     }
 
     .dev-container {
-        max-width: 450px;
+        max-width: 480px;
         margin: 0 auto;
-        background: #1e293b;
+        background: var(--card-bg);
         min-height: 100vh;
-        padding: 30px 20px;
-        box-sizing: border-box;
+        padding: 35px 20px 50px;
         text-align: center;
-        color: #fff;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        border-left: 1px solid rgba(255,255,255,0.05);
+        border-right: 1px solid rgba(255,255,255,0.05);
     }
 
-    /* পাসপোর্ট সাইজ চারকোনা ছবি */
+    /* Passport size photo with orange glowing border */
     .dev-photo {
-        width: 150px;
-        height: 180px;
+        width: 140px;
+        height: 175px;
         object-fit: cover;
-        border: 3px solid #38bdf8;
-        border-radius: 10px;
-        margin-bottom: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        border: 3px solid var(--accent);
+        border-radius: 14px;
+        margin-bottom: 18px;
+        box-shadow: 0 8px 25px rgba(249, 115, 22, 0.3);
+        transition: transform 0.3s ease;
+    }
+    .dev-photo:hover {
+        transform: scale(1.03);
     }
 
     .name {
-        font-size: 24px;
-        font-weight: bold;
-        color: #38bdf8;
-        margin: 5px 0;
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--text-main);
+        letter-spacing: -0.5px;
+        margin-bottom: 4px;
     }
 
     .title {
         font-size: 14px;
-        color: #94a3b8;
-        margin-bottom: 15px; /* Bio এর জন্য কমায় দিলাম */
-        line-height: 1.4;
+        color: var(--accent);
+        margin-bottom: 18px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
     }
 
-    /* Bio/About Section - নতুন Add */
+    /* Bio Section */
     .bio {
-        font-size: 13px;
-        color: #cbd5e1; 
+        font-size: 13.5px;
+        color: #cbd5e1;
         line-height: 1.7;
         margin: 15px 0;
-        padding: 0 10px;
+        padding: 14px;
+        background: rgba(15, 23, 42, 0.6);
+        border-radius: 14px;
+        border: 1px solid var(--border-color);
         text-align: center;
     }
-    .bio strong { color: #38bdf8; font-weight: 700; }
+    .bio strong { 
+        color: var(--accent); 
+        font-weight: 700; 
+    }
 
-    /* বাটন স্টাইল */
+    /* Skill Tags */
+    .skills-wrapper {
+        margin: 18px 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .skill-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #334155;
+        padding: 6px 14px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #ffedd5;
+        border: 1px solid rgba(249, 115, 22, 0.3);
+        transition: 0.2s;
+    }
+    .skill-tag:hover {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+    }
+
+    /* Button Box & Styles */
     .btn-box {
         display: flex;
         flex-direction: column;
-        gap: 12px;
-        margin-top: 20px;
+        gap: 14px;
+        margin-top: 24px;
     }
 
     .btn {
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 14px;
-        border-radius: 12px;
+        gap: 10px;
+        padding: 14px 20px;
+        border-radius: 14px;
         text-decoration: none;
         font-weight: 600;
         font-size: 15px;
-        transition: 0.3s;
+        transition: all 0.3s ease;
         border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
-    .btn:active { transform: scale(0.96); }
-    .btn:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(56,189,248,0.3); } /* Pro Hover Effect */
+    .btn svg {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
 
+    .btn:active { transform: scale(0.97); }
+    .btn:hover { 
+        transform: translateY(-3px); 
+        box-shadow: 0 8px 25px rgba(249, 115, 22, 0.3); 
+    }
+
+    /* Custom Button Colors */
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-accent:hover { background: var(--accent-hover); }
+    
     .btn-mail { background: #ea4335; color: white; }
     .btn-wa { background: #25d366; color: white; }
     .btn-yt { background: #ff0000; color: white; }
     .btn-fb { background: #1877f2; color: white; }
+    .btn-cv { background: #7c3aed; color: white; }
+    .btn-market { background: #0284c7; color: white; }
+    .btn-share { background: #06b6d4; color: white; }
 
-    .icon { margin-right: 10px; font-size: 18px; }
-
-    .skill-tag {
-        display: inline-block;
-        background: #334155;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        margin: 5px;
-        color: #38bdf8;
-        border: 1px solid #38bdf8;
-    }
-
+    /* Footer */
     .footer {
-        margin-top: 40px;
-        font-size: 11px;
-        color: #64748b;
+        margin-top: 35px;
+        font-size: 12px;
+        color: var(--text-sub);
+        line-height: 1.6;
+        border-top: 1px solid rgba(255,255,255,0.05);
+        padding-top: 20px;
     }
 
-/* --- Bottom Nav --- */
-.bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(255,255,255,0.9); backdrop-filter: blur(15px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--glass-border); z-index: 1000; padding-bottom: env(safe-area-inset-bottom); }
-.nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: var(--text-sub); font-size: 10px; font-weight: 800; transition: 0.3s; flex: 1; }
-.nav-item i { font-size: 20px; margin-bottom: 4px; transition: 0.3s; }
-.nav-item.active { color: var(--primary); }
-.nav-item.active i { transform: translateY(-3px); }
+    /* --- Bottom Navigation Bar --- */
+    .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 70px;
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(20px);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        z-index: 1000;
+        padding-bottom: env(safe-area-inset-bottom);
+        box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
+    }
 
-</style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Nazrul Islam",
-  "url": "https://www.ghotimarket.com/developer.html",
-  "image": "https://mathematical-teal-pr4bbtrqs8.edgeone.app/47863.png",
-  "jobTitle": "App & Web Developer",
-  "worksFor": {"@type": "Organization", "name": "Ghoti Market"},
-  "sameAs": [
-    "https://youtube.com/@amr_technology_nazrul",
-    "https://www.facebook.com/amrtechnologynazrul"
-  ]
-}
-</script>
+    .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: #94a3b8;
+        font-size: 10px;
+        font-weight: 700;
+        transition: 0.3s;
+        flex: 1;
+    }
+
+    .nav-item svg {
+        width: 22px;
+        height: 22px;
+        margin-bottom: 4px;
+        transition: 0.3s;
+    }
+
+    .nav-item:hover, .nav-item.active {
+        color: var(--accent);
+    }
+
+    .nav-item.active svg {
+        transform: translateY(-3px) scale(1.1);
+    }
+   </style>
+
+   <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Nazrul Islam",
+      "url": "https://www.ghotimarket.com/developer.html",
+      "image": "https://mathematical-teal-pr4bbtrqs8.edgeone.app/47863.png",
+      "jobTitle": "App & Web Developer",
+      "worksFor": {"@type": "Organization", "name": "Ghoti Market"},
+      "sameAs": [
+        "https://youtube.com/@amr_technology_nazrul",
+        "https://www.facebook.com/amrtechnologynazrul"
+      ]
+    }
+    </script>
 </head>
 <body>
 
 <div class="dev-container">
     <img src="https://mathematical-teal-pr4bbtrqs8.edgeone.app/47863.png" alt="Nazrul Islam" class="dev-photo">
 
-   <div class="name">NAZRUL ISLAM <span style="font-size:18px; color:#38bdf8;">✔️</span></div>
-   <div class="title">YouTuber | Graphics Designer | App & Web Developer</div>
+    <div class="name">NAZRUL ISLAM <span style="font-size:16px; color:var(--accent);" title="Verified">✔️</span></div>
+    <div class="title">YouTuber | Graphics Designer | App & Web Developer</div>
 
-   <!-- Bio এখানে বসবে -->
-   <div class="bio">
-       আমি <strong>Nazrul Islam</strong>, একজন <strong>Web Developer</strong>, <strong>App Developer</strong> ও <strong>Graphics Designer</strong>। আমি <strong>Ghoti Market</strong>-এর প্রতিষ্ঠাতা এবং আধুনিক, নিরাপদ ও ব্যবহারবান্ধব ওয়েব ও অ্যাপ সমাধান তৈরি করি।
-   </div>
+    <!-- Bio Section -->
+    <div class="bio">
+        আমি <strong>Nazrul Islam</strong>, একজন পেশাদার <strong>Web Developer</strong>, <strong>App Developer</strong> ও <strong>Graphics Designer</strong>। আমি <strong>Ghoti Market</strong>-এর প্রতিষ্ঠাতা এবং আধুনিক, নিরাপদ ও ব্যবহারবান্ধব ওয়েব ও অ্যাপ সমাধান তৈরি করি।
+    </div>
 
-   <div style="margin: 15px 0;">
-       <span class="skill-tag">Web Developer</span>
-       <span class="skill-tag">App Developer</span>
-       <span class="skill-tag">Graphics Designer</span>
-       <span class="skill-tag">Content Creator</span>
-   </div>
-<!-- Bottom Navigation -->
+    <!-- Skill Badges -->
+    <div class="skills-wrapper">
+        <span class="skill-tag"><i data-lucide="code" style="width:14px;height:14px;"></i> Web Developer</span>
+        <span class="skill-tag"><i data-lucide="smartphone" style="width:14px;height:14px;"></i> App Developer</span>
+        <span class="skill-tag"><i data-lucide="pen-tool" style="width:14px;height:14px;"></i> Graphics Designer</span>
+        <span class="skill-tag"><i data-lucide="video" style="width:14px;height:14px;"></i> Content Creator</span>
+    </div>
+
+    <!-- Action Buttons with SVG / Lucide Icons -->
+    <div class="btn-box">
+        <a href="nazrul-cv.pdf" class="btn btn-cv" download>
+            <i data-lucide="file-text"></i> Download CV
+        </a>
+
+        <a href="mailto:nazrulislam887441234@gmail.com" class="btn btn-mail">
+            <i data-lucide="mail"></i> Email Me
+        </a>
+        
+        <a href="https://www.ghotimarket.com" target="_blank" class="btn btn-market">
+            <i data-lucide="globe"></i> Ghoti Market Live Project
+        </a>
+            
+        <a href="https://wa.me/8801316487435" target="_blank" class="btn btn-wa">
+            <i data-lucide="message-circle"></i> WhatsApp: 01316487435
+        </a>
+
+        <a href="https://youtube.com/@amr_technology_nazrul" target="_blank" class="btn btn-yt">
+            <i data-lucide="youtube"></i> YouTube Channel
+        </a>
+
+        <a href="https://www.facebook.com/amrtechnologynazrul" target="_blank" class="btn btn-fb">
+            <i data-lucide="facebook"></i> Facebook Page
+        </a>
+
+        <a href="https://www.ghotimarket.com" class="btn btn-accent">
+            <i data-lucide="home"></i> Back to Home
+        </a>
+
+        <button onclick="navigator.share ? navigator.share({title:'Nazrul Islam',url:location.href}) : alert('Link copied!')" class="btn btn-share">
+            <i data-lucide="share-2"></i> Share Profile
+        </button>
+    </div>
+
+    <div class="footer">
+        © 2026 Developed by <strong>Nazrul Islam</strong> <br>
+        All Rights Reserved
+    </div>
+</div>
+
+<!-- Bottom Navigation Bar with SVG Icons -->
 <nav class="bottom-nav">
-    <a href="https://ghotimarket.com" class="nav-item active">
+    <a href="https://ghotimarket.com" class="nav-item">
         <i data-lucide="home"></i>
         <span>Home</span>
     </a>
-
     <a href="https://ghotimarket.com/categories" class="nav-item">
         <i data-lucide="grid"></i>
         <span>Categories</span>
     </a>
-
     <a href="https://ghotimarket.com/all-product" class="nav-item">
         <i data-lucide="box"></i>
-        <span>All product</span>
+        <span>Products</span>
     </a>
-
     <a href="https://ghotimarket.com/contact" class="nav-item">
         <i data-lucide="headphones"></i>
         <span>Support</span>
     </a>
-
     <a href="https://ghotimarket.com/privacy-policy" class="nav-item">
         <i data-lucide="shield-check"></i>
         <span>Privacy</span>
     </a>
-
+    <a href="profile.html" class="nav-item">
+        <i data-lucide="circle-user-round"></i>
+        <span>Profile</span>
+    </a> 
     <a href="https://seller.ghotimarket.com/signup" class="nav-item">
         <i data-lucide="store"></i>
         <span>J.Seller</span>
     </a>
 </nav>
- <div class="btn-box">
-    <a href="nazrul-cv.pdf" class="btn" style="background:#7c3aed;color:#fff; font-weight: 700;" download>
-        <span class="icon">📄</span> Download CV
-    </a> <!-- এই </a> টা Missing ছিল -->
 
-    <a href="mailto:nazrulislam887441234@gmail.com" class="btn btn-mail">
-        <span class="icon">📧</span> Email Me
-    </a>
-    
-    <a href="https://www.ghotimarket.com" class="btn" style="background: #38bdf8; color: #0f172a; font-weight: 700;">
-        <span class="icon">🚀</span> Ghoti Market Live Project
-    </a>
-        
-    <a href="https://wa.me/8801316487435" class="btn btn-wa">
-        <span class="icon">💬</span> WhatsApp: 01316487435
-    </a>
-
-    <a href="https://youtube.com/@amr_technology_nazrul" class="btn btn-yt">
-        <span class="icon">📺</span> YouTube Channel
-    </a>
-
-   <a href="https://www.facebook.com/amrtechnologynazrul" class="btn btn-fb">
-    <span class="icon">📢</span> Facebook Page
-</a>
-
-<a href="https://www.ghotimarket.com" class="btn" style="background:#f59e0b; color:#fff; font-weight:700;">
-    <span class="icon">🏠</span> Back to Home
-</a>
-<button onclick="navigator.share({title:'Nazrul Islam',url:location.href})"
-        class="btn"
-        style="background:#06b6d4; color:#fff; cursor:pointer;">
-    <span class="icon">📤</span> Share Profile
-</button>
-
-</div>
- </div>
-
-    <div class="footer">
-        © 2026 Developed by Nazrul Islam <br>
-        All Rights Reserved
-    </div>
-</div>
-<script src="https://unpkg.com/lucide@latest"></script>
-
+<!-- Initialize Lucide Icons -->
 <script>
-lucide.createIcons();
+    lucide.createIcons();
 </script>
 </body>
 </html>
