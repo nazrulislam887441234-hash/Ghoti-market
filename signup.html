@@ -4,170 +4,399 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>নতুন অ্যাকাউন্ট তৈরি করুন - GHOTI MARKET</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        ghoti: {
-                            orange: '#FF6B35',
-                            darkOrange: '#E55A2B',
-                            lightOrange: '#FFF4F0',
-                            charcoal: '#1F2937',
-                            gray: '#6B7280'
-                        }
-                    }
-                }
-            }
+    <!-- Google Fonts: Hind Siliguri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-hover: #E55A2B;
+            --primary-light: #FFF4F0;
+            --charcoal: #1F2937;
+            --gray: #6B7280;
+            --border-color: #E5E7EB;
+            --danger: #DC2626;
+            --danger-bg: #FEF2F2;
+            --success: #16A34A;
+            --success-bg: #F0FDF4;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.05);
+            --transition: all 0.25s ease-in-out;
         }
-    </script>
-<style>
-    /* CSS Variables Fix for Navigation */
-    :root {
-        --primary: #FF6B35;
-        --text-sub: #6B7280;
-        --glass-border: #E5E7EB;
-    }
 
-    /* --- Bottom Nav --- */
-    .bottom-nav { 
-        position: fixed; 
-        bottom: 0; 
-        left: 0; 
-        width: 100%; 
-        height: 60px; 
-        background: rgba(255,255,255,0.96); 
-        display: flex; 
-        justify-content: space-around; 
-        align-items: center; 
-        border-top: 1px solid var(--glass-border); 
-        z-index: 1000; 
-        padding-bottom: env(safe-area-inset-bottom); 
-        box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
-        backdrop-filter: blur(8px);
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    .nav-item { 
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        text-decoration: none; 
-        color: var(--text-sub); 
-        font-size: 10px; 
-        font-weight: 800; 
-        transition: color 0.15s ease; 
-        flex: 1; 
-    }
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background: linear-gradient(135deg, #fffbeb 0%, #fff7ed 50%, #f3f4f6 100%);
+            color: var(--charcoal);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            padding-bottom: 90px;
+            -webkit-font-smoothing: antialiased;
+        }
 
-    .nav-item svg { 
-        width: 20px;
-        height: 20px;
-        margin-bottom: 2px; 
-    }
+        /* --- Seamless Page Loader (Hidden once auth state resolved) --- */
+        #pageLoader {
+            position: fixed;
+            inset: 0;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
 
-    .nav-item.active { 
-        color: var(--primary) !important; 
-    }
-</style>
+        #pageLoader img {
+            width: 56px;
+            height: 56px;
+            object-fit: contain;
+        }
+
+        /* --- Signup Container Card --- */
+        .signup-card {
+            width: 100%;
+            max-width: 440px;
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 215, 170, 0.8);
+            padding: 32px 24px;
+            margin: 24px 0;
+        }
+
+        /* --- Header / Logo --- */
+        .signup-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .signup-logo {
+            height: 48px;
+            width: auto;
+            object-fit: contain;
+            margin-bottom: 12px;
+        }
+
+        .signup-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--charcoal);
+            margin-bottom: 4px;
+        }
+
+        .signup-desc {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        /* --- Alert Box --- */
+        .alert-box {
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .alert-error {
+            background: var(--danger-bg);
+            color: #991B1B;
+            border: 1px solid #FECACA;
+        }
+
+        .alert-success {
+            background: var(--success-bg);
+            color: #166534;
+            border: 1px solid #BBF7D0;
+        }
+
+        /* --- Form Elements --- */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gray);
+            margin-bottom: 6px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            color: var(--gray);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            background: #fafafa;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            color: var(--charcoal);
+            outline: none;
+            transition: var(--transition);
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        .form-control:focus {
+            background: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.12);
+        }
+
+        .form-control[readonly] {
+            background: #f3f4f6;
+            color: var(--charcoal);
+            cursor: not-allowed;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: color 0.15s;
+        }
+
+        .toggle-password:hover {
+            color: var(--charcoal);
+        }
+
+        /* --- Submit Button --- */
+        .btn-submit {
+            width: 100%;
+            padding: 13px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.25);
+            margin-top: 8px;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- Login Prompt --- */
+        .login-prompt {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        .login-prompt a {
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .login-prompt a:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+
+        /* --- Bottom Navigation Bar --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            z-index: 1000;
+            padding-bottom: env(safe-area-inset-bottom);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 10px;
+            font-weight: 800;
+            transition: color 0.15s ease;
+            flex: 1;
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            margin-bottom: 2px;
+        }
+
+        .nav-item.active {
+            color: var(--primary) !important;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-orange-50 via-amber-50 to-neutral-100 min-h-screen flex items-center justify-center p-4 pb-24 font-sans text-ghoti-charcoal">
+<body>
 
-    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl border border-orange-100 p-8 my-6">
+    <!-- Seamless Page Loader (Runs silently during auth verification) -->
+    <div id="pageLoader">
+        <img src="https://ghotimarket.com/loading.gif" alt="GHOTI MARKET Loading...">
+    </div>
+
+    <!-- Signup Container Card -->
+    <div class="signup-card">
         
         <!-- Logo & Header -->
-        <div class="text-center mb-6">
-            <div class="flex justify-center mb-3">
-                <img src="https://ghotimarket.com/logo.png" alt="GHOTI MARKET Logo" class="h-12 w-auto object-contain">
+        <div class="signup-header">
+            <div style="display: flex; justify-content: center;">
+                <img src="https://ghotimarket.com/logo.png" alt="GHOTI MARKET Logo" class="signup-logo">
             </div>
-            <h1 class="text-2xl font-bold text-ghoti-charcoal">নতুন অ্যাকাউন্ট তৈরি করুন</h1>
-            <p class="text-sm text-ghoti-gray mt-1">GHOTI MARKET-এ আপনার Buyer Account তৈরি করুন</p>
+            <h1 class="signup-title">নতুন অ্যাকাউন্ট তৈরি করুন</h1>
+            <p class="signup-desc">GHOTI MARKET-এ আপনার Buyer Account তৈরি করুন</p>
         </div>
 
         <!-- Alert Box -->
-        <div id="alertBox" class="hidden mb-6 p-4 rounded-xl text-sm flex items-start space-x-3 transition-all duration-300">
-            <div id="alertIcon" class="flex-shrink-0 mt-0.5"></div>
-            <div id="alertMessage" class="font-medium"></div>
+        <div id="alertBox" class="alert-box hidden">
+            <div id="alertIcon" style="flex-shrink: 0; margin-top: 1px;"></div>
+            <div id="alertMessage" style="font-weight: 500;"></div>
         </div>
 
         <!-- Signup Form -->
-        <form id="signupForm" onsubmit="handleSignup(event)" class="space-y-4" novalidate>
+        <form id="signupForm" onsubmit="handleSignup(event)" novalidate>
             
             <!-- Full Name -->
-            <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-ghoti-gray mb-1.5">পূর্ণ নাম</label>
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-ghoti-gray">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+            <div class="form-group">
+                <label class="form-label">পূর্ণ নাম</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                     </span>
-                    <input type="text" id="fullName" name="name" required autocomplete="name" placeholder="আপনার সম্পূর্ণ নাম লিখুন" class="w-full pl-11 pr-4 py-3 bg-neutral-50 border border-neutral-300 rounded-xl focus:outline-none focus:border-ghoti-orange focus:ring-2 focus:ring-orange-100 transition-all text-sm">
+                    <input type="text" id="fullName" name="name" required autocomplete="name" placeholder="আপনার সম্পূর্ণ নাম লিখুন" class="form-control">
                 </div>
             </div>
 
             <!-- Email -->
-            <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-ghoti-gray mb-1.5">ইমেইল ঠিকানা</label>
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-ghoti-gray">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            <div class="form-group">
+                <label class="form-label">ইমেইল ঠিকানা</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                     </span>
-                    <input type="email" id="email" name="email" required autocomplete="email" placeholder="example@domain.com" class="w-full pl-11 pr-4 py-3 bg-neutral-50 border border-neutral-300 rounded-xl focus:outline-none focus:border-ghoti-orange focus:ring-2 focus:ring-orange-100 transition-all text-sm">
+                    <input type="email" id="email" name="email" required autocomplete="email" placeholder="example@domain.com" class="form-control">
                 </div>
             </div>
 
             <!-- Phone -->
-            <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-ghoti-gray mb-1.5">ফোন নম্বর</label>
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-ghoti-gray">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+            <div class="form-group">
+                <label class="form-label">ফোন নম্বর</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
                     </span>
-                    <input type="tel" id="phone" name="tel" required autocomplete="tel" placeholder="017XXXXXXXX" class="w-full pl-11 pr-4 py-3 bg-neutral-50 border border-neutral-300 rounded-xl focus:outline-none focus:border-ghoti-orange focus:ring-2 focus:ring-orange-100 transition-all text-sm">
+                    <input type="tel" id="phone" name="tel" required autocomplete="tel" placeholder="017XXXXXXXX" class="form-control">
                 </div>
             </div>
 
             <!-- Country -->
-            <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-ghoti-gray mb-1.5">দেশ</label>
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-ghoti-gray">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div class="form-group">
+                <label class="form-label">দেশ</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </span>
-                    <input type="text" id="country" name="country" value="Bangladesh" readonly class="w-full pl-11 pr-4 py-3 bg-neutral-100 border border-neutral-300 rounded-xl text-ghoti-charcoal font-medium text-sm cursor-not-allowed">
+                    <input type="text" id="country" name="country" value="Bangladesh" readonly class="form-control">
                 </div>
             </div>
 
             <!-- Password -->
-            <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-ghoti-gray mb-1.5">পাসওয়ার্ড</label>
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-ghoti-gray">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+            <div class="form-group">
+                <label class="form-label">পাসওয়ার্ড</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                     </span>
-                    <input type="password" id="password" name="new-password" required autocomplete="new-password" placeholder="কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড" class="w-full pl-11 pr-12 py-3 bg-neutral-50 border border-neutral-300 rounded-xl focus:outline-none focus:border-ghoti-orange focus:ring-2 focus:ring-orange-100 transition-all text-sm">
-                    <button type="button" onclick="togglePassword()" aria-label="পাসওয়ার্ড দেখান বা লুকান" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-ghoti-gray hover:text-ghoti-charcoal">
-                        <svg id="eyeIcon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    <input type="password" id="password" name="new-password" required autocomplete="new-password" placeholder="কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড" class="form-control" style="padding-right: 40px;">
+                    <button type="button" onclick="togglePassword()" aria-label="পাসওয়ার্ড দেখান বা লুকান" class="toggle-password">
+                        <svg id="eyeIcon" style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                     </button>
                 </div>
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" id="submitBtn" class="w-full mt-2 py-3.5 px-4 bg-gradient-to-r from-ghoti-orange to-ghoti-darkOrange text-white font-semibold rounded-xl shadow-lg shadow-orange-500/25 hover:from-orange-600 hover:to-orange-700 focus:outline-none focus:ring-4 focus:ring-orange-200 transition-all flex items-center justify-center space-x-2">
+            <button type="submit" id="submitBtn" class="btn-submit">
                 <span id="btnText">অ্যাকাউন্ট তৈরি করুন</span>
-                <span id="btnSpinner" class="hidden">
-                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                </span>
+                <span id="btnSpinner" class="spinner hidden"></span>
             </button>
 
         </form>
 
         <!-- Login Link -->
-        <div class="text-center mt-6 pt-4 border-t border-neutral-100">
-            <p class="text-sm text-ghoti-gray">ইতিমধ্যেই অ্যাকাউন্ট আছে? <a href="login.html" class="font-semibold text-ghoti-orange hover:underline">লগইন করুন</a></p>
+        <div class="login-prompt">
+            ইতিমধ্যেই অ্যাকাউন্ট আছে? <a href="login.html">লগইন করুন</a>
         </div>
 
     </div>
@@ -176,7 +405,7 @@
     <nav class="bottom-nav">
         <a href="https://ghotimarket.com" class="nav-item"><i data-lucide="home"></i><span>Home</span></a>
         <a href="https://ghotimarket.com/categories" class="nav-item"><i data-lucide="grid"></i><span>Categories</span></a>
-        <a href="https://ghotimarket.com/all-product" class="nav-item"><i data-lucide="box"></i><span>products</span></a>
+        <a href="https://ghotimarket.com/all-product" class="nav-item"><i data-lucide="box"></i><span>Products</span></a>
         <a href="https://ghotimarket.com/contact" class="nav-item"><i data-lucide="headphones"></i><span>Support</span></a>
         <a href="https://ghotimarket.com/privacy-policy" class="nav-item"><i data-lucide="shield-check"></i><span>Privacy</span></a>
         <a href="profile.html" class="nav-item active">
@@ -195,7 +424,7 @@
     <!-- Firebase v10 Modular SDKs & App Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, deleteUser, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, deleteUser, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -212,6 +441,24 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const pageLoader = document.getElementById('pageLoader');
+
+        // Check login state on page load. If logged in, redirect away from signup seamlessly.
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                if (user.email === 'support@ghotimarket.com') {
+                    window.location.replace('admin-buyers.html');
+                } else {
+                    window.location.replace('profile.html');
+                }
+            } else {
+                // Not logged in: smoothly reveal the signup form by hiding the loader
+                pageLoader.style.opacity = '0';
+                setTimeout(() => {
+                    pageLoader.style.display = 'none';
+                }, 300);
+            }
+        });
 
         // Password Show/Hide Toggle
         window.togglePassword = function() {
@@ -232,14 +479,14 @@
             const icon = document.getElementById('alertIcon');
             const msg = document.getElementById('alertMessage');
             
-            box.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'border', 'border-emerald-200', 'bg-red-50', 'text-red-800', 'border-red-200');
+            box.classList.remove('hidden', 'alert-success', 'alert-error');
             
             if (type === 'success') {
-                box.classList.add('bg-emerald-50', 'text-emerald-800', 'border', 'border-emerald-200');
-                icon.innerHTML = `<svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>`;
+                box.classList.add('alert-success');
+                icon.innerHTML = `<svg style="width: 18px; height: 18px; color: #166534;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>`;
             } else {
-                box.classList.add('bg-red-50', 'text-red-800', 'border', 'border-red-200');
-                icon.innerHTML = `<svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>`;
+                box.classList.add('alert-error');
+                icon.innerHTML = `<svg style="width: 18px; height: 18px; color: #991B1B;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>`;
             }
             msg.textContent = message;
         }
@@ -309,7 +556,7 @@
 
                 showAlert('অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! রিডাইরেক্ট করা হচ্ছে...', 'success');
                 setTimeout(() => {
-                    window.location.href = 'profile.html';
+                    window.location.replace('profile.html');
                 }, 1200);
 
             } catch (error) {
