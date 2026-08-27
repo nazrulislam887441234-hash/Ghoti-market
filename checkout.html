@@ -308,7 +308,7 @@
             </button>
             <div class="copy-msg" id="copyMsg">সব ট্র্যাকিং আইডি সফলভাবে কপি হয়েছে।</div>
             
-            <button class="btn" onclick="localStorage.removeItem('ghoti_cart'); location.href='index.html'" style="background:#333;margin-top:10px;">হোমে ফিরে যান</button>
+            <button class="btn" onclick="location.href='index.html'" style="background:#333;margin-top:10px;">হোমে ফিরে যান</button>
         </div>
     </div>
 
@@ -329,7 +329,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, doc, collection, writeBatch, serverTimestamp, getDocs, query, where, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, doc, collection, writeBatch, serverTimestamp, getDocs, query, where, limit, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
@@ -340,10 +341,12 @@
             appId: "1:9382019283:web:abc12345"
         };
 
-        let app, db;
+        let app, db, auth;
+        let currentUser = null;
         try {
             app = initializeApp(firebaseConfig);
             db = getFirestore(app);
+            auth = getAuth(app);
         } catch (e) {
             console.error("Firebase Init Error:", e);
         }
@@ -362,6 +365,16 @@
             document.getElementById('errorPopupText').innerText = message;
             document.getElementById('errorPopup').classList.add('show');
         }
+
+        // Check Authentication Status
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "https://ghotimarket.com/login";
+            } else {
+                currentUser = user;
+                loadCart(user);
+            }
+        });
 
         window.setDeliveryZone = function(zone, rate) {
             deliveryChargePerProduct = rate;
@@ -382,7 +395,6 @@
             currentQty += delta;
             if(currentQty < 1) currentQty = 1;
             cartItems[index].quantity = currentQty;
-            localStorage.setItem('ghoti_cart', JSON.stringify(cartItems));
             
             if (appliedAffiliateData.affiliateApplied) {
                 recalculateDiscount();
@@ -392,9 +404,18 @@
             updateSummary();
         };
 
-        window.removeItem = function(index) {
+        window.removeItem = async function(index) {
+            let item = cartItems[index];
+            if (item && item.docId) {
+                try {
+                    await deleteDoc(doc(db, "carts", item.docId));
+                } catch (err) {
+                    console.error("Error deleting cart item:", err);
+                }
+            }
+
             cartItems.splice(index, 1);
-            localStorage.setItem('ghoti_cart', JSON.stringify(cartItems));
+            
             if(cartItems.length === 0) {
                 document.getElementById('orderForm').style.display = 'none';
                 document.getElementById('notFound').style.display = 'block';
@@ -456,10 +477,20 @@
             document.getElementById('cartItemsList').innerHTML = itemsHTML;
         }
 
-        function loadCart() {
+        async function loadCart(user) {
             const loadingEl = document.getElementById('loading');
             try {
-                cartItems = JSON.parse(localStorage.getItem('ghoti_cart')) || [];
+                const q = query(collection(db, "carts"), where("uid", "==", user.uid));
+                const querySnapshot = await getDocs(q);
+
+                cartItems = [];
+                querySnapshot.forEach((docSnap) => {
+                    let data = docSnap.data();
+                    cartItems.push({
+                        docId: docSnap.id,
+                        ...data
+                    });
+                });
                 
                 if (cartItems.length === 0) {
                     loadingEl.style.display = 'none';
@@ -481,6 +512,7 @@
 
             } catch (e) {
                 loadingEl.style.display = 'none';
+                console.error("Cart Load Error:", e);
                 showError("❌ কার্ট লোড ত্রুটি", "কার্ট থেকে ডেটা পড়তে সমস্যা হয়েছে।");
                 document.getElementById('notFound').style.display = 'block';
             }
@@ -619,6 +651,9 @@
                 const batch = writeBatch(db);
                 const generatedTracks = [];
 
+                const userUid = currentUser ? currentUser.uid : '';
+                const userEmail = currentUser ? currentUser.email : '';
+
                 cartItems.forEach(item => {
                     const orderTrackId = 'GM-' + new Date().getFullYear() + '-' + Math.random().toString(36).substr(2, 6).toUpperCase();
                     const qty = Number(item.quantity) || 1;
@@ -643,6 +678,8 @@
 
                     const orderData = {
                         orderTrackId,
+                        uid: userUid,
+                        email: userEmail,
                         productName: item.name || '',
                         productImage: item.image || '',
                         productPrice: unitPrice,
@@ -680,6 +717,8 @@
 
                     const trackingData = {
                         orderTrackId,
+                        uid: userUid,
+                        email: userEmail,
                         productName: item.name || '',
                         productImage: item.image || '',
                         productPrice: unitPrice,
@@ -718,6 +757,12 @@
 
                     const trackingRef = doc(db, "order_tracking", orderTrackId);
                     batch.set(trackingRef, trackingData);
+
+                    // Delete from carts collection using docId
+                    if (item.docId) {
+                        const cartDocRef = doc(db, "carts", item.docId);
+                        batch.delete(cartDocRef);
+                    }
 
                     generatedTracks.push({
                         shopName: item.shopName || 'GHOTI Seller',
@@ -767,8 +812,6 @@
                 console.error("Copy error:", e);
             }
         };
-
-        loadCart();
     </script>
 </body>
 </html>
