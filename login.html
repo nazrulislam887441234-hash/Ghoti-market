@@ -1,16 +1,333 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <!-- 0 সেকেন্ডে রিডাইরেক্ট -->
-  <meta http-equiv="refresh" content="0; url=https://ghotimarket.com">
-  <script>
-    // ডাবল সিকিউরিটি - JS দিয়েও সাথে সাথে
-    window.location.replace("https://seller.ghotimarket.com/login");
-  </script>
-  <title>Redirecting...</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>লগইন - GHOTI MARKET</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ghoti: {
+                            orange: '#FF6B35',
+                            hover: '#E85A2A',
+                            light: '#FFF4F0',
+                            charcoal: '#111827',
+                            gray: '#6B7280'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+  /* --- Bottom Nav --- */
+        .bottom-nav { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 60px; 
+            background: rgba(255,255,255,0.96); 
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center; 
+            border-top: 1px solid var(--glass-border); 
+            z-index: 1000; 
+            padding-bottom: env(safe-area-inset-bottom); 
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+        }
+
+        .nav-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            text-decoration: none; 
+            color: var(--text-sub); 
+            font-size: 10px; 
+            font-weight: 800; 
+            transition: color 0.15s ease; 
+            flex: 1; 
+        }
+
+        .nav-item i { 
+            font-size: 17px; 
+            margin-bottom: 2px; 
+        }
+
+        .nav-item.active { 
+            color: var(--primary); 
+        }
+
+</style>
 </head>
-<body>
-  <!-- ইউজার কিছু দেখার আগেই চলে যাবে -->
+<body class="bg-gradient-to-br from-orange-50 via-neutral-100 to-orange-100/40 min-h-screen flex items-center justify-center p-4 font-sans text-ghoti-charcoal">
+
+    <div class="w-full max-w-[440px] bg-white rounded-2xl shadow-xl border border-orange-100/80 p-8 my-6 transition-all duration-300">
+        
+        <!-- Header / Logo -->
+        <div class="text-center mb-8">
+            <div class="flex justify-center mb-3">
+                <img src="https://ghotimarket.com/logo.png" alt="GHOTI MARKET Logo" class="h-12 w-auto object-contain">
+            </div>
+            <div class="text-xs font-semibold uppercase tracking-wider text-ghoti-orange mb-1">GHOTI MARKET</div>
+            <p class="text-xs text-ghoti-gray font-medium">বাংলাদেশের আধুনিক অনলাইন মার্কেটপ্লেস</p>
+            <h1 class="text-2xl font-bold text-ghoti-charcoal mt-4">আপনার অ্যাকাউন্টে লগইন করুন</h1>
+            <p class="text-sm text-ghoti-gray mt-1">আপনার GHOTI MARKET অ্যাকাউন্টে প্রবেশ করতে তথ্য দিন</p>
+        </div>
+
+        <!-- Error Alert Box -->
+        <div id="errorMessage" class="hidden mb-6 p-4 bg-red-50 border border-red-200 text-red-800 rounded-xl text-sm flex items-start space-x-3 transition-all duration-300">
+            <div class="flex-shrink-0 mt-0.5 text-red-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            </div>
+            <div id="errorText" class="font-medium"></div>
+        </div>
+
+        <!-- Success Alert Box -->
+        <div id="successMessage" class="hidden mb-6 p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-sm flex items-start space-x-3 transition-all duration-300">
+            <div class="flex-shrink-0 mt-0.5 text-emerald-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <div id="successText" class="font-medium"></div>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="space-y-5" novalidate>
+            
+            <!-- Email Input -->
+            <div>
+                <label for="email" class="block text-xs font-semibold uppercase tracking-wider text-ghoti-gray mb-1.5">ইমেইল ঠিকানা</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-ghoti-gray">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </span>
+                    <input type="email" id="email" name="email" required autocomplete="email" placeholder="আপনার ইমেইল লিখুন" class="w-full pl-11 pr-4 py-3 bg-neutral-50 border border-neutral-300 rounded-xl focus:outline-none focus:border-ghoti-orange focus:ring-2 focus:ring-orange-100 transition-all text-sm">
+                </div>
+            </div>
+
+            <!-- Password Input -->
+            <div>
+                <label for="password" class="block text-xs font-semibold uppercase tracking-wider text-ghoti-gray mb-1.5">পাসওয়ার্ড</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-ghoti-gray">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </span>
+                    <input type="password" id="password" name="current-password" required autocomplete="current-password" placeholder="আপনার পাসওয়ার্ড লিখুন" class="w-full pl-11 pr-12 py-3 bg-neutral-50 border border-neutral-300 rounded-xl focus:outline-none focus:border-ghoti-orange focus:ring-2 focus:ring-orange-100 transition-all text-sm">
+                    <button type="button" id="togglePassword" aria-label="পাসওয়ার্ড দেখান" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-ghoti-gray hover:text-ghoti-charcoal transition-colors">
+                        <!-- Eye Icon (Default Hidden) -->
+                        <svg id="eyeIcon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Forgot Password -->
+            <div class="flex items-center justify-end">
+                <a href="#" id="forgotPassword" class="text-xs font-semibold text-ghoti-orange hover:text-ghoti-hover transition-colors">পাসওয়ার্ড ভুলে গেছেন?</a>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="submitBtn" class="w-full mt-2 py-3.5 px-4 bg-ghoti-orange hover:bg-ghoti-hover text-white font-semibold rounded-xl shadow-lg shadow-orange-500/25 focus:outline-none focus:ring-4 focus:ring-orange-200 transition-all flex items-center justify-center space-x-2">
+                <span id="btnText">লগইন করুন</span>
+                <span id="btnIcon">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </span>
+                <span id="btnSpinner" class="hidden">
+                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </span>
+            </button>
+        </form>
+
+        <!-- Security / Trust Indicator -->
+        <div class="mt-6 pt-4 border-t border-neutral-100 flex items-center justify-center space-x-2 text-xs text-ghoti-gray">
+            <svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            <span>আপনার অ্যাকাউন্টের তথ্য নিরাপদ রাখতে Firebase Authentication ব্যবহার করা হচ্ছে।</span>
+        </div>
+
+        <!-- Signup Link -->
+        <div class="text-center mt-5">
+            <p class="text-sm text-ghoti-gray">অ্যাকাউন্ট নেই? <a href="signup.html" class="font-semibold text-ghoti-orange hover:text-ghoti-hover transition-colors">সাইন আপ করুন</a></p>
+        </div>
+
+    </div>
+   <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <a href="https://ghotimarket.com" class="nav-item active"><i data-lucide="home"></i><span>Home</span></a>
+        <a href="https://ghotimarket.com/categories" class="nav-item"><i data-lucide="grid"></i><span>Categories</span></a>
+        <a href="https://ghotimarket.com/all-product" class="nav-item"><i data-lucide="box"></i><span>products</span></a>
+        <a href="https://ghotimarket.com/contact" class="nav-item"><i data-lucide="headphones"></i><span>Support</span></a>
+        <a href="https://ghotimarket.com/privacy-policy" class="nav-item"><i data-lucide="shield-check"></i><span>Privacy</span></a>
+        <a href="profile.html" class="nav-item">
+    <i data-lucide="circle-user-round"></i>
+    <span>Profile</span>
+</a> 
+        <a href="https://seller.ghotimarket.com/signup" class="nav-item"><i data-lucide="store"></i><span>J.Seller</span></a>
+    </nav>
+
+    <!-- Firebase v10 Modular SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+            authDomain: "ghotimarket.firebaseapp.com",
+            databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+            projectId: "ghotimarket",
+            storageBucket: "ghotimarket.firebasestorage.app",
+            messagingSenderId: "481257644093",
+            appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+            measurementId: "G-4SR8V2EKC1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        // Password Visibility Toggle with SVG Icon Updates
+        togglePassword.addEventListener('click', () => {
+            const isPassword = passwordInput.getAttribute('type') === 'password';
+            passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+            
+            if (isPassword) {
+                // Eye-off icon
+                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.032 10.032 0 014.24-5.385m3.714-1.258A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18"></path>`;
+                togglePassword.setAttribute('aria-label', 'পাসওয়ার্ড লুকান');
+            } else {
+                // Eye icon
+                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>`;
+                togglePassword.setAttribute('aria-label', 'পাসওয়ার্ড দেখান');
+            }
+        });
+
+        // Bengali Friendly Error Messages
+        function getFriendlyErrorMessage(errorCode) {
+            switch (errorCode) {
+                case 'auth/invalid-credential':
+                case 'auth/user-not-found':
+                case 'auth/wrong-password': 
+                    return 'ইমেইল অথবা পাসওয়ার্ড ভুল হয়েছে।';
+                case 'auth/invalid-email': 
+                    return 'সঠিক ইমেইল দিন।';
+                case 'auth/too-many-requests': 
+                    return 'অতিরিক্ত চেষ্টার কারণে অ্যাকাউন্ট সাময়িকভাবে ব্লক করা হয়েছে। কিছুক্ষণ পর আবার চেষ্টা করুন।';
+                default: 
+                    return 'লগইন করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।';
+            }
+        }
+
+        // Helper to Show Alerts
+        const errorEl = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const successEl = document.getElementById('successMessage');
+        const successText = document.getElementById('successText');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnIcon = document.getElementById('btnIcon');
+        const btnSpinner = document.getElementById('btnSpinner');
+
+        function hideAlerts() {
+            errorEl.classList.add('hidden');
+            successEl.classList.add('hidden');
+        }
+
+        function setLoading(loading) {
+            submitBtn.disabled = loading;
+            if (loading) {
+                btnText.textContent = 'লগইন হচ্ছে...';
+                btnIcon.classList.add('hidden');
+                btnSpinner.classList.remove('hidden');
+            } else {
+                btnText.textContent = 'লগইন করুন';
+                btnIcon.classList.remove('hidden');
+                btnSpinner.classList.add('hidden');
+            }
+        }
+
+        // Login Handler
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideAlerts();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                errorText.textContent = 'সবগুলো ঘর পূরণ করা বাধ্যতামূলক।';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            setLoading(true);
+
+            // Admin Login Security Route
+            if (email === 'support@ghotimarket.com') {
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    successText.textContent = 'অ্যাডমিন লগইন সফল হয়েছে! রিডাইরেক্ট হচ্ছে...';
+                    successEl.classList.remove('hidden');
+                    setTimeout(() => window.location.href = 'admin-buyers.html', 1000);
+                    return;
+                } catch (err) {
+                    setLoading(false);
+                    errorText.textContent = getFriendlyErrorMessage(err.code);
+                    errorEl.classList.remove('hidden');
+                    return;
+                }
+            }
+
+            // Normal User Login Route
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                successText.textContent = 'লগইন সফল হয়েছে! রিডাইরেক্ট হচ্ছে...';
+                successEl.classList.remove('hidden');
+                setTimeout(() => window.location.href = 'profile.html', 1000);
+            } catch (err) {
+                setLoading(false);
+                errorText.textContent = getFriendlyErrorMessage(err.code);
+                errorEl.classList.remove('hidden');
+            }
+        });
+
+        // Password Reset Handler
+        document.getElementById('forgotPassword').addEventListener('click', async (e) => {
+            e.preventDefault();
+            hideAlerts();
+
+            const email = document.getElementById('email').value.trim();
+
+            if (!email) {
+                errorText.textContent = 'আগে আপনার ইমেইল ঠিকানাটি লিখুন।';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                successText.textContent = 'পাসওয়ার্ড রিসেট করার লিংক আপনার ইমেইলে পাঠানো হয়েছে।';
+                successEl.classList.remove('hidden');
+            } catch (err) {
+                errorText.textContent = getFriendlyErrorMessage(err.code) || 'রিসেট লিংক পাঠানো যায়নি।';
+                errorEl.classList.remove('hidden');
+            }
+        });
+    </script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+    lucide.createIcons();
+</script>
 </body>
 </html>
