@@ -176,7 +176,7 @@
     <!-- Firebase v10 Modular SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
@@ -191,6 +191,17 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+
+        // Check if user is already logged on page load -> redirect to profile.html
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                if (user.email === 'support@ghotimarket.com') {
+                    window.location.href = 'admin-buyers.html';
+                } else {
+                    window.location.href = 'profile.html';
+                }
+            }
+        });
 
         const passwordInput = document.getElementById('password');
         const togglePassword = document.getElementById('togglePassword');
@@ -256,6 +267,16 @@
             }
         }
 
+        // Determine where to redirect after fresh login
+        function getRedirectUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let redirect = urlParams.get('redirect');
+            if (!redirect && document.referrer && !document.referrer.includes('login.html') && !document.referrer.includes('signup.html')) {
+                redirect = document.referrer;
+            }
+            return redirect || 'profile.html';
+        }
+
         // Login Handler
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -293,7 +314,8 @@
                 await signInWithEmailAndPassword(auth, email, password);
                 successText.textContent = 'লগইন সফল হয়েছে! রিডাইরেক্ট হচ্ছে...';
                 successEl.classList.remove('hidden');
-                setTimeout(() => window.location.href = 'profile.html', 1000);
+                const targetUrl = getRedirectUrl();
+                setTimeout(() => window.location.href = targetUrl, 1000);
             } catch (err) {
                 setLoading(false);
                 errorText.textContent = getFriendlyErrorMessage(err.code);
