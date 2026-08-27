@@ -195,7 +195,6 @@
             box-shadow: var(--shadow);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             position: relative;
-            /* Scroll Optimization */
             content-visibility: auto;
             contain-intrinsic-size: 320px;
             will-change: transform;
@@ -652,38 +651,24 @@
             </div>
         </div>
     </div>
-
-    <!-- Bottom Navigation -->
+   <!-- Bottom Navigation Bar -->
     <nav class="bottom-nav">
-        <a href="https://ghotimarket.com" class="nav-item">
-            <i data-lucide="home"></i>
-            <span>Home</span>
-        </a>
-        <a href="https://ghotimarket.com/categories" class="nav-item">
-            <i data-lucide="grid"></i>
-            <span>Categories</span>
-        </a>
-        <a href="https://ghotimarket.com/all-product" class="nav-item active">
-            <i data-lucide="box"></i>
-            <span>All product</span>
-        </a>
-        <a href="https://ghotimarket.com/contact" class="nav-item">
-            <i data-lucide="headphones"></i>
-            <span>Support</span>
-        </a>
-        <a href="https://ghotimarket.com/privacy-policy" class="nav-item">
-            <i data-lucide="shield-check"></i>
-            <span>Privacy</span>
-        </a>
-        <a href="https://seller.ghotimarket.com/signup" class="nav-item">
-            <i data-lucide="store"></i>
-            <span>J.Seller</span>
-        </a>
+        <a href="https://ghotimarket.com" class="nav-item"><i data-lucide="home"></i><span>Home</span></a>
+        <a href="https://ghotimarket.com/categories" class="nav-item"><i data-lucide="grid"></i><span>Categories</span></a>
+        <a href="https://ghotimarket.com/all-product" class="nav-item active"><i data-lucide="box"></i><span>products</span></a>
+        <a href="https://ghotimarket.com/contact" class="nav-item"><i data-lucide="headphones"></i><span>Support</span></a>
+        <a href="https://ghotimarket.com/privacy-policy" class="nav-item"><i data-lucide="shield-check"></i><span>Privacy</span></a>
+        <a href="profile.html" class="nav-item">
+            <i data-lucide="circle-user-round"></i>
+            <span>Profile</span>
+        </a> 
+        <a href="https://seller.ghotimarket.com/signup" class="nav-item"><i data-lucide="store"></i><span>J.Seller</span></a>
     </nav>
 
     <!-- Application Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import {
           collection,
           getDocs,
@@ -693,6 +678,10 @@
           startAfter,
           orderBy,
           documentId,
+          addDoc,
+          updateDoc,
+          doc,
+          serverTimestamp,
           getFirestore
         } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -709,6 +698,10 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let currentUser = null;
+        let userCartItems = [];
 
         let allProducts = [];          
         let lastVisible = null;
@@ -751,10 +744,26 @@
             }, 3000);
         }
 
+        // Fetch User Cart from Firestore
+        async function fetchUserCart() {
+            if (!currentUser) return;
+            try {
+                const q = query(collection(db, "carts"), where("uid", "==", currentUser.uid));
+                const querySnapshot = await getDocs(q);
+                userCartItems = [];
+                querySnapshot.forEach((docSnap) => {
+                    userCartItems.push({ cartDocId: docSnap.id, ...docSnap.data() });
+                });
+                updateCartBadge();
+                updateAllCardCartStates();
+            } catch (err) {
+                console.error("Error fetching cart from Firestore:", err);
+            }
+        }
+
         function updateCartBadge() {
             try {
-                const cart = JSON.parse(localStorage.getItem('ghoti_cart')) || [];
-                const totalCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+                const totalCount = userCartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
                 const badge = document.getElementById('cartBadge');
                 if (badge) {
                     badge.textContent = totalCount;
@@ -766,7 +775,6 @@
         }
 
         async function fetchProducts(isLoadMore = false) {
-            updateCartBadge();
             try {
                 if (!isLoadMore) {
                     productsGrid.innerHTML = '';
@@ -881,8 +889,7 @@
             card.className = 'product-card';
             card.setAttribute('data-product-id', product.id);
 
-            const cart = JSON.parse(localStorage.getItem('ghoti_cart')) || [];
-            const isInCart = cart.some(item => item.id === product.id || item.docId === product.id);
+            const isInCart = userCartItems.some(item => item.id === product.id);
 
             const price = Number(product.price) || 0;
             const oldPrice = Number(product.oldPrice) || 0;
@@ -968,32 +975,36 @@
             return card;
         }
 
-        function updateCardStateInDOM(productId) {
+        function updateAllCardCartStates() {
             const cards = productsGrid.querySelectorAll('.product-card');
             cards.forEach(card => {
-                if (card.getAttribute('data-product-id') === productId) {
-                    const actionsContainer = card.querySelector('.product-actions');
-                    if (actionsContainer) {
-                        actionsContainer.innerHTML = `
-                            <div class="already-added-badge">
-                                <i class="fa-solid fa-circle-check"></i> ইতিমধ্যে যোগ করা হয়েছে
-                            </div>
-                            <button class="btn-card-action btn-buy-now">
-                                <i class="fa-solid fa-bolt"></i> এখনই কিনুন
-                            </button>
-                        `;
-                        actionsContainer.querySelector('.btn-buy-now').addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            window.location.href = 'cart.html';
-                        });
-                    }
+                const prodId = card.getAttribute('data-product-id');
+                const isInCart = userCartItems.some(item => item.id === prodId);
+                const actionsContainer = card.querySelector('.product-actions');
+                if (actionsContainer && isInCart) {
+                    actionsContainer.innerHTML = `
+                        <div class="already-added-badge">
+                            <i class="fa-solid fa-circle-check"></i> ইতিমধ্যে যোগ করা হয়েছে
+                        </div>
+                        <button class="btn-card-action btn-buy-now">
+                            <i class="fa-solid fa-bolt"></i> এখনই কিনুন
+                        </button>
+                    `;
+                    actionsContainer.querySelector('.btn-buy-now').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        window.location.href = 'cart.html';
+                    });
                 }
             });
         }
 
         function handleCartOrBuyAction(product, isBuyNow) {
-            const cart = JSON.parse(localStorage.getItem('ghoti_cart')) || [];
-            const isInCart = cart.some(item => item.id === product.id || item.docId === product.id);
+            if (!currentUser) {
+                window.location.href = "https://ghotimarket.com/login";
+                return;
+            }
+
+            const isInCart = userCartItems.some(item => item.id === product.id);
 
             if (isInCart) {
                 window.location.href = 'cart.html';
@@ -1110,43 +1121,58 @@
             addToCartAction(activeVariantProduct, selectedVariantSelections, totalExtra, activeIsBuyNow);
         });
 
-        function addToCartAction(product, selectedVariants = {}, extraPrice = 0, isBuyNow = false) {
-            let cart = JSON.parse(localStorage.getItem('ghoti_cart')) || [];
-            
+        async function addToCartAction(product, selectedVariants = {}, extraPrice = 0, isBuyNow = false) {
+            if (!currentUser) {
+                window.location.href = "https://ghotimarket.com/login";
+                return;
+            }
+
             const basePrice = Number(product.price) || 0;
             const finalPrice = basePrice + extraPrice;
 
-            const newItem = {
-                id: product.id,
-                docId: product.id,
-                slug: product.slug || product.id,
-                name: product.name || '',
-                basePrice: basePrice,
-                extraPrice: extraPrice,
-                price: finalPrice,
-                selectedVariants: selectedVariants,
-                image: (product.images && product.images[0]) || '',
-                quantity: 1,
-                shopName: product.shopName || '',
-                sellerId: product.sellerId || '',
-                affiliate: product.affiliate || false
-            };
+            const existingItem = userCartItems.find(item => item.id === product.id);
 
-            const existingIndex = cart.findIndex(item => item.id === newItem.id);
-            if (existingIndex > -1) {
-                cart[existingIndex].quantity += 1;
-            } else {
-                cart.push(newItem);
-            }
+            try {
+                if (existingItem) {
+                    const newQuantity = (existingItem.quantity || 1) + 1;
+                    const cartDocRef = doc(db, "carts", existingItem.cartDocId);
+                    await updateDoc(cartDocRef, { quantity: newQuantity });
+                    existingItem.quantity = newQuantity;
+                } else {
+                    const newCartData = {
+                        uid: currentUser.uid,
+                        email: currentUser.email || '',
+                        id: product.id,
+                        docId: product.id,
+                        slug: product.slug || product.id,
+                        name: product.name || '',
+                        basePrice: basePrice,
+                        extraPrice: extraPrice,
+                        price: finalPrice,
+                        selectedVariants: selectedVariants,
+                        image: (product.images && product.images[0]) || '',
+                        quantity: 1,
+                        shopName: product.shopName || '',
+                        sellerId: product.sellerId || '',
+                        affiliate: product.affiliate || false,
+                        createdAt: serverTimestamp()
+                    };
 
-            localStorage.setItem('ghoti_cart', JSON.stringify(cart));
-            updateCartBadge();
-            updateCardStateInDOM(product.id);
+                    const docRef = await addDoc(collection(db, "carts"), newCartData);
+                    userCartItems.push({ cartDocId: docRef.id, ...newCartData });
+                }
 
-            if (isBuyNow) {
-                window.location.href = 'cart.html';
-            } else {
-                showToast('পণ্যটি সফলভাবে কার্টে যোগ করা হয়েছে! 🛒', 'success');
+                updateCartBadge();
+                updateAllCardCartStates();
+
+                if (isBuyNow) {
+                    window.location.href = 'cart.html';
+                } else {
+                    showToast('পণ্যটি সফলভাবে কার্টে যোগ করা হয়েছে! 🛒', 'success');
+                }
+            } catch (err) {
+                console.error("Error adding to Firestore cart:", err);
+                showToast('কার্টে যোগ করতে সমস্যা হয়েছে!', 'error');
             }
         }
 
@@ -1201,7 +1227,14 @@
             fetchProducts(true);
         });
 
-        window.addEventListener('DOMContentLoaded', () => {
+        // Authentication State Listener & Initialization
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = "https://ghotimarket.com/login";
+                return;
+            }
+            currentUser = user;
+            await fetchUserCart();
             fetchProducts(false);
         });
     </script>
