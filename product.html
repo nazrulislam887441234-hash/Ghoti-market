@@ -233,6 +233,20 @@
             border: 1px solid #fca5a5;
         }
 
+        /* Affiliate On Badge */
+        .affiliate-badge {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            display: none;
+            border: 1px solid #bae6fd;
+            align-items: center;
+            gap: 4px;
+        }
+
         /* Variants Section */
         .variants-container {
             margin-bottom: 16px;
@@ -726,6 +740,7 @@
                 <span class="current-price" id="pPrice"></span>
                 <span class="old-price" id="oldPrice"></span>
                 <span class="discount-badge" id="discountBadge"></span>
+                <span class="affiliate-badge" id="affiliateBadge"><i class="fas fa-handshake"></i> Affiliate On</span>
             </div>
 
             <!-- Variants Selector Section -->
@@ -785,6 +800,31 @@
                     সব রিভিউ দেখুন <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
+        </div>
+    </div>
+
+    <!-- Review Modal Popup -->
+    <div id="reviewModal" class="popup">
+        <div class="popup-box" style="max-width: 360px; text-align: left;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 style="margin: 0; font-size: 18px; color: #0f172a;"><i class="fas fa-star" style="color: #f59e0b;"></i> রিভিউ প্রদান করুন</h3>
+                <i id="closeReviewModalX" class="fas fa-times" style="cursor: pointer; font-size: 18px; color: var(--text-sub);"></i>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <label style="font-size: 13px; font-weight: 600; color: var(--text); display: block; margin-bottom: 6px;">রেটিং নির্বাচন করুন:</label>
+                <div id="starSelectWrap" style="display: flex; gap: 8px; font-size: 24px; color: #f59e0b; cursor: pointer;">
+                    <i class="fas fa-star" data-value="1"></i>
+                    <i class="fas fa-star" data-value="2"></i>
+                    <i class="fas fa-star" data-value="3"></i>
+                    <i class="fas fa-star" data-value="4"></i>
+                    <i class="fas fa-star" data-value="5"></i>
+                </div>
+            </div>
+            <div style="margin-bottom: 16px;">
+                <label for="reviewMsgInput" style="font-size: 13px; font-weight: 600; color: var(--text); display: block; margin-bottom: 6px;">আপনার মতামত:</label>
+                <textarea id="reviewMsgInput" rows="4" placeholder="পণ্যটি সম্পর্কে আপনার অভিজ্ঞতা লিখুন..." style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 10px; font-family: 'Hind Siliguri', sans-serif; font-size: 14px; resize: none;"></textarea>
+            </div>
+            <button id="submitReviewBtn" type="button" style="width: 100%; padding: 12px; border: none; border-radius: 10px; background: var(--primary); color: #fff; font-size: 15px; font-weight: 700; cursor: pointer;">রিভিউ জমা দিন</button>
         </div>
     </div>
 
@@ -855,6 +895,7 @@
         let isLoading = false;
         let currentUser = null;
         let selectedVariantsState = {};
+        let selectedStarRating = 5; // ডিফল্ট ৫ স্টার
         const productCache = new Map();
 
         const getEl = (id) => document.getElementById(id);
@@ -976,7 +1017,6 @@
             }
         };
 
-        // Check if product is already in cart to update button state
         const checkIfInCart = async () => {
             const addToCartBtn = getEl("addToCartBtn");
             if (!addToCartBtn) return;
@@ -1283,6 +1323,7 @@
 
             const oldPriceEl = getEl("oldPrice");
             const discountBadgeEl = getEl("discountBadge");
+            const affiliateBadgeEl = getEl("affiliateBadge");
 
             if (oldPrice > basePrice && basePrice > 0) {
                 const diff = oldPrice - basePrice;
@@ -1292,6 +1333,12 @@
             } else {
                 hideElement(oldPriceEl);
                 hideElement(discountBadgeEl);
+            }
+
+            if (p.affiliate === "on") {
+                if (affiliateBadgeEl) showElement(affiliateBadgeEl, 'inline-flex');
+            } else {
+                if (affiliateBadgeEl) hideElement(affiliateBadgeEl);
             }
 
             renderVariants(p.variants);
@@ -1324,7 +1371,6 @@
             const originalHTML = activeBtn ? activeBtn.innerHTML : '';
 
             try {
-                // Double check if already in cart before adding
                 const q = query(
                     collection(db, "carts"),
                     where("uid", "==", currentUser.uid),
@@ -1379,6 +1425,11 @@
                     slug: currentProductCache.slug,
                     uid: currentUser.uid
                 };
+
+                if (affiliateStatus === "on") {
+                    cartItemData.discount = safeNumber(currentProductCache.discount, 0);
+                }
+
                 await addDoc(collection(db, "carts"), cartItemData);
 
                 await updateCartBadge();
@@ -1462,6 +1513,19 @@
             return html;
         };
 
+        // Star rating UI updater in modal
+        const updateStarSelectionUI = (rating) => {
+            selectedStarRating = rating;
+            const stars = document.querySelectorAll("#starSelectWrap i");
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.className = "fas fa-star";
+                } else {
+                    star.className = "far fa-star";
+                }
+            });
+        };
+
         document.addEventListener('DOMContentLoaded', () => {
             getEl("backNavBtn")?.addEventListener('click', () => history.back());
             getEl("shareBtnTrig")?.addEventListener('click', openSharePopup);
@@ -1472,6 +1536,65 @@
 
             getEl("addToCartBtn")?.addEventListener('click', () => handleAddToCart(false));
             getEl("buyNowBtn")?.addEventListener('click', () => handleAddToCart(true));
+
+            // Review Modal Event Handlers
+            const reviewModal = getEl("reviewModal");
+            getEl("openReviewModalBtn")?.addEventListener('click', () => {
+                if (!currentUser) {
+                    window.location.href = "https://ghotimarket.com/login";
+                    return;
+                }
+                updateStarSelectionUI(5);
+                getEl("reviewMsgInput").value = "";
+                reviewModal?.classList.add("show");
+            });
+
+            getEl("closeReviewModalX")?.addEventListener('click', () => {
+                reviewModal?.classList.remove("show");
+            });
+
+            // Star click selection
+            document.querySelectorAll("#starSelectWrap i").forEach(star => {
+                star.addEventListener('click', () => {
+                    const val = Number(star.getAttribute("data-value"));
+                    updateStarSelectionUI(val);
+                });
+            });
+
+            // Submit Review Handler
+            getEl("submitReviewBtn")?.addEventListener('click', async () => {
+                if (!currentUser || !currentProductCache) return;
+                const message = getEl("reviewMsgInput").value.trim();
+                if (!message) {
+                    showPopup({ title: "সতর্কতা", message: "দয়া করে আপনার মতামত বা রিভিউ লিখুন।", type: "warning" });
+                    return;
+                }
+
+                const submitBtn = getEl("submitReviewBtn");
+                submitBtn.disabled = true;
+                submitBtn.innerText = "জমা দেওয়া হচ্ছে...";
+
+                try {
+                    await addDoc(collection(db, "product_reviews"), {
+                        productId: currentProductCache.docId,
+                        slug: currentProductCache.slug,
+                        uid: currentUser.uid,
+                        userEmail: currentUser.email || "Anonymous",
+                        star: selectedStarRating,
+                        message: message,
+                        createdAt: serverTimestamp()
+                    });
+
+                    reviewModal?.classList.remove("show");
+                    showPopup({ title: "ধন্যবাদ!", message: "আপনার মূল্যবান রিভিউটি সফলভাবে জমা দেওয়া হয়েছে।", type: "success" });
+                    await loadProductReviews(currentProductCache.docId);
+                } catch (err) {
+                    handleFirebaseError(err, "রিভিউ জমা দিতে সমস্যা হয়েছে।");
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "রিভিউ জমা দিন";
+                }
+            });
 
             onAuthStateChanged(auth, async (user) => {
                 currentUser = user;
