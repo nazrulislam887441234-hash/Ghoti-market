@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>নতুন অ্যাকাউন্ট তৈরি করুন - GHOTI MARKET</title>
-    <!-- Google Fonts: Hind Siliguri -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -23,6 +22,7 @@
             --success-bg: #F0FDF4;
             --radius-md: 12px;
             --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
             --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.05);
             --transition: all 0.25s ease-in-out;
         }
@@ -125,6 +125,58 @@
             border: 1px solid #BBF7D0;
         }
 
+        /* --- Google Signup Button --- */
+        .btn-google {
+            width: 100%;
+            padding: 12px 20px;
+            background: #ffffff;
+            color: var(--charcoal);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: var(--shadow-sm);
+            font-family: 'Hind Siliguri', sans-serif;
+            margin-bottom: 16px;
+        }
+
+        .btn-google:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            transform: translateY(-1px);
+        }
+
+        /* --- Divider --- */
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--gray);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .divider:not(:empty)::before {
+            margin-right: .75em;
+        }
+
+        .divider:not(:empty)::after {
+            margin-left: .75em;
+        }
+
         /* --- Form Elements --- */
         .form-group {
             margin-bottom: 16px;
@@ -214,6 +266,7 @@
             gap: 8px;
             box-shadow: 0 4px 12px rgba(255, 107, 53, 0.25);
             margin-top: 8px;
+            font-family: 'Hind Siliguri', sans-serif;
         }
 
         .btn-submit:hover {
@@ -302,15 +355,12 @@
 </head>
 <body>
 
-    <!-- Seamless Page Loader (Runs silently during auth verification) -->
     <div id="pageLoader">
         <img src="https://ghotimarket.com/loading.gif" alt="GHOTI MARKET Loading...">
     </div>
 
-    <!-- Signup Container Card -->
     <div class="signup-card">
         
-        <!-- Logo & Header -->
         <div class="signup-header">
             <div style="display: flex; justify-content: center;">
                 <img src="https://ghotimarket.com/logo.png" alt="GHOTI MARKET Logo" class="signup-logo">
@@ -319,16 +369,25 @@
             <p class="signup-desc">GHOTI MARKET-এ আপনার Buyer Account তৈরি করুন</p>
         </div>
 
-        <!-- Alert Box -->
         <div id="alertBox" class="alert-box hidden">
             <div id="alertIcon" style="flex-shrink: 0; margin-top: 1px;"></div>
             <div id="alertMessage" style="font-weight: 500;"></div>
         </div>
 
-        <!-- Signup Form -->
+        <button type="button" id="googleSignupBtn" class="btn-google">
+            <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span>গুগল দিয়ে সাইন আপ করুন</span>
+        </button>
+
+        <div class="divider">অথবা</div>
+
         <form id="signupForm" onsubmit="handleSignup(event)" novalidate>
             
-            <!-- Full Name -->
             <div class="form-group">
                 <label class="form-label">পূর্ণ নাম</label>
                 <div class="input-wrapper">
@@ -339,7 +398,6 @@
                 </div>
             </div>
 
-            <!-- Email -->
             <div class="form-group">
                 <label class="form-label">ইমেইল ঠিকানা</label>
                 <div class="input-wrapper">
@@ -350,7 +408,6 @@
                 </div>
             </div>
 
-            <!-- Phone -->
             <div class="form-group">
                 <label class="form-label">ফোন নম্বর</label>
                 <div class="input-wrapper">
@@ -361,7 +418,6 @@
                 </div>
             </div>
 
-            <!-- Country -->
             <div class="form-group">
                 <label class="form-label">দেশ</label>
                 <div class="input-wrapper">
@@ -372,7 +428,6 @@
                 </div>
             </div>
 
-            <!-- Password -->
             <div class="form-group">
                 <label class="form-label">পাসওয়ার্ড</label>
                 <div class="input-wrapper">
@@ -386,7 +441,6 @@
                 </div>
             </div>
 
-            <!-- Submit Button -->
             <button type="submit" id="submitBtn" class="btn-submit">
                 <span id="btnText">অ্যাকাউন্ট তৈরি করুন</span>
                 <span id="btnSpinner" class="spinner hidden"></span>
@@ -394,14 +448,12 @@
 
         </form>
 
-        <!-- Login Link -->
         <div class="login-prompt">
             ইতিমধ্যেই অ্যাকাউন্ট আছে? <a href="login.html">লগইন করুন</a>
         </div>
 
     </div>
 
-    <!-- Bottom Navigation Bar -->
     <nav class="bottom-nav">
         <a href="https://ghotimarket.com" class="nav-item"><i data-lucide="home"></i><span>Home</span></a>
         <a href="https://ghotimarket.com/categories" class="nav-item"><i data-lucide="grid"></i><span>Categories</span></a>
@@ -415,17 +467,15 @@
         <a href="https://seller.ghotimarket.com/signup" class="nav-item"><i data-lucide="store"></i><span>J.Seller</span></a>
     </nav>
 
-    <!-- Lucide Icons Script -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         lucide.createIcons();
     </script>
 
-    <!-- Firebase v10 Modular SDKs & App Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, deleteUser, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, createUserWithEmailAndPassword, deleteUser, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
@@ -504,12 +554,61 @@
                     return 'ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।';
                 case 'auth/too-many-requests':
                     return 'অতিরিক্ত চেষ্টার কারণে সাময়িকভাবে ব্লক করা হয়েছে। কিছুক্ষণ পর আবার চেষ্টা করুন।';
+                case 'auth/popup-closed-by-user':
+                    return 'গুগল পপআপ উইন্ডো বন্ধ করা হয়েছে। সাইন আপ সম্পূর্ণ হয়নি।';
+                case 'auth/cancelled-popup-request':
+                    return 'গুগল সাইন আপ অনুরোধ বাতিল করা হয়েছে।';
                 default:
                     return 'সমস্যা হয়েছে: ' + errorCode;
             }
         }
 
-        // Signup Handler
+        // Google Sign-Up / Sign-In Handler
+        const googleSignupBtn = document.getElementById('googleSignupBtn');
+        googleSignupBtn.addEventListener('click', async () => {
+            document.getElementById('alertBox').classList.add('hidden');
+            const provider = new GoogleAuthProvider();
+            try {
+                googleSignupBtn.style.opacity = '0.7';
+                googleSignupBtn.style.pointerEvents = 'none';
+
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                const uid = user.uid;
+
+                // Check if buyer document already exists in Firestore
+                const buyerRef = doc(db, "buyers", uid);
+                const buyerSnap = await getDoc(buyerRef);
+
+                if (!buyerSnap.exists()) {
+                    await setDoc(buyerRef, {
+                        uid: uid,
+                        email: user.email || '',
+                        name: user.displayName || 'Google User',
+                        phone: user.phoneNumber || '',
+                        country: 'Bangladesh',
+                        createdAt: serverTimestamp()
+                    });
+                }
+
+                showAlert('গুগল দিয়ে সফলভাবে সাইন আপ করা হয়েছে! রিডাইরেক্ট করা হচ্ছে...', 'success');
+                setTimeout(() => {
+                    if (user.email === 'support@ghotimarket.com') {
+                        window.location.replace('admin-buyers.html');
+                    } else {
+                        window.location.replace('profile.html');
+                    }
+                }, 1200);
+
+            } catch (error) {
+                console.error("Google Signup error:", error);
+                googleSignupBtn.style.opacity = '1';
+                googleSignupBtn.style.pointerEvents = 'auto';
+                showAlert(getBengaliErrorMessage(error.code), 'error');
+            }
+        });
+
+        // Standard Email Signup Handler
         window.handleSignup = async function(e) {
             e.preventDefault();
             
