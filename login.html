@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>লগইন - GHOTI MARKET</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-hover: #E85A2A;
+            --primary-light: #FFF4F0;
+            --charcoal: #111827;
+            --gray: #6B7280;
+            --border-color: #E5E7EB;
+            --danger: #DC2626;
+            --danger-bg: #FEF2F2;
+            --success: #16A34A;
+            --success-bg: #F0FDF4;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(255, 107, 53, 0.1);
+            --transition: all 0.25s ease-in-out;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background: linear-gradient(135deg, #fffbeb 0%, #fff7ed 50%, #f3f4f6 100%);
+            color: var(--charcoal);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            padding-bottom: 80px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Seamless Page Loader (Hidden once auth state resolved) --- */
+        #pageLoader {
+            position: fixed;
+            inset: 0;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
+
+        #pageLoader img {
+            width: 56px;
+            height: 56px;
+            object-fit: contain;
+        }
+
+        /* --- Login Box Card --- */
+        .login-card {
+            width: 100%;
+            max-width: 440px;
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 215, 170, 0.8);
+            padding: 32px 24px;
+            margin: 24px 0;
+        }
+
+        /* --- Header / Logo --- */
+        .login-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .login-logo {
+            height: 48px;
+            width: auto;
+            object-fit: contain;
+            margin-bottom: 12px;
+        }
+
+        .brand-tag {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .brand-sub {
+            font-size: 12px;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        .login-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--charcoal);
+            margin-top: 16px;
+            margin-bottom: 4px;
+        }
+
+        .login-desc {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        /* --- Alert Messages --- */
+        .alert-box {
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .alert-error {
+            background: var(--danger-bg);
+            color: #991B1B;
+            border: 1px solid #FECACA;
+        }
+
+        .alert-success {
+            background: var(--success-bg);
+            color: #166534;
+            border: 1px solid #BBF7D0;
+        }
+
+        /* --- Google Login Button --- */
+        .btn-google {
+            width: 100%;
+            padding: 12px 20px;
+            background: #ffffff;
+            color: var(--charcoal);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: var(--shadow-sm);
+            font-family: 'Hind Siliguri', sans-serif;
+            margin-bottom: 20px;
+        }
+
+        .btn-google:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            transform: translateY(-1px);
+        }
+
+        /* --- Divider --- */
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--gray);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .divider:not(:empty)::before {
+            margin-right: .75em;
+        }
+
+        .divider:not(:empty)::after {
+            margin-left: .75em;
+        }
+
+        /* --- Form Elements --- */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gray);
+            margin-bottom: 6px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            color: var(--gray);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            background: #fafafa;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            color: var(--charcoal);
+            outline: none;
+            transition: var(--transition);
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        .form-control:focus {
+            background: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.12);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: color 0.15s;
+        }
+
+        .toggle-password:hover {
+            color: var(--charcoal);
+        }
+
+        .forgot-pass-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: -6px;
+            margin-bottom: 18px;
+        }
+
+        .forgot-pass-link {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        .forgot-pass-link:hover {
+            color: var(--primary-hover);
+        }
+
+        /* --- Submit Button --- */
+        .btn-submit {
+            width: 100%;
+            padding: 13px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.25);
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        .btn-submit:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- Security Trust Badge --- */
+        .trust-badge {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--gray);
+            text-align: center;
+        }
+
+        .trust-badge svg {
+            color: var(--success);
+            flex-shrink: 0;
+        }
+
+        /* --- Signup Prompt --- */
+        .signup-prompt {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        .signup-prompt a {
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .signup-prompt a:hover {
+            color: var(--primary-hover);
+        }
+
+        /* --- Bottom Navigation Bar --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            z-index: 1000;
+            padding-bottom: env(safe-area-inset-bottom);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 10px;
+            font-weight: 800;
+            transition: color 0.15s ease;
+            flex: 1;
+        }
+
+        .nav-item i {
+            font-size: 18px;
+            margin-bottom: 2px;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="pageLoader">
+        <img src="https://ghotimarket.com/loading.gif" alt="GHOTI MARKET Loading...">
+    </div>
+
+    <div class="login-card">
+        
+        <div class="login-header">
+            <div style="display: flex; justify-content: center;">
+                <img src="https://ghotimarket.com/logo.png" alt="GHOTI MARKET Logo" class="login-logo">
+            </div>
+            <div class="brand-tag">GHOTI MARKET</div>
+            <p class="brand-sub">বাংলাদেশের আধুনিক অনলাইন মার্কেটপ্লেস</p>
+            <h1 class="login-title">আপনার অ্যাকাউন্টে লগইন করুন</h1>
+            <p class="login-desc">আপনার GHOTI MARKET অ্যাকাউন্টে প্রবেশ করতে তথ্য দিন</p>
+        </div>
+
+        <div id="errorMessage" class="alert-box alert-error hidden">
+            <svg style="width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            <div id="errorText" style="font-weight: 500;"></div>
+        </div>
+
+        <div id="successMessage" class="alert-box alert-success hidden">
+            <svg style="width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+            <div id="successText" style="font-weight: 500;"></div>
+        </div>
+
+        <button type="button" id="googleLoginBtn" class="btn-google">
+            <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span>গুগল দিয়ে লগইন করুন</span>
+        </button>
+
+        <div class="divider">অথবা</div>
+
+        <form id="loginForm" novalidate>
+            
+            <div class="form-group">
+                <label for="email" class="form-label">ইমেইল ঠিকানা</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </span>
+                    <input type="email" id="email" name="email" required autocomplete="email" placeholder="আপনার ইমেইল লিখুন" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">পাসওয়ার্ড</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </span>
+                    <input type="password" id="password" name="current-password" required autocomplete="current-password" placeholder="আপনার পাসওয়ার্ড লিখুন" class="form-control" style="padding-right: 40px;">
+                    <button type="button" id="togglePassword" aria-label="পাসওয়ার্ড দেখান" class="toggle-password">
+                        <svg id="eyeIcon" style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="forgot-pass-wrapper">
+                <a href="#" id="forgotPassword" class="forgot-pass-link">পাসওয়ার্ড ভুলে গেছেন?</a>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn-submit">
+                <span id="btnText">লগইন করুন</span>
+                <span id="btnIcon">
+                    <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </span>
+                <span id="btnSpinner" class="spinner hidden"></span>
+            </button>
+        </form>
+
+        <div class="trust-badge">
+            <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            <span>নিরাপদ ফায়ারবেস অথেনটিকেশন এনফোর্সড।</span>
+        </div>
+
+        <div class="signup-prompt">
+            অ্যাকাউন্ট নেই? <a href="signup.html">সাইন আপ করুন</a>
+        </div>
+
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="https://ghotimarket.com" class="nav-item active"><i data-lucide="home"></i><span>Home</span></a>
+        <a href="https://ghotimarket.com/categories" class="nav-item"><i data-lucide="grid"></i><span>Categories</span></a>
+        <a href="https://ghotimarket.com/all-product" class="nav-item"><i data-lucide="box"></i><span>Products</span></a>
+        <a href="https://ghotimarket.com/contact" class="nav-item"><i data-lucide="headphones"></i><span>Support</span></a>
+        <a href="https://ghotimarket.com/privacy-policy" class="nav-item"><i data-lucide="shield-check"></i><span>Privacy</span></a>
+        <a href="profile.html" class="nav-item">
+            <i data-lucide="circle-user-round"></i>
+            <span>Profile</span>
+        </a> 
+        <a href="https://seller.ghotimarket.com/signup" class="nav-item"><i data-lucide="store"></i><span>J.Seller</span></a>
+    </nav>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+            authDomain: "ghotimarket.firebaseapp.com",
+            databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+            projectId: "ghotimarket",
+            storageBucket: "ghotimarket.firebasestorage.app",
+            messagingSenderId: "481257644093",
+            appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+            measurementId: "G-4SR8V2EKC1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const pageLoader = document.getElementById('pageLoader');
+
+        // Check if user is already logged in on page load seamlessly
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                if (user.email === 'support@ghotimarket.com') {
+                    window.location.replace('admin-buyers.html');
+                } else {
+                    window.location.replace('profile.html');
+                }
+            } else {
+                // Not logged in: fade out the loader smoothly to reveal the login page
+                pageLoader.style.opacity = '0';
+                setTimeout(() => {
+                    pageLoader.style.display = 'none';
+                }, 300);
+            }
+        });
+
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        // Password Visibility Toggle
+        togglePassword.addEventListener('click', () => {
+            const isPassword = passwordInput.getAttribute('type') === 'password';
+            passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+            
+            if (isPassword) {
+                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.032 10.032 0 014.24-5.385m3.714-1.258A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18"></path>`;
+                togglePassword.setAttribute('aria-label', 'পাসওয়ার্ড লুকান');
+            } else {
+                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>`;
+                togglePassword.setAttribute('aria-label', 'পাসওয়ার্ড দেখান');
+            }
+        });
+
+        // Bengali Friendly Error Messages
+        function getFriendlyErrorMessage(errorCode) {
+            switch (errorCode) {
+                case 'auth/invalid-credential':
+                case 'auth/user-not-found':
+                case 'auth/wrong-password': 
+                    return 'ইমেইল অথবা পাসওয়ার্ড ভুল হয়েছে।';
+                case 'auth/invalid-email': 
+                    return 'সঠিক ইমেইল দিন।';
+                case 'auth/too-many-requests': 
+                    return 'অতিরিক্ত চেষ্টার কারণে অ্যাকাউন্ট সাময়িকভাবে ব্লক করা হয়েছে। কিছুক্ষণ পর আবার চেষ্টা করুন।';
+                case 'auth/popup-closed-by-user':
+                    return 'গুগল পপআপ উইন্ডো বন্ধ করা হয়েছে। লগইন সম্পূর্ণ হয়নি।';
+                case 'auth/cancelled-popup-request':
+                    return 'গুগল লগইন অনুরোধ বাতিল করা হয়েছে।';
+                default: 
+                    return 'লগইন করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।';
+            }
+        }
+
+        const errorEl = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const successEl = document.getElementById('successMessage');
+        const successText = document.getElementById('successText');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnIcon = document.getElementById('btnIcon');
+        const btnSpinner = document.getElementById('btnSpinner');
+        const googleLoginBtn = document.getElementById('googleLoginBtn');
+
+        function hideAlerts() {
+            errorEl.classList.add('hidden');
+            successEl.classList.add('hidden');
+        }
+
+        function setLoading(loading) {
+            submitBtn.disabled = loading;
+            googleLoginBtn.disabled = loading;
+            if (loading) {
+                btnText.textContent = 'লগইন হচ্ছে...';
+                btnIcon.classList.add('hidden');
+                btnSpinner.classList.remove('hidden');
+            } else {
+                btnText.textContent = 'লগইন করুন';
+                btnIcon.classList.remove('hidden');
+                btnSpinner.classList.add('hidden');
+            }
+        }
+
+        function getRedirectUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let redirect = urlParams.get('redirect');
+            if (!redirect && document.referrer && !document.referrer.includes('login.html') && !document.referrer.includes('signup.html')) {
+                redirect = document.referrer;
+            }
+            return redirect || 'profile.html';
+        }
+
+        // Google Sign-In Handler
+        googleLoginBtn.addEventListener('click', async () => {
+            hideAlerts();
+            const provider = new GoogleAuthProvider();
+            try {
+                googleLoginBtn.style.opacity = '0.7';
+                googleLoginBtn.style.pointerEvents = 'none';
+                
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+
+                successText.textContent = 'গুগল দিয়ে লগইন সফল হয়েছে! রিডাইরেক্ট হচ্ছে...';
+                successEl.classList.remove('hidden');
+
+                if (user.email === 'support@ghotimarket.com') {
+                    setTimeout(() => window.location.href = 'admin-buyers.html', 1000);
+                } else {
+                    const targetUrl = getRedirectUrl();
+                    setTimeout(() => window.location.href = targetUrl, 1000);
+                }
+            } catch (err) {
+                googleLoginBtn.style.opacity = '1';
+                googleLoginBtn.style.pointerEvents = 'auto';
+                errorText.textContent = getFriendlyErrorMessage(err.code);
+                errorEl.classList.remove('hidden');
+            }
+        });
+
+        // Login Handler
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideAlerts();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                errorText.textContent = 'সবগুলো ঘর পূরণ করা বাধ্যতামূলক।';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            setLoading(true);
+
+            if (email === 'support@ghotimarket.com') {
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    successText.textContent = 'অ্যাডমিন লগইন সফল হয়েছে! রিডাইরেক্ট হচ্ছে...';
+                    successEl.classList.remove('hidden');
+                    setTimeout(() => window.location.href = 'admin-buyers.html', 1000);
+                    return;
+                } catch (err) {
+                    setLoading(false);
+                    errorText.textContent = getFriendlyErrorMessage(err.code);
+                    errorEl.classList.remove('hidden');
+                    return;
+                }
+            }
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                successText.textContent = 'লগইন সফল হয়েছে! রিডাইরেক্ট হচ্ছে...';
+                successEl.classList.remove('hidden');
+                const targetUrl = getRedirectUrl();
+                setTimeout(() => window.location.href = targetUrl, 1000);
+            } catch (err) {
+                setLoading(false);
+                errorText.textContent = getFriendlyErrorMessage(err.code);
+                errorEl.classList.remove('hidden');
+            }
+        });
+
+        // Password Reset Handler
+        document.getElementById('forgotPassword').addEventListener('click', async (e) => {
+            e.preventDefault();
+            hideAlerts();
+
+            const email = document.getElementById('email').value.trim();
+
+            if (!email) {
+                errorText.textContent = 'আগে আপনার ইমেইল ঠিকানাটি লিখুন।';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                successText.textContent = 'পাসওয়ার্ড রিসেট করার লিংক আপনার ইমেইলে পাঠানো হয়েছে।';
+                successEl.classList.remove('hidden');
+            } catch (err) {
+                errorText.textContent = getFriendlyErrorMessage(err.code) || 'রিসেট লিংক পাঠানো যায়নি।';
+                errorEl.classList.remove('hidden');
+            }
+        });
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
