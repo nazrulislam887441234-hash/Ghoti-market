@@ -504,7 +504,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
@@ -521,16 +521,63 @@
         const auth = getAuth(app);
         const pageLoader = document.getElementById('pageLoader');
 
+        const errorEl = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const successEl = document.getElementById('successMessage');
+        const successText = document.getElementById('successText');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnIcon = document.getElementById('btnIcon');
+        const btnSpinner = document.getElementById('btnSpinner');
+        const googleLoginBtn = document.getElementById('googleLoginBtn');
+
+        function hideAlerts() {
+            errorEl.classList.add('hidden');
+            successEl.classList.add('hidden');
+        }
+
+        function getRedirectUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let redirect = urlParams.get('redirect');
+            if (!redirect && document.referrer && !document.referrer.includes('login.html') && !document.referrer.includes('signup.html')) {
+                redirect = document.referrer;
+            }
+            return redirect || 'profile.html';
+        }
+
+        // Handle Redirect Result when user comes back from Google login page in WebView
+        getRedirectResult(auth)
+            .then((result) => {
+                if (result) {
+                    const user = result.user;
+                    successText.textContent = 'গুগল দিয়ে লগইন সফল হয়েছে! রিডাইরেক্ট হচ্ছে...';
+                    successEl.classList.remove('hidden');
+
+                    if (user.email === 'support@ghotimarket.com') {
+                        setTimeout(() => window.location.href = 'admin-buyers.html', 1000);
+                    } else {
+                        const targetUrl = getRedirectUrl();
+                        setTimeout(() => window.location.href = targetUrl, 1000);
+                    }
+                }
+            })
+            .catch((err) => {
+                errorText.textContent = getFriendlyErrorMessage(err.code);
+                errorEl.classList.remove('hidden');
+            });
+
         // Check if user is already logged in on page load seamlessly
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                if (user.email === 'support@ghotimarket.com') {
-                    window.location.replace('admin-buyers.html');
-                } else {
-                    window.location.replace('profile.html');
+                // If already logged in and not processing redirect result
+                if (!window.location.search.includes('state')) {
+                    if (user.email === 'support@ghotimarket.com') {
+                        window.location.replace('admin-buyers.html');
+                    } else {
+                        window.location.replace('profile.html');
+                    }
                 }
             } else {
-                // Not logged in: fade out the loader smoothly to reveal the login page
                 pageLoader.style.opacity = '0';
                 setTimeout(() => {
                     pageLoader.style.display = 'none';
@@ -568,27 +615,11 @@
                 case 'auth/too-many-requests': 
                     return 'অতিরিক্ত চেষ্টার কারণে অ্যাকাউন্ট সাময়িকভাবে ব্লক করা হয়েছে। কিছুক্ষণ পর আবার চেষ্টা করুন।';
                 case 'auth/popup-closed-by-user':
-                    return 'গুগল পপআপ উইন্ডো বন্ধ করা হয়েছে। লগইন সম্পূর্ণ হয়নি।';
                 case 'auth/cancelled-popup-request':
-                    return 'গুগল লগইন অনুরোধ বাতিল করা হয়েছে।';
+                    return 'গুগল লগইন বাতিল করা হয়েছে।';
                 default: 
                     return 'লগইন করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।';
             }
-        }
-
-        const errorEl = document.getElementById('errorMessage');
-        const errorText = document.getElementById('errorText');
-        const successEl = document.getElementById('successMessage');
-        const successText = document.getElementById('successText');
-        const submitBtn = document.getElementById('submitBtn');
-        const btnText = document.getElementById('btnText');
-        const btnIcon = document.getElementById('btnIcon');
-        const btnSpinner = document.getElementById('btnSpinner');
-        const googleLoginBtn = document.getElementById('googleLoginBtn');
-
-        function hideAlerts() {
-            errorEl.classList.add('hidden');
-            successEl.classList.add('hidden');
         }
 
         function setLoading(loading) {
@@ -605,35 +636,14 @@
             }
         }
 
-        function getRedirectUrl() {
-            const urlParams = new URLSearchParams(window.location.search);
-            let redirect = urlParams.get('redirect');
-            if (!redirect && document.referrer && !document.referrer.includes('login.html') && !document.referrer.includes('signup.html')) {
-                redirect = document.referrer;
-            }
-            return redirect || 'profile.html';
-        }
-
-        // Google Sign-In Handler
+        // Google Sign-In using Redirect for Android WebViews
         googleLoginBtn.addEventListener('click', async () => {
             hideAlerts();
             const provider = new GoogleAuthProvider();
             try {
                 googleLoginBtn.style.opacity = '0.7';
                 googleLoginBtn.style.pointerEvents = 'none';
-                
-                const result = await signInWithPopup(auth, provider);
-                const user = result.user;
-
-                successText.textContent = 'গুগল দিয়ে লগইন সফল হয়েছে! রিডাইরেক্ট হচ্ছে...';
-                successEl.classList.remove('hidden');
-
-                if (user.email === 'support@ghotimarket.com') {
-                    setTimeout(() => window.location.href = 'admin-buyers.html', 1000);
-                } else {
-                    const targetUrl = getRedirectUrl();
-                    setTimeout(() => window.location.href = targetUrl, 1000);
-                }
+                await signInWithRedirect(auth, provider);
             } catch (err) {
                 googleLoginBtn.style.opacity = '1';
                 googleLoginBtn.style.pointerEvents = 'auto';
