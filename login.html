@@ -471,23 +471,129 @@
             successEl.classList.add('hidden');
         }
 
-        function getRedirectUrl() {
-            const urlParams = new URLSearchParams(window.location.search);
-            let redirect = urlParams.get('redirect');
-            if (!redirect && document.referrer && !document.referrer.includes('login.html') && !document.referrer.includes('signup.html')) {
-                redirect = document.referrer;
+        // --- Robust Security Function: isValidInternalUrl ---
+        // Prevents Open Redirect vulnerability, malicious URLs, javascript:, data: URIs, and external domains.
+        function isValidInternalUrl(url) {
+            if (!url || typeof url !== 'string') return false;
+
+            // Reject dangerous schemes
+            const lowerUrl = url.trim().toLowerCase();
+            if (lowerUrl.startsWith('javascript:') || lowerUrl.startsWith('data:') || lowerUrl.startsWith('vbscript:')) {
+                return false;
             }
-            return redirect || 'profile.html';
+
+            try {
+                let parsedUrl;
+                // If relative URL, resolve against window.location.origin
+                if (url.startsWith('/')) {
+                    parsedUrl = new URL(url, window.location.origin);
+                } else if (url.startsWith('http://') || url.startsWith('https://')) {
+                    parsedUrl = new URL(url);
+                } else {
+                    // Treat relative path without starting slash safely
+                    parsedUrl = new URL(url, window.location.origin);
+                }
+
+                // Enforce HTTPS protocol for absolute URLs
+                if (parsedUrl.protocol !== 'https:' && parsedUrl.protocol !== 'http:') {
+                    return false;
+                }
+
+                // Check allowed hostnames (ghotimarket.com and www.ghotimarket.com)
+                const validHostnames = ['ghotimarket.com', 'www.ghotimarket.com'];
+                if (!validHostnames.includes(parsedUrl.hostname)) {
+                    return false;
+                }
+
+                // Prevent redirection back to auth pages to avoid redirect loops
+                const path = parsedUrl.pathname.toLowerCase();
+                const authPages = ['login.html', 'signup.html', 'forgot-password.html', 'reset-password.html'];
+                if (authPages.some(page => path.includes(page))) {
+                    return false;
+                }
+
+                return true;
+            } catch (e) {
+                return false;
+            }
         }
 
-        // Check if user is already logged in on page load seamlessly
+        // --- Priority-Based Redirect URL Resolution ---
+        function getResolvedRedirectUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let redirectParam = urlParams.get('redirect');
+
+            // 1. Priority 1: Valid `?redirect=` parameter
+            if (redirectParam) {
+                // Decode in case it's double-encoded
+                try { redirectParam = decodeURIComponent(redirectParam); } catch(e) {}
+                if (isValidInternalUrl(redirectParam)) {
+                    // Save to sessionStorage for persistence across refresh/back
+                    sessionStorage.setItem('ghoti_redirect', redirectParam);
+                    return redirectParam;
+                }
+            }
+
+            // 2. Priority 2: sessionStorage-এ আগে থেকে সংরক্ষিত valid return URL
+            const storedRedirect = sessionStorage.getItem('ghoti_redirect');
+            if (storedRedirect && isValidInternalUrl(storedRedirect)) {
+                return storedRedirect;
+            }
+
+            // 3. Priority 3: Valid internal `document.referrer`
+            const referrer = document.referrer;
+            if (referrer && isValidInternalUrl(referrer)) {
+                return referrer;
+            }
+
+            // 4. Priority 4: Fallback profile URL
+            return 'https://ghotimarket.com/profile';
+        }
+
+        // Capture `redirect` parameter into sessionStorage immediately on page load if present
+        (function handleInitialRedirectParam() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectParam = urlParams.get('redirect');
+            if (redirectParam) {
+                try {
+                    const decoded = decodeURIComponent(redirectParam);
+                    if (isValidInternalUrl(decoded)) {
+                        sessionStorage.setItem('ghoti_redirect', decoded);
+                    }
+                } catch(e) {}
+            }
+        })();
+
+        // --- Centralized Redirect Function ---
+        // Prevents duplicate redirects, handles Admin vs Normal User routing, and clears sessionStorage.
+        let isRedirecting = false;
+        function redirectAfterLogin(user) {
+            if (isRedirecting) return;
+            isRedirecting = true;
+
+            // Rule 5 & 23: Admin User Check
+            if (user && user.email === 'support@ghotimarket.com') {
+                sessionStorage.removeItem('ghoti_redirect');
+                window.location.replace('admin-buyers.html');
+                return;
+            }
+
+            // Normal User: Get resolved target and clear session storage
+            const target = getResolvedRedirectUrl();
+            sessionStorage.removeItem('ghoti_redirect');
+
+            // Rule 30: window.location.replace() usage
+            // Explanation: window.location.replace() replaces the current document in the history session 
+            // instead of adding a new entry. This ensures the user cannot use the browser's "Back" button 
+            // to return to the login page after a successful login session.
+            window.location.replace(target);
+        }
+
+        // --- Auth State Observer (onAuthStateChanged) ---
+        // Seamlessly handles already logged-in users visiting the login page
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                if (user.email === 'support@ghotimarket.com') {
-                    window.location.replace('admin-buyers.html');
-                } else {
-                    window.location.replace('profile.html');
-                }
+                redirectAfterLogin(user);
             } else {
                 pageLoader.style.opacity = '0';
                 setTimeout(() => {
@@ -543,7 +649,7 @@
             }
         }
 
-        // Login Handler
+        // --- Login Form Submit Handler ---
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             hideAlerts();
@@ -559,27 +665,15 @@
 
             setLoading(true);
 
-            if (email === 'support@ghotimarket.com') {
-                try {
-                    await signInWithEmailAndPassword(auth, email, password);
-                    successText.textContent = 'অ্যাডমিন লগইন সফল হয়েছে! রিডাইরেক্ট হচ্ছে...';
-                    successEl.classList.remove('hidden');
-                    setTimeout(() => window.location.href = 'admin-buyers.html', 1000);
-                    return;
-                } catch (err) {
-                    setLoading(false);
-                    errorText.textContent = getFriendlyErrorMessage(err.code);
-                    errorEl.classList.remove('hidden');
-                    return;
-                }
-            }
-
             try {
-                await signInWithEmailAndPassword(auth, email, password);
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 successText.textContent = 'লগইন সফল হয়েছে! রিডাইরেক্ট হচ্ছে...';
                 successEl.classList.remove('hidden');
-                const targetUrl = getRedirectUrl();
-                setTimeout(() => window.location.href = targetUrl, 1000);
+                
+                // Use centralized redirect handler instead of manual duplicate redirects
+                setTimeout(() => {
+                    redirectAfterLogin(userCredential.user);
+                }, 800);
             } catch (err) {
                 setLoading(false);
                 errorText.textContent = getFriendlyErrorMessage(err.code);
