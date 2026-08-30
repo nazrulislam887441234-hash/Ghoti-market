@@ -626,16 +626,16 @@
 
                 // Create Firestore Document inside Affiliates collection
                 const affiliateData = {
-                    uid: user.uid,
-                    fullName: fullName,
-                    email: email,
-                    phoneNumber: phoneNumber,
-                    promoCode: promoCode,
-                    verified: true,
-                    active: true,
-                    balane: 0,
-                    createdAt: serverTimestamp()
-                };
+    uid: user.uid,
+    fullName: fullName,
+    email: email,
+    phoneNumber: phoneNumber,
+    promoCode: promoCode,
+    verified: true,
+    active: true,
+    balance: 0,
+    createdAt: serverTimestamp()
+};
 
                 await setDoc(doc(db, 'Affiliates', user.uid), affiliateData);
 
