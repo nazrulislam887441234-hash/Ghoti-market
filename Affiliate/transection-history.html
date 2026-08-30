@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHOTI MARKET - Affiliate Transaction History</title>
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-hover: #e55a24;
+            --primary-light: #FFF2EC;
+            --primary-border: #FFD2C2;
+            --bg: #F8FAFC;
+            --card: #FFFFFF;
+            --text: #1E293B;
+            --muted: #64748B;
+            --border: #E2E8F0;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 10px 25px -5px rgba(255, 107, 53, 0.12);
+            --success: #10B981;
+            --success-bg: rgba(16, 185, 129, 0.1);
+            --error: #EF4444;
+            --error-bg: rgba(239, 68, 68, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            padding: 20px;
+            min-height: 100vh;
+            display: none;
+        }
+
+        .auth-loading, .full-page-state {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            gap: 16px;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .spinner {
+            width: 44px;
+            height: 44px;
+            border: 4px solid var(--border);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card);
+            padding: 20px 28px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-brand svg {
+            width: 32px;
+            height: 32px;
+            color: var(--primary);
+        }
+
+        .header-brand h1 {
+            color: var(--text);
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .header-brand p {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            background: var(--primary-light);
+            color: var(--primary);
+            border: 1px solid var(--primary-border);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-action:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .btn-action svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Balance Banner */
+        .balance-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, #ff8c5f 100%);
+            color: #fff;
+            padding: 28px;
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .balance-info h2 {
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .balance-amount {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .balance-meta {
+            font-size: 12px;
+            opacity: 0.85;
+            margin-top: 4px;
+        }
+
+        .balance-icon-wrap {
+            background: rgba(255, 255, 255, 0.2);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .balance-icon-wrap svg {
+            width: 30px;
+            height: 30px;
+            color: #fff;
+        }
+
+        /* Statistics Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-title {
+            font-size: 12px;
+            color: var(--muted);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .stat-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .stat-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+            margin-top: 4px;
+        }
+
+        /* Toolbar & Filters */
+        .toolbar {
+            background: var(--card);
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .search-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-wrapper svg {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            color: var(--muted);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 46px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--bg);
+            color: var(--text);
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            background: var(--card);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .filter-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .filter-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .filter-chip:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .filter-chip.active {
+            background: var(--primary);
+            color: #FFF;
+            border-color: var(--primary);
+        }
+
+        .date-select {
+            padding: 8px 12px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            background: var(--bg);
+            color: var(--text);
+            cursor: pointer;
+            font-weight: 500;
+            outline: none;
+        }
+
+        .date-select:focus {
+            border-color: var(--primary);
+        }
+
+        /* Desktop Table */
+        .table-container {
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .txn-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        .txn-table th {
+            background: var(--bg);
+            color: var(--muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .txn-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .txn-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .txn-table tr:hover {
+            background: rgba(255, 107, 53, 0.015);
+        }
+
+        /* Mobile Card View */
+        .mobile-cards {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .mobile-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .mobile-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mobile-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .badge-credit {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        .badge-withdraw {
+            background: var(--error-bg);
+            color: var(--error);
+        }
+
+        .mobile-amount {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .mobile-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 12px;
+            background: var(--bg);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .mobile-detail-item span {
+            display: block;
+        }
+
+        .mobile-detail-label {
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+
+        .mobile-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+        }
+
+        /* Amount styling helpers */
+        .amount-credit {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .amount-withdraw {
+            color: var(--error);
+            font-weight: 700;
+        }
+
+        /* States */
+        .state-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 48px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        .state-box svg {
+            width: 48px;
+            height: 48px;
+            color: var(--muted);
+            opacity: 0.6;
+        }
+
+        .state-box h3 {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .state-box p {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        /* Skeleton Loading */
+        .skeleton {
+            background: linear-gradient(90deg, var(--border) 25%, var(--bg) 50%, var(--border) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-row {
+            height: 20px;
+            width: 100%;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            header { padding: 16px; }
+            .table-container { display: none; }
+            .mobile-cards { display: flex; }
+            .balance-banner { padding: 20px; }
+            .balance-amount { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Global Auth Checking Loader -->
+    <div class="auth-loading" id="authLoading">
+        <div class="spinner"></div>
+        <div>যাচাই করা হচ্ছে...</div>
+    </div>
+
+    <div class="container" id="mainContainer">
+        <!-- Header -->
+        <header>
+            <div class="header-brand">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
+                    <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
+                    <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
+                </svg>
+                <div>
+                    <h1>Transaction History</h1>
+                    <p>GHOTI MARKET Affiliates Portal</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn-action" id="refreshBtn" aria-label="Refresh Data">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.73-5.73"/></svg>
+                    Refresh
+                </button>
+                <a href="index.html" class="btn-action" aria-label="Go to Dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    Dashboard
+                </a>
+            </div>
+        </header>
+
+        <!-- Balance Banner -->
+        <div class="balance-banner">
+            <div class="balance-info">
+                <h2>Current Balance</h2>
+                <div class="balance-amount" id="bannerBalance">৳ 0.00</div>
+                <div class="balance-meta" id="bannerEmail">Loading user details...</div>
+            </div>
+            <div class="balance-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
+            </div>
+        </div>
+
+        <!-- Statistics Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Total Transactions</span>
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    </div>
+                </div>
+                <div class="stat-value" id="statTotalTxn">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Total Credit</span>
+                    <div class="stat-icon" style="color: var(--success); background: var(--success-bg);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="19" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                    </div>
+                </div>
+                <div class="stat-value" id="statTotalCredit">৳ 0.00</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Total Withdraw</span>
+                    <div class="stat-icon" style="color: var(--error); background: var(--error-bg);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="5" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                    </div>
+                </div>
+                <div class="stat-value" id="statTotalWithdraw">৳ 0.00</div>
+            </div>
+        </div>
+
+        <!-- Toolbar & Filters -->
+        <div class="toolbar">
+            <div class="search-wrapper">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="নোট, অ্যাডমিন ইমেইল, টাইপ বা অ্যামাউন্ট দিয়ে খুঁজুন..." aria-label="Search transactions">
+            </div>
+            <div class="filter-row">
+                <div class="filter-chips" id="filterChips">
+                    <button class="filter-chip active" data-filter="all">All</button>
+                    <button class="filter-chip" data-filter="credit">Credit</button>
+                    <button class="filter-chip" data-filter="withdraw">Withdraw</button>
+                </div>
+                <select id="dateFilterSelect" class="date-select" aria-label="Filter by date range">
+                    <option value="all">All Time</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Desktop Table View -->
+        <div class="table-container">
+            <table class="txn-table">
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Previous Balance</th>
+                        <th>Current Balance</th>
+                        <th>Admin Note / Details</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Dynamic Rows -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Mobile Card View -->
+        <div class="mobile-cards" id="mobileCardsContainer">
+            <!-- Dynamic Cards -->
+        </div>
+
+        <!-- Dynamic States Container (Loading/Empty/Error handled dynamically) -->
+        <div id="dynamicStateContainer"></div>
+    </div>
+
+    <!-- Firebase Modular SDK Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, collection, query, where, orderBy, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Firebase Configuration Placeholder
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let rawTransactions = [];
+        let fetchedUserBalance = null;
+        let currentFilterType = 'all';
+        let currentDateRange = 'all';
+        let currentSearchQuery = '';
+
+        const formatCurrency = (n) => '৳ ' + (Number(n) || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        const formatDate = (timestamp) => {
+            if (!timestamp) return 'N/A';
+            try {
+                const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp.seconds * 1000);
+                return new Intl.DateTimeFormat('en-GB', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true,
+                    timeZone: 'Asia/Dhaka'
+                }).format(date);
+            } catch (e) {
+                return 'N/A';
+            }
+        };
+
+        const escapeHtml = (str) => {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        };
+
+        // Auth State Handler
+        onAuthStateChanged(auth, async (user) => {
+            const authLoading = document.getElementById('authLoading');
+            if (!user) {
+                authLoading.innerHTML = `
+                    <svg style="width:48px;height:48px;color:var(--error);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+                    <div>Login Required</div>
+                    <p style="color:var(--muted);font-weight:normal;font-size:13px;">Please login to view your transactions.</p>
+                `;
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+                return;
+            }
+
+            authLoading.style.display = 'none';
+            document.body.style.display = 'block';
+
+            document.getElementById('bannerEmail').textContent = user.email || user.uid;
+
+            await loadUserDataAndTransactions(user);
+        });
+
+        async function loadUserDataAndTransactions(user) {
+            showLoadingState();
+            try {
+                // Fetch user's core balance document from Affiliates collection
+                try {
+                    const userDocRef = doc(db, 'Affiliates', user.uid);
+                    const userSnap = await getDoc(userDocRef);
+                    if (userSnap.exists()) {
+                        fetchedUserBalance = Number(userSnap.data().balance) || 0;
+                    }
+                } catch (e) {
+                    console.warn("Could not fetch user main balance document:", e);
+                }
+
+                // Query transactions filtered strictly by current user's UID
+                const q = query(
+                    collection(db, 'afl_transection'),
+                    where("uid", "==", user.uid),
+                    orderBy("createAt", "desc")
+                );
+
+                const querySnapshot = await getDocs(q);
+                rawTransactions = [];
+                querySnapshot.forEach((docSnap) => {
+                    rawTransactions.push({ id: docSnap.id, ...docSnap.data() });
+                });
+
+                processAndRender();
+
+            } catch (error) {
+                console.error("Error fetching transactions:", error);
+                showErrorState(error);
+            }
+        }
+
+        function showLoadingState() {
+            const tableBody = document.getElementById('tableBody');
+            const mobileCards = document.getElementById('mobileCardsContainer');
+            const stateContainer = document.getElementById('dynamicStateContainer');
+
+            tableBody.innerHTML = `
+                <tr><td colspan="6"><div class="skeleton skeleton-row"></div></td></tr>
+                <tr><td colspan="6"><div class="skeleton skeleton-row" style="width: 80%;"></div></td></tr>
+            `;
+            mobileCards.innerHTML = `<div class="skeleton skeleton-row" style="height: 100px;"></div>`;
+            stateContainer.innerHTML = '';
+        }
+
+        function showErrorState(err) {
+            const stateContainer = document.getElementById('dynamicStateContainer');
+            document.getElementById('tableBody').innerHTML = '';
+            document.getElementById('mobileCardsContainer').innerHTML = '';
+
+            let errHelpMsg = "Transaction history load করা সম্ভব হয়নি।";
+            if (err.message && err.message.includes("index")) {
+                errHelpMsg = "Firestore Composite Index প্রয়োজন। অনুগ্রহ করে Firebase Console চেক করুন (কনসোলের লিংকে ক্লিক করে ইনডেক্স তৈরি করুন)।";
+            }
+
+            stateContainer.innerHTML = `
+                <div class="state-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+                    <h3>Unable to Load Transactions</h3>
+                    <p>${escapeHtml(errHelpMsg)}</p>
+                    <button class="btn-action" onclick="window.location.reload()">Try Again</button>
+                </div>
+            `;
+        }
+
+        function processAndRender() {
+            let list = [...rawTransactions];
+
+            // 1. Filter by Type
+            if (currentFilterType !== 'all') {
+                list = list.filter(t => t.type === currentFilterType);
+            }
+
+            // 2. Filter by Date Range
+            if (currentDateRange !== 'all') {
+                const now = new Date();
+                list = list.filter(t => {
+                    if (!t.createAt) return false;
+                    try {
+                        const d = t.createAt.toDate ? t.createAt.toDate() : new Date(t.createAt.seconds * 1000);
+                        if (currentDateRange === 'today') {
+                            return d.toDateString() === now.toDateString();
+                        } else if (currentDateRange === 'week') {
+                            const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                            return d >= oneWeekAgo;
+                        } else if (currentDateRange === 'month') {
+                            return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+                        }
+                    } catch (e) {
+                        return true;
+                    }
+                    return true;
+                });
+            }
+
+            // 3. Search Filter
+            if (currentSearchQuery) {
+                const q = currentSearchQuery.toLowerCase();
+                list = list.filter(t => {
+                    const searchable = (
+                        (t.note || '') + ' ' +
+                        (t.admin || '') + ' ' +
+                        (t.type || '') + ' ' +
+                        String(t.amount || '')
+                    ).toLowerCase();
+                    return searchable.includes(q);
+                });
+            }
+
+            renderStatisticsAndBalance(list);
+            renderTableAndCards(list);
+        }
+
+        function renderStatisticsAndBalance(list) {
+            let totalTxn = rawTransactions.length;
+            let totalCredit = 0;
+            let totalWithdraw = 0;
+
+            rawTransactions.forEach(t => {
+                const amt = Number(t.amount) || 0;
+                if (t.type === 'credit') totalCredit += amt;
+                else if (t.type === 'withdraw') totalWithdraw += amt;
+            });
+
+            document.getElementById('statTotalTxn').textContent = totalTxn;
+            document.getElementById('statTotalCredit').textContent = formatCurrency(totalCredit);
+            document.getElementById('statTotalWithdraw').textContent = formatCurrency(totalWithdraw);
+
+            // Determine final Current Balance: Prefer fetched user doc balance, fallback to latest transaction's currentBalace
+            let finalBal = 0;
+            if (fetchedUserBalance !== null) {
+                finalBal = fetchedUserBalance;
+            } else if (rawTransactions.length > 0) {
+                finalBal = Number(rawTransactions[0].currentBalace) || 0;
+            }
+            document.getElementById('bannerBalance').textContent = formatCurrency(finalBal);
+        }
+
+        function renderTableAndCards(list) {
+            const tableBody = document.getElementById('tableBody');
+            const mobileCards = document.getElementById('mobileCardsContainer');
+            const stateContainer = document.getElementById('dynamicStateContainer');
+
+            tableBody.innerHTML = '';
+            mobileCards.innerHTML = '';
+            stateContainer.innerHTML = '';
+
+            if (list.length === 0) {
+                stateContainer.innerHTML = `
+                    <div class="state-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path></svg>
+                        <h3>No Transactions Yet</h3>
+                        <p>আপনার এখনো কোনো transaction history নেই।</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.forEach(t => {
+                const isCredit = t.type === 'credit';
+                const typeLabel = isCredit ? 'Credit' : 'Withdraw';
+                const badgeClass = isCredit ? 'badge-credit' : 'badge-withdraw';
+                const amountClass = isCredit ? 'amount-credit' : 'amount-withdraw';
+                const sign = isCredit ? '+' : '-';
+                const formattedAmount = `${sign}${formatCurrency(t.amount)}`;
+                const dateStr = formatDate(t.createAt);
+                const prevBal = formatCurrency(t.oldbalance);
+                const currBal = formatCurrency(t.currentBalace);
+                const note = t.note ? escapeHtml(t.note) : 'N/A';
+                const adminEmail = t.admin ? escapeHtml(t.admin) : 'N/A';
+
+                // Desktop Table Row
+                tableBody.innerHTML += `
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td><span class="mobile-type-badge ${badgeClass}">${typeLabel}</span></td>
+                        <td><span class="${amountClass}">${formattedAmount}</span></td>
+                        <td>${prevBal}</td>
+                        <td>${currBal}</td>
+                        <td>
+                            <div style="font-weight: 500;">${note}</div>
+                            <div style="font-size: 11px; color: var(--muted); margin-top: 2px;">Admin: ${adminEmail}</div>
+                        </td>
+                    </tr>
+                `;
+
+                // Mobile Card View
+                mobileCards.innerHTML += `
+                    <div class="mobile-card">
+                        <div class="mobile-card-header">
+                            <span class="mobile-type-badge ${badgeClass}">
+                                ${typeLabel}
+                            </span>
+                            <span class="mobile-amount ${amountClass}">${formattedAmount}</span>
+                        </div>
+                        <div class="mobile-details-grid">
+                            <div class="mobile-detail-item">
+                                <span class="mobile-detail-label">Previous Balance</span>
+                                <span>${prevBal}</span>
+                            </div>
+                            <div class="mobile-detail-item">
+                                <span class="mobile-detail-label">Current Balance</span>
+                                <span>${currBal}</span>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px;">
+                            <strong>Note:</strong> ${note}<br>
+                            <span style="font-size: 11px; color: var(--muted);">Admin: ${adminEmail}</span>
+                        </div>
+                        <div class="mobile-card-footer">
+                            <span>${dateStr}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Event Listeners for Filters
+        document.querySelectorAll('.filter-chip').forEach(btn => {
+            btn.onclick = (e) => {
+                document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+                currentFilterType = e.currentTarget.getAttribute('data-filter');
+                processAndRender();
+            };
+        });
+
+        document.getElementById('dateFilterSelect').onchange = (e) => {
+            currentDateRange = e.target.value;
+            processAndRender();
+        };
+
+        document.getElementById('searchInput').oninput = (e) => {
+            currentSearchQuery = e.target.value.trim();
+            processAndRender();
+        };
+
+        document.getElementById('refreshBtn').onclick = () => {
+            if (auth.currentUser) {
+                loadUserDataAndTransactions(auth.currentUser);
+            }
+        };
+    </script>
+</body>
+</html>
