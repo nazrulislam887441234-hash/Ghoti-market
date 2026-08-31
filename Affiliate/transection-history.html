@@ -683,19 +683,19 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, query, where, orderBy, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Firebase Configuration Placeholder
+        // Firebase Configuration
         const firebaseConfig = {
-  apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
-  authDomain: "ghotimarket.firebaseapp.com",
-  databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
-  projectId: "ghotimarket",
-  storageBucket: "ghotimarket.firebasestorage.app",
-  messagingSenderId: "481257644093",
-  appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
-  measurementId: "G-4SR8V2EKC1"
-};
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+            authDomain: "ghotimarket.firebaseapp.com",
+            databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+            projectId: "ghotimarket",
+            storageBucket: "ghotimarket.firebasestorage.app",
+            messagingSenderId: "481257644093",
+            appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+            measurementId: "G-4SR8V2EKC1"
+        };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -774,17 +774,23 @@
                     console.warn("Could not fetch user main balance document:", e);
                 }
 
-                // Query transactions filtered strictly by current user's UID
+                // Query transactions filtered strictly by current user's UID (Without orderBy to prevent index errors)
                 const q = query(
                     collection(db, 'afl_transection'),
-                    where("uid", "==", user.uid),
-                    orderBy("createAt", "desc")
+                    where("uid", "==", user.uid)
                 );
 
                 const querySnapshot = await getDocs(q);
                 rawTransactions = [];
                 querySnapshot.forEach((docSnap) => {
                     rawTransactions.push({ id: docSnap.id, ...docSnap.data() });
+                });
+
+                // Sort transactions by date descending in JavaScript memory
+                rawTransactions.sort((a, b) => {
+                    const timeA = a.createAt?.seconds || 0;
+                    const timeB = b.createAt?.seconds || 0;
+                    return timeB - timeA;
                 });
 
                 processAndRender();
@@ -813,17 +819,12 @@
             document.getElementById('tableBody').innerHTML = '';
             document.getElementById('mobileCardsContainer').innerHTML = '';
 
-            let errHelpMsg = "Transaction history load করা সম্ভব হয়নি।";
-            if (err.message && err.message.includes("index")) {
-                errHelpMsg = "Firestore Composite Index প্রয়োজন। অনুগ্রহ করে Firebase Console চেক করুন (কনসোলের লিংকে ক্লিক করে ইনডেক্স তৈরি করুন)।";
-            }
-
             stateContainer.innerHTML = `
                 <div class="state-box">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
-                    <h3>Unable to Load Transactions</h3>
-                    <p>${escapeHtml(errHelpMsg)}</p>
-                    <button class="btn-action" onclick="window.location.reload()">Try Again</button>
+                    <h3>Error Loading Data</h3>
+                    <p>${escapeHtml(err.message || "Something went wrong.")}</p>
+                    <button class="btn-action" onclick="window.location.reload()" style="margin-top: 8px;">Try Again</button>
                 </div>
             `;
         }
@@ -891,7 +892,6 @@
             document.getElementById('statTotalCredit').textContent = formatCurrency(totalCredit);
             document.getElementById('statTotalWithdraw').textContent = formatCurrency(totalWithdraw);
 
-            // Determine final Current Balance: Prefer fetched user doc balance, fallback to latest transaction's currentBalace
             let finalBal = 0;
             if (fetchedUserBalance !== null) {
                 finalBal = fetchedUserBalance;
