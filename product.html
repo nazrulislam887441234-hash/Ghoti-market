@@ -642,7 +642,7 @@
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
         }
 
-        .popup-box i {
+        .popup-box i.main-icon {
             font-size: 48px;
             color: var(--primary);
             margin-bottom: 8px;
@@ -828,10 +828,49 @@
         </div>
     </div>
 
+    <!-- Inline Auth Popup (Login / Signup) -->
+    <div id="authPopup" class="popup">
+        <div class="popup-box" style="max-width: 360px; text-align: left;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 id="authModalTitle" style="margin: 0; font-size: 18px; color: #0f172a;"><i class="fas fa-lock" style="color: var(--primary);"></i> লগইন করুন</h3>
+                <i id="closeAuthModalX" class="fas fa-times" style="cursor: pointer; font-size: 18px; color: var(--text-sub);"></i>
+            </div>
+            <p id="authModalSub" style="font-size: 13px; color: var(--text-sub); margin-bottom: 14px;">একাউন্ট না থাকলে নিচে সাইনআপ ফর্ম পেয়ে যাবেন।</p>
+            
+            <!-- Signup Extra Fields Wrapper -->
+            <div id="signupExtraFields" style="display: none;">
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 4px;">আপনার নাম</label>
+                    <input type="text" id="authNameInput" placeholder="পূর্ণ নাম লিখুন" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 4px;">মোবাইল নম্বর</label>
+                    <input type="text" id="authPhoneInput" placeholder="+880..." style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px;">
+                </div>
+            </div>
+
+            <div style="margin-bottom: 10px;">
+                <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 4px;">ইমেইল</label>
+                <input type="email" id="authEmailInput" placeholder="example@gmail.com" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px;">
+            </div>
+            <div style="margin-bottom: 14px;">
+                <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 4px;">পাসওয়ার্ড</label>
+                <input type="password" id="authPasswordInput" placeholder="পাসওয়ার্ড দিন" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px;">
+            </div>
+
+            <button id="authSubmitBtn" type="button" style="width: 100%; padding: 12px; border: none; border-radius: 10px; background: var(--primary); color: #fff; font-size: 15px; font-weight: 700; cursor: pointer;">লগইন</button>
+            
+            <div style="text-align: center; margin-top: 12px; font-size: 13px;">
+                <span id="authToggleText" style="color: var(--text-sub);">একাউন্ট নেই?</span> 
+                <span id="authToggleBtn" style="color: var(--accent); font-weight: 700; cursor: pointer; margin-left: 4px;">সাইনআপ করুন</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Universal Popup -->
     <div id="universalPopup" class="popup">
         <div class="popup-box">
-            <i id="popupIcon" class="fas fa-info-circle"></i>
+            <i id="popupIcon" class="main-icon fas fa-info-circle"></i>
             <h3 id="popupTitle">নোটিফিকেশন</h3>
             <p id="popupMessage">বার্তা...</p>
             <div id="popupActionContainer" style="margin-top: 12px; display: none;">
@@ -844,7 +883,7 @@
     <!-- Share Specific Popup -->
     <div id="sharePopup" class="popup">
         <div class="popup-box">
-            <i class="fas fa-share-nodes" style="color:var(--accent);"></i>
+            <i class="main-icon fas fa-share-nodes" style="color:var(--accent);"></i>
             <h3>পণ্যের লিংক শেয়ার</h3>
             <p style="margin-bottom:12px;">সোশ্যাল মিডিয়ায় বন্ধুদের সাথে শেয়ার করুন</p>
             <button id="shareNowBtn" type="button"><i class="fas fa-paper-plane"></i> সরাসরি শেয়ার</button>
@@ -853,13 +892,16 @@
         </div>
     </div>
 
-    <!-- Bottom Navigation Bar -->
     <nav class="bottom-nav">
         <a href="https://ghotimarket.com" class="nav-item active"><i data-lucide="home"></i><span>Home</span></a>
         <a href="https://ghotimarket.com/categories" class="nav-item"><i data-lucide="grid"></i><span>Categories</span></a>
         <a href="https://ghotimarket.com/all-product" class="nav-item"><i data-lucide="box"></i><span>products</span></a>
         <a href="https://ghotimarket.com/contact" class="nav-item"><i data-lucide="headphones"></i><span>Support</span></a>
-        <a href="profile.html" class="nav-item"><i data-lucide="circle-user-round"></i><span>Profile</span></a> 
+        <a href="https://ghotimarket.com/privacy-policy" class="nav-item"><i data-lucide="shield-check"></i><span>Privacy</span></a>
+        <a href="profile.html" class="nav-item">
+    <i data-lucide="circle-user-round"></i>
+    <span>Profile</span>
+</a> 
         <a href="https://seller.ghotimarket.com/signup" class="nav-item"><i data-lucide="store"></i><span>J.Seller</span></a>
     </nav>
 
@@ -871,7 +913,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, query, where, limit, getDocs, doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
@@ -895,7 +937,8 @@
         let isLoading = false;
         let currentUser = null;
         let selectedVariantsState = {};
-        let selectedStarRating = 5; // ডিফল্ট ৫ স্টার
+        let selectedStarRating = 5;
+        let pendingCartAction = null; // রেমম্বার করার জন্য যে কারে যাওয়ার পর কি করতে হবে (true=buyNow, false=addToCart)
         const productCache = new Map();
 
         const getEl = (id) => document.getElementById(id);
@@ -927,7 +970,7 @@
                 if (!popupEl || !titleEl || !msgEl || !iconEl) return;
                 titleEl.innerText = title;
                 msgEl.innerText = message;
-                iconEl.className = "fas";
+                iconEl.className = "main-icon fas";
                 switch (type) {
                     case "success": iconEl.classList.add("fa-check-circle"); iconEl.style.color = "var(--success)"; break;
                     case "error": iconEl.classList.add("fa-triangle-exclamation"); iconEl.style.color = "var(--primary)"; break;
@@ -1360,7 +1403,8 @@
 
         const handleAddToCart = async (redirect = false) => {
             if (!currentUser) {
-                window.location.href = "https://ghotimarket.com/login";
+                pendingCartAction = redirect;
+                openAuthPopup(false); // ডিফল্ট লগইন মোড
                 return;
             }
             if (!currentProductCache) return;
@@ -1449,6 +1493,111 @@
             }
         };
 
+        // Inline Auth Popup Control Variables & Functions
+        let isSignupMode = false;
+
+        const openAuthPopup = (signup = false) => {
+            isSignupMode = signup;
+            const modal = getEl("authPopup");
+            const titleEl = getEl("authModalTitle");
+            const subEl = getEl("authModalSub");
+            const extraFields = getEl("signupExtraFields");
+            const submitBtn = getEl("authSubmitBtn");
+            const toggleText = getEl("authToggleText");
+            const toggleBtn = getEl("authToggleBtn");
+
+            if (isSignupMode) {
+                titleEl.innerHTML = `<i class="fas fa-user-plus" style="color: var(--primary);"></i> সাইনআপ করুন`;
+                subEl.innerText = "নতুন অ্যাকাউন্ট তৈরি করতে নিচের তথ্যগুলো পূরণ করুন।";
+                extraFields.style.display = "block";
+                submitBtn.innerText = "সাইনআপ";
+                toggleText.innerText = "আগেই একাউন্ট আছে?";
+                toggleBtn.innerText = "লগইন করুন";
+            } else {
+                titleEl.innerHTML = `<i class="fas fa-lock" style="color: var(--primary);"></i> লগইন করুন`;
+                subEl.innerText = "একাউন্ট না থাকলে নিচে সাইনআপ ফর্ম পেয়ে যাবেন।";
+                extraFields.style.display = "none";
+                submitBtn.innerText = "লগইন";
+                toggleText.innerText = "একাউন্ট নেই?";
+                toggleBtn.innerText = "সাইনআপ করুন";
+            }
+            modal?.classList.add("show");
+        };
+
+        const closeAuthPopup = () => {
+            getEl("authPopup")?.classList.remove("show");
+        };
+
+        const handleAuthSubmit = async () => {
+            const email = getEl("authEmailInput").value.trim();
+            const password = getEl("authPasswordInput").value.trim();
+
+            if (!email || !password) {
+                showPopup({ title: "সতর্কতা", message: "দয়া করে ইমেইল এবং পাসওয়ার্ড দিন।", type: "warning" });
+                return;
+            }
+
+            const submitBtn = getEl("authSubmitBtn");
+            submitBtn.disabled = true;
+            submitBtn.innerText = "অপেক্ষা করুন...";
+
+            try {
+                if (isSignupMode) {
+                    const name = getEl("authNameInput").value.trim();
+                    const phone = getEl("authPhoneInput").value.trim();
+
+                    if (!name || !phone) {
+                        showPopup({ title: "সতর্কতা", message: "দয়া করে নাম এবং ফোন নম্বর দিন।", type: "warning" });
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = "সাইনআপ";
+                        return;
+                    }
+
+                    // Firebase Auth Create User
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    const user = userCredential.user;
+
+                    // Save buyer details in 'buyers' collection as requested
+                    const buyerData = {
+                        active: true,
+                        country: "বাংলাদেশ",
+                        email: email,
+                        name: name,
+                        phone: phone,
+                        uid: user.uid,
+                        updatedAt: serverTimestamp()
+                    };
+
+                    await setDoc(doc(db, "buyers", user.uid), buyerData);
+                    
+                    closeAuthPopup();
+                    showPopup({ title: "সফল!", message: "আপনার অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে।", type: "success" });
+
+                    if (pendingCartAction !== null) {
+                        const act = pendingCartAction;
+                        pendingCartAction = null;
+                        await handleAddToCart(act);
+                    }
+                } else {
+                    // Firebase Auth Login
+                    await signInWithEmailAndPassword(auth, email, password);
+                    closeAuthPopup();
+                    showPopup({ title: "সফল!", message: "সফলভাবে লগইন হয়েছে।", type: "success" });
+
+                    if (pendingCartAction !== null) {
+                        const act = pendingCartAction;
+                        pendingCartAction = null;
+                        await handleAddToCart(act);
+                    }
+                }
+            } catch (err) {
+                handleFirebaseError(err, "লগইন বা সাইনআপ করতে সমস্যা হয়েছে। সঠিক তথ্য প্রদান করুন।");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = isSignupMode ? "সাইনআপ" : "লগইন";
+            }
+        };
+
         const loadProductReviews = async (productId) => {
             if (!productId) return;
             try {
@@ -1513,7 +1662,6 @@
             return html;
         };
 
-        // Star rating UI updater in modal
         const updateStarSelectionUI = (rating) => {
             selectedStarRating = rating;
             const stars = document.querySelectorAll("#starSelectWrap i");
@@ -1537,11 +1685,19 @@
             getEl("addToCartBtn")?.addEventListener('click', () => handleAddToCart(false));
             getEl("buyNowBtn")?.addEventListener('click', () => handleAddToCart(true));
 
+            // Auth Popup Events
+            getEl("closeAuthModalX")?.addEventListener('click', closeAuthPopup);
+            getEl("authToggleBtn")?.addEventListener('click', () => {
+                openAuthPopup(!isSignupMode);
+            });
+            getEl("authSubmitBtn")?.addEventListener('click', handleAuthSubmit);
+
             // Review Modal Event Handlers
             const reviewModal = getEl("reviewModal");
             getEl("openReviewModalBtn")?.addEventListener('click', () => {
                 if (!currentUser) {
-                    window.location.href = "https://ghotimarket.com/login";
+                    pendingCartAction = null;
+                    openAuthPopup(false);
                     return;
                 }
                 updateStarSelectionUI(5);
@@ -1553,7 +1709,6 @@
                 reviewModal?.classList.remove("show");
             });
 
-            // Star click selection
             document.querySelectorAll("#starSelectWrap i").forEach(star => {
                 star.addEventListener('click', () => {
                     const val = Number(star.getAttribute("data-value"));
@@ -1561,7 +1716,6 @@
                 });
             });
 
-            // Submit Review Handler
             getEl("submitReviewBtn")?.addEventListener('click', async () => {
                 if (!currentUser || !currentProductCache) return;
                 const message = getEl("reviewMsgInput").value.trim();
