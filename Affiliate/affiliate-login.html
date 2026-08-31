@@ -8,10 +8,7 @@
     <!-- Google Fonts: Hind Siliguri -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com5?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -19,13 +16,14 @@
             --primary-hover: #e55e00;
             --bg-color: #FFF8F3;
             --card-bg: #FFFFFF;
-            --text-main: #2D3748;
-            --text-muted: #718096;
-            --border-color: #E2E8F0;
-            --radius: 16px;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+            --border-color: #E5E7EB;
+            --radius: 14px;
             --shadow: 0 10px 25px -5px rgba(255, 106, 0, 0.08), 0 8px 10px -6px rgba(255, 106, 0, 0.04);
-            --success: #10B981;
-            --error: #EF4444;
+            --error-bg: #FEF2F2;
+            --error-border: #FCA5A5;
+            --error-text: #DC2626;
         }
 
         * {
@@ -37,256 +35,47 @@
 
         body {
             background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 50% 0%, rgba(255, 106, 0, 0.07) 0%, transparent 60%);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 480px;
-            margin: auto;
-            padding: 10px 0;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 32px 24px;
-            width: 100%;
-            border: 1px solid rgba(255, 106, 0, 0.05);
-        }
-
-        .logo-area {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .logo-area img {
-            max-width: 150px;
-            width: 100%;
-            height: auto;
-            display: inline-block;
-        }
-
-        .header-title {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .header-title h2 {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 6px;
-        }
-
-        .header-title p {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-            position: relative;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .input-wrapper i.field-icon {
-            position: absolute;
-            left: 14px;
-            color: var(--text-muted);
-            font-size: 16px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 16px 12px 42px;
-            font-size: 15px;
-            border: 1.5px solid var(--border-color);
-            border-radius: 10px;
-            outline: none;
-            transition: all 0.3s ease;
-            background-color: #FAFAFA;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary);
-            background-color: #FFFFFF;
-            box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.12);
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 14px;
-            cursor: pointer;
-            color: var(--text-muted);
-            font-size: 16px;
-        }
-
-        .password-toggle:hover {
-            color: var(--primary);
-        }
-
-        .form-row-between {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            color: var(--text-muted);
-        }
-
-        .remember-me input {
-            accent-color: var(--primary);
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-        }
-
-        .forgot-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .forgot-link:hover {
-            text-decoration: underline;
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--primary);
-            color: #FFFFFF;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            display: flex;
             justify-content: center;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(255, 106, 0, 0.25);
-            margin-top: 10px;
+            padding: 20px 15px;
+            overflow-x: hidden;
         }
 
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
-        }
-
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            margin: 20px 0;
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .divider::before {
-            margin-right: .75em;
-        }
-
-        .divider::after {
-            margin-left: .75em;
-        }
-
-        .btn-outline {
+        /* Initial Fullscreen Loading Screen */
+        #globalLoader {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 12px;
-            background-color: transparent;
-            color: var(--primary);
-            border: 1.5px solid var(--primary);
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
-            text-decoration: none;
-            display: block;
+            height: 100%;
+            background: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
         }
 
-        .btn-outline:hover {
-            background-color: rgba(255, 106, 0, 0.05);
-        }
-
-        .extra-links {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-
-        .extra-links a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .extra-links a:hover {
-            text-decoration: underline;
-        }
-
-        footer {
-            margin-top: 24px;
-            text-align: center;
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        /* Loading Spinner */
-        .spinner {
-            width: 18px;
-            height: 18px;
-            border: 2px solid #ffffff;
-            border-top: 2px solid transparent;
+        .loader-spinner {
+            width: 42px;
+            height: 42px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--primary);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
-            display: none;
+            margin-bottom: 12px;
+        }
+
+        .loader-text {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 14px;
         }
 
         @keyframes spin {
@@ -294,330 +83,456 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Popup Notification Modal */
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
+        /* Login Card Container */
+        .login-card {
+            background: var(--card-bg);
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .popup-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .popup-card {
-            background: #FFFFFF;
-            padding: 24px;
+            max-width: 420px;
+            padding: 32px 28px;
             border-radius: var(--radius);
-            width: 90%;
-            max-width: 360px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 24px 20px;
+                max-width: 100%;
+            }
+        }
+
+        /* Brand Logo Area */
+        .brand-logo-container {
             text-align: center;
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
 
-        .popup-overlay.active .popup-card {
-            transform: translateY(0);
+        .brand-logo {
+            max-width: 140px;
+            height: auto;
+            display: inline-block;
         }
 
-        .popup-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-            font-size: 24px;
+        /* Header Titles */
+        .login-header {
+            text-align: center;
+            margin-bottom: 20px;
         }
 
-        .popup-icon.success {
-            background-color: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-
-        .popup-icon.error {
-            background-color: rgba(239, 68, 68, 0.1);
-            color: var(--error);
-        }
-
-        .popup-title {
-            font-size: 18px;
+        .login-header h1 {
+            font-size: 22px;
             font-weight: 700;
-            margin-bottom: 8px;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .login-header p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Signup Banner Link */
+        .signup-banner {
+            background: rgba(255, 106, 0, 0.05);
+            border: 1px solid rgba(255, 106, 0, 0.2);
+            border-radius: 10px;
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        .signup-banner span {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .signup-btn-link {
+            background: var(--primary);
+            color: #FFFFFF;
+            padding: 5px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 12px;
+            transition: background 0.2s ease;
+        }
+
+        .signup-btn-link:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
             color: var(--text-main);
         }
 
-        .popup-message {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-            white-space: pre-line;
-            text-align: left;
-        }
-
-        .popup-btn {
-            padding: 10px 24px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            color: #FFFFFF;
+        .input-wrapper {
+            position: relative;
             width: 100%;
         }
 
-        .popup-btn.success {
-            background-color: var(--success);
+        .form-control {
+            width: 100%;
+            height: 48px;
+            padding: 0 14px;
+            font-size: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            outline: none;
+            background: #FFFFFF;
+            color: var(--text-main);
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        .popup-btn.error {
-            background-color: var(--error);
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.12);
+        }
+
+        .form-control::placeholder {
+            color: #9CA3AF;
+        }
+
+        /* Password Toggle Button */
+        .password-toggle-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .password-toggle-btn:hover {
+            color: var(--text-main);
+        }
+
+        .password-toggle-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        /* Error Box Alert */
+        .error-alert {
+            background: var(--error-bg);
+            border: 1px solid var(--error-border);
+            color: var(--error-text);
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-alert svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+            flex-shrink: 0;
+        }
+
+        .error-alert.active {
+            display: flex;
+        }
+
+        /* Forgot Password Link */
+        .forgot-password-row {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password-link {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .forgot-password-link:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            height: 48px;
+            background: var(--primary);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(255, 106, 0, 0.25);
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background: var(--primary-hover);
+        }
+
+        .submit-btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .submit-btn:disabled {
+            background: #D1D5DB;
+            cursor: not-allowed;
+            box-shadow: none;
+            color: #9CA3AF;
+        }
+
+        /* Button Loading Spinner */
+        .btn-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-top: 2px solid #FFFFFF;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        /* Footer Section */
+        .login-card-footer {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            font-size: 12px;
+            color: var(--text-muted);
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="card">
-            <!-- Logo -->
-            <div class="logo-area">
-                <img src="https://ghotimarket.com/logo.png" alt="GHOTI MARKET" onerror="this.style.display='none';">
+    <!-- Initial Loading Screen (Checks Session) -->
+    <div id="globalLoader">
+        <div class="loader-spinner"></div>
+        <div class="loader-text">লোড হচ্ছে...</div>
+    </div>
+
+    <!-- Login Card Container -->
+    <div class="login-card">
+        <!-- Logo -->
+        <div class="brand-logo-container">
+            <img src="https://ghotimarket.com/logo.png" alt="GHOTI MARKET" class="brand-logo" onerror="this.onerror=null; this.replaceWith(Object.assign(document.createElement('div'), {textContent: 'GHOTI MARKET', style: 'font-weight:700; font-size:18px; color:#FF6A00;'}));">
+        </div>
+
+        <!-- Header -->
+        <div class="login-header">
+            <h1>অ্যাফিলিয়েট লগইন</h1>
+            <p>আপনার GHOTI MARKET Affiliate Account-এ লগইন করুন</p>
+        </div>
+
+        <!-- Signup Banner -->
+        <div class="signup-banner">
+            <span>একাউন্ট নেই?</span>
+            <a href="https://ghotimarket.com/Affiliate/signup" class="signup-btn-link">সাইনআপ করুন</a>
+        </div>
+
+        <!-- Error Alert Box -->
+        <div class="error-alert" id="errorAlert">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            <span id="errorMessageText">ত্রুটি বার্তা</span>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" novalidate>
+            <!-- Email Field -->
+            <div class="form-group">
+                <label class="form-label" for="emailInput">ইমেইল</label>
+                <div class="input-wrapper">
+                    <input type="email" id="emailInput" class="form-control" placeholder="আপনার ইমেইল লিখুন" required autocomplete="email">
+                </div>
             </div>
 
-            <!-- Title & Subtitle -->
-            <div class="header-title">
-                <h2>Affiliate Login</h2>
-                <p>আপনার অ্যাফিলিয়েট অ্যাকাউন্টে প্রবেশ করুন</p>
+            <!-- Password Field -->
+            <div class="form-group">
+                <label class="form-label" for="passwordInput">পাসওয়ার্ড</label>
+                <div class="input-wrapper">
+                    <input type="password" id="passwordInput" class="form-control" placeholder="আপনার পাসওয়ার্ড লিখুন" required autocomplete="current-password">
+                    <button type="button" id="togglePasswordBtn" class="password-toggle-btn" aria-label="পাসওয়ার্ড প্রদর্শন করুন">
+                        <!-- Eye Icon (Hidden state default) -->
+                        <svg id="eyeIconOpen" aria-hidden="true" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        <!-- Eye-Off Icon (Hidden initially) -->
+                        <svg id="eyeIconClosed" aria-hidden="true" viewBox="0 0 24 24" style="display: none;"><path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+                    </button>
+                </div>
             </div>
 
-            <!-- Login Form -->
-            <form id="loginForm">
-                <div class="form-group">
-                    <label class="form-label" for="email">ইমেইল ঠিকানা</label>
-                    <div class="input-wrapper">
-                        <i class="fa-regular fa-envelope field-icon"></i>
-                        <input type="email" id="email" class="form-control" placeholder="example@domain.com" required autocomplete="email">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="password">পাসওয়ার্ড</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-lock field-icon"></i>
-                        <input type="password" id="password" class="form-control" placeholder="পাসওয়ার্ড লিখুন" required autocomplete="current-password">
-                        <i class="fa-regular fa-eye password-toggle" id="togglePassword"></i>
-                    </div>
-                </div>
-
-                <div class="form-row-between">
-                    <label class="remember-me">
-                        <input type="checkbox" id="rememberMe"> মনে রাখুন
-                    </label>
-                    <a href="https://seller.ghotimarket.com/forgot-password" class="forgot-link">পাসওয়ার্ড ভুলে গেছেন?</a>
-                </div>
-
-                <button type="submit" id="submitBtn" class="btn-primary">
-                    <span id="btnText">লগইন করুন</span>
-                    <div class="spinner" id="btnSpinner"></div>
-                </button>
-
-                <div class="divider">অথবা</div>
-
-                <a href="https://ghotimarket.com/Affiliate/register.html" class="btn-outline">অ্যাকাউন্ট তৈরি করুন</a>
-            </form>
-
-            <div class="extra-links">
-                <p>অ্যাফিলিয়েট অ্যাকাউন্ট নেই? <a href="https://ghotimarket.com/Affiliate/register.html">রেজিস্ট্রেশন করুন</a></p>
+            <!-- Forgot Password -->
+            <div class="forgot-password-row">
+                <a href="https://seller.ghotimarket.com/forgot-password" class="forgot-password-link">পাসওয়ার্ড ভুলে গেছেন?</a>
             </div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="submitBtn" class="submit-btn">
+                <div class="btn-spinner" id="btnSpinner"></div>
+                <span id="btnText">লগইন করুন</span>
+            </button>
+        </form>
+
+        <!-- Footer -->
+        <div class="login-card-footer">
+            © GHOTI MARKET Affiliate Program | All Rights Reserved
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        © GHOTI MARKET Affiliate Program
-    </footer>
-
-    <!-- Custom Popup Modal -->
-    <div class="popup-overlay" id="popupOverlay">
-        <div class="popup-card">
-            <div class="popup-icon" id="popupIcon">
-                <i id="popupIconSymbol" class="fa-solid"></i>
-            </div>
-            <div class="popup-title" id="popupTitle">সফল হয়েছে</div>
-            <div class="popup-message" id="popupMessage">সফলভাবে সম্পন্ন হয়েছে।</div>
-            <button class="popup-btn" id="popupBtn" onclick="closePopup()">ঠিক আছে</button>
-        </div>
-    </div>
-
-    <!-- Firebase SDK & Script -->
+    <!-- Firebase SDK & Login Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { 
-            getAuth, 
-            signInWithEmailAndPassword,
-            signOut,
-            setPersistence,
-            browserLocalPersistence,
-            browserSessionPersistence
-        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { 
-            getFirestore, 
-            doc, 
-            getDoc 
-        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        console.log("Initializing Firebase...");
         const firebaseConfig = {
-            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
-            authDomain: "ghotimarket.firebaseapp.com",
-            projectId: "ghotimarket",
-            storageBucket: "ghotimarket.appspot.com",
-            messagingSenderId: "9382019283",
-            appId: "1:9382019283:web:abc12345"
-        };
+  apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+  authDomain: "ghotimarket.firebaseapp.com",
+  databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+  projectId: "ghotimarket",
+  storageBucket: "ghotimarket.firebasestorage.app",
+  messagingSenderId: "481257644093",
+  appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+  measurementId: "G-4SR8V2EKC1"
+};
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
-        console.log("Firebase Initialized");
 
-        // DOM Elements
+        const globalLoader = document.getElementById('globalLoader');
         const loginForm = document.getElementById('loginForm');
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const rememberMeCheckbox = document.getElementById('rememberMe');
-        const togglePassword = document.getElementById('togglePassword');
+        const emailInput = document.getElementById('emailInput');
+        const passwordInput = document.getElementById('passwordInput');
         const submitBtn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
         const btnSpinner = document.getElementById('btnSpinner');
+        const errorAlert = document.getElementById('errorAlert');
+        const errorMessageText = document.getElementById('errorMessageText');
+        const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+        const eyeIconOpen = document.getElementById('eyeIconOpen');
+        const eyeIconClosed = document.getElementById('eyeIconClosed');
 
-        // Popup Elements
-        const popupOverlay = document.getElementById('popupOverlay');
-        const popupIcon = document.getElementById('popupIcon');
-        const popupIconSymbol = document.getElementById('popupIconSymbol');
-        const popupTitle = document.getElementById('popupTitle');
-        const popupMessage = document.getElementById('popupMessage');
-        const popupBtn = document.getElementById('popupBtn');
-
-        // Toggle Password Visibility
-        togglePassword.addEventListener('click', () => {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            togglePassword.classList.toggle('fa-eye');
-            togglePassword.classList.toggle('fa-eye-slash');
+        // 1. Check if user is already logged in
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                window.location.replace("https://ghotimarket.com/Affiliate/home");
+            } else {
+                globalLoader.style.opacity = '0';
+                setTimeout(() => {
+                    globalLoader.style.display = 'none';
+                }, 300);
+            }
         });
 
-        // Show Popup Helper Function
-        window.showPopup = function(title, message, type = 'success', callback = null) {
-            popupTitle.textContent = title;
-            popupMessage.textContent = message;
+        // 2. Toggle Password visibility
+        togglePasswordBtn.addEventListener('click', () => {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
             
-            popupIcon.className = `popup-icon ${type}`;
-            popupBtn.className = `popup-btn ${type}`;
-            
-            if (type === 'success') {
-                popupIconSymbol.className = "fa-solid fa-check";
+            if (isPassword) {
+                eyeIconOpen.style.display = 'none';
+                eyeIconClosed.style.display = 'block';
+                togglePasswordBtn.setAttribute('aria-label', 'পাসওয়ার্ড লুকান');
             } else {
-                popupIconSymbol.className = "fa-solid fa-triangle-exclamation";
+                eyeIconOpen.style.display = 'block';
+                eyeIconClosed.style.display = 'none';
+                togglePasswordBtn.setAttribute('aria-label', 'পাসওয়ার্ড প্রদর্শন করুন');
+            }
+        });
+
+        // 3. Helper to display user-friendly error messages in Bengali
+        function showFriendlyError(errorCode) {
+            let message = "লগইন করা যায়নি। আবার চেষ্টা করুন।";
+
+            switch (errorCode) {
+                case 'auth/invalid-credential':
+                case 'auth/wrong-password':
+                case 'auth/user-not-found':
+                    message = "ইমেইল অথবা পাসওয়ার্ড সঠিক নয়।";
+                    break;
+                case 'auth/invalid-email':
+                    message = "সঠিক ইমেইল ঠিকানা লিখুন।";
+                    break;
+                case 'auth/too-many-requests':
+                    message = "অনেকবার চেষ্টা করা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।";
+                    break;
+                case 'auth/network-request-failed':
+                    message = "ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।";
+                    break;
+                default:
+                    message = "লগইন করা যায়নি। আবার চেষ্টা করুন।";
+                    break;
             }
 
-            popupOverlay.classList.add('active');
-            window.currentPopupCallback = callback;
+            errorMessageText.textContent = message;
+            errorAlert.classList.add('active');
         }
 
-        window.closePopup = function() {
-            popupOverlay.classList.remove('active');
-            if (typeof window.currentPopupCallback === 'function') {
-                window.currentPopupCallback();
-                window.currentPopupCallback = null;
-            }
+        function hideError() {
+            errorAlert.classList.remove('active');
         }
 
-        // Set Loading State
-        function setLoading(isLoading) {
-            if (isLoading) {
-                submitBtn.disabled = true;
-                btnText.style.display = 'none';
-                btnSpinner.style.display = 'inline-block';
-            } else {
-                submitBtn.disabled = false;
-                btnText.style.display = 'inline';
-                btnSpinner.style.display = 'none';
-            }
-        }
-
-        // Handle Form Submit
+        // 4. Form Submit & Firebase Authentication Login
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (submitBtn.disabled) return;
+            hideError();
 
             const email = emailInput.value.trim();
             const password = passwordInput.value;
-            const rememberMe = rememberMeCheckbox.checked;
 
-            setLoading(true);
+            if (!email || !password) {
+                errorMessageText.textContent = "দয়া করে ইমেইল এবং পাসওয়ার্ড উভয়ই পূরণ করুন।";
+                errorAlert.classList.add('active');
+                return;
+            }
+
+            // Set Loading State
+            submitBtn.disabled = true;
+            btnSpinner.style.display = 'inline-block';
+            btnText.textContent = "লগইন হচ্ছে...";
 
             try {
-                // Set Auth Persistence based on Remember Me
-                const persistenceType = rememberMe ? browserLocalPersistence : browserSessionPersistence;
-                await setPersistence(auth, persistenceType);
-
-                console.log("Trying Login...");
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-                console.log("Login Success");
-                console.log("User UID:", user.uid);
-
-                console.log("Reading Firestore...");
-                const docRef = doc(db, "Affiliates", user.uid);
-                const docSnap = await getDoc(docRef);
-
-                if (!docSnap.exists()) {
-                    console.log("Document Not Found");
-                    await signOut(auth);
-                    showPopup("Login Failed", "This account is not an Affiliate.", "error");
-                    return;
-                }
-
-                console.log("Document Found");
-                const affiliateData = docSnap.data();
-
-                if (affiliateData.active === false) {
-                    console.log("Account Disabled");
-                    await signOut(auth);
-                    showPopup("Login Failed", "Affiliate account has been disabled.", "error");
-                    return;
-                }
-
-                console.log("Account Active");
-                showPopup("সফল", "অ্যাফিলিয়েট লগইন সফল হয়েছে।", "success", () => {
-                    console.log("Redirecting...");
-                    window.location.replace("https://www.ghotimarket.com/Affiliate/home");
-                });
-
+                await signInWithEmailAndPassword(auth, email, password);
+                window.location.replace("https://ghotimarket.com/Affiliate/home");
             } catch (error) {
-                console.error(error);
-                const errCode = error.code || "unknown/error";
-                const errMsg = error.message || "Unknown error occurred.";
+                console.error("Login Error:", error.code);
+                showFriendlyError(error.code);
                 
-                const formattedMessage = `Error Code:\n${errCode}\n\nError Message:\n${errMsg}`;
-                showPopup("Login Failed", formattedMessage, "error");
-            } finally {
-                setLoading(false);
+                // Reset Button State
+                submitBtn.disabled = false;
+                btnSpinner.style.display = 'none';
+                btnText.textContent = "লগইন করুন";
             }
         });
     </script>
