@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অর্ডার করুন | GHOTI MARKET</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="location.js"></script>
+    <style>
+        :root{
+            --orange: #FF6A00;
+            --orange-dark: #E55A00;
+            --green: #22c55e;
+            --bg: #FFF8F3;
+            --card: #fff;
+            --text: #1a1a1a;
+            --muted: #666;
+            --border: #FFE3D1;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
+        body{background:var(--bg);color:var(--text);padding-bottom:100px;}
+        .container{max-width:600px;margin:0 auto;padding:15px;}
+        .header{display:flex;align-items:center;gap:12px;padding:15px 0;cursor:pointer;}
+        .header i{font-size:22px;}
+        .card{background:var(--card);border-radius:18px;padding:18px;margin-bottom:15px;box-shadow:0 4px 20px rgba(255,106,0,0.08);border:1px solid var(--border);}
+        
+        .cart-item-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .cart-item-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .cart-item-row img {
+            width: 75px;
+            height: 75px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+        }
+        .item-info h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.3;
+        }
+        .item-info .variants {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+        .item-info .price-qty {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--orange);
+            margin-top: 4px;
+        }
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .qty-btn {
+            width: 26px;
+            height: 26px;
+            border: 1px solid var(--orange);
+            background: #fff;
+            color: var(--orange);
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .qty-btn:active { background: var(--orange); color: #fff; }
+        .remove-item-btn {
+            background: none;
+            border: none;
+            color: #e11d48;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        label{font-size:14px;font-weight:600;margin-bottom:6px;display:block;}
+        input,textarea{width:100%;padding:14px;border:1.5px solid var(--border);border-radius:12px;font-size:15px;background:#fff;}
+        input:focus,textarea:focus{outline:none;border-color:var(--orange);}
+        .error{color:#e11d48;font-size:12px;margin-top:4px;display:none;}
+        
+        .zone-selector {
+            display: flex;
+            gap: 12px;
+            margin-top: 5px;
+        }
+        .zone-option {
+            flex: 1;
+            border: 2px solid var(--border);
+            background: #fff;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .zone-option.active {
+            border-color: var(--orange);
+            background: #FFF4EC;
+        }
+        .zone-option input { width: auto; }
+
+        .payment-option-group { display: flex; flex-direction: column; gap: 10px; }
+        .payment-option { border: 2px solid var(--border); background: #fff; border-radius: 12px; padding: 14px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.2s; }
+        .payment-option.active { border-color: var(--orange); background: #FFF4EC; }
+        .payment-option input { width: auto; accent-color: var(--orange); }
+
+        .summary-row{display:flex;justify-content:space-between;margin:10px 0;font-size:15px;}
+        .summary-row.total{font-size:18px;font-weight:800;color:var(--orange);border-top:1px dashed var(--border);padding-top:10px;margin-top:10px;}
+        .btn{width:100%;padding:17px;border:none;border-radius:15px;background:var(--orange);color:#fff;font-size:17px;font-weight:800;cursor:pointer;box-shadow:0 8px 25px rgba(255,106,0,0.25);}
+        .btn:disabled{opacity:0.6;cursor:not-allowed;}
+        .sticky-summary{position:fixed;bottom:0;left:0;right:0;background:#fff;padding:15px;border-top:1px solid var(--border);box-shadow:0 -5px 20px rgba(0,0,0,0.08);z-index:99;}
+        .popup{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;justify-content:center;align-items:center;z-index:9999;padding:20px;}
+        .popup.show{display:flex;animation:fade.2s ease;}
+        .popup-box{width:100%;max-width:450px;background:#fff;border-radius:20px;padding:25px;text-align:center;animation:pop.25s ease; max-height: 90vh; overflow-y: auto;}
+        @keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+        @keyframes fade{from{opacity:0}to{opacity:1}}
+        .popup-box i{font-size:45px;margin-bottom:12px;}
+        .popup-box h3{font-size:19px;margin-bottom:8px;}
+        .popup-box p{color:var(--muted);font-size:14px;line-height:1.6;}
+        
+        .spinner{border:3px solid #f3f3f3;border-top:3px solid var(--orange);border-radius:50%;width:20px;height:20px;animation:spin 1s linear infinite;display:inline-block;vertical-align:middle;}
+        @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+        @media(min-width:768px){.sticky-summary{position:static;box-shadow:none;border:none;}}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header" onclick="history.back()">
+            <i class="fas fa-arrow-left"></i>
+            <h2>অর্ডার কনফার্ম করুন</h2>
+        </div>
+
+        <div id="loading" class="card" style="text-align:center;">
+            <div class="spinner"></div> কার্ট ডেটা লোড হচ্ছে...
+        </div>
+
+        <div id="notFound" class="card" style="display:none;text-align:center;">
+            <i class="fas fa-shopping-cart" style="font-size:50px;color:#ccc;margin-bottom:10px;"></i>
+            <h3>আপনার কার্ট খালি আছে</h3>
+            <p style="color:var(--muted);font-size:14px;margin:10px 0;">অর্ডার করার জন্য কার্টে পণ্য যুক্ত করুন।</p>
+            <button class="btn" onclick="location.href='index.html'" style="margin-top:10px;">পণ্য দেখুন</button>
+        </div>
+
+        <div id="orderForm" style="display:none;">
+            <div class="card">
+                <h3 style="margin-bottom:12px;font-size:16px;"><i class="fas fa-box-open" style="color:var(--orange);"></i> অর্ডারকৃত পণ্যসমূহ</h3>
+                <div id="cartItemsList"></div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom:10px;">ডেলিভারি এলাকা</h3>
+                <div class="zone-selector">
+                    <label class="zone-option active" id="labelInside" onclick="setDeliveryZone('inside', 70)">
+                        <input type="radio" name="deliveryZone" value="inside" checked>
+                        <div>
+                            <b>ঢাকার ভেতরে</b>
+                            <div style="font-size:12px;color:var(--muted);">৳৭০ / প্রতি পণ্য</div>
+                        </div>
+                    </label>
+                    <label class="zone-option" id="labelOutside" onclick="setDeliveryZone('outside', 120)">
+                        <input type="radio" name="deliveryZone" value="outside">
+                        <div>
+                            <b>ঢাকার বাইরে</b>
+                            <div style="font-size:12px;color:var(--muted);">৳১২০ / প্রতি পণ্য</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="card" id="affiliateCard" style="display:none;">
+                <h3 style="margin-bottom:12px; font-size:16px;">Affiliate Promo Code</h3>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="promoCodeInput" placeholder="Promo Code লিখুন" style="flex:1;">
+                    <button class="btn" id="applyPromoBtn" style="width:110px; padding:12px; font-size:15px; border-radius:12px; box-shadow:none;">Apply</button>
+                </div>
+                <div style="background:#FFF8E8; border:1px solid #FFD38A; color:#8A5A00; padding:10px 12px; border-radius:10px; font-size:13px; line-height:1.5; margin-top:10px;">
+                    💡 <b>আপনার কোনো Promo Code জানা থাকলে এখানে লিখুন</b><br>Promo Code ব্যবহার করলে অ্যাফিলিয়েট পণ্যগুলোতে ডিসকাউন্ট পাবেন।
+                </div>
+                <div class="error" id="promoError"></div>
+                <div class="copy-msg" id="promoSuccess" style="color:var(--green); font-size:13px; margin-top:6px; display:none;">Promo Code Applied Successfully</div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom:15px;">কাস্টমারের তথ্য</h3>
+                <label>আপনার নাম *</label>
+                <input type="text" id="customerName" placeholder="নাম লিখুন">
+                <div class="error" id="nameError">নাম আবশ্যক</div>
+
+                <label style="margin-top:12px;">মোবাইল নাম্বার *</label>
+                <input type="tel" id="customerPhone" placeholder="01XXXXXXXXX">
+                <div class="error" id="phoneError">সঠিক বাংলাদেশী নাম্বার দিন</div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom:15px;">ডেলিভারি ঠিকানা</h3>
+                <div id="location-selector"></div>
+                <div class="error" id="locationError">সম্পূর্ণ ঠিকানা সিলেক্ট করুন</div>
+            </div>
+
+            <div class="card">
+                <label>অর্ডার নোট <span style="color:var(--muted);font-weight:400;">ঐচ্ছিক</span></label>
+                <textarea id="orderNote" rows="3" placeholder="যেমন: সন্ধ্যার পর কল দিবেন"></textarea>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom:15px;">পেমেন্ট পদ্ধতি</h3>
+                <div class="payment-option-group">
+                    <label class="payment-option active" id="payOptionCOD" onclick="setPaymentMethod('COD')">
+                        <input type="radio" name="paymentMethodRadio" value="COD" checked>
+                        <i class="fas fa-money-bill-wave" style="color:var(--orange);font-size:20px;"></i>
+                        <div>
+                            <b>Cash On Delivery</b>
+                            <p style="font-size:12px;color:var(--muted);">ক্যাশ অন ডেলিভারিতে পণ্য গ্রহণের সময় টাকা পরিশোধ করবেন।</p>
+                        </div>
+                    </label>
+
+                    <label class="payment-option" id="payOptionOnline" onclick="setPaymentMethod('Online')">
+                        <input type="radio" name="paymentMethodRadio" value="Online">
+                        <i class="fas fa-credit-card" style="color:var(--orange);font-size:20px;"></i>
+                        <div>
+                            <b>Online Payment</b>
+                            <p style="font-size:12px;color:var(--muted);">RupantorPay-এর মাধ্যমে অনলাইনে টাকা পরিশোধ করুন।</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="card" id="summaryCard">
+                <h3 style="margin-bottom:15px;">অর্ডার সামারি</h3>
+                <div class="summary-row">
+                    <span>প্রোডাক্ট সাবটোটাল</span>
+                    <span id="sumSubtotal">৳0</span>
+                </div>
+                <div id="discountSummaryRow" class="summary-row" style="display:none;">
+                    <span>ডিসকাউন্ট</span>
+                    <span id="sumDiscount" style="color:var(--green);">৳0</span>
+                </div>
+                <div class="summary-row">
+                    <span>ডেলিভারি চার্জ</span>
+                    <span id="sumDelivery">৳0</span>
+                </div>
+                <div class="summary-row total">
+                    <span>মোট প্রাক্কলিত মূল্য</span>
+                    <span id="sumTotal">৳0</span>
+                </div>
+            </div>
+            <div style="height:80px;"></div>
+        </div>
+    </div>
+
+    <div class="sticky-summary">
+        <button class="btn" id="confirmBtn" disabled>Confirm Order</button>
+    </div>
+
+    <!-- Confirm Dialog Popup -->
+    <div id="confirmPopup" class="popup">
+        <div class="popup-box">
+            <i class="fas fa-shopping-bag" style="color:var(--orange);"></i>
+            <h3 id="confirmPopupTitle">আপনি কি অর্ডারটি কনফার্ম করতে চান?</h3>
+            <p id="confirmPopupDesc">আপনার অর্ডারটি সফলভাবে প্রসেস করা হবে।</p>
+            <div class="popup-btns" style="display:flex;gap:10px;margin-top:20px;">
+                <button class="btn" onclick="closeConfirm()" style="background:#f1f1f1;color:#333;">বাতিল</button>
+                <button class="btn" id="finalConfirm" style="background:var(--orange);">কনফার্ম</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Popup -->
+    <div id="successPopup" class="popup">
+        <div class="popup-box">
+            <i class="fas fa-check-circle" style="color:var(--green); font-size:45px; margin-bottom:12px;"></i>
+            <h3>আপনার অর্ডার সফলভাবে সম্পন্ন হয়েছে!</h3>
+            <p style="font-size:14px; color:var(--muted); margin:10px 0 20px 0;">আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। ধন্যবাদ আমাদের সাথে থাকার জন্য।</p>
+            
+            <div style="display:flex; gap:10px; margin-top:15px;">
+                <button class="btn" onclick="location.href='https://ghotimarket.com/my-orders'" style="background:var(--orange); font-size:14px; padding:12px; box-shadow:none;">আমার অর্ডারস সমূহ</button>
+                <button class="btn" onclick="location.href='https://ghotimarket.com/all-product'" style="background:#333; font-size:14px; padding:12px; box-shadow:none;">আরোও কেনাকাটা</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Popup -->
+    <div id="errorPopup" class="popup">
+        <div class="popup-box" style="text-align:left;">
+            <div style="text-align:center;">
+                <i class="fas fa-exclamation-triangle" style="color:#e11d48; font-size:40px; margin-bottom:8px;"></i>
+                <h3 id="errorPopupTitle" style="color:#e11d48;">❌ অর্ডার ব্যর্থ হয়েছে</h3>
+            </div>
+            <div style="margin-top:15px; font-size:14px; background:#FFF1F2; padding:12px; border-radius:10px; border:1px solid #FECDD3;">
+                <p style="margin-bottom:6px;"><b>বার্তা:</b> <span id="errorPopupText">-</span></p>
+            </div>
+            <div style="margin-top:20px; text-align:center;">
+                <button class="btn" onclick="document.getElementById('errorPopup').classList.remove('show')" style="background:var(--orange);">ঠিক আছে</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, collection, writeBatch, serverTimestamp, getDocs, query, where, limit, deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+            authDomain: "ghotimarket.firebaseapp.com",
+            databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+            projectId: "ghotimarket",
+            storageBucket: "ghotimarket.firebasestorage.app",
+            messagingSenderId: "481257644093",
+            appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+            measurementId: "G-4SR8V2EKC1"
+        };
+
+        let app, db, auth;
+        let currentUser = null;
+
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+        } catch (e) {
+            console.error("Firebase Init Error:", e);
+        }
+
+        let cartItems = [];
+        let deliveryChargePerProduct = 70;
+        let selectedPaymentMethodType = 'COD'; // 'COD' or 'Online'
+        
+        let appliedAffiliateData = {
+            affiliateApplied: false,
+            affiliatePromoCode: "",
+            affiliateUserId: "",
+            affiliateDiscount: 0
+        };
+
+        function showError(title, message) {
+            document.getElementById('errorPopupTitle').innerText = title;
+            document.getElementById('errorPopupText').innerText = message;
+            document.getElementById('errorPopup').classList.add('show');
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "login.html";
+            } else {
+                currentUser = user;
+                loadCart(user);
+            }
+        });
+
+        window.setDeliveryZone = function(zone, rate) {
+            deliveryChargePerProduct = rate;
+            if(zone === 'inside') {
+                document.getElementById('labelInside').classList.add('active');
+                document.getElementById('labelOutside').classList.remove('active');
+                document.querySelector('input[value="inside"]').checked = true;
+            } else {
+                document.getElementById('labelOutside').classList.add('active');
+                document.getElementById('labelInside').classList.remove('active');
+                document.querySelector('input[value="outside"]').checked = true;
+            }
+            updateSummary();
+        };
+
+        window.setPaymentMethod = function(method) {
+            selectedPaymentMethodType = method;
+            if(method === 'COD') {
+                document.getElementById('payOptionCOD').classList.add('active');
+                document.getElementById('payOptionOnline').classList.remove('active');
+                document.querySelector('input[value="COD"]').checked = true;
+                document.getElementById('confirmBtn').innerText = "Confirm Order";
+            } else {
+                document.getElementById('payOptionOnline').classList.add('active');
+                document.getElementById('payOptionCOD').classList.remove('active');
+                document.querySelector('input[value="Online"]').checked = true;
+                document.getElementById('confirmBtn').innerText = "টাকা পরিশোধ করতে ক্লিক করুন";
+            }
+        };
+
+        window.updateQty = function(index, delta) {
+            let currentQty = Number(cartItems[index].quantity) || 1;
+            currentQty += delta;
+            if(currentQty < 1) currentQty = 1;
+            cartItems[index].quantity = currentQty;
+            
+            if (appliedAffiliateData.affiliateApplied) {
+                recalculateDiscount();
+            }
+
+            renderCartItems();
+            updateSummary();
+        };
+
+        window.removeItem = async function(index) {
+            let item = cartItems[index];
+            if (item && item.cartDocId) {
+                try {
+                    await deleteDoc(doc(db, "carts", item.cartDocId));
+                } catch (err) {
+                    console.error("Error deleting cart item:", err);
+                    let errorCode = err.code ? `(${err.code}) ` : "";
+                    let errorMessage = err.message || "ডাটাবেজ থেকে আইটেমটি মুছতে সমস্যা হয়েছে।";
+                    showError("❌ ডিলিট ব্যর্থ হয়েছে", `কারণ: ${errorCode}${errorMessage}`);
+                    return; 
+                }
+            } else {
+                showError("❌ ত্রুটি", "আইটেম আইডি পাওয়া যায়নি।");
+                return;
+            }
+
+            cartItems.splice(index, 1);
+            
+            if(cartItems.length === 0) {
+                document.getElementById('orderForm').style.display = 'none';
+                document.getElementById('notFound').style.display = 'block';
+                return;
+            }
+
+            const hasAffiliate = cartItems.some(i => i.affiliate === "on");
+            if (!hasAffiliate) {
+                document.getElementById('affiliateCard').style.display = 'none';
+                appliedAffiliateData.affiliateApplied = false;
+                appliedAffiliateData.affiliateDiscount = 0;
+            } else if (appliedAffiliateData.affiliateApplied) {
+                recalculateDiscount();
+            }
+
+            renderCartItems();
+            updateSummary();
+        };
+
+        function recalculateDiscount() {
+            let totalDisc = 0;
+            cartItems.forEach(item => {
+                if (item.affiliate === "on") {
+                    let disc = Number(item.discount) || (Number(item.oldPrice) > Number(item.price) ? Number(item.oldPrice) - Number(item.price) : 0);
+                    totalDisc += disc * (Number(item.quantity) || 1);
+                }
+            });
+            appliedAffiliateData.affiliateDiscount = totalDisc;
+        }
+
+        function renderCartItems() {
+            let itemsHTML = '';
+            cartItems.forEach((item, index) => {
+                let variantsStr = '';
+                if (item.selectedVariants && typeof item.selectedVariants === 'object') {
+                    variantsStr = Object.entries(item.selectedVariants).map(([k, v]) => `${k}: ${v}`).join(' | ');
+                }
+                const itemQty = item.quantity || 1;
+                itemsHTML += `
+                    <div class="cart-item-row">
+                        <img src="${item.image || 'https://via.placeholder.com/75'}" alt="${item.name}">
+                        <div class="item-info" style="flex:1;">
+                            <h4>${item.name}</h4>
+                            ${variantsStr ? `<div class="variants">${variantsStr}</div>` : ''}
+                            <div class="price-qty">৳ ${item.price} × ${itemQty} = ৳ ${(item.price || 0) * itemQty}</div>
+                            <div style="font-size:11px; color:var(--muted);">সেলার: ${item.shopName || 'GHOTI Seller'}</div>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
+                                <div class="qty-controls">
+                                    <button class="qty-btn" onclick="updateQty(${index}, -1)">-</button>
+                                    <span style="font-size:14px; font-weight:700; min-width:20px; text-align:center;">${itemQty}</span>
+                                    <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
+                                </div>
+                                <button class="remove-item-btn" onclick="removeItem(${index})"><i class="fas fa-trash-alt"></i> ডিলিট</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('cartItemsList').innerHTML = itemsHTML;
+        }
+
+        async function loadCart(user) {
+            const loadingEl = document.getElementById('loading');
+            try {
+                const q = query(collection(db, "carts"), where("uid", "==", user.uid));
+                const querySnapshot = await getDocs(q);
+
+                cartItems = [];
+                querySnapshot.forEach((docSnap) => {
+                    let data = docSnap.data();
+                    cartItems.push({
+                        cartDocId: docSnap.id,
+                        ...data
+                    });
+                });
+                
+                if (cartItems.length === 0) {
+                    loadingEl.style.display = 'none';
+                    document.getElementById('notFound').style.display = 'block';
+                    return;
+                }
+
+                renderCartItems();
+
+                const hasAffiliate = cartItems.some(i => i.affiliate === "on");
+                if (hasAffiliate) {
+                    document.getElementById('affiliateCard').style.display = 'block';
+                }
+
+                loadingEl.style.display = 'none';
+                document.getElementById('orderForm').style.display = 'block';
+                document.getElementById('confirmBtn').disabled = false;
+                updateSummary();
+
+            } catch (e) {
+                loadingEl.style.display = 'none';
+                console.error("Cart Load Error:", e);
+                showError("❌ কার্ট লোড ত্রুটি", "কার্ট থেকে ডেটা পড়তে সমস্যা হয়েছে।");
+                document.getElementById('notFound').style.display = 'block';
+            }
+        }
+
+        try {
+            window.bdLocation = new BDLocationSelector("location-selector");
+        } catch(e) {
+            console.error("Location Selector Error:", e);
+        }
+
+        function updateSummary() {
+            let subtotal = 0;
+            let totalProductsCount = 0;
+
+            cartItems.forEach(item => {
+                const qty = Number(item.quantity) || 1;
+                subtotal += (Number(item.price) || 0) * qty;
+                totalProductsCount += qty;
+            });
+
+            const totalDelivery = deliveryChargePerProduct * totalProductsCount;
+
+            let discount = appliedAffiliateData.affiliateApplied ? (appliedAffiliateData.affiliateDiscount || 0) : 0;
+            let total = subtotal - discount;
+            if (total < 0) total = 0;
+            total += totalDelivery;
+
+            document.getElementById('sumSubtotal').innerText = '৳' + subtotal;
+            document.getElementById('sumDelivery').innerText = '৳' + totalDelivery + ` (${totalProductsCount} টি পণ্যের জন্য)`;
+            
+            const discountRow = document.getElementById('discountSummaryRow');
+            if (appliedAffiliateData.affiliateApplied && discount > 0) {
+                discountRow.style.display = 'flex';
+                document.getElementById('sumDiscount').innerText = '-৳' + discount;
+            } else {
+                discountRow.style.display = 'none';
+            }
+
+            document.getElementById('sumTotal').innerText = '৳' + total;
+        }
+
+        document.getElementById('applyPromoBtn').onclick = async () => {
+            const promoInput = document.getElementById('promoCodeInput').value.trim();
+            const promoErrorEl = document.getElementById('promoError');
+            const promoSuccessEl = document.getElementById('promoSuccess');
+            const applyBtn = document.getElementById('applyPromoBtn');
+
+            if (!promoInput) {
+                promoErrorEl.innerText = "প্রোমো কোড লিখুন";
+                promoErrorEl.style.display = 'block';
+                return;
+            }
+
+            applyBtn.innerHTML = '<div class="spinner" style="width:16px;height:16px;border-width:2px;"></div>';
+            applyBtn.disabled = true;
+
+            try {
+                const q = query(collection(db, "Affiliates"), where("promoCode", "==", promoInput), limit(1));
+                const snap = await getDocs(q);
+
+                if (snap.empty) {
+                    promoErrorEl.innerText = "ভুল প্রোমো কোড: এই কোডটি সঠিক নয়";
+                    promoErrorEl.style.display = 'block';
+                    applyBtn.innerHTML = 'Apply';
+                    applyBtn.disabled = false;
+                    return;
+                }
+
+                const affDoc = snap.docs[0].data();
+                appliedAffiliateData.affiliateApplied = true;
+                appliedAffiliateData.affiliatePromoCode = affDoc.promoCode || promoInput;
+                appliedAffiliateData.affiliateUserId = affDoc.uid || snap.docs[0].id;
+
+                recalculateDiscount();
+
+                promoSuccessEl.style.display = 'block';
+                promoErrorEl.style.display = 'none';
+                applyBtn.innerText = 'Applied';
+                document.getElementById('promoCodeInput').disabled = true;
+                updateSummary();
+
+            } catch (e) {
+                console.error("Promo error:", e);
+                promoErrorEl.innerText = "প্রোমো যাচাই করতে সমস্যা হয়েছে।";
+                promoErrorEl.style.display = 'block';
+                applyBtn.innerHTML = 'Apply';
+                applyBtn.disabled = false;
+            }
+        };
+
+        function validateForm() {
+            let valid = true;
+            const name = document.getElementById('customerName').value.trim();
+            const phone = document.getElementById('customerPhone').value.trim();
+            const loc = window.bdLocation?.getSelectedLocation() || {};
+
+            if (!name) { document.getElementById('nameError').style.display = 'block'; valid = false; }
+            else document.getElementById('nameError').style.display = 'none';
+
+            const phoneRegex = /^01[3-9]\d{8}$/;
+            if (!phoneRegex.test(phone)) { document.getElementById('phoneError').style.display = 'block'; valid = false; }
+            else document.getElementById('phoneError').style.display = 'none';
+
+            if (!loc.division || !loc.district || !loc.upazila) { document.getElementById('locationError').style.display = 'block'; valid = false; }
+            else document.getElementById('locationError').style.display = 'none';
+
+            return valid;
+        }
+
+        document.getElementById('confirmBtn').onclick = () => {
+            if (!validateForm()) {
+                showError("❌ তথ্য অসম্পূর্ণ", "দয়া করে নাম, সঠিক মোবাইল নাম্বার এবং সম্পূর্ণ ঠিকানা পূরণ করুন।");
+                return;
+            }
+            if (selectedPaymentMethodType === 'Online') {
+                document.getElementById('confirmPopupTitle').innerText = "অনলাইন পেমেন্টে রিডাইরেক্ট হবে";
+                document.getElementById('confirmPopupDesc').innerText = "অর্ডার সংরক্ষণ করে আপনাকে নিরাপদ পেমেন্ট গেটওয়ে (RupantorPay)-এ নিয়ে যাওয়া হবে।";
+            } else {
+                document.getElementById('confirmPopupTitle').innerText = "আপনি কি অর্ডারটি কনফার্ম করতে চান?";
+                document.getElementById('confirmPopupDesc').innerText = "আপনার অর্ডারটি সফলভাবে প্রসেস করা হবে।";
+            }
+            document.getElementById('confirmPopup').classList.add('show');
+        };
+
+        window.closeConfirm = () => {
+            document.getElementById('confirmPopup').classList.remove('show');
+        };
+
+        let isSubmitting = false;
+        document.getElementById('finalConfirm').onclick = async () => {
+            if (isSubmitting) return;
+            isSubmitting = true;
+            document.getElementById('finalConfirm').innerHTML = '<div class="spinner"></div>';
+
+            try {
+                const loc = window.bdLocation.getSelectedLocation();
+                const customerName = document.getElementById('customerName').value.trim();
+                const customerPhone = document.getElementById('customerPhone').value.trim();
+                const orderNote = document.getElementById('orderNote').value.trim();
+                const timestamp = serverTimestamp();
+
+                const userUid = currentUser ? currentUser.uid : '';
+                const userEmail = currentUser ? currentUser.email : '';
+                const fullAddressStr = loc.fullAddress || `${loc.upazila || ''}, ${loc.district || ''}, ${loc.division || ''}`.replace(/^,\s*|,\s*$/g, '');
+
+                if (selectedPaymentMethodType === 'Online') {
+                    // Create single primary order or aggregate item records and create payment document
+                    let orderIds = [];
+                    let calculatedGrandTotal = 0;
+                    let calculatedSubtotal = 0;
+                    let calculatedDiscount = 0;
+                    let calculatedDelivery = 0;
+
+                    const batch = writeBatch(db);
+                    
+                    cartItems.forEach(item => {
+                        const orderTrackId = 'GM-' + new Date().getFullYear() + '-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+                        const qty = Number(item.quantity) || 1;
+                        const unitPrice = Number(item.price) || 0;
+                        const oldPriceVal = Number(item.oldPrice) || unitPrice;
+                        const itemOriginalSubtotal = oldPriceVal * qty;
+                        const itemSubtotal = unitPrice * qty;
+                        
+                        let itemDiscount = 0;
+                        if (appliedAffiliateData.affiliateApplied && item.affiliate === "on") {
+                            let disc = Number(item.discount) || (oldPriceVal > unitPrice ? oldPriceVal - unitPrice : 0);
+                            itemDiscount = disc * qty;
+                        }
+
+                        const itemDiscountedSubtotal = itemSubtotal - itemDiscount;
+                        const itemDeliveryCharge = deliveryChargePerProduct * qty;
+                        let itemGrandTotal = itemDiscountedSubtotal;
+                        if (itemGrandTotal < 0) itemGrandTotal = 0;
+                        itemGrandTotal += itemDeliveryCharge;
+
+                        calculatedSubtotal += itemSubtotal;
+                        calculatedDiscount += itemDiscount;
+                        calculatedDelivery += itemDeliveryCharge;
+                        calculatedGrandTotal += itemGrandTotal;
+
+                        const orderData = {
+                            orderTrackId,
+                            uid: userUid,
+                            email: userEmail,
+                            productName: item.name || '',
+                            productImage: item.image || '',
+                            productPrice: unitPrice,
+                            quantity: qty,
+                            selectedVariants: item.selectedVariants || {},
+                            oldPrice: oldPriceVal,
+                            sellerId: item.sellerId || 'default_seller',
+                            shopName: item.shopName || 'GHOTI Seller',
+                            items: [item],
+                            subtotal: itemSubtotal,
+                            originalSubtotal: itemOriginalSubtotal,
+                            discountedSubtotal: itemDiscountedSubtotal,
+                            affiliateDiscount: itemDiscount,
+                            productDiscount: itemDiscount,
+                            deliveryCharge: itemDeliveryCharge,
+                            grandTotal: itemGrandTotal,
+                            customerName,
+                            customerPhone,
+                            division: loc.division || '',
+                            district: loc.district || '',
+                            upazila: loc.upazila || '',
+                            fullAddress: fullAddressStr,
+                            address: loc.address || fullAddressStr,
+                            orderNote,
+                            paymentMethod: 'Online Payment',
+                            paymentStatus: 'Unpaid',
+                            deliveryStatus: 'New',
+                            orderStatus: 'Pending',
+                            createdAt: timestamp,
+                            updatedAt: timestamp,
+                            affiliateApplied: appliedAffiliateData.affiliateApplied,
+                            affiliatePromoCode: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliatePromoCode : "",
+                            affiliateUserId: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliateUserId : ""
+                        };
+
+                        const newOrderRef = doc(collection(db, "orders"));
+                        batch.set(newOrderRef, orderData);
+                        orderIds.push(newOrderRef.id);
+                    });
+
+                    // Create payment document
+                    const paymentRef = doc(collection(db, "payment"));
+                    const paymentData = {
+                        paymentId: paymentRef.id,
+                        orderId: orderIds[0], // primary order reference
+                        orderIds: orderIds,
+                        uid: userUid,
+                        email: userEmail,
+                        customerName,
+                        customerPhone,
+                        subtotal: calculatedSubtotal,
+                        discount: calculatedDiscount,
+                        deliveryCharge: calculatedDelivery,
+                        totalAmount: calculatedGrandTotal,
+                        currency: "BDT",
+                        paymentMethod: "RupantorPay",
+                        paymentStatus: "Unpaid",
+                        transactionId: "",
+                        orderStatus: "Pending",
+                        createdAt: timestamp,
+                        updatedAt: timestamp
+                    };
+                    batch.set(paymentRef, paymentData);
+                    await batch.commit();
+
+                    // Clear cart items now that order + payment exist
+                    for (const item of cartItems) {
+                        if (item.cartDocId) {
+                            try { await deleteDoc(doc(db, "carts", item.cartDocId)); } catch (err) {}
+                        }
+                    }
+
+                    // Redirect to payment gateway PHP backend with primary orderId
+                    window.location.href = `https://pay.ghotimarket.com/?orderId=${orderIds[0]}`;
+
+                } else {
+                    // COD Flow
+                    const batch = writeBatch(db);
+                    cartItems.forEach(item => {
+                        const orderTrackId = 'GM-' + new Date().getFullYear() + '-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+                        const qty = Number(item.quantity) || 1;
+                        const unitPrice = Number(item.price) || 0;
+                        const oldPriceVal = Number(item.oldPrice) || unitPrice;
+                        const itemOriginalSubtotal = oldPriceVal * qty;
+                        const itemSubtotal = unitPrice * qty;
+                        
+                        let itemDiscount = 0;
+                        if (appliedAffiliateData.affiliateApplied && item.affiliate === "on") {
+                            let disc = Number(item.discount) || (oldPriceVal > unitPrice ? oldPriceVal - unitPrice : 0);
+                            itemDiscount = disc * qty;
+                        }
+
+                        const itemDiscountedSubtotal = itemSubtotal - itemDiscount;
+                        const itemDeliveryCharge = deliveryChargePerProduct * qty;
+                        let itemGrandTotal = itemDiscountedSubtotal;
+                        if (itemGrandTotal < 0) itemGrandTotal = 0;
+                        itemGrandTotal += itemDeliveryCharge;
+
+                        const orderData = {
+                            orderTrackId,
+                            uid: userUid,
+                            email: userEmail,
+                            productName: item.name || '',
+                            productImage: item.image || '',
+                            productPrice: unitPrice,
+                            quantity: qty,
+                            selectedVariants: item.selectedVariants || {},
+                            oldPrice: oldPriceVal,
+                            sellerId: item.sellerId || 'default_seller',
+                            shopName: item.shopName || 'GHOTI Seller',
+                            items: [item],
+                            subtotal: itemSubtotal,
+                            originalSubtotal: itemOriginalSubtotal,
+                            discountedSubtotal: itemDiscountedSubtotal,
+                            affiliateDiscount: itemDiscount,
+                            productDiscount: itemDiscount,
+                            deliveryCharge: itemDeliveryCharge,
+                            grandTotal: itemGrandTotal,
+                            customerName,
+                            customerPhone,
+                            division: loc.division || '',
+                            district: loc.district || '',
+                            upazila: loc.upazila || '',
+                            fullAddress: fullAddressStr,
+                            address: loc.address || fullAddressStr,
+                            orderNote,
+                            paymentMethod: 'Cash On Delivery',
+                            paymentStatus: 'Unpaid',
+                            deliveryStatus: 'New',
+                            orderStatus: 'Pending',
+                            createdAt: timestamp,
+                            updatedAt: timestamp,
+                            affiliateApplied: appliedAffiliateData.affiliateApplied,
+                            affiliatePromoCode: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliatePromoCode : "",
+                            affiliateUserId: appliedAffiliateData.affiliateApplied ? appliedAffiliateData.affiliateUserId : ""
+                        };
+
+                        const newOrderRef = doc(collection(db, "orders"));
+                        batch.set(newOrderRef, orderData);
+                    });
+
+                    await batch.commit();
+
+                    for (const item of cartItems) {
+                        if (item.cartDocId) {
+                            try { await deleteDoc(doc(db, "carts", item.cartDocId)); } catch (err) {}
+                        }
+                    }
+
+                    closeConfirm();
+                    isSubmitting = false;
+                    document.getElementById('finalConfirm').innerText = 'কনফার্ম';
+                    document.getElementById('successPopup').classList.add('show');
+                }
+
+            } catch (e) {
+                console.error("Order Commit Error:", e);
+                closeConfirm();
+                isSubmitting = false;
+                document.getElementById('finalConfirm').innerText = 'কনফার্ম';
+                showError("❌ অর্ডার সংরক্ষণ ব্যর্থ হয়েছে", e.message || "নেটওয়ার্ক বা ডাটাবেজ সমস্যা হয়েছে।");
+            }
+        };
+    </script>
+</body>
+</html>
