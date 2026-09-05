@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="metaTitle">Seller Profile | Ghoti Market</title>
+    <title id="metaTitle">Seller Shop Ghoti Market</title>
     
     <!-- SEO & META TAGS -->
-    <meta name="description" id="metaDescription" content="Browse products on Ghoti Market.">
-    <meta name="keywords" id="metaKeywords" content="ghoti market, online shop">
+    <meta name="description" id="metaDescription" content="Browse verified seller products on the official online store marketplace.">
+    <meta name="keywords" id="metaKeywords" content="online marketplace, verified seller, e-commerce shop">
     
     <!-- Open Graph SEO -->
-    <meta property="og:title" id="ogTitle" content="Seller Profile | Ghoti Market">
-    <meta property="og:description" id="ogDescription" content="Browse products on Ghoti Market.">
+    <meta property="og:title" id="ogTitle" content="Seller Profile | Official Marketplace Store">
+    <meta property="og:description" id="ogDescription" content="Browse verified seller products on the official online store marketplace.">
     <meta property="og:image" id="ogImage" content="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
     <meta property="og:type" id="ogType" content="website">
     <meta property="og:url" id="ogUrl" content="">
 
     <!-- Twitter Meta -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" id="twitterTitle" content="Seller Profile | Ghoti Market">
-    <meta name="twitter:description" id="twitterDescription" content="Browse products on Ghoti Market.">
+    <meta name="twitter:title" id="twitterTitle" content="Seller Profile | Official Marketplace Store">
+    <meta name="twitter:description" id="twitterDescription" content="Browse verified seller products on the official online store marketplace.">
     <meta name="twitter:image" id="twitterImage" content="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
 
     <!-- JSON-LD Structured Data -->
@@ -27,8 +27,8 @@
     {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
-      "name": "Ghoti Market",
-      "description": "Browse products on Ghoti Market.",
+      "name": "Official Store",
+      "description": "Browse verified seller products.",
       "image": "https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png",
       "url": "",
       "logo": "https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png"
@@ -37,325 +37,688 @@
     
     <!-- FAVICON + THEME COLOR ORANGE -->
     <link rel="icon" type="image/png" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
-    <link rel="shortcut icon" type="image/png" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
-    <link rel="apple-touch-icon" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png">
-    <link rel="mask-icon" href="https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png" color="#f97316">
     <meta name="theme-color" content="#f97316">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-   <style>
-@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700;800&display=swap');
-:root { 
-    --primary: #0f172a; 
-    --bg: #f8fafc; 
-    --accent: #f97316; 
-    --accent2: #fb923c;
-    --danger: #ff4757; 
-    --glass: rgba(255,255,255,0.85);
-}
-* { box-sizing: border-box; }
-html, body { 
-    font-family: 'Hind Siliguri', sans-serif; 
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); 
-    margin: 0; 
-    padding: 0; 
-    overflow-x: hidden; 
-    width: 100%;
-    padding-bottom: 80px; 
-}
-
-.native-bar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background: rgba(15, 23, 42, 0.85);
-    backdrop-filter: blur(25px) saturate(180%);
-    padding: 12px 15px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    width: 100%;
-}
-.back-btn { 
-    background: rgba(255,255,255,0.1); 
-    color: white; 
-    width: 40px; 
-    height: 40px; 
-    border-radius: 50%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    text-decoration: none; 
-    font-size: 18px; 
-    transition:0.3s;
-}
-.back-btn:active { background: var(--accent); transform:scale(0.9); }
-
-.profile-container { 
-    position: relative; 
-    background: var(--glass);
-    backdrop-filter: blur(16px);
-    border-radius: 0 0 25px 25px; 
-    overflow: hidden; 
-    box-shadow: 0 10px 40px rgba(0,0,0,0.08); 
-    padding-bottom: 20px; 
-    border:1px solid rgba(255,255,255,0.5);
-    width: 100%;
-}
-.banner-box { 
-    position: relative; 
-    width: 100%; 
-    padding-top: 56.25%; /* 16:9 */
-    background: linear-gradient(135deg, #e2e8f0, #cbd5e1); 
-}
-.banner-box img { 
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-    display: none; 
-}
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
         
-.profile-info-box { text-align: center; padding: 15px 15px 0; margin-top:-45px; position:relative; z-index:2; }
-.shop-icon { 
-    width: 90px; 
-    height: 90px; 
-    background: white; 
-    border-radius: 50%; 
-    margin: 0 auto 12px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    border: 4px solid white; 
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
-    overflow: hidden; 
-}
-.shop-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        :root {
+            --primary: #0f172a;
+            --bg: #f8fafc;
+            --accent: #f97316;
+            --accent2: #fb923c;
+            --dark: #0f172a;
+            --white: #ffffff;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+        }
 
-.shop-name-area { 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    gap: 8px; 
-    padding:0 10px; 
-}
-.shop-name-area h1 { 
-    font-size: 20px; 
-    margin: 0; 
-    font-weight:800;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    word-break: break-word; 
-}
-.verified-badge {
-    width: 22px;
-    height: 22px;
-    background: #1877F2;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink:0;
-    box-shadow:0 3px 10px rgba(24,119,242,0.4);
-}
-.verified-badge svg { width: 12px; height: 12px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            overflow-x: hidden;
+            width: 100%;
+            padding-bottom: 90px;
+        }
 
-.shop-description-section {
-    max-width: 800px;
-    margin: 15px auto 0 auto;
-    padding: 0 15px;
-}
-.shop-description-card {
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(249, 115, 22, 0.2);
-    border-left: 4px solid var(--accent);
-    border-radius: 12px;
-    padding: 14px 18px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
-    font-size: 14px;
-    color: #334155;
-    line-height: 1.6;
-    white-space: pre-line;
-    word-break: break-word;
-}
+        /* 1. STICKY HEADER (No Ghoti Market Logo) */
+        .marketplace-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .header-shop-logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+            background: var(--white);
+        }
+        .header-shop-name {
+            color: var(--white);
+            font-weight: 700;
+            font-size: 16px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 180px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .header-icon-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: 0.2s;
+            position: relative;
+        }
+        .header-icon-btn:hover {
+            background: var(--accent);
+        }
 
-.search-area { 
-    padding: 15px; 
-    position: sticky; 
-    top: 64px; 
-    z-index: 99; 
-    background: var(--bg); 
-}
-.search-bar { 
-    width: 100%; 
-    max-width: 800px; 
-    margin: 0 auto; 
-    display: block; 
-    padding: 14px 20px; 
-    border-radius: 50px; 
-    border: 2px solid #e2e8f0; 
-    box-shadow: 0 5px 20px rgba(0,0,0,0.06); 
-    outline: none; 
-    font-size: 15px; 
-    font-family:'Hind Siliguri';
-    transition:0.3s;
-    background:white;
-}
-.search-bar:focus { 
-    border-color: var(--accent);
-    box-shadow: 0 5px 20px rgba(249, 115, 22, 0.2); 
-}
+        /* 2. BANNER CAROUSEL */
+        .banner-container {
+            position: relative;
+            width: 100%;
+            background: #cbd5e1;
+            overflow: hidden;
+            aspect-ratio: 16 / 6;
+            max-height: 400px;
+            min-height: 180px;
+        }
+        .banner-track {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.4s ease-in-out;
+        }
+        .banner-slide {
+            min-width: 100%;
+            height: 100%;
+        }
+        .banner-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .banner-dots {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+            z-index: 5;
+        }
+        .banner-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .banner-dot.active {
+            background: var(--accent);
+            width: 20px;
+            border-radius: 4px;
+        }
 
-.grid { 
-    display: grid; 
-    gap: 12px; 
-    padding: 12px; 
-    grid-template-columns: repeat(2, 1fr); 
-    max-width: 1400px; 
-    margin: 0 auto; 
-    width: 100%;
-}
-@media (min-width: 600px) { .grid { grid-template-columns: repeat(4, 1fr); gap:15px; padding:15px; } }
-@media (min-width: 900px) { .grid { grid-template-columns: repeat(6, 1fr); gap:20px; padding:20px; } }
+        /* 3. PROFILE SECTION */
+        .profile-section {
+            background: var(--white);
+            padding: 0 20px 20px 20px;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            text-align: center;
+            position: relative;
+        }
+        .seller-logo-wrapper {
+            width: 100px;
+            height: 100px;
+            margin: -50px auto 12px auto;
+            border-radius: 50%;
+            background: var(--white);
+            border: 4px solid var(--white);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+        }
+        .seller-logo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .profile-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .profile-shop-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        .verified-badge {
+            color: #1d9bf0;
+            font-size: 18px;
+            display: inline-flex;
+            align-items: center;
+        }
+        .shop-meta-info {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .shop-status-badge {
+            background: #dcfce7;
+            color: #166534;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 11px;
+        }
+        .shop-status-badge.unavailable {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .shop-description {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
 
-.p-card { 
-    background: white; 
-    border-radius: 16px; 
-    overflow: hidden; 
-    box-shadow: 0 3px 12px rgba(0,0,0,0.06); 
-    text-decoration: none; 
-    color: #333; 
-    transition:0.2s; 
-    border:1px solid #f1f5f9;
-}
-.p-card:active { transform:scale(0.96); } 
-.img-box { position: relative; padding-top: 100%; background: #f8fafc; overflow:hidden; }
-.img-box img { position: absolute; top: 0; width: 100%; height: 100%; object-fit: cover; }
-.p-info { padding: 10px; }
-.p-name { font-size: 13px; font-weight: 600; height: 36px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 5px; }
+        /* 4. PRODUCT FILTER & SEARCH BAR */
+        .store-controls-container {
+            max-width: 1200px;
+            margin: 20px auto 10px auto;
+            padding: 0 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        @media (min-width: 768px) {
+            .store-controls-container {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+        .shop-search-box {
+            position: relative;
+            flex: 1;
+            max-width: 500px;
+        }
+        .shop-search-input {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            background: var(--white);
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .shop-search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+        }
+        .shop-search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+        .sort-select-box {
+            padding: 10px 16px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            background: var(--white);
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: 14px;
+            color: var(--text-main);
+            outline: none;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
 
-.see-more-btn { 
-    display: block; 
-    width: 200px; 
-    margin: 25px auto; 
-    padding: 14px; 
-    background: linear-gradient(135deg, var(--accent), var(--accent2)); 
-    color: white; 
-    border: none; 
-    border-radius: 50px; 
-    cursor: pointer; 
-    font-weight:700; 
-    font-size:15px;
-    box-shadow:0 6px 20px rgba(249,115,22,0.3); 
-}
+        /* Section Header */
+        .section-heading-wrapper {
+            max-width: 1200px;
+            margin: 20px auto 10px auto;
+            padding: 0 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        .product-count-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            background: #e2e8f0;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
 
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 65px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(25px) saturate(180%);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    box-shadow: 0 -5px 20px rgba(0,0,0,0.08);
-    border-top: 1px solid rgba(0,0,0,0.05);
-    z-index: 9999;
-    padding-bottom: env(safe-area-inset-bottom);
-}
-.nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: #64748b;
-    font-size: 10px;
-    font-weight: 600;
-    transition: 0.2s;
-    width: 25%;
-}
-.nav-item i {
-    font-size: 21px;
-    margin-bottom: 3px;
-}
-.nav-item.active {
-    color: var(--accent);
-}
-.price-box{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:center;
-    gap:6px;
-    margin-top:6px;
-}
+        /* 5. PRODUCT GRID & CARDS */
+        .grid {
+            display: grid;
+            gap: 16px;
+            padding: 0 16px;
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        @media (min-width: 600px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 1024px) { .grid { grid-template-columns: repeat(5, 1fr); } }
 
-.current-price{
-    color:#16A34A;
-    font-size:18px;
-    font-weight:700;
-}
+        .p-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .p-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(249, 115, 22, 0.12);
+            border-color: rgba(249, 115, 22, 0.3);
+        }
+        .img-box {
+            position: relative;
+            padding-top: 100%;
+            background: #f1f5f9;
+            overflow: hidden;
+        }
+        .img-box img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .p-card:hover .img-box img {
+            transform: scale(1.05);
+        }
+        .p-info {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            justify-content: space-between;
+        }
+        .p-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-main);
+            height: 38px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .price-box {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+        }
+        .current-price {
+            color: var(--accent);
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .old-price {
+            color: var(--text-muted);
+            text-decoration: line-through;
+            font-size: 12px;
+        }
+        .discount-badge {
+            background: #fee2e2;
+            color: #dc2626;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .save-text {
+            width: 100%;
+            color: #16a34a;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
 
-.old-price{
-    color:#94A3B8;
-    text-decoration:line-through;
-    font-size:14px;
-}
+        /* LOAD MORE BUTTON */
+        .see-more-btn {
+            display: block;
+            width: 220px;
+            margin: 30px auto;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: var(--white);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+            transition: 0.2s;
+        }
+        .see-more-btn:hover {
+            opacity: 0.95;
+            transform: scale(1.02);
+        }
 
-.discount-badge{
-    background:#EF4444;
-    color:#fff;
-    font-size:11px;
-    font-weight:700;
-    padding:3px 7px;
-    border-radius:20px;
-}
+        /* SKELETON LOADER */
+        .skeleton {
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
 
-.save-text{
-    width:100%;
-    color:#DC2626;
-    font-size:12px;
-    font-weight:600;
-    margin-top:3px;
-}
-</style>
+        /* 6. PROFESSIONAL FOOTER (Contact & Powered By) */
+        .marketplace-footer {
+            background: #0f172a;
+            color: var(--white);
+            padding: 40px 20px 30px 20px;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .footer-content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            gap: 30px;
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 768px) {
+            .footer-content-wrapper {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        .footer-col h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .footer-links-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .footer-links-list li a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .footer-links-list li a:hover {
+            color: var(--white);
+        }
+        .social-icons-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .social-icon-box {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .social-icon-box:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+        .footer-bottom-bar {
+            max-width: 1200px;
+            margin: 30px auto 0 auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: #94a3b8;
+            text-align: center;
+        }
+        .powered-by-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .powered-by-link:hover {
+            text-decoration: underline;
+        }
+
+        /* 7. BOTTOM NAVIGATION (Strictly Maintained Links & Order) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 65px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+            border-top: 1px solid var(--border-color);
+            z-index: 9999;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 10px;
+            font-weight: 600;
+            transition: 0.2s;
+            flex: 1;
+        }
+        .nav-item i {
+            font-size: 20px;
+            margin-bottom: 3px;
+        }
+        .nav-item:hover, .nav-item.active {
+            color: var(--accent);
+        }
+
+        /* Error state styling */
+        .error-state-box {
+            text-align: center;
+            padding: 60px 20px;
+            max-width: 500px;
+            margin: 40px auto;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            border: 1px solid var(--border-color);
+        }
+        .error-state-box h2 {
+            font-size: 20px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        .error-state-box p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="native-bar">
-        <a href="https://ghotimarket.com" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    <!-- 1. TOP HEADER -->
+    <header class="marketplace-header">
+        <a href="#" id="headerShopLink" class="header-left">
+            <img id="headerShopLogo" src="" alt="Shop Logo" class="header-shop-logo" onerror="this.src='https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png'">
+            <span id="headerShopName" class="header-shop-name">Store</span>
+        </a>
+        <div class="header-right">
+            <a href="https://ghotimarket.com/all-product" class="header-icon-btn" title="Search"><i data-lucide="search"></i></a>
+            <a href="https://ghotimarket.com/cart" class="header-icon-btn" title="Cart"><i data-lucide="shopping-bag"></i></a>
+        </div>
+    </header>
+
+    <!-- 2. SHOP BANNER CAROUSEL -->
+    <div class="banner-container" id="bannerContainerBox">
+        <div class="banner-track" id="bannerTrack">
+            <!-- Dynamic Banners Rendered Here -->
+        </div>
+        <div class="banner-dots" id="bannerDots"></div>
     </div>
 
-    <div class="profile-container">
-        <div class="banner-box"><img id="shopBannerImg" src="" alt="Banner"></div>
-        <div class="profile-info-box">
-            <div class="shop-icon">
-                <img id="shopLogoImg" src="" alt="Logo">
+    <!-- 3. SHOP PROFILE SECTION -->
+    <section class="profile-section">
+        <div class="seller-logo-wrapper">
+            <img id="sellerLogoImg" src="" alt="Seller Logo" onerror="this.src='https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png'">
+        </div>
+        <div class="profile-title-row">
+            <h1 id="shopName" class="profile-shop-name">দোকানের নাম লোড হচ্ছে...</h1>
+            <span id="verifiedBadge" class="verified-badge" style="display: none;" title="Verified Store">
+                <i class="fas fa-check-circle" style="color: #1877F2;"></i>
+            </span>
+        </div>
+        <div class="shop-meta-info">
+            <span id="shopStatusBadge" class="shop-status-badge">Active Shop</span>
+        </div>
+        <div id="shopDescriptionContainer" class="shop-description" style="display: none;">
+            <p id="shopDescriptionText"></p>
+        </div>
+    </section>
+
+    <!-- 4. PRODUCT CONTROLS (Search & Sorting) -->
+    <div class="store-controls-container">
+        <div class="shop-search-box">
+            <i data-lucide="search" class="shop-search-icon"></i>
+            <input type="text" id="pSearch" class="shop-search-input" placeholder="এই দোকানে পণ্য খুঁজুন..." oninput="handleSearchDebounced()">
+        </div>
+        <select id="sortSelect" class="sort-select-box" onchange="handleSortProducts()">
+            <option value="default">সাজান: সাধারণ</option>
+            <option value="newest">নতুন পণ্য</option>
+            <option value="price_low">কম দাম</option>
+            <option value="price_high">বেশি দাম</option>
+            <option value="discount">বেশি ছাড়</option>
+        </select>
+    </div>
+
+    <!-- SECTION HEADING -->
+    <div class="section-heading-wrapper">
+        <h2 class="section-title">এই দোকানের পণ্য</h2>
+        <span id="productCountLabel" class="product-count-label">০টি পণ্য</span>
+    </div>
+
+    <!-- 5. PRODUCT GRID -->
+    <div class="grid" id="sellerProductGrid">
+        <!-- Skeleton Loaders initially -->
+        <div class="p-card skeleton" style="height: 240px;"></div>
+        <div class="p-card skeleton" style="height: 240px;"></div>
+        <div class="p-card skeleton" style="height: 240px;"></div>
+        <div class="p-card skeleton" style="height: 240px;"></div>
+    </div>
+
+    <button id="seeMoreBtn" class="see-more-btn" style="display: none;" onclick="loadMoreProducts()">আরও পণ্য দেখুন</button>
+
+    <!-- 6. FOOTER (Contact, Socials & Powered By) -->
+    <footer class="marketplace-footer">
+        <div class="footer-content-wrapper">
+            <!-- Contact Section -->
+            <div class="footer-col" id="footerContactCol" style="display: none;">
+                <h3>যোগাযোগ</h3>
+                <ul class="footer-links-list" id="footerContactList">
+                    <!-- Dynamic Email / Phone / WhatsApp -->
+                </ul>
             </div>
-            <div class="shop-name-area">
-                <h1 id="shopName">Loading...</h1>
-                <div id="verifiedBadge" class="verified-badge" style="display:none;" title="Verified Shop">
-                    <svg viewBox="0 0 24 24" fill="white">
-                        <path d="M9.1 13.8l-2.3-2.3c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l3 3c.2.2.5.3.7.3.2 0 .5-.1.7-.3l5.8-5.8c.4-.4.4-1 0-1.4-.4-.4-1-.4-1.4 0L9.1 13.8z"/>
-                    </svg>
+
+            <!-- Social Links Section -->
+            <div class="footer-col" id="footerSocialCol" style="display: none;">
+                <h3>সোশ্যাল মিডিয়া</h3>
+                <div class="social-icons-row" id="footerSocialIcons">
+                    <!-- Dynamic Socials -->
                 </div>
             </div>
-        </div>
-        <div id="shopDescriptionContainer" class="shop-description-section" style="display: none;">
-            <div id="shopDescriptionText" class="shop-description-card"></div>
-        </div>
-    </div>
 
-    <div class="search-area">
-        <input type="text" id="pSearch" class="search-bar" placeholder="পণ্য খুঁজুন..." oninput="handleSearch()">
-    </div>
+            <!-- Quick Info -->
+            <div class="footer-col">
+                <h3>মার্কেটপ্লেস স্টোর</h3>
+                <p style="font-size: 13px; color: #94a3b8; line-height: 1.6;">
+                    নিরাপদ ও নির্ভরযোগ্য অনলাইন কেনাকাটার বিশ্বস্ত মাধ্যম। এই স্টোরের সমস্ত পণ্যের গুণগত মান যাচাইকৃত।
+                </p>
+            </div>
+        </div>
 
+        <div class="footer-bottom-bar">
+            <div id="copyrightText">© 2026 All Rights Reserved.</div>
+            <div>Powered by <a href="https://ghotimarket.com" class="powered-by-link">Ghoti Market</a></div>
+        </div>
+    </footer>
+
+    <!-- 7. BOTTOM NAVIGATION (Strictly Maintained Items & Links) -->
     <nav class="bottom-nav">
         <a href="https://ghotimarket.com" class="nav-item">
             <i data-lucide="home"></i>
@@ -383,10 +746,8 @@ html, body {
         </a>
     </nav>
 
-    <div class="grid" id="sellerProductGrid"></div>
-    <button id="seeMoreBtn" class="see-more-btn" style="display:none;" onclick="loadMore()">See More</button>
-
-<script type="module">
+    <!-- FIREBASE & APP LOGIC -->
+    <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import {
           getFirestore,
@@ -415,155 +776,41 @@ html, body {
 
         const FALLBACK_LOGO = "https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png";
 
-        function updateFavicons(shopLogo) {
-            let validLogo = (shopLogo && typeof shopLogo === 'string' && shopLogo.trim() !== "") 
-                ? shopLogo.trim() 
-                : FALLBACK_LOGO;
+        // Dynamic Copyright Year
+        document.getElementById("copyrightText").textContent = `© ${new Date().getFullYear()} All Rights Reserved.`;
 
-            const timestamp = Date.now();
-            const versionedLogo = `${validLogo}${validLogo.includes('?') ? '&' : '?'}v=${timestamp}`;
-
-            function setOrCreateElement(selector, attributes) {
-                let el = document.querySelector(selector);
-                if (!el) {
-                    const parts = selector.split('[');
-                    const tagName = parts[0];
-                    el = document.createElement(tagName);
-                    document.head.appendChild(el);
-                }
-                for (const [key, value] of Object.entries(attributes)) {
-                    el.setAttribute(key, value);
-                }
-            }
-
-            setOrCreateElement("link[rel='icon']", { rel: "icon", type: "image/png", href: versionedLogo });
-            setOrCreateElement("link[rel='shortcut icon']", { rel: "shortcut icon", type: "image/png", href: versionedLogo });
-            setOrCreateElement("link[rel='apple-touch-icon']", { rel: "apple-touch-icon", href: versionedLogo });
-            setOrCreateElement("link[rel='mask-icon']", { rel: "mask-icon", href: versionedLogo, color: "#f97316" });
-            setOrCreateElement("meta[property='og:image']", { property: "og:image", content: versionedLogo });
-            setOrCreateElement("meta[name='twitter:image']", { name: "twitter:image", content: versionedLogo });
-
-            const jsonLdScript = document.getElementById("jsonLdData");
-            if (jsonLdScript) {
-                try {
-                    let schemaData = JSON.parse(jsonLdScript.textContent);
-                    schemaData.logo = versionedLogo;
-                    schemaData.image = versionedLogo;
-                    jsonLdScript.textContent = JSON.stringify(schemaData, null, 2);
-                } catch (e) {
-                    console.error("JSON-LD Favicon Update Error:", e);
-                }
-            }
-        }
-
-        function setMetaTag(selector, attr, value) {
-            let el = document.querySelector(selector);
-            if (el) el.setAttribute(attr, value);
-        }
-
-        function setPropertyMeta(property, value) {
-            let el = document.querySelector(`meta[property="${property}"]`);
-            if (el) el.setAttribute("content", value);
-        }
-
-        function renderDescription(shopDescription) {
-            const container = document.getElementById("shopDescriptionContainer");
-            const textEl = document.getElementById("shopDescriptionText");
-            if (shopDescription && shopDescription.trim() !== "") {
-                textEl.textContent = shopDescription;
-                container.style.display = "block";
-            } else {
-                container.style.display = "none";
-            }
-        }
-
-        function updateSEO(shopData) {
-            const shopName = shopData.shopName || "Shop";
-            const shopDescriptionRaw = shopData.shopDescription || "";
-            const shopLogo = shopData.shopLogo || FALLBACK_LOGO;
-            const shopBanner = shopData.shopBanner || shopLogo;
-            const currentUrl = window.location.href;
-
-            let metaDesc = shopDescriptionRaw.trim() !== "" ? shopDescriptionRaw.trim() : `Browse products from ${shopName} on Ghoti Market.`;
-            if (metaDesc.length > 160) metaDesc = metaDesc.substring(0, 157) + "...";
-            setMetaTag("#metaDescription", "content", metaDesc);
-
-            let keywordsStr = shopName;
-            if (Array.isArray(shopData.shopKeywords) && shopData.shopKeywords.length > 0) {
-                keywordsStr = shopData.shopKeywords.join(", ");
-            }
-            setMetaTag("#metaKeywords", "content", keywordsStr);
-
-            setPropertyMeta("og:title", `${shopName} | Ghoti Market`);
-            setPropertyMeta("og:description", metaDesc);
-            setPropertyMeta("og:image", shopBanner);
-            setPropertyMeta("og:type", "website");
-            setPropertyMeta("og:url", currentUrl);
-
-            setMetaTag("meta[name='twitter:title']", "content", `${shopName} | Ghoti Market`);
-            setMetaTag("meta[name='twitter:description']", "content", metaDesc);
-            setMetaTag("meta[name='twitter:image']", "content", shopBanner);
-            setMetaTag("meta[name='twitter:card']", "content", "summary_large_image");
-
-            document.getElementById("metaTitle").innerText = `${shopName} | Ghoti Market`;
-            document.title = `${shopName} | Ghoti Market`;
-
-            const jsonLdScript = document.getElementById("jsonLdData");
-            if (jsonLdScript) {
-                const schemaData = {
-                    "@context": "https://schema.org",
-                    "@type": "LocalBusiness",
-                    "name": shopName,
-                    "description": metaDesc,
-                    "image": shopBanner,
-                    "url": currentUrl,
-                    "logo": shopLogo
-                };
-                if (shopData.sameAs) schemaData.sameAs = shopData.sameAs;
-                jsonLdScript.textContent = JSON.stringify(schemaData, null, 2);
-            }
-        }
-
+        // Parse URL Identifier (Supports ?username=, ?@, raw username, ?sellerId=UID)
         function parseTargetFromURL() {
             try {
                 const search = window.location.search;
                 const urlParams = new URLSearchParams(search);
 
+                let sellerIdParam = urlParams.get("sellerId");
+                if (sellerIdParam && sellerIdParam.trim() !== "") {
+                    return { type: "sellerId", value: sellerIdParam.trim() };
+                }
+
                 let usernameVal = urlParams.get("username");
                 if (usernameVal && usernameVal.trim() !== "") {
                     let cleanU = decodeURIComponent(usernameVal.trim());
                     if (cleanU.startsWith('@')) cleanU = cleanU.substring(1);
-                    return { type: "explicit_username", value: cleanU };
+                    return { type: "username", value: cleanU };
                 }
 
-                let atVal = urlParams.get("@");
-                if (atVal && atVal.trim() !== "") {
-                    let cleanU = decodeURIComponent(atVal.trim());
-                    if (cleanU.startsWith('@')) cleanU = cleanU.substring(1);
-                    return { type: "explicit_at", value: cleanU };
-                }
-
+                // Check other query parameters or raw format
                 for (const [key, value] of urlParams.entries()) {
                     let cleanKey = decodeURIComponent(key.trim());
-                    if (cleanKey && cleanKey !== 'fbclid' && cleanKey !== 'gclid' && !cleanKey.startsWith('utm_') && cleanKey !== 'sellerId') {
-                        if (cleanKey.startsWith('@')) return { type: "encoded_at", value: cleanKey.substring(1) };
-                        if (value === '' && !cleanKey.includes('=')) return { type: "raw_param", value: cleanKey.replace(/^@/, '') };
+                    if (cleanKey && cleanKey !== 'fbclid' && cleanKey !== 'gclid' && !cleanKey.startsWith('utm_')) {
+                        if (cleanKey.startsWith('@')) return { type: "username", value: cleanKey.substring(1) };
+                        if (value === '' && !cleanKey.includes('=')) return { type: "username", value: cleanKey.replace(/^@/, '') };
                     }
                 }
 
                 if (search && search.length > 1) {
                     const raw = decodeURIComponent(search.substring(1).split('&')[0].trim());
-                    if (raw && !raw.includes('=') && !raw.startsWith('fbclid') && !raw.startsWith('gclid') && !raw.startsWith('utm_')) {
+                    if (raw && !raw.includes('=') && !raw.startsWith('fbclid') && !raw.startsWith('gclid')) {
                         let cleanRaw = raw.startsWith('@') ? raw.substring(1) : raw;
-                        return { type: "raw_value", value: cleanRaw };
-                    }
-                }
-
-                if (window.location.hash) {
-                    let hashVal = decodeURIComponent(window.location.hash.substring(1).trim());
-                    if (hashVal) {
-                        if (hashVal.startsWith('@')) hashVal = hashVal.substring(1);
-                        return { type: "hash_value", value: hashVal };
+                        return { type: "username", value: cleanRaw };
                     }
                 }
 
@@ -576,257 +823,351 @@ html, body {
 
         let allProducts = [];
         let filteredProducts = [];
-        let displayCount = 100;
+        let displayLimit = 24;
+        let searchTimeout = null;
 
-        // ===== ROBUST SELLER LOOKUP SYSTEM =====
-        async function fetchSellerProfile(targetVal) {
-            if (!targetVal || !targetVal.trim()) return null;
-            const cleanTarget = decodeURIComponent(targetVal.trim());
+        // ONLY USERS COLLECTION SELLER LOOKUP (As strictly mandated)
+        async function fetchSellerFromUsersCollection(target) {
+            if (!target) return null;
+            const cleanTarget = decodeURIComponent(target.trim());
             const cleanLower = cleanTarget.toLowerCase();
 
-            // Priority 1: Check public_sellers collection by Document ID
-            console.log(`[Priority 1] Checking 'public_sellers' document ID: ${cleanTarget}`);
-            try {
-                const pubDocRef = doc(db, "public_sellers", cleanTarget);
-                const pubSnap = await getDoc(pubDocRef);
-                if (pubSnap.exists()) {
-                    console.log("[Priority 1 Success] Found in public_sellers by Doc ID:", pubSnap.id);
-                    return { docId: pubSnap.id, data: pubSnap.data() };
-                }
-            } catch (err) {
-                console.warn("[Priority 1 Failed]", err.message);
-            }
+            console.log(`[Lookup] Searching 'users' collection for: ${cleanTarget}`);
 
-            // Priority 2: Check users collection by Document ID (Fallback)
-            console.log(`[Priority 2] Checking 'users' document ID: ${cleanTarget}`);
             try {
-                const userDocRef = doc(db, "users", cleanTarget);
-                const userSnap = await getDoc(userDocRef);
-                if (userSnap.exists()) {
-                    console.log("[Priority 2 Success] Found in users by Doc ID:", userSnap.id);
-                    return { docId: userSnap.id, data: userSnap.data() };
+                // 1. Check Document ID directly
+                const docRef = doc(db, "users", cleanTarget);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    return { docId: docSnap.id, data: docSnap.data() };
                 }
-            } catch (err) {
-                console.warn("[Priority 2 Failed]", err.message);
-            }
 
-            // Priority 3: Check users collection by uid field query
-            console.log(`[Priority 3] Querying 'users' where uid == ${cleanTarget}`);
-            try {
+                // 2. Query by uid field
                 const uidQuery = query(collection(db, "users"), where("uid", "==", cleanTarget), limit(1));
                 const uidSnap = await getDocs(uidQuery);
                 if (!uidSnap.empty) {
-                    const docObj = uidSnap.docs[0];
-                    console.log("[Priority 3 Success] Found in users via uid field query:", docObj.id);
-                    return { docId: docObj.id, data: docObj.data() };
+                    return { docId: uidSnap.docs[0].id, data: uidSnap.docs[0].data() };
                 }
+
+                // 3. Query by usernameLower
+                const unameLowerQuery = query(collection(db, "users"), where("usernameLower", "==", cleanLower), limit(1));
+                const unameLowerSnap = await getDocs(unameLowerQuery);
+                if (!unameLowerSnap.empty) {
+                    return { docId: unameLowerSnap.docs[0].id, data: unameLowerSnap.docs[0].data() };
+                }
+
+                // 4. Query by username
+                const unameQuery = query(collection(db, "users"), where("username", "==", cleanTarget), limit(1));
+                const unameSnap = await getDocs(unameQuery);
+                if (!unameSnap.empty) {
+                    return { docId: unameSnap.docs[0].id, data: unameSnap.docs[0].data() };
+                }
+
             } catch (err) {
-                console.warn("[Priority 3 Failed] UID field lookup failed:", err.message);
+                console.error("[Lookup Error]", err);
             }
-
-            // Priority 4: Username lookup (public_sellers -> users)
-            console.log(`[Priority 4] Querying username == ${cleanLower}`);
-            try {
-                // 4a. Check public_sellers by usernameLower
-                let pubQ = query(collection(db, "public_sellers"), where("usernameLower", "==", cleanLower), limit(1));
-                let pubSnap = await getDocs(pubQ);
-                if (!pubSnap.empty) {
-                    console.log("[Priority 4a Success] Found in public_sellers by usernameLower:", pubSnap.docs[0].id);
-                    return { docId: pubSnap.docs[0].id, data: pubSnap.docs[0].data() };
-                }
-
-                // 4b. Check public_sellers by username
-                pubQ = query(collection(db, "public_sellers"), where("username", "==", cleanTarget), limit(1));
-                pubSnap = await getDocs(pubQ);
-                if (!pubSnap.empty) {
-                    console.log("[Priority 4b Success] Found in public_sellers by username:", pubSnap.docs[0].id);
-                    return { docId: pubSnap.docs[0].id, data: pubSnap.docs[0].data() };
-                }
-
-                // 4c. Check users by usernameLower
-                let userQ = query(collection(db, "users"), where("usernameLower", "==", cleanLower), limit(1));
-                let userSnap = await getDocs(userQ);
-                if (!userSnap.empty) {
-                    console.log("[Priority 4c Success] Found in users by usernameLower:", userSnap.docs[0].id);
-                    return { docId: userSnap.docs[0].id, data: userSnap.docs[0].data() };
-                }
-
-                // 4d. Check users by username
-                userQ = query(collection(db, "users"), where("username", "==", cleanTarget), limit(1));
-                userSnap = await getDocs(userQ);
-                if (!userSnap.empty) {
-                    console.log("[Priority 4d Success] Found in users by username:", userSnap.docs[0].id);
-                    return { docId: userSnap.docs[0].id, data: userSnap.docs[0].data() };
-                }
-            } catch (err) {
-                console.warn("[Priority 4 Failed] Username lookup failed:", err.message);
-            }
-
             return null;
         }
 
-        async function loadProfile() {
-            try {
-                const urlParams = new URLSearchParams(window.location.search);
-                const explicitSellerId = urlParams.get("sellerId");
-                
-                let targetIdentifier = null;
-                if (explicitSellerId && explicitSellerId.trim() !== "") {
-                    targetIdentifier = decodeURIComponent(explicitSellerId.trim());
-                } else {
-                    const parsed = parseTargetFromURL();
-                    if (parsed && parsed.value) targetIdentifier = parsed.value;
-                }
+        // Render Banner Carousel
+        function renderBannerCarousel(shopData) {
+            const track = document.getElementById("bannerTrack");
+            const dotsContainer = document.getElementById("bannerDots");
+            const containerBox = document.getElementById("bannerContainerBox");
+            
+            let banners = [];
+            if (Array.isArray(shopData.shopBanners) && shopData.shopBanners.length > 0) {
+                banners = shopData.shopBanners.filter(b => b && typeof b === 'string');
+            } else if (shopData.shopBanner && typeof shopData.shopBanner === 'string') {
+                banners = [shopData.shopBanner];
+            }
 
-                console.log("Seller lookup target identifier:", targetIdentifier);
+            if (banners.length === 0) {
+                containerBox.style.display = "none";
+                return;
+            }
 
-                if (!targetIdentifier) {
-                    console.error("User document not found: No valid seller ID or username in URL");
-                    document.getElementById("shopName").innerText = "Shop Not Found";
-                    updateFavicons(null);
-                    return;
-                }
+            containerBox.style.display = "block";
+            track.innerHTML = banners.map(url => `
+                <div class="banner-slide">
+                    <img src="${url}" alt="Shop Banner" onerror="this.src='https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png'">
+                </div>
+            `).join('');
 
-                const sellerResult = await fetchSellerProfile(targetIdentifier);
+            if (banners.length > 1) {
+                dotsContainer.innerHTML = banners.map((_, i) => `
+                    <div class="banner-dot ${i === 0 ? 'active' : ''}" onclick="currentBannerSlide(${i})"></div>
+                `).join('');
 
-                if (!sellerResult || !sellerResult.data) {
-                    console.error("User document not found across all lookup priorities.");
-                    document.getElementById("shopName").innerText = "Shop Not Found";
-                    updateFavicons(null);
-                    return;
-                }
-
-                const actualDocumentId = sellerResult.docId;
-                const d = sellerResult.data;
-
-                // Priority for Seller UID: d.uid takes priority, fallback to actualDocumentId
-                const actualSellerUid = d.uid || actualDocumentId;
-                console.log(`Seller Verified. Document ID: ${actualDocumentId} | Firebase Auth UID: ${actualSellerUid}`);
-
-                document.getElementById('shopName').innerText = d.shopName || "Unknown Shop";
-
-                if (d.shopLogo) {
-                    document.getElementById('shopLogoImg').src = d.shopLogo;
-                } else {
-                    document.getElementById('shopLogoImg').src = FALLBACK_LOGO;
-                }
-
-                if (d.shopBanner) {
-                    document.getElementById('shopBannerImg').src = d.shopBanner;
-                    document.getElementById('shopBannerImg').style.display = "block";
-                }
-
-                if (d.verified) {
-                    document.getElementById('verifiedBadge').style.display = "flex";
-                } else {
-                    document.getElementById('verifiedBadge').style.display = "none";
-                }
-
-                renderDescription(d.shopDescription);
-                updateSEO(d);
-                updateFavicons(d.shopLogo);
-
-                // ===== PRODUCT QUERY USING ACTUAL SELLER AUTH UID =====
-                console.log("Querying products for sellerId (Firebase Auth UID):", actualSellerUid);
-                try {
-                    const productQuery = query(
-                        collection(db, "products"),
-                        where("sellerId", "==", actualSellerUid),
-                        where("active", "==", true)
-                    );
-
-                    const productSnap = await getDocs(productQuery);
-
-                    allProducts = productSnap.docs.map(productDoc => ({
-                        id: productDoc.id,
-                        ...productDoc.data()
-                    }));
-
-                    console.log(`Product Query Success: Found ${allProducts.length} active products.`);
-
-                    filteredProducts = allProducts;
-                    render();
-                } catch (prodErr) {
-                    console.error("Product query failed:", prodErr);
-                    if (prodErr.code === 'permission-denied') {
-                        console.error("Permission denied on products query");
-                    }
-                    const grid = document.getElementById('sellerProductGrid');
-                    grid.innerHTML = '<p style="text-align:center; grid-column:1/-1; padding:40px; color:#ef4444;">ডাটা লোড করতে সমস্যা হয়েছে</p>';
-                }
-
-            } catch (error) {
-                console.error("Profile Load Error:", error);
-                if (error.code === 'permission-denied') {
-                    console.error("Permission denied: Seller profile access denied");
-                    document.getElementById("shopName").innerText = "Seller profile access denied";
-                } else {
-                    document.getElementById("shopName").innerText = "ডাটা লোড করতে সমস্যা হয়েছে";
-                }
-                updateFavicons(null);
+                let currentSlide = 0;
+                setInterval(() => {
+                    currentSlide = (currentSlide + 1) % banners.length;
+                    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+                    document.querySelectorAll('.banner-dot').forEach((dot, idx) => {
+                        dot.classList.toggle('active', idx === currentSlide);
+                    });
+                }, 4000);
             }
         }
 
-        window.handleSearch = () => {
-            const term = document.getElementById('pSearch').value.toLowerCase().trim();
-            filteredProducts = allProducts.filter(p =>
-                p.name?.toLowerCase().includes(term) ||
-                (Array.isArray(p.keywords) ? p.keywords.some(k => k.toLowerCase().includes(term)) : p.keywords?.toLowerCase().includes(term))
-            );
-            displayCount = 100;
-            render();
-        };
+        // Render Footer Contact & Socials
+        function renderFooterContactAndSocials(d) {
+            let hasContact = false;
+            let contactHtml = "";
+            let socialHtml = "";
 
-        window.loadMore = () => {
-            displayCount += 100;
-            render();
-        };
+            // Email
+            const email = d.email || d.contactEmail;
+            if (email && email.trim() !== "") {
+                hasContact = true;
+                contactHtml += `<li><a href="mailto:${email.trim()}"><i class="fas fa-envelope"></i> ${email.trim()}</a></li>`;
+            }
 
-        function render() {
-            const grid = document.getElementById('sellerProductGrid');
-            const btn = document.getElementById('seeMoreBtn');
-            const dataToDisplay = filteredProducts.slice(0, displayCount);
+            // WhatsApp / Phone
+            const phoneNum = d.whatsapp || d.phone || d.phoneNumber;
+            if (phoneNum && phoneNum.toString().trim() !== "") {
+                hasContact = true;
+                let cleanPhone = phoneNum.toString().replace(/[^0-9]/g, '');
+                contactHtml += `<li><a href="https://wa.me/${cleanPhone}" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp যোগাযোগ</a></li>`;
+            }
 
-            grid.innerHTML = dataToDisplay.length ? dataToDisplay.map(p => `
-              <a href="${
-                p.slug
-                   ? `https://ghotimarket.com/product?${p.slug}`
-                    : `https://ghotimarket.com/product?id=${p.id}`
-            }" class="p-card">
-                    <div class="img-box"><img src="${p.images?.[0] || ''}" alt="${p.name || ''}"></div>
-                    <div class="p-info">
-                        <div class="p-name">${p.name || ''}</div>
-                      <div class="price-box">
-                        <span class="current-price">৳${p.price || 0}</span>
+            if (hasContact) {
+                document.getElementById("footerContactCol").style.display = "block";
+                document.getElementById("footerContactList").innerHTML = contactHtml;
+            }
 
-                        ${
-                            p.oldPrice && Number(p.oldPrice) > Number(p.price)
-                           ? `
-                            <span class="old-price">৳${p.oldPrice}</span>
+            // Social Links
+            if (d.socialLinks && typeof d.socialLinks === 'object') {
+                const sl = d.socialLinks;
+                if (sl.facebook) socialHtml += `<a href="${sl.facebook}" target="_blank" class="social-icon-box"><i class="fab fa-facebook-f"></i></a>`;
+                if (sl.youtube) socialHtml += `<a href="${sl.youtube}" target="_blank" class="social-icon-box"><i class="fab fa-youtube"></i></a>`;
+                if (sl.instagram) socialHtml += `<a href="${sl.instagram}" target="_blank" class="social-icon-box"><i class="fab fa-instagram"></i></a>`;
+                if (sl.tiktok) socialHtml += `<a href="${sl.tiktok}" target="_blank" class="social-icon-box"><i class="fab fa-tiktok"></i></a>`;
+                if (sl.messenger) socialHtml += `<a href="${sl.messenger}" target="_blank" class="social-icon-box"><i class="fab fa-facebook-messenger"></i></a>`;
+            }
 
-                            <span class="discount-badge">
-                                ${Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100)}% OFF
-                            </span>
-
-                            <div class="save-text">
-                                Save ৳${p.oldPrice - p.price}
-                            </div>
-                            `
-                            : ""
-                        }
-                    </div>
-
-                    </div>
-                </a>
-            `).join('') : '<p style="text-align:center; grid-column:1/-1; padding:40px;">এই দোকানে বর্তমানে কোনো পণ্য নেই</p>';
-
-            btn.style.display = (displayCount < filteredProducts.length) ? 'block' : 'none';
+            if (socialHtml !== "") {
+                document.getElementById("footerSocialCol").style.display = "block";
+                document.getElementById("footerSocialIcons").innerHTML = socialHtml;
+            }
         }
 
-        loadProfile();
+        // Main Initialization
+        async function initStoreProfile() {
+            const parsedTarget = parseTargetFromURL();
+            if (!parsedTarget.value) {
+                showErrorState("দুঃখিত, দোকানটি পাওয়া যায়নি", "দোকানটির তথ্য পাওয়া যাচ্ছে না অথবা লিংকটি সঠিক নয়।");
+                return;
+            }
+
+            const sellerResult = await fetchSellerFromUsersCollection(parsedTarget.value);
+            if (!sellerResult || !sellerResult.data) {
+                showErrorState("দুঃখিত, দোকানটি পাওয়া যায়নি", "প্রদানকৃত তথ্য অনুযায়ী কোনো মার্চেন্ট বা দোকান খুঁজে পাওয়া যায়নি।");
+                return;
+            }
+
+            const docId = sellerResult.docId;
+            const d = sellerResult.data;
+            const actualSellerUid = d.uid || docId;
+
+            console.log(`[Store Loaded] UID: ${actualSellerUid} | Name: ${d.shopName}`);
+
+            // Populate UI
+            const shopName = d.shopName || d.username || "Official Store";
+            document.getElementById("shopName").textContent = shopName;
+            document.getElementById("headerShopName").textContent = shopName;
+
+            const logo = d.shopLogo && d.shopLogo.trim() !== "" ? d.shopLogo : FALLBACK_LOGO;
+            document.getElementById("sellerLogoImg").src = logo;
+            document.getElementById("headerShopLogo").src = logo;
+            document.getElementById("headerShopLink").href = window.location.href;
+
+            // Verified Badge
+            if (d.verified === true) {
+                document.getElementById("verifiedBadge").style.display = "inline-flex";
+            }
+
+            // Status Badge
+            const statusBadge = document.getElementById("shopStatusBadge");
+            if (d.active === false) {
+                statusBadge.textContent = "Currently unavailable";
+                statusBadge.className = "shop-status-badge unavailable";
+            } else {
+                statusBadge.textContent = "Active Shop";
+                statusBadge.className = "shop-status-badge";
+            }
+
+            // Description
+            if (d.shopDescription && d.shopDescription.trim() !== "") {
+                document.getElementById("shopDescriptionText").textContent = d.shopDescription;
+                document.getElementById("shopDescriptionContainer").style.display = "block";
+            }
+
+            // Banners
+            renderBannerCarousel(d);
+
+            // Footer Contact & Socials
+            renderFooterContactAndSocials(d);
+
+            // SEO Metadata update
+            updateSEOData(shopName, d.shopDescription, logo, d.shopBanner);
+
+            // Fetch Products
+            await fetchProductsForSeller(actualSellerUid);
+        }
+
+        async function fetchProductsForSeller(sellerUid) {
+            const grid = document.getElementById("sellerProductGrid");
+            try {
+                const prodQuery = query(
+                    collection(db, "products"),
+                    where("sellerId", "==", sellerUid),
+                    where("active", "==", true)
+                );
+                const snap = await getDocs(prodQuery);
+                
+                allProducts = snap.docs.map(docSnap => ({
+                    id: docSnap.id,
+                    ...docSnap.data()
+                }));
+
+                filteredProducts = allProducts;
+                document.getElementById("productCountLabel").textContent = `${allProducts.length}টি পণ্য`;
+                renderProductsGrid();
+
+            } catch (err) {
+                console.error("[Products Fetch Error]", err);
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 40px; color: #ef4444;">পণ্য লোড করার সময় সমস্যা হয়েছে।</p>';
+            }
+        }
+
+        window.handleSearchDebounced = () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const term = document.getElementById("pSearch").value.toLowerCase().trim();
+                filteredProducts = allProducts.filter(p => {
+                    const nameMatch = p.name?.toLowerCase().includes(term);
+                    const descMatch = p.description?.toLowerCase().includes(term);
+                    const catMatch = p.categoryName?.toLowerCase().includes(term);
+                    const kwMatch = Array.isArray(p.keywords) ? p.keywords.some(k => k.toLowerCase().includes(term)) : false;
+                    return nameMatch || descMatch || catMatch || kwMatch;
+                });
+                displayLimit = 24;
+                renderProductsGrid();
+            }, 300);
+        };
+
+        window.handleSortProducts = () => {
+            const sortBy = document.getElementById("sortSelect").value;
+            if (sortBy === 'newest') {
+                filteredProducts.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+            } else if (sortBy === 'price_low') {
+                filteredProducts.sort((a, b) => Number(a.price || 0) - Number(b.price || 0));
+            } else if (sortBy === 'price_high') {
+                filteredProducts.sort((a, b) => Number(b.price || 0) - Number(a.price || 0));
+            } else if (sortBy === 'discount') {
+                filteredProducts.sort((a, b) => {
+                    const discA = a.oldPrice && a.oldPrice > a.price ? ((a.oldPrice - a.price) / a.oldPrice) : 0;
+                    const discB = b.oldPrice && b.oldPrice > b.price ? ((b.oldPrice - b.price) / b.oldPrice) : 0;
+                    return discB - discA;
+                });
+            } else {
+                filteredProducts = [...allProducts];
+            }
+            renderProductsGrid();
+        };
+
+        window.loadMoreProducts = () => {
+            displayLimit += 24;
+            renderProductsGrid();
+        };
+
+        function renderProductsGrid() {
+            const grid = document.getElementById("sellerProductGrid");
+            const seeMoreBtn = document.getElementById("seeMoreBtn");
+            const visibleData = filteredProducts.slice(0, displayLimit);
+
+            if (filteredProducts.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b;">এই দোকানে বর্তমানে কোনো পণ্য পাওয়া যায়নি।</p>';
+                seeMoreBtn.style.display = "none";
+                return;
+            }
+
+            grid.innerHTML = visibleData.map(p => {
+                const productUrl = p.slug ? `https://ghotimarket.com/product?${p.slug}` : `https://ghotimarket.com/product?id=${p.id}`;
+                const imgSrc = (Array.isArray(p.images) && p.images[0]) ? p.images[0] : (p.image || FALLBACK_LOGO);
+                
+                let priceHtml = `<span class="current-price">৳${p.price || 0}</span>`;
+                if (p.oldPrice && Number(p.oldPrice) > Number(p.price)) {
+                    const discountPct = Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100);
+                    const saveAmount = p.oldPrice - p.price;
+                    priceHtml += `
+                        <span class="old-price">৳${p.oldPrice}</span>
+                        <span class="discount-badge">${discountPct}% OFF</span>
+                        <div class="save-text">Save ৳${saveAmount}</div>
+                    `;
+                }
+
+                return `
+                    <a href="${productUrl}" class="p-card">
+                        <div class="img-box">
+                            <img src="${imgSrc}" alt="${p.name || 'Product'}" loading="lazy" onerror="this.src='${FALLBACK_LOGO}'">
+                        </div>
+                        <div class="p-info">
+                            <div class="p-name">${p.name || ''}</div>
+                            <div class="price-box">${priceHtml}</div>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+
+            seeMoreBtn.style.display = displayLimit < filteredProducts.length ? "block" : "none";
+        }
+
+        function updateSEOData(shopName, shopDesc, logo, banner) {
+            const desc = shopDesc || `${shopName} থেকে বিভিন্ন পণ্য কিনুন।`;
+            const image = banner || logo;
+            const url = window.location.href;
+
+            document.getElementById("metaTitle").textContent = `${shopName} | Ghoti Market`;
+            document.title = `${shopName} | Ghoti Market`;
+            document.getElementById("metaDescription").setAttribute("content", desc);
+            document.getElementById("ogTitle").setAttribute("content", `${shopName} | Ghoti Market`);
+            document.getElementById("ogDescription").setAttribute("content", desc);
+            document.getElementById("ogImage").setAttribute("content", image);
+            document.getElementById("ogUrl").setAttribute("content", url);
+            document.getElementById("twitterTitle").setAttribute("content", `${shopName} | Ghoti Market`);
+            document.getElementById("twitterDescription").setAttribute("content", desc);
+            document.getElementById("twitterImage").setAttribute("content", image);
+
+            document.getElementById("jsonLdData").textContent = JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "LocalBusiness",
+                "name": shopName,
+                "description": desc,
+                "image": image,
+                "url": url,
+                "logo": logo
+            }, null, 2);
+        }
+
+        function showErrorState(title, subtitle) {
+            document.getElementById("shopName").textContent = "Store Not Found";
+            document.getElementById("sellerProductGrid").innerHTML = `
+                <div style="grid-column: 1/-1;" class="error-state-box">
+                    <h2>${title}</h2>
+                    <p>${subtitle}</p>
+                    <a href="https://ghotimarket.com" class="see-more-btn" style="text-decoration:none; display:inline-block; width:auto; padding:10px 24px;">Home</a>
+                </div>
+            `;
+            document.getElementById("bannerContainerBox").style.display = "none";
+        }
+
+        // Initialize on load
+        initStoreProfile();
     </script>
-<script>
-  lucide.createIcons();
-</script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>
