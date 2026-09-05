@@ -492,8 +492,8 @@
         }
 
         .loading-gif-container img, .infinite-loader img {
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             object-fit: contain;
         }
 
@@ -767,7 +767,6 @@
 
         // --- Centralized UI State Management ---
         function updateUIState() {
-            // Priority: Index Error -> Network/Firestore Error -> Products Available -> Initial Loading -> Empty State
             if (!indexRequiredState.classList.contains('hidden') || !errorState.classList.contains('hidden')) {
                 loadingGifContainer.classList.add('hidden');
                 return;
@@ -787,7 +786,6 @@
                 return;
             }
 
-            // Initial load finished, but no products found
             loadingGifContainer.classList.add('hidden');
             if (loadedProductsList.length === 0) {
                 emptyState.classList.remove('hidden');
@@ -933,7 +931,7 @@
             return card;
         }
 
-        // --- Firestore Batch Product Loading (Parallel to Auth) ---
+        // --- Fast Batch Product Loading (Limit 10) ---
         async function fetchProductsBatch() {
             if (isLoadingMore || !hasMore) return;
             isLoadingMore = true;
@@ -944,12 +942,15 @@
 
             try {
                 let q;
+                // অপ্টিমাইজেশনের জন্য লিমিট ২০ থেকে কমিয়ে ১০ করা হলো যাতে সুপার ফাস্ট লোড হয়
+                const batchLimit = 10;
+
                 if (!lastVisibleDoc) {
                     q = query(
                         collection(db, "products"),
                         where("categorySlug", "==", slug),
                         where("active", "==", true),
-                        limit(20)
+                        limit(batchLimit)
                     );
                 } else {
                     q = query(
@@ -957,7 +958,7 @@
                         where("categorySlug", "==", slug),
                         where("active", "==", true),
                         startAfter(lastVisibleDoc),
-                        limit(20)
+                        limit(batchLimit)
                     );
                 }
 
@@ -975,7 +976,7 @@
 
                 lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
 
-                if (querySnapshot.docs.length < 20) {
+                if (querySnapshot.docs.length < batchLimit) {
                     hasMore = false;
                 }
 
