@@ -500,19 +500,27 @@
             border-radius: 12px;
         }
 
-        /* --- Infinite Loader GIF --- */
+        /* --- Initial & Infinite Loader GIF --- */
+        .loading-gif-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 0;
+        }
+
+        .loading-gif-container img, .infinite-loader img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+        }
+
         .infinite-loader {
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px 0 35px;
-        }
-
-        .infinite-loader img {
-            width: 45px;
-            height: 45px;
-            object-fit: contain;
         }
 
         /* --- Empty & Error States --- */
@@ -631,7 +639,11 @@
     </header>
 
     <main class="container">
-        <div id="skeleton-grid" class="product-grid">
+        <div id="loading-gif-container" class="loading-gif-container">
+            <img src="https://ghotimarket.com/loading.gif" alt="Loading..." />
+        </div>
+
+        <div id="skeleton-grid" class="product-grid hidden">
             <div class="skeleton skeleton-card"></div>
             <div class="skeleton skeleton-card"></div>
             <div class="skeleton skeleton-card"></div>
@@ -755,6 +767,7 @@
         // --- DOM Elements ---
         const productGrid = document.getElementById('product-grid');
         const skeletonGrid = document.getElementById('skeleton-grid');
+        const loadingGifContainer = document.getElementById('loading-gif-container');
         const emptyState = document.getElementById('empty-state');
         const errorState = document.getElementById('error-state');
         const indexRequiredState = document.getElementById('index-required-state');
@@ -917,7 +930,7 @@
 
             try {
                 let q;
-                // Optimized Firestore Query: Server-side active filter, categorySlug, limit(20) without random functions
+                // No random functions; purely server-side active filter, categorySlug, limit(20)
                 if (!lastVisibleDoc) {
                     q = query(
                         collection(db, "products"),
@@ -940,7 +953,7 @@
                 if (querySnapshot.empty) {
                     hasMore = false;
                     if (isInitialLoad) {
-                        skeletonGrid.classList.add('hidden');
+                        loadingGifContainer.classList.add('hidden');
                         emptyState.classList.remove('hidden');
                     }
                     infiniteLoader.classList.add('hidden');
@@ -959,7 +972,6 @@
                     const data = docSnap.data();
                     if (data) {
                         const prodId = docSnap.id;
-                        // Duplicate Product Protection via Set
                         if (!loadedProductIds.has(prodId)) {
                             loadedProductIds.add(prodId);
                             productsToDisplay.push({ id: prodId, ...data });
@@ -968,14 +980,14 @@
                 });
 
                 if (isInitialLoad) {
-                    skeletonGrid.classList.add('hidden');
+                    loadingGifContainer.classList.add('hidden');
                     isInitialLoad = false;
                 }
 
                 if (productsToDisplay.length > 0) {
                     loadedProductsList.push(...productsToDisplay);
                     
-                    // Performance Optimization: DocumentFragment
+                    // DocumentFragment for Progressive & Lightweight Rendering
                     const fragment = document.createDocumentFragment();
                     productsToDisplay.forEach(product => {
                         fragment.appendChild(createProductCard(product));
@@ -993,14 +1005,13 @@
             } catch (error) {
                 console.error("Error fetching batch products from Firestore:", error);
                 
-                // Robust Firebase Index Error Handling
                 const errorMsg = String(error?.message || error);
                 const isIndexError = errorMsg.includes("FAILED_PRECONDITION") || errorMsg.includes("requires an index") || errorMsg.includes("create_composite") || errorMsg.includes("index");
 
                 if (isIndexError) {
                     const indexUrl = extractIndexUrl(errorMsg);
                     if (isInitialLoad) {
-                        skeletonGrid.classList.add('hidden');
+                        loadingGifContainer.classList.add('hidden');
                     }
                     errorState.classList.add('hidden');
                     emptyState.classList.add('hidden');
@@ -1020,7 +1031,7 @@
                 }
 
                 if (isInitialLoad) {
-                    skeletonGrid.classList.add('hidden');
+                    loadingGifContainer.classList.add('hidden');
                     errorState.classList.remove('hidden');
                 } else {
                     showToast('পরবর্তী পণ্যগুলো লোড করতে সমস্যা হয়েছে।');
@@ -1033,7 +1044,7 @@
             }
         }
 
-        // --- IntersectionObserver for Infinite Scroll Pagination (500px prefetch rootMargin) ---
+        // --- IntersectionObserver for Infinite Scroll Pagination ---
         const observerCallback = (entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && hasMore && !isLoadingMore && searchInput.value.trim() === '') {
@@ -1356,7 +1367,6 @@
             productGrid.innerHTML = '';
             
             if (filtered.length === 0) {
-                skeletonGrid.classList.add('hidden');
                 productGrid.classList.add('hidden');
                 infiniteLoader.classList.add('hidden');
                 errorState.classList.add('hidden');
@@ -1366,7 +1376,6 @@
                 emptyState.classList.add('hidden');
                 errorState.classList.add('hidden');
                 indexRequiredState.classList.add('hidden');
-                skeletonGrid.classList.add('hidden');
                 productGrid.classList.remove('hidden');
                 infiniteLoader.classList.add('hidden');
 
@@ -1392,7 +1401,7 @@
             loadedProductIds.clear();
             
             productGrid.innerHTML = '';
-            skeletonGrid.classList.remove('hidden');
+            loadingGifContainer.classList.remove('hidden');
             fetchProductsBatch();
         });
 
