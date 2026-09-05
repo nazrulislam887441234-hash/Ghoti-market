@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>ক্যাটাগরি পণ্য | GHOTI MARKET</title>
     
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
     
-    <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
@@ -505,34 +503,19 @@
             border-radius: 12px;
         }
 
-        /* --- Load More Container & Button --- */
-        .load-more-container {
-            text-align: center;
-            padding: 10px 0 calc(30px + env(safe-area-inset-bottom));
-        }
-
-        .btn-more {
-            background: var(--primary);
-            color: white;
-            padding: 12px 35px;
-            border-radius: 30px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
-            display: inline-flex;
-            align-items: center;
+        /* --- Infinite Loader GIF --- */
+        .infinite-loader {
+            width: 100%;
+            display: flex;
             justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 10px rgba(22, 163, 74, 0.2);
+            align-items: center;
+            padding: 20px 0 35px;
         }
 
-        .btn-more:hover {
-            background: var(--primary-hover);
-        }
-
-        .btn-more:active {
-            transform: scale(0.98);
+        .infinite-loader img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
         }
 
         /* --- Empty & Error States --- */
@@ -558,6 +541,26 @@
             font-size: 14px;
             color: var(--text-muted);
             margin-bottom: 20px;
+        }
+
+        .btn-more {
+            background: var(--primary);
+            color: white;
+            padding: 12px 35px;
+            border-radius: 30px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(22, 163, 74, 0.2);
+        }
+
+        .btn-more:hover {
+            background: var(--primary-hover);
         }
 
         .hidden { 
@@ -631,7 +634,6 @@
     </header>
 
     <main class="container">
-        <!-- Skeleton Loading Grid -->
         <div id="skeleton-grid" class="product-grid">
             <div class="skeleton skeleton-card"></div>
             <div class="skeleton skeleton-card"></div>
@@ -641,31 +643,28 @@
             <div class="skeleton skeleton-card"></div>
         </div>
 
-        <!-- Real Product Grid -->
         <div id="product-grid" class="product-grid hidden"></div>
 
-        <!-- Empty State (No Products Found in Category) -->
+        <div id="infinite-loader" class="infinite-loader hidden">
+            <img src="https://ghotimarket.com/loading.gif" alt="Loading..." />
+        </div>
+
+        <div id="scroll-sentinel" style="height: 10px;"></div>
+
         <div id="empty-state" class="empty-state hidden">
             <i data-lucide="shopping-bag"></i>
             <h3>এই ক্যাটাগরিতে এখনো কোনো পণ্য নেই</h3>
             <p>অন্য ক্যাটাগরি চেক করে দেখতে পারেন।</p>
         </div>
 
-        <!-- Error State (Network / Firebase Query Error) -->
         <div id="error-state" class="empty-state hidden">
             <i data-lucide="wifi-off"></i>
             <h3>পণ্য লোড করা যাচ্ছে না</h3>
             <p>ইন্টারনেট সংযোগ বা সার্ভারের সমস্যার কারণে পণ্য লোড করা সম্ভব হয়নি।</p>
             <button id="retry-btn" class="btn-more">আবার চেষ্টা করুন</button>
         </div>
-
-        <!-- Pagination Load More -->
-        <div id="load-more-container" class="load-more-container hidden">
-            <button id="load-more-btn" class="btn-more">আরো দেখুন</button>
-        </div>
     </main>
 
-    <!-- Variant Selection Modal -->
     <div id="variant-modal-overlay" class="modal-overlay">
         <div class="variant-modal">
             <div class="modal-header">
@@ -680,8 +679,7 @@
                 </div>
             </div>
             <div id="variant-groups-container" class="variant-groups-container">
-                <!-- Dynamic variant groups rendered here -->
-            </div>
+                </div>
             <div id="modal-warning" class="modal-warning hidden">অনুগ্রহ করে সব অপশন নির্বাচন করুন।</div>
             <div class="modal-price-summary">
                 <div class="price-calc-row">
@@ -696,26 +694,24 @@
         </div>
     </div>
 
-    <!-- Toast Notification -->
     <div id="toast" class="toast hidden"></div>
 
-   <!-- Bottom Navigation Bar -->
-    <nav class="bottom-nav">
+   <nav class="bottom-nav">
         <a href="https://ghotimarket.com" class="nav-item active"><i data-lucide="home"></i><span>Home</span></a>
         <a href="https://ghotimarket.com/categories" class="nav-item"><i data-lucide="grid"></i><span>Categories</span></a>
         <a href="https://ghotimarket.com/all-product" class="nav-item"><i data-lucide="box"></i><span>products</span></a>
         <a href="https://ghotimarket.com/contact" class="nav-item"><i data-lucide="headphones"></i><span>Support</span></a>
         <a href="https://ghotimarket.com/privacy-policy" class="nav-item"><i data-lucide="shield-check"></i><span>Privacy</span></a>
         <a href="profile.html" class="nav-item">
-    <i data-lucide="circle-user-round"></i>
-    <span>Profile</span>
-</a> 
+            <i data-lucide="circle-user-round"></i>
+            <span>Profile</span>
+        </a> 
         <a href="https://seller.ghotimarket.com/signup" class="nav-item"><i data-lucide="store"></i><span>J.Seller</span></a>
     </nav>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, query, where, limit, startAfter, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         // --- Firebase Configuration ---
@@ -740,11 +736,12 @@
             ERROR: 'ERROR'
         };
 
-        // --- State Variables ---
-        let shuffledProducts = [];
-        let displayedCount = 0;
-        let isLoading = false;
-        const PAGE_LIMIT = 20;
+        // --- State Variables for Infinite Scroll & Pagination ---
+        let loadedProductsList = [];
+        let lastVisibleDoc = null;
+        let hasMore = true;
+        let isLoadingMore = false;
+        let isInitialLoad = true;
 
         // Product cache map for quick lookups
         const productMap = new Map();
@@ -756,7 +753,6 @@
         // Variant Modal & Selection State
         let activeModalProduct = null;
         let selectedVariantsState = {};
-        let modalActionType = 'cart'; // 'cart' or 'buynow'
 
         // --- DOM Elements ---
         const productGrid = document.getElementById('product-grid');
@@ -764,8 +760,8 @@
         const emptyState = document.getElementById('empty-state');
         const errorState = document.getElementById('error-state');
         const retryBtn = document.getElementById('retry-btn');
-        const loadMoreBtn = document.getElementById('load-more-btn');
-        const loadMoreContainer = document.getElementById('load-more-container');
+        const infiniteLoader = document.getElementById('infinite-loader');
+        const scrollSentinel = document.getElementById('scroll-sentinel');
         const pageTitle = document.getElementById('page-title');
         const searchInput = document.getElementById('product-search');
 
@@ -854,33 +850,6 @@
             return userCartItems.some(item => item.id === productId || item.docId === productId);
         }
 
-        // --- Helper: UI State Manager ---
-        function setUIState(state) {
-            skeletonGrid.classList.add('hidden');
-            productGrid.classList.add('hidden');
-            emptyState.classList.add('hidden');
-            errorState.classList.add('hidden');
-            loadMoreContainer.classList.add('hidden');
-
-            switch (state) {
-                case STATES.LOADING:
-                    skeletonGrid.classList.remove('hidden');
-                    break;
-                case STATES.SUCCESS_WITH_PRODUCTS:
-                    productGrid.classList.remove('hidden');
-                    if (displayedCount < shuffledProducts.length && searchInput.value.trim() === '') {
-                        loadMoreContainer.classList.remove('hidden');
-                    }
-                    break;
-                case STATES.SUCCESS_EMPTY:
-                    emptyState.classList.remove('hidden');
-                    break;
-                case STATES.ERROR:
-                    errorState.classList.remove('hidden');
-                    break;
-            }
-        }
-
         // --- Fisher-Yates Shuffle ---
         function shuffle(array) {
             const arr = [...array];
@@ -939,71 +908,138 @@
             return card;
         }
 
-        // --- Fetch & Initialize Data ---
-        async function fetchAndInitialize() {
-            if (isLoading) return;
-            isLoading = true;
+        // --- Fetch Batch Products with Pagination (Limit 30 -> Active Filter -> Max 20 Display) ---
+        async function fetchProductsBatch() {
+            if (isLoadingMore || !hasMore) return;
+            isLoadingMore = true;
 
-            setUIState(STATES.LOADING);
-            productGrid.innerHTML = '';
-            shuffledProducts = [];
-            displayedCount = 0;
-            productMap.clear();
+            if (!isInitialLoad) {
+                infiniteLoader.classList.remove('hidden');
+            }
 
             try {
-                const q = query(
-                    collection(db, "products"),
-                    where("categorySlug", "==", slug),
-                    where("active", "==", true)
-                );
+                let q;
+                if (!lastVisibleDoc) {
+                    q = query(
+                        collection(db, "products"),
+                        where("categorySlug", "==", slug),
+                        limit(30)
+                    );
+                } else {
+                    q = query(
+                        collection(db, "products"),
+                        where("categorySlug", "==", slug),
+                        startAfter(lastVisibleDoc),
+                        limit(30)
+                    );
+                }
 
                 const querySnapshot = await getDocs(q);
 
                 if (querySnapshot.empty) {
-                    setUIState(STATES.SUCCESS_EMPTY);
-                    isLoading = false;
+                    hasMore = false;
+                    if (isInitialLoad) {
+                        skeletonGrid.classList.add('hidden');
+                        emptyState.classList.remove('hidden');
+                    }
+                    infiniteLoader.classList.add('hidden');
+                    isLoadingMore = false;
                     return;
                 }
 
-                let tempProducts = [];
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
+                lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+                if (querySnapshot.docs.length < 30) {
+                    hasMore = false;
+                }
+
+                let fetchedDocsData = [];
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
                     if (data) {
-                        tempProducts.push({ id: doc.id, ...data });
+                        fetchedDocsData.push({ id: docSnap.id, ...data });
                     }
                 });
 
-                if (tempProducts.length === 0) {
-                    setUIState(STATES.SUCCESS_EMPTY);
-                } else {
-                    shuffledProducts = shuffle(tempProducts);
-                    renderBatch();
+                // Filter active products
+                let activeProducts = fetchedDocsData.filter(p => p.active === true);
+
+                // Shuffle active products of this batch
+                activeProducts = shuffle(activeProducts);
+
+                // Display up to maximum 20 products
+                const productsToDisplay = activeProducts.slice(0, 20);
+
+                if (isInitialLoad) {
+                    skeletonGrid.classList.add('hidden');
+                    isInitialLoad = false;
+                    if (fetchedDocsData.length === 0 || (querySnapshot.docs.length > 0 && activeProducts.length === 0 && !hasMore)) {
+                        // Handle edge case if initial batch has no active products
+                        if (loadedProductsList.length === 0) {
+                            emptyState.classList.remove('hidden');
+                            infiniteLoader.classList.add('hidden');
+                            isLoadingMore = false;
+                            return;
+                        }
+                    }
+                }
+
+                if (productsToDisplay.length > 0) {
+                    loadedProductsList.push(...productsToDisplay);
+                    
+                    const fragment = document.createDocumentFragment();
+                    productsToDisplay.forEach(product => {
+                        fragment.appendChild(createProductCard(product));
+                    });
+
+                    productGrid.appendChild(fragment);
+                    productGrid.classList.remove('hidden');
+                    lucide.createIcons();
+                } else if (hasMore && loadedProductsList.length === 0) {
+                    // If first batch didn't yield displayable active products, recursively fetch next batch
+                    isLoadingMore = false;
+                    infiniteLoader.classList.add('hidden');
+                    await fetchProductsBatch();
+                    return;
+                }
+
+                if (!hasMore) {
+                    infiniteLoader.classList.add('hidden');
                 }
 
             } catch (error) {
-                console.error("Error fetching products from Firestore:", error);
-                setUIState(STATES.ERROR);
+                console.error("Error fetching batch products from Firestore:", error);
+                if (isInitialLoad) {
+                    skeletonGrid.classList.add('hidden');
+                    errorState.classList.remove('hidden');
+                } else {
+                    showToast('পরবর্তী পণ্যগুলো লোড করতে সমস্যা হয়েছে।');
+                }
             } finally {
-                isLoading = false;
+                isLoadingMore = false;
+                if (!isInitialLoad) {
+                    infiniteLoader.classList.add('hidden');
+                }
             }
         }
 
-        // --- Render Batch (Optimized with DocumentFragment) ---
-        function renderBatch() {
-            const nextBatch = shuffledProducts.slice(displayedCount, displayedCount + PAGE_LIMIT);
-            if (nextBatch.length === 0) return;
-
-            const fragment = document.createDocumentFragment();
-            nextBatch.forEach(product => {
-                fragment.appendChild(createProductCard(product));
+        // --- IntersectionObserver for Infinite Scroll ---
+        const observerCallback = (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && hasMore && !isLoadingMore && searchInput.value.trim() === '') {
+                    fetchProductsBatch();
+                }
             });
+        };
 
-            productGrid.appendChild(fragment);
-            displayedCount += nextBatch.length;
+        const observerOptions = {
+            root: null,
+            rootMargin: '200px',
+            threshold: 0.1
+        };
 
-            setUIState(STATES.SUCCESS_WITH_PRODUCTS);
-            lucide.createIcons();
-        }
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        observer.observe(scrollSentinel);
 
         // --- Cart & Checkout Management (Firestore Carts Collection with Loading Feedback) ---
         async function addProductToCart(product, chosenVariants = {}, finalPrice = null, buttonEl = null) {
@@ -1018,7 +1054,6 @@
                 return;
             }
 
-            // Show Loading State on Button
             let originalHTML = '';
             if (buttonEl) {
                 originalHTML = buttonEl.innerHTML;
@@ -1060,7 +1095,6 @@
                 console.error("Error adding to carts collection:", error);
                 showToast('কার্টে যোগ করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।');
             } finally {
-                // Restore Button State
                 if (buttonEl) {
                     buttonEl.disabled = false;
                     buttonEl.classList.remove('btn-loading');
@@ -1209,7 +1243,6 @@
                         return;
                     }
                     if (hasVariants(product)) {
-                        modalActionType = 'cart';
                         renderVariantModal(product);
                     } else {
                         await addProductToCart(product, {}, Number(product.price) || 0, cartBtn);
@@ -1223,7 +1256,6 @@
                 if (product) {
                     if (!isProductInCart(product.id)) {
                         if (hasVariants(product)) {
-                            modalActionType = 'buynow';
                             renderVariantModal(product);
                             return;
                         } else {
@@ -1282,27 +1314,28 @@
             modalOverlay.classList.remove('active');
         });
 
-        // --- Search Functionality ---
+        // --- Search Functionality (Searches within client-side loaded products) ---
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase().trim();
 
-            if (shuffledProducts.length === 0) return;
+            if (loadedProductsList.length === 0) return;
 
             if (term === '') {
                 productGrid.innerHTML = '';
                 const fragment = document.createDocumentFragment();
-                const currentView = shuffledProducts.slice(0, displayedCount);
-                currentView.forEach(product => {
+                loadedProductsList.forEach(product => {
                     fragment.appendChild(createProductCard(product));
                 });
                 productGrid.appendChild(fragment);
                 
-                setUIState(STATES.SUCCESS_WITH_PRODUCTS);
+                productGrid.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+                errorState.classList.add('hidden');
                 lucide.createIcons();
                 return;
             }
 
-            const filtered = shuffledProducts.filter(p => {
+            const filtered = loadedProductsList.filter(p => {
                 const name = String(p.name || '').toLowerCase();
                 const keywords = Array.isArray(p.keywords) 
                     ? p.keywords.map(k => String(k).toLowerCase()) 
@@ -1315,7 +1348,7 @@
             if (filtered.length === 0) {
                 skeletonGrid.classList.add('hidden');
                 productGrid.classList.add('hidden');
-                loadMoreContainer.classList.add('hidden');
+                infiniteLoader.classList.add('hidden');
                 errorState.classList.add('hidden');
                 emptyState.classList.remove('hidden');
             } else {
@@ -1323,7 +1356,7 @@
                 errorState.classList.add('hidden');
                 skeletonGrid.classList.add('hidden');
                 productGrid.classList.remove('hidden');
-                loadMoreContainer.classList.add('hidden');
+                infiniteLoader.classList.add('hidden');
 
                 const fragment = document.createDocumentFragment();
                 filtered.forEach(p => fragment.appendChild(createProductCard(p)));
@@ -1334,11 +1367,14 @@
         });
 
         // --- Event Listeners ---
-        loadMoreBtn.addEventListener('click', renderBatch);
-        retryBtn.addEventListener('click', fetchAndInitialize);
+        retryBtn.addEventListener('click', () => {
+            errorState.classList.add('hidden');
+            isInitialLoad = true;
+            fetchProductsBatch();
+        });
 
-        // Initial Load
-        fetchAndInitialize();
+        // Initial Load Trigger
+        fetchProductsBatch();
         lucide.createIcons();
     </script>
 </body>
