@@ -250,7 +250,6 @@
             white-space: nowrap;
         }
 
-        /* Cart Button -> Green */
         .btn-action-cart {
             background: var(--primary);
             color: white;
@@ -261,7 +260,6 @@
             background: var(--primary-hover);
         }
 
-        /* Buy Now Button -> Red */
         .btn-action-buynow {
             background: var(--danger);
             color: white;
@@ -272,7 +270,6 @@
             background: var(--danger-hover);
         }
 
-        /* Loading state for buttons */
         .btn-loading {
             opacity: 0.75;
             cursor: not-allowed !important;
@@ -663,6 +660,15 @@
             <p>ইন্টারনেট সংযোগ বা সার্ভারের সমস্যার কারণে পণ্য লোড করা সম্ভব হয়নি।</p>
             <button id="retry-btn" class="btn-more">আবার চেষ্টা করুন</button>
         </div>
+
+        <div id="index-required-state" class="empty-state hidden">
+            <i data-lucide="database-zap"></i>
+            <h3>Firebase Index প্রয়োজন</h3>
+            <p>এই category product query চালানোর জন্য Firestore-এ একটি index তৈরি করতে হবে।</p>
+            <button id="create-index-btn" class="btn-more">
+                <i data-lucide="external-link"></i> Firebase Index তৈরি করুন
+            </button>
+        </div>
     </main>
 
     <div id="variant-modal-overlay" class="modal-overlay">
@@ -678,8 +684,7 @@
                     <p class="modal-base-price">মূল দাম: ৳<span id="modal-base-price-val">0</span></p>
                 </div>
             </div>
-            <div id="variant-groups-container" class="variant-groups-container">
-                </div>
+            <div id="variant-groups-container" class="variant-groups-container"></div>
             <div id="modal-warning" class="modal-warning hidden">অনুগ্রহ করে সব অপশন নির্বাচন করুন।</div>
             <div class="modal-price-summary">
                 <div class="price-calc-row">
@@ -696,7 +701,7 @@
 
     <div id="toast" class="toast hidden"></div>
 
-   <nav class="bottom-nav">
+    <nav class="bottom-nav">
         <a href="https://ghotimarket.com" class="nav-item active"><i data-lucide="home"></i><span>Home</span></a>
         <a href="https://ghotimarket.com/categories" class="nav-item"><i data-lucide="grid"></i><span>Categories</span></a>
         <a href="https://ghotimarket.com/all-product" class="nav-item"><i data-lucide="box"></i><span>products</span></a>
@@ -728,14 +733,6 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // --- Application State Constants ---
-        const STATES = {
-            LOADING: 'LOADING',
-            SUCCESS_WITH_PRODUCTS: 'SUCCESS_WITH_PRODUCTS',
-            SUCCESS_EMPTY: 'SUCCESS_EMPTY',
-            ERROR: 'ERROR'
-        };
-
         // --- State Variables for Infinite Scroll & Pagination ---
         let loadedProductsList = [];
         let lastVisibleDoc = null;
@@ -759,7 +756,9 @@
         const skeletonGrid = document.getElementById('skeleton-grid');
         const emptyState = document.getElementById('empty-state');
         const errorState = document.getElementById('error-state');
+        const indexRequiredState = document.getElementById('index-required-state');
         const retryBtn = document.getElementById('retry-btn');
+        const createIndexBtn = document.getElementById('create-index-btn');
         const infiniteLoader = document.getElementById('infinite-loader');
         const scrollSentinel = document.getElementById('scroll-sentinel');
         const pageTitle = document.getElementById('page-title');
@@ -850,14 +849,12 @@
             return userCartItems.some(item => item.id === productId || item.docId === productId);
         }
 
-        // --- Fisher-Yates Shuffle ---
-        function shuffle(array) {
-            const arr = [...array];
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
+        // --- Helper: Extract Firebase Index URL from Error ---
+        function extractIndexUrl(errorMessage) {
+            if (!errorMessage || typeof errorMessage !== 'string') return null;
+            const urlRegex = /(https:\/\/console\.firebase\.google\.com[^\s]+)/g;
+            const match = errorMessage.match(urlRegex);
+            return match ? match[0] : null;
         }
 
         // --- Helper: Create Product Card DOM Element ---
@@ -891,7 +888,7 @@
             card.className = 'product-card';
             card.innerHTML = `
                 <a href="${cardUrl}" style="text-decoration: none; color: inherit; display: block;">
-                    <img src="${firstImg}" class="product-img" alt="${safeName}" loading="lazy" onerror="this.onerror=null;this.src='https://via.placeholder.com/300?text=No+Image';">
+                    <img src="${firstImg}" class="product-img" alt="${safeName}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://via.placeholder.com/300?text=No+Image';">
                 </a>
                 <div class="product-info">
                     <a href="${cardUrl}" style="text-decoration: none; color: inherit;">
@@ -908,7 +905,7 @@
             return card;
         }
 
-        // --- Fetch Batch Products with Pagination (Limit 30 -> Active Filter -> Max 20 Display) ---
+        // --- Optimized Firestore Query & 20 Active Products Per Batch ---
         async function fetchProductsBatch() {
             if (isLoadingMore || !hasMore) return;
             isLoadingMore = true;
@@ -919,18 +916,22 @@
 
             try {
                 let q;
+                // Optimized Firestore Query with categorySlug, active, and limit(20)
                 if (!lastVisibleDoc) {
                     q = query(
                         collection(db, "products"),
                         where("categorySlug", "==", slug),
-                        limit(30)
+                        where("active", "==", true),
+                        limit(20)
                     );
                 } else {
+                    // Infinite Scroll Pagination using startAfter and limit(20)
                     q = query(
                         collection(db, "products"),
                         where("categorySlug", "==", slug),
+                        where("active", "==", true),
                         startAfter(lastVisibleDoc),
-                        limit(30)
+                        limit(20)
                     );
                 }
 
@@ -949,44 +950,27 @@
 
                 lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
 
-                if (querySnapshot.docs.length < 30) {
+                if (querySnapshot.docs.length < 20) {
                     hasMore = false;
                 }
 
-                let fetchedDocsData = [];
+                let productsToDisplay = [];
                 querySnapshot.forEach((docSnap) => {
                     const data = docSnap.data();
                     if (data) {
-                        fetchedDocsData.push({ id: docSnap.id, ...data });
+                        productsToDisplay.push({ id: docSnap.id, ...data });
                     }
                 });
-
-                // Filter active products
-                let activeProducts = fetchedDocsData.filter(p => p.active === true);
-
-                // Shuffle active products of this batch
-                activeProducts = shuffle(activeProducts);
-
-                // Display up to maximum 20 products
-                const productsToDisplay = activeProducts.slice(0, 20);
 
                 if (isInitialLoad) {
                     skeletonGrid.classList.add('hidden');
                     isInitialLoad = false;
-                    if (fetchedDocsData.length === 0 || (querySnapshot.docs.length > 0 && activeProducts.length === 0 && !hasMore)) {
-                        // Handle edge case if initial batch has no active products
-                        if (loadedProductsList.length === 0) {
-                            emptyState.classList.remove('hidden');
-                            infiniteLoader.classList.add('hidden');
-                            isLoadingMore = false;
-                            return;
-                        }
-                    }
                 }
 
                 if (productsToDisplay.length > 0) {
                     loadedProductsList.push(...productsToDisplay);
                     
+                    // Performance Optimization: DocumentFragment
                     const fragment = document.createDocumentFragment();
                     productsToDisplay.forEach(product => {
                         fragment.appendChild(createProductCard(product));
@@ -995,12 +979,6 @@
                     productGrid.appendChild(fragment);
                     productGrid.classList.remove('hidden');
                     lucide.createIcons();
-                } else if (hasMore && loadedProductsList.length === 0) {
-                    // If first batch didn't yield displayable active products, recursively fetch next batch
-                    isLoadingMore = false;
-                    infiniteLoader.classList.add('hidden');
-                    await fetchProductsBatch();
-                    return;
                 }
 
                 if (!hasMore) {
@@ -1009,6 +987,31 @@
 
             } catch (error) {
                 console.error("Error fetching batch products from Firestore:", error);
+                
+                // Firebase Index Error Handling
+                const errorMsg = error.message || String(error);
+                if (errorMsg.includes("FAILED_PRECONDITION") || errorMsg.includes("requires an index") || errorMsg.includes("index")) {
+                    const indexUrl = extractIndexUrl(errorMsg);
+                    if (isInitialLoad) {
+                        skeletonGrid.classList.add('hidden');
+                    }
+                    errorState.classList.add('hidden');
+                    emptyState.classList.add('hidden');
+                    infiniteLoader.classList.add('hidden');
+                    indexRequiredState.classList.remove('hidden');
+
+                    if (indexUrl) {
+                        createIndexBtn.onclick = () => {
+                            window.open(indexUrl, "_blank", "noopener,noreferrer");
+                        };
+                    } else {
+                        createIndexBtn.onclick = () => {
+                            window.open("https://console.firebase.google.com/", "_blank", "noopener,noreferrer");
+                        };
+                    }
+                    return;
+                }
+
                 if (isInitialLoad) {
                     skeletonGrid.classList.add('hidden');
                     errorState.classList.remove('hidden');
@@ -1023,7 +1026,7 @@
             }
         }
 
-        // --- IntersectionObserver for Infinite Scroll ---
+        // --- IntersectionObserver for Infinite Scroll Pagination ---
         const observerCallback = (entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && hasMore && !isLoadingMore && searchInput.value.trim() === '') {
@@ -1041,7 +1044,7 @@
         const observer = new IntersectionObserver(observerCallback, observerOptions);
         observer.observe(scrollSentinel);
 
-        // --- Cart & Checkout Management (Firestore Carts Collection with Loading Feedback) ---
+        // --- Cart & Checkout Management ---
         async function addProductToCart(product, chosenVariants = {}, finalPrice = null, buttonEl = null) {
             if (!currentUser) {
                 window.location.href = 'https://ghotimarket.com/login';
@@ -1267,7 +1270,6 @@
             }
         });
 
-        // Modal Action Handlers with Loading Feedback
         modalCartBtn.addEventListener('click', async () => {
             if (!currentUser) {
                 window.location.href = 'https://ghotimarket.com/login';
@@ -1314,7 +1316,7 @@
             modalOverlay.classList.remove('active');
         });
 
-        // --- Search Functionality (Searches within client-side loaded products) ---
+        // --- Search Functionality ---
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase().trim();
 
@@ -1331,6 +1333,7 @@
                 productGrid.classList.remove('hidden');
                 emptyState.classList.add('hidden');
                 errorState.classList.add('hidden');
+                indexRequiredState.classList.add('hidden');
                 lucide.createIcons();
                 return;
             }
@@ -1350,10 +1353,12 @@
                 productGrid.classList.add('hidden');
                 infiniteLoader.classList.add('hidden');
                 errorState.classList.add('hidden');
+                indexRequiredState.classList.add('hidden');
                 emptyState.classList.remove('hidden');
             } else {
                 emptyState.classList.add('hidden');
                 errorState.classList.add('hidden');
+                indexRequiredState.classList.add('hidden');
                 skeletonGrid.classList.add('hidden');
                 productGrid.classList.remove('hidden');
                 infiniteLoader.classList.add('hidden');
@@ -1366,10 +1371,18 @@
             lucide.createIcons();
         });
 
-        // --- Event Listeners ---
+        // --- Retry Button Handling ---
         retryBtn.addEventListener('click', () => {
             errorState.classList.add('hidden');
+            indexRequiredState.classList.add('hidden');
+            loadedProductsList = [];
+            lastVisibleDoc = null;
+            hasMore = true;
+            isLoadingMore = false;
             isInitialLoad = true;
+            productMap.clear();
+            productGrid.innerHTML = '';
+            skeletonGrid.classList.remove('hidden');
             fetchProductsBatch();
         });
 
