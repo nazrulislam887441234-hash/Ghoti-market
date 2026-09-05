@@ -740,8 +740,9 @@
         let isLoadingMore = false;
         let isInitialLoad = true;
 
-        // Product cache map for quick lookups
+        // Product cache maps & duplicate protectors
         const productMap = new Map();
+        const loadedProductIds = new Set();
 
         // Auth & User Cart State
         let currentUser = null;
@@ -916,7 +917,7 @@
 
             try {
                 let q;
-                // Optimized Firestore Query with categorySlug, active, and limit(20)
+                // Optimized Firestore Query: Server-side active filter, categorySlug, limit(20) without random functions
                 if (!lastVisibleDoc) {
                     q = query(
                         collection(db, "products"),
@@ -925,7 +926,6 @@
                         limit(20)
                     );
                 } else {
-                    // Infinite Scroll Pagination using startAfter and limit(20)
                     q = query(
                         collection(db, "products"),
                         where("categorySlug", "==", slug),
@@ -958,7 +958,12 @@
                 querySnapshot.forEach((docSnap) => {
                     const data = docSnap.data();
                     if (data) {
-                        productsToDisplay.push({ id: docSnap.id, ...data });
+                        const prodId = docSnap.id;
+                        // Duplicate Product Protection via Set
+                        if (!loadedProductIds.has(prodId)) {
+                            loadedProductIds.add(prodId);
+                            productsToDisplay.push({ id: prodId, ...data });
+                        }
                     }
                 });
 
@@ -988,9 +993,11 @@
             } catch (error) {
                 console.error("Error fetching batch products from Firestore:", error);
                 
-                // Firebase Index Error Handling
-                const errorMsg = error.message || String(error);
-                if (errorMsg.includes("FAILED_PRECONDITION") || errorMsg.includes("requires an index") || errorMsg.includes("index")) {
+                // Robust Firebase Index Error Handling
+                const errorMsg = String(error?.message || error);
+                const isIndexError = errorMsg.includes("FAILED_PRECONDITION") || errorMsg.includes("requires an index") || errorMsg.includes("create_composite") || errorMsg.includes("index");
+
+                if (isIndexError) {
                     const indexUrl = extractIndexUrl(errorMsg);
                     if (isInitialLoad) {
                         skeletonGrid.classList.add('hidden');
@@ -1026,7 +1033,7 @@
             }
         }
 
-        // --- IntersectionObserver for Infinite Scroll Pagination ---
+        // --- IntersectionObserver for Infinite Scroll Pagination (500px prefetch rootMargin) ---
         const observerCallback = (entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && hasMore && !isLoadingMore && searchInput.value.trim() === '') {
@@ -1037,7 +1044,7 @@
 
         const observerOptions = {
             root: null,
-            rootMargin: '200px',
+            rootMargin: '500px',
             threshold: 0.1
         };
 
@@ -1316,7 +1323,7 @@
             modalOverlay.classList.remove('active');
         });
 
-        // --- Search Functionality ---
+        // --- Client-Side Search Functionality ---
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase().trim();
 
@@ -1371,16 +1378,19 @@
             lucide.createIcons();
         });
 
-        // --- Retry Button Handling ---
+        // --- Retry System (Complete State Reset) ---
         retryBtn.addEventListener('click', () => {
             errorState.classList.add('hidden');
             indexRequiredState.classList.add('hidden');
+            
             loadedProductsList = [];
             lastVisibleDoc = null;
             hasMore = true;
             isLoadingMore = false;
             isInitialLoad = true;
             productMap.clear();
+            loadedProductIds.clear();
+            
             productGrid.innerHTML = '';
             skeletonGrid.classList.remove('hidden');
             fetchProductsBatch();
