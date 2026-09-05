@@ -482,24 +482,6 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* --- Skeleton Loader --- */
-        .skeleton {
-            background: #e2e8f0;
-            background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
-            background-size: 200% 100%;
-            animation: skeleton-loading 1.5s infinite;
-        }
-
-        @keyframes skeleton-loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        .skeleton-card {
-            height: 320px;
-            border-radius: 12px;
-        }
-
         /* --- Initial & Infinite Loader GIF --- */
         .loading-gif-container {
             width: 100%;
@@ -643,15 +625,6 @@
             <img src="https://ghotimarket.com/loading.gif" alt="Loading..." />
         </div>
 
-        <div id="skeleton-grid" class="product-grid hidden">
-            <div class="skeleton skeleton-card"></div>
-            <div class="skeleton skeleton-card"></div>
-            <div class="skeleton skeleton-card"></div>
-            <div class="skeleton skeleton-card"></div>
-            <div class="skeleton skeleton-card"></div>
-            <div class="skeleton skeleton-card"></div>
-        </div>
-
         <div id="product-grid" class="product-grid hidden"></div>
 
         <div id="infinite-loader" class="infinite-loader hidden">
@@ -745,28 +718,29 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // --- State Variables for Infinite Scroll & Pagination ---
+        // --- State Variables ---
         let loadedProductsList = [];
         let lastVisibleDoc = null;
         let hasMore = true;
         let isLoadingMore = false;
         let isInitialLoad = true;
+        let productsInitialLoadFinished = false;
 
-        // Product cache maps & duplicate protectors
+        // Auth & State Flags
+        let currentUser = null;
+        let authReady = false;
+        let userCartItems = [];
+
+        // Product Maps & Duplicate Protectors
         const productMap = new Map();
         const loadedProductIds = new Set();
 
-        // Auth & User Cart State
-        let currentUser = null;
-        let userCartItems = [];
-
-        // Variant Modal & Selection State
+        // Variant Modal State
         let activeModalProduct = null;
         let selectedVariantsState = {};
 
         // --- DOM Elements ---
         const productGrid = document.getElementById('product-grid');
-        const skeletonGrid = document.getElementById('skeleton-grid');
         const loadingGifContainer = document.getElementById('loading-gif-container');
         const emptyState = document.getElementById('empty-state');
         const errorState = document.getElementById('error-state');
@@ -791,16 +765,57 @@
         const modalBuynowBtn = document.getElementById('modal-buynow-btn');
         const toast = document.getElementById('toast');
 
-        // --- Auth State Observer ---
+        // --- Centralized UI State Management ---
+        function updateUIState() {
+            // Priority: Index Error -> Network/Firestore Error -> Products Available -> Initial Loading -> Empty State
+            if (!indexRequiredState.classList.contains('hidden') || !errorState.classList.contains('hidden')) {
+                loadingGifContainer.classList.add('hidden');
+                return;
+            }
+
+            if (loadedProductsList.length > 0) {
+                loadingGifContainer.classList.add('hidden');
+                emptyState.classList.add('hidden');
+                productGrid.classList.remove('hidden');
+                return;
+            }
+
+            if (!productsInitialLoadFinished) {
+                loadingGifContainer.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+                productGrid.classList.add('hidden');
+                return;
+            }
+
+            // Initial load finished, but no products found
+            loadingGifContainer.classList.add('hidden');
+            if (loadedProductsList.length === 0) {
+                emptyState.classList.remove('hidden');
+                productGrid.classList.add('hidden');
+            }
+        }
+
+        // --- Firebase Auth State Observer with authReady ---
         onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            authReady = true;
             if (user) {
-                currentUser = user;
                 fetchUserCart(user.uid);
             } else {
-                currentUser = null;
                 userCartItems = [];
+                updateAllCardButtons();
             }
         });
+
+        // --- Helper: Wait For Auth Ready (for click actions) ---
+        async function waitForAuthReady(timeout = 5000) {
+            if (authReady) return currentUser;
+            const start = Date.now();
+            while (!authReady && Date.now() - start < timeout) {
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+            return currentUser;
+        }
 
         // --- Fetch User Cart from Firestore ---
         async function fetchUserCart(uid) {
@@ -866,8 +881,7 @@
         // --- Helper: Extract Firebase Index URL from Error ---
         function extractIndexUrl(errorMessage) {
             if (!errorMessage || typeof errorMessage !== 'string') return null;
-            const urlRegex = /(https:\/\/console\.firebase\.google\.com[^\s]+)/g;
-            const match = errorMessage.match(urlRegex);
+            const match = errorMessage.match(/https:\/\/console\.firebase\.google\.com[^\s]+/);
             return match ? match[0] : null;
         }
 
@@ -919,7 +933,7 @@
             return card;
         }
 
-        // --- Optimized Firestore Query & 20 Active Products Per Batch ---
+        // --- Firestore Batch Product Loading (Parallel to Auth) ---
         async function fetchProductsBatch() {
             if (isLoadingMore || !hasMore) return;
             isLoadingMore = true;
@@ -930,7 +944,6 @@
 
             try {
                 let q;
-                // No random functions; purely server-side active filter, categorySlug, limit(20)
                 if (!lastVisibleDoc) {
                     q = query(
                         collection(db, "products"),
@@ -950,14 +963,13 @@
 
                 const querySnapshot = await getDocs(q);
 
+                productsInitialLoadFinished = true;
+
                 if (querySnapshot.empty) {
                     hasMore = false;
-                    if (isInitialLoad) {
-                        loadingGifContainer.classList.add('hidden');
-                        emptyState.classList.remove('hidden');
-                    }
                     infiniteLoader.classList.add('hidden');
                     isLoadingMore = false;
+                    updateUIState();
                     return;
                 }
 
@@ -980,23 +992,22 @@
                 });
 
                 if (isInitialLoad) {
-                    loadingGifContainer.classList.add('hidden');
                     isInitialLoad = false;
                 }
 
                 if (productsToDisplay.length > 0) {
                     loadedProductsList.push(...productsToDisplay);
                     
-                    // DocumentFragment for Progressive & Lightweight Rendering
                     const fragment = document.createDocumentFragment();
                     productsToDisplay.forEach(product => {
                         fragment.appendChild(createProductCard(product));
                     });
 
                     productGrid.appendChild(fragment);
-                    productGrid.classList.remove('hidden');
-                    lucide.createIcons();
+                    lucide.createIcons({ attrs: { 'stroke-width': 2 } });
                 }
+
+                updateUIState();
 
                 if (!hasMore) {
                     infiniteLoader.classList.add('hidden');
@@ -1010,9 +1021,7 @@
 
                 if (isIndexError) {
                     const indexUrl = extractIndexUrl(errorMsg);
-                    if (isInitialLoad) {
-                        loadingGifContainer.classList.add('hidden');
-                    }
+                    loadingGifContainer.classList.add('hidden');
                     errorState.classList.add('hidden');
                     emptyState.classList.add('hidden');
                     infiniteLoader.classList.add('hidden');
@@ -1031,6 +1040,7 @@
                 }
 
                 if (isInitialLoad) {
+                    productsInitialLoadFinished = true;
                     loadingGifContainer.classList.add('hidden');
                     errorState.classList.remove('hidden');
                 } else {
@@ -1044,7 +1054,7 @@
             }
         }
 
-        // --- IntersectionObserver for Infinite Scroll Pagination ---
+        // --- IntersectionObserver for Infinite Scroll ---
         const observerCallback = (entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && hasMore && !isLoadingMore && searchInput.value.trim() === '') {
@@ -1062,9 +1072,10 @@
         const observer = new IntersectionObserver(observerCallback, observerOptions);
         observer.observe(scrollSentinel);
 
-        // --- Cart & Checkout Management ---
+        // --- Cart & Checkout Actions ---
         async function addProductToCart(product, chosenVariants = {}, finalPrice = null, buttonEl = null) {
-            if (!currentUser) {
+            const user = await waitForAuthReady();
+            if (!user) {
                 window.location.href = 'https://ghotimarket.com/login';
                 return;
             }
@@ -1088,8 +1099,8 @@
             const firstImg = (Array.isArray(product.images) && product.images[0]) ? product.images[0] : 'https://via.placeholder.com/300';
 
             const cartItemData = {
-                uid: currentUser.uid,
-                email: currentUser.email || '',
+                uid: user.uid,
+                email: user.email || '',
                 id: product.id,
                 docId: product.id,
                 slug: product.slug || '',
@@ -1210,7 +1221,7 @@
 
             updateModalPrice();
             modalOverlay.classList.add('active');
-            lucide.createIcons();
+            lucide.createIcons({ attrs: { 'stroke-width': 2 } });
         }
 
         function getCalculatedCurrentPrice() {
@@ -1248,11 +1259,6 @@
             const cartBtn = e.target.closest('[data-action="cart"]');
             const buyNowBtn = e.target.closest('[data-action="buynow"]');
 
-            if (!currentUser) {
-                window.location.href = 'https://ghotimarket.com/login';
-                return;
-            }
-
             if (cartBtn) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -1289,10 +1295,6 @@
         });
 
         modalCartBtn.addEventListener('click', async () => {
-            if (!currentUser) {
-                window.location.href = 'https://ghotimarket.com/login';
-                return;
-            }
             if (!activeModalProduct) return;
             if (isProductInCart(activeModalProduct.id)) {
                 modalOverlay.classList.remove('active');
@@ -1311,10 +1313,6 @@
         });
 
         modalBuynowBtn.addEventListener('click', async () => {
-            if (!currentUser) {
-                window.location.href = 'https://ghotimarket.com/login';
-                return;
-            }
             if (!activeModalProduct) return;
             if (!isProductInCart(activeModalProduct.id)) {
                 const chosenVariants = validateAndGetChosenVariants();
@@ -1334,7 +1332,7 @@
             modalOverlay.classList.remove('active');
         });
 
-        // --- Client-Side Search Functionality ---
+        // --- Client-Side Search ---
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase().trim();
 
@@ -1348,11 +1346,8 @@
                 });
                 productGrid.appendChild(fragment);
                 
-                productGrid.classList.remove('hidden');
-                emptyState.classList.add('hidden');
-                errorState.classList.add('hidden');
-                indexRequiredState.classList.add('hidden');
-                lucide.createIcons();
+                updateUIState();
+                lucide.createIcons({ attrs: { 'stroke-width': 2 } });
                 return;
             }
 
@@ -1384,10 +1379,10 @@
                 productGrid.appendChild(fragment);
             }
             
-            lucide.createIcons();
+            lucide.createIcons({ attrs: { 'stroke-width': 2 } });
         });
 
-        // --- Retry System (Complete State Reset) ---
+        // --- Complete Reset Retry System ---
         retryBtn.addEventListener('click', () => {
             errorState.classList.add('hidden');
             indexRequiredState.classList.add('hidden');
@@ -1397,6 +1392,7 @@
             hasMore = true;
             isLoadingMore = false;
             isInitialLoad = true;
+            productsInitialLoadFinished = false;
             productMap.clear();
             loadedProductIds.clear();
             
@@ -1405,9 +1401,9 @@
             fetchProductsBatch();
         });
 
-        // Initial Load Trigger
+        // Initial Triggers
         fetchProductsBatch();
-        lucide.createIcons();
+        lucide.createIcons({ attrs: { 'stroke-width': 2 } });
     </script>
 </body>
 </html>
