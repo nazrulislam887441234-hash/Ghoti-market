@@ -1,0 +1,116 @@
+export default {
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    const userAgent = request.headers.get("user-agent") || "";
+    
+    // সোশ্যাল মিডিয়া বট ক্রলার চিহ্নিতকরণ (Facebook, Twitter, LinkedIn, WhatsApp, Telegram, Slack ইত্যাদি)
+    const isBot = /facebookexternalhit|Facebot|Twitterbot|LinkedInBot|WhatsApp|TelegramBot|Slackbot|SkypeUriPreview|Pinterest|Applebot|Googlebot/i.test(userAgent);
+
+    // যদি কোনো সোশ্যাল মিডিয়া বট বা ক্রলার রিকোয়েস্ট করে
+    if (isBot) {
+      try {
+        const searchParams = url.searchParams;
+        
+        // sellerProfile পেজের জন্য বিভিন্নভাবে ইউজারনেম বা আইডি হ্যান্ডেল করা
+        let targetId = searchParams.get("sellerId") || searchParams.get("username") || searchParams.get("@");
+
+        if (!targetId) {
+          for (const [key, value] of searchParams.entries()) {
+            let cleanKey = decodeURIComponent(key.trim());
+            if (cleanKey && cleanKey !== 'fbclid' && cleanKey !== 'gclid' && !cleanKey.startsWith('utm_')) {
+              targetId = cleanKey.replace(/^@/, '');
+              break;
+            }
+          }
+        }
+
+        if (!targetId) {
+          const parts = url.pathname.split('/');
+          const last = parts[parts.length - 1];
+          if (last && last !== 'seller' && last !== '') {
+            targetId = decodeURIComponent(last).replace(/^@/, '');
+          }
+        }
+
+        // ফায়ারবেস থেকে রিয়েল-টাইম সেলার তথ্য ফেচ করার জন্য REST API ব্যবহার
+        let shopName = "Seller Profile";
+        let shopDesc = "Browse products on Ghoti Market.";
+        let shopLogo = "https://i.ibb.co/RG2hrf3y/background-remove-ghoti-market.png";
+        let shopBanner = shopLogo;
+
+        if (targetId) {
+          const cleanTarget = targetId.trim();
+          const firebaseProjectId = "ghotimarket"; // আপনার ফায়ারবেস প্রজেক্ট আইডি
+
+          try {
+            // প্রথমে public_sellers কালেকশন চেক করা
+            let res = await fetch(`https://firestore.googleapis.com/v1/projects/${firebaseProjectId}/databases/(default)/documents/public_sellers/${cleanTarget}`);
+            let data = await res.json();
+
+            if (!data || data.error) {
+              // ফলব্যাক হিসেবে users কালেকশন চেক করা
+              res = await fetch(`https://firestore.googleapis.com/v1/projects/${firebaseProjectId}/databases/(default)/documents/users/${cleanTarget}`);
+              data = await res.json();
+            }
+
+            if (data && data.fields) {
+              const fields = data.fields;
+              if (fields.shopName && fields.shopName.stringValue) {
+                shopName = fields.shopName.stringValue;
+              }
+              if (fields.shopDescription && fields.shopDescription.stringValue) {
+                shopDesc = fields.shopDescription.stringValue;
+              }
+              if (fields.shopLogo && fields.shopLogo.stringValue) {
+                shopLogo = fields.shopLogo.stringValue;
+              }
+              if (fields.shopBanner && fields.shopBanner.stringValue) {
+                shopBanner = fields.shopBanner.stringValue;
+              } else {
+                shopBanner = shopLogo;
+              }
+            }
+          } catch (fetchErr) {
+            console.error("Firebase REST Fetch Error:", fetchErr);
+          }
+        }
+
+        const pageTitle = `${shopName} | Ghoti Market`;
+        const currentUrl = request.url;
+
+        const html = `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <title>${pageTitle}</title>
+    <meta name="description" content="${shopDesc}">
+    <meta property="og:title" content="${pageTitle}">
+    <meta property="og:description" content="${shopDesc}">
+    <meta property="og:image" content="${shopBanner}">
+    <meta property="og:url" content="${currentUrl}">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${pageTitle}">
+    <meta name="twitter:description" content="${shopDesc}">
+    <meta name="twitter:image" content="${shopBanner}">
+</head>
+<body>
+    <h1>${shopName}</h1>
+    <p>${shopDesc}</p>
+    <img src="${shopBanner}" alt="${shopName}" />
+</body>
+</html>`;
+
+        return new Response(html, {
+          headers: { "Content-Type": "text/html;charset=UTF-8" }
+        });
+
+      } catch (err) {
+        console.error("Seller Worker Preview Error:", err);
+      }
+    }
+
+    // সাধারণ ভিজিটরদের রিকোয়েস্ট মূল হোস্টিং সার্ভারে পাঠিয়ে দেওয়া
+    return fetch(request);
+  }
+};
