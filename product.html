@@ -1296,22 +1296,42 @@
             }
         };
 
-        const getSlugFromURL = () => {
-            try {
-                const pathname = window.location.pathname;
-                const search = window.location.search;
-                const urlParams = new URLSearchParams(search);
-                let slug = urlParams.get("product-slug");
-                if (slug) return decodeURIComponent(slug.trim());
-                for (const [key, value] of urlParams.entries()) {
-                    if (key !== 'fbclid' && !key.startsWith('utm_') && value === '') return decodeURIComponent(key.trim());
-                }
-                const pathParts = pathname.split('/');
-                const lastPart = pathParts[pathParts.length - 1];
-                if (lastPart && lastPart !== 'product.html' && lastPart !== '' && !lastPart.includes('.')) return decodeURIComponent(lastPart);
-                return null;
-            } catch (err) { return null; }
+      const getSlugFromURL = () => {
+    try {
+        const pathname = window.location.pathname;
+        const search = window.location.search;
+        const urlParams = new URLSearchParams(search);
+        
+        // Helper function to clean -true and anything following it
+        const cleanSlugValue = (val) => {
+            if (!val) return null;
+            let decoded = decodeURIComponent(val.trim());
+            // Removes -true and any trailing characters/extensions following it
+            return decoded.replace(/-true.*$/i, "").trim();
         };
+
+        // 1. Check product-slug param
+        let slug = urlParams.get("product-slug");
+        if (slug) return cleanSlugValue(slug);
+
+        // 2. Check key-only params (e.g. ?tarimmer-vih72aiz-true)
+        for (const [key, value] of urlParams.entries()) {
+            const lowerKey = key.toLowerCase();
+            if (lowerKey !== 'fbclid' && lowerKey !== 'gclid' && !lowerKey.startsWith('utm_') && value === '') {
+                return cleanSlugValue(key);
+            }
+        }
+
+        // 3. Check path parts (e.g. /product.html/tarimmer-vih72aiz-true)
+        const pathParts = pathname.split('/');
+        const lastPart = pathParts[pathParts.length - 1];
+        if (lastPart && lastPart !== 'product.html' && lastPart !== '' && !lastPart.includes('.')) {
+            return cleanSlugValue(lastPart);
+        }
+
+        return null;
+    } catch (err) { return null; }
+};
 
         const openSharePopup = () => { getEl("sharePopup")?.classList.add("show"); };
         const closeSharePopup = () => { getEl("sharePopup")?.classList.remove("show"); };
