@@ -591,6 +591,16 @@ html, body {
                 const search = window.location.search;
                 const urlParams = new URLSearchParams(search);
 
+                // Helper function to clean -true and anything following it from username/identifiers
+                const cleanUsernameValue = (val) => {
+                    if (!val) return null;
+                    let decoded = decodeURIComponent(val.trim());
+                    // Removes -true and any trailing characters following it
+                    decoded = decoded.replace(/-true.*$/i, "").trim();
+                    if (decoded.startsWith('@')) decoded = decoded.substring(1);
+                    return decoded;
+                };
+
                 // Priority 1: Explicit ?sellerId=xxxxx parameter
                 let sellerIdVal = urlParams.get("sellerId");
                 if (sellerIdVal && sellerIdVal.trim() !== "") {
@@ -600,48 +610,45 @@ html, body {
                 // Priority 2: Explicit ?username=xxxxx parameter
                 let usernameVal = urlParams.get("username");
                 if (usernameVal && usernameVal.trim() !== "") {
-                    let cleanU = decodeURIComponent(usernameVal.trim());
-                    if (cleanU.startsWith('@')) cleanU = cleanU.substring(1);
+                    let cleanU = cleanUsernameValue(usernameVal);
                     return { type: "explicit_username", value: cleanU };
                 }
 
-                // Priority 3: Explicit ?@luxuryshop parameter
+                // Priority 3: Explicit ?@womenfashion parameter
                 let atVal = urlParams.get("@");
                 if (atVal && atVal.trim() !== "") {
-                    let cleanU = decodeURIComponent(atVal.trim());
-                    if (cleanU.startsWith('@')) cleanU = cleanU.substring(1);
+                    let cleanU = cleanUsernameValue(atVal);
                     return { type: "explicit_at", value: cleanU };
                 }
 
-                // Scan all URL keys for Facebook shares or URL-encoded attributes like ?%40luxuryshop
+                // Scan all URL keys for Facebook shares or URL-encoded attributes like ?%40womenfashion-true
                 for (const [key, value] of urlParams.entries()) {
                     let cleanKey = decodeURIComponent(key.trim());
                     if (cleanKey && cleanKey !== 'fbclid' && cleanKey !== 'gclid' && !cleanKey.startsWith('utm_')) {
                         if (cleanKey.startsWith('@')) {
-                            return { type: "encoded_at", value: cleanKey.substring(1) };
+                            let cleanU = cleanUsernameValue(cleanKey);
+                            return { type: "encoded_at", value: cleanU };
                         }
                         if (value === '' && !cleanKey.includes('=')) {
-                            let cleanVal = cleanKey.replace(/^@/, '');
-                            return { type: "raw_param", value: cleanVal };
+                            let cleanU = cleanUsernameValue(cleanKey);
+                            return { type: "raw_param", value: cleanU };
                         }
                     }
                 }
 
-                // Priority 4: Fallback to raw path search string (e.g. ?oBalDCzGc3XxNVwPvKckosgWD5m2 or ?luxuryshop)
+                // Priority 4: Fallback to raw path search string (e.g. ?@womenfashion-true)
                 if (search && search.length > 1) {
                     const raw = decodeURIComponent(search.substring(1).split('&')[0].trim());
                     if (raw && !raw.includes('=') && !raw.startsWith('fbclid') && !raw.startsWith('gclid') && !raw.startsWith('utm_')) {
-                        let cleanRaw = raw;
-                        if (cleanRaw.startsWith('@')) cleanRaw = cleanRaw.substring(1);
+                        let cleanRaw = cleanUsernameValue(raw);
                         return { type: "raw_value", value: cleanRaw };
                     }
                 }
 
                 // Fallback to window hash if present
                 if (window.location.hash) {
-                    let hashVal = decodeURIComponent(window.location.hash.substring(1).trim());
+                    let hashVal = cleanUsernameValue(window.location.hash.substring(1));
                     if (hashVal) {
-                        if (hashVal.startsWith('@')) hashVal = hashVal.substring(1);
                         return { type: "hash_value", value: hashVal };
                     }
                 }
