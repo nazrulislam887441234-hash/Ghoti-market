@@ -581,7 +581,13 @@ html, body {
         // ===== ROBUST SELLER LOOKUP SYSTEM =====
         async function fetchSellerProfile(targetVal) {
             if (!targetVal || !targetVal.trim()) return null;
-            const cleanTarget = decodeURIComponent(targetVal.trim());
+            let cleanTarget = decodeURIComponent(targetVal.trim());
+            
+            // শপ আইডির শেষে '-true' বা অতিরিক্ত কিছু থাকলে তা কেটে মূল আইডি বের করে নেওয়া
+            if (cleanTarget.includes('-true')) {
+                cleanTarget = cleanTarget.split('-true')[0];
+            }
+
             const cleanLower = cleanTarget.toLowerCase();
 
             // Priority 1: Check public_sellers collection by Document ID
