@@ -866,9 +866,9 @@
         // --- Helper: Consistent Product URL ---
         function getProductUrl(product) {
             if (product && product.slug) {
-                return `https://ghotimarket.com/product.html?${encodeURIComponent(product.slug)}`;
+                return `https://ghotimarket.com/product?${encodeURIComponent(product.slug)}`;
             }
-            return `https://ghotimarket.com/product.html?id=${encodeURIComponent(product.id || '')}`;
+            return `https://ghotimarket.com/product?id=${encodeURIComponent(product.id || '')}`;
         }
 
         // --- Helper: Check if product is in cart ---
