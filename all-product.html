@@ -907,7 +907,7 @@
             const shopName = product.shopName || 'GHOTI Seller';
             const productName = product.name || 'Unnamed Product';
             const productSlug = product.slug || product.id;
-            const detailUrl = `https://www.ghotimarket.com/product.html?${escapeHtml(productSlug)}`;
+            const detailUrl = `https://www.ghotimarket.com/product?${escapeHtml(productSlug)}`;
 
             let actionsHtml = '';
             if (isInCart) {
@@ -1237,16 +1237,19 @@
             fetchProducts(true);
         });
 
-        // Authentication State Listener & Initialization
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                window.location.href = "https://ghotimarket.com/login";
-                return;
-            }
-            currentUser = user;
-            await fetchUserCart();
-            fetchProducts(false);
-        });
+        // Authentication State Listener - FIXED
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        currentUser = user;
+        await fetchUserCart();
+    } else {
+        currentUser = null;
+        userCartItems = [];
+        updateCartBadge();
+    }
+    // লগিন থাকুক বা না থাকুক, Product সবাই দেখবে
+    fetchProducts(false);
+});
     </script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>lucide.createIcons();</script>
