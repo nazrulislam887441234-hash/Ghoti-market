@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghoti Landing Page</title>
+    <!-- Dynamic Meta & SEO will be updated by JS -->
+    <meta id="meta-description" name="description" content="Ghoti Market Professional Product Landing Page">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" id="og-title" content="Ghoti Landing Page">
+    <meta property="og:description" id="og-desc" content="Professional Product Selling Website">
+    <meta property="og:image" id="og-image" content="https://ghotimarket.com/logo/landing.png">
+    <meta property="og:url" id="og-url" content="">
+    
+    <!-- Tailwind CSS CDN for styling utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ghotiblack: '#000000',
+                        ghotiorange: '#FF6B00',
+                        ghotiorangehover: '#E05E00',
+                        ghotidarkgray: '#121212',
+                        ghoticardbg: '#1a1a1a',
+                        ghotiborder: '#333333'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts Inter / SolaimanLipi compatibility -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #000000; color: #ffffff; }
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-marquee {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 25s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body class="bg-ghotiblack text-white min-h-screen flex flex-col justify-between selection:bg-ghotiorange selection:text-white">
+
+    <!-- Top Marquee Headline Bar -->
+    <div id="headline-container" class="bg-ghotiorange text-black font-bold py-2 overflow-hidden whitespace-nowrap hidden relative z-50">
+        <div id="headline-text" class="animate-marquee px-4 text-sm md:text-base"></div>
+    </div>
+
+    <!-- Main Wrapper -->
+    <main class="flex-grow">
+        <!-- Loading State -->
+        <div id="loading-screen" class="flex flex-col items-center justify-center min-h-[70vh] px-4">
+            <svg class="animate-spin h-12 w-12 text-ghotiorange mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p class="text-gray-400 text-lg">লোড হচ্ছে...</p>
+        </div>
+
+        <!-- Error / Inactive State Container -->
+        <div id="message-screen" class="hidden flex flex-col items-center justify-center min-h-[70vh] px-4 text-center">
+            <div class="bg-ghoticardbg border border-ghotiborder p-8 rounded-2xl max-w-md w-full shadow-2xl">
+                <svg class="w-16 h-16 text-ghotiorange mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+                <h2 id="error-title" class="text-xl font-bold mb-3 text-white">পণ্যটি খুঁজে পাওয়া যায়নি</h2>
+                <p id="error-desc" class="text-gray-400 mb-6 text-sm">এই পণ্যটা এখন সবার দেখার জন্য উপযুক্ত নয়!</p>
+                <a href="https://ghotimarket.com" class="inline-block bg-ghotiorange hover:bg-ghotiorangehover text-black font-semibold px-6 py-3 rounded-xl transition duration-200">
+                    GHOTI MARKET-এ ফিরে যান
+                </a>
+            </div>
+        </div>
+
+        <!-- Product Details Main Section -->
+        <div id="product-section" class="hidden container mx-auto px-4 py-8 max-w-6xl">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+                
+                <!-- Left: Product Image Gallery -->
+                <div class="space-y-4">
+                    <div class="relative bg-ghoticardbg border border-ghotiborder rounded-2xl overflow-hidden aspect-square flex items-center justify-center">
+                        <img id="main-product-image" src="" alt="Product Image" class="w-full h-full object-cover transition-all duration-300">
+                        <!-- Navigation Arrows for Gallery -->
+                        <button id="prev-img" class="absolute left-3 bg-black/60 hover:bg-black text-white p-2 rounded-full hidden transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                        </button>
+                        <button id="next-img" class="absolute right-3 bg-black/60 hover:bg-black text-white p-2 rounded-full hidden transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                    <!-- Thumbnail List -->
+                    <div id="thumbnail-container" class="flex gap-3 overflow-x-auto pb-2"></div>
+                </div>
+
+                <!-- Right: Product Info & Order Action -->
+                <div class="space-y-6">
+                    <div>
+                        <h1 id="product-name" class="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3"></h1>
+                        <div class="flex items-center gap-4 mb-4">
+                            <span id="current-price" class="text-3xl font-extrabold text-ghotiorange"></span>
+                            <span id="old-price" class="text-lg text-gray-500 line-through hidden"></span>
+                            <span id="discount-badge" class="bg-ghotiorange/20 text-ghotiorange border border-ghotiorange/30 text-xs font-semibold px-2.5 py-1 rounded-full hidden"></span>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="border-t border-b border-ghotiborder py-4">
+                        <p id="product-description" class="text-gray-300 text-sm md:text-base leading-relaxed whitespace-pre-line"></p>
+                    </div>
+
+                    <!-- Variants Section -->
+                    <div id="variants-wrapper" class="space-y-4"></div>
+
+                    <!-- CTA Button -->
+                    <div class="pt-2">
+                        <button id="scroll-to-order" class="w-full bg-ghotiorange hover:bg-ghotiorangehover text-black font-bold text-lg py-4 px-8 rounded-xl shadow-lg transition duration-200 flex items-center justify-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                            <span>এখনই অর্ডার করুন</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checkout Order Section -->
+            <div id="order-form-section" class="mt-16 bg-ghoticardbg border border-ghotiborder rounded-2xl p-6 md:p-8 max-w-3xl mx-auto shadow-2xl">
+                <div class="border-b border-ghotiborder pb-4 mb-6">
+                    <h2 class="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
+                        <svg class="w-6 h-6 text-ghotiorange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        অর্ডার সম্পন্ন করতে আপনার তথ্য দিন
+                    </h2>
+                    <p class="text-gray-400 text-sm mt-1">সঠিক তথ্য দিয়ে নিচের ফর্মটি পূরণ করুন</p>
+                </div>
+
+                <form id="checkout-form" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">আপনার নাম *</label>
+                            <input type="text" id="cust-name" required placeholder="পূর্ণ নাম লিখুন" class="w-full bg-black border border-ghotiborder rounded-xl px-4 py-3 text-white focus:outline-none focus:border-ghotiorange text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">মোবাইল নাম্বার *</label>
+                            <input type="tel" id="cust-phone" required placeholder="01XXXXXXXXX" class="w-full bg-black border border-ghotiborder rounded-xl px-4 py-3 text-white focus:outline-none focus:border-ghotiorange text-sm">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">বিভাগ *</label>
+                            <input type="text" id="cust-vibag" required placeholder="যেমন: ঢাকা" class="w-full bg-black border border-ghotiborder rounded-xl px-4 py-3 text-white focus:outline-none focus:border-ghotiorange text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">জেলা *</label>
+                            <input type="text" id="cust-jela" required placeholder="যেমন: ঢাকা" class="w-full bg-black border border-ghotiborder rounded-xl px-4 py-3 text-white focus:outline-none focus:border-ghotiorange text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">থানা / উপজেলা *</label>
+                            <input type="text" id="cust-thana" required placeholder="যেমন: সাভার" class="w-full bg-black border border-ghotiborder rounded-xl px-4 py-3 text-white focus:outline-none focus:border-ghotiorange text-sm">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1">সম্পূর্ণ ঠিকানা (অপশনাল)</label>
+                        <input type="text" id="cust-address" placeholder="গ্রাম, রোড, বাসা নম্বর ইত্যাদি" class="w-full bg-black border border-ghotiborder rounded-xl px-4 py-3 text-white focus:outline-none focus:border-ghotiorange text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1">অর্ডার নোট (অপশনাল)</label>
+                        <textarea id="cust-note" rows="2" placeholder="কোনো বিশেষ নির্দেশনা থাকলে লিখুন" class="w-full bg-black border border-ghotiborder rounded-xl px-4 py-3 text-white focus:outline-none focus:border-ghotiorange text-sm"></textarea>
+                    </div>
+
+                    <!-- Order Summary Box -->
+                    <div class="bg-black/50 border border-ghotiborder p-4 rounded-xl space-y-2 text-sm">
+                        <div class="flex justify-between text-gray-300">
+                            <span>পণ্যের মূল্য:</span>
+                            <span id="summary-base-price">৳ 0</span>
+                        </div>
+                        <div id="summary-variant-row" class="flex justify-between text-gray-300 hidden">
+                            <span>ভ্যারিয়েন্ট অতিরিক্ত মূল্য:</span>
+                            <span id="summary-variant-price">৳ 0</span>
+                        </div>
+                        <div class="border-t border-ghotiborder pt-2 flex justify-between font-bold text-base text-white">
+                            <span>সর্বমোট প্রদেয় মূল্য:</span>
+                            <span id="summary-total-price" class="text-ghotiorange">৳ 0</span>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="submit-order-btn" class="w-full bg-ghotiorange hover:bg-ghotiorangehover text-black font-bold text-lg py-4 px-8 rounded-xl shadow-lg transition duration-200 flex items-center justify-center gap-3">
+                        <span id="btn-text">অর্ডার কনফার্ম করুন</span>
+                        <svg id="btn-spinner" class="animate-spin h-5 w-5 text-black hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Professional Footer -->
+    <footer class="border-t border-ghotiborder py-6 mt-12 bg-ghotidarkgray text-center">
+        <div class="container mx-auto px-4 flex flex-col items-center justify-center gap-2">
+            <span class="text-xs text-gray-400">Powered by</span>
+            <a href="https://www.ghotimarket.com" target="_blank" class="transition hover:opacity-80">
+                <img src="https://www.ghotimarket.com/watermark.png" alt="Ghoti Market Watermark" class="h-6 object-contain">
+            </a>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK Scripts (Compat Version for Vanilla JS) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // ==========================================
+        // FIREBASE CONFIGURATION (আপনার প্রজেক্টের তথ্য এখানে বসান)
+        // ==========================================
+        const firebaseConfig = {
+  apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+  authDomain: "ghotimarket.firebaseapp.com",
+  databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+  projectId: "ghotimarket",
+  storageBucket: "ghotimarket.firebasestorage.app",
+  messagingSenderId: "481257644093",
+  appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+  measurementId: "G-4SR8V2EKC1"
+};
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Global State Variables
+        let currentProductData = null;
+        let selectedVariantState = {};
+        let activeImageIndex = 0;
+
+        // URL Slug Parser with Robust Tracking Removal (fbclid, utm, gclid, etc.)
+        function extractProductSlug() {
+            const searchStr = window.location.search;
+            if (!searchStr) return null;
+
+            // Remove leading '?'
+            let cleanQuery = searchStr.substring(1);
+
+            // Handle multiple question marks or query formatting like ?smart-watch?fbclid=...
+            // Split by '&', '?', or check direct raw slug
+            let parts = cleanQuery.split(/[?&]/);
+            if (parts.length > 0 && parts[0]) {
+                // Return the first raw segment as the slug
+                return decodeURIComponent(parts[0].trim());
+            }
+            return null;
+        }
+
+        // Main Execution on DOM Load
+        document.addEventListener('DOMContentLoaded', async () => {
+            const slug = extractProductSlug();
+            
+            if (!slug) {
+                showErrorScreen("পণ্যটি খুঁজে পাওয়া যায়নি", "এই পণ্যটা এখন সবার দেখার জন্য উপযুক্ত নয়!");
+                return;
+            }
+
+            try {
+                // Query landing_product collection by productSlug
+                const snapshot = await db.collection('landing_product')
+                    .where('productSlug', '==', slug)
+                    .limit(1)
+                    .get();
+
+                if (snapshot.empty) {
+                    showErrorScreen("পণ্যটি খুঁজে পাওয়া যায়নি", "এই পণ্যটা এখন সবার দেখার জন্য উপযুক্ত নয়!");
+                    return;
+                }
+
+                const doc = snapshot.docs[0];
+                currentProductData = doc.data();
+
+                // Check active status
+                if (currentProductData.active !== true) {
+                    showErrorScreen("পণ্যটি অনুপলব্ধ", "এই পণ্যটা এখন সবার দেখার জন্য উপযুক্ত নয়!");
+                    return;
+                }
+
+                // Render Product Page Successfully
+                renderProductPage(currentProductData);
+
+            } catch (error) {
+                console.error("Error fetching product:", error);
+                showErrorScreen("কিছু একটা সমস্যা হয়েছে", "দয়া করে আবার চেষ্টা করুন।");
+            }
+        });
+
+        function showErrorScreen(title, message) {
+            document.getElementById('loading-screen').classList.add('hidden');
+            document.getElementById('product-section').classList.add('hidden');
+            document.getElementById('headline-container').classList.add('hidden');
+            
+            document.getElementById('error-title').innerText = title;
+            document.getElementById('error-desc').innerText = message;
+            document.getElementById('message-screen').classList.remove('hidden');
+        }
+
+        function renderProductPage(product) {
+            document.getElementById('loading-screen').classList.add('hidden');
+            document.getElementById('message-screen').classList.add('hidden');
+            document.getElementById('product-section').classList.remove('hidden');
+
+            // Update SEO & Title dynamically
+            document.title = `${product.productName} | Ghoti Landing Page`;
+            document.getElementById('meta-description').content = product.productDescription || '';
+            document.getElementById('og-title').content = `${product.productName} | Ghoti Landing Page`;
+            document.getElementById('og-desc').content = product.productDescription || '';
+            document.getElementById('og-url').content = window.location.href;
+            if (product.productImage && product.productImage.length > 0) {
+                document.getElementById('og-image').content = product.productImage[0];
+            }
+
+            // Marquee Headline
+            if (product.headLine && product.headLine.trim() !== "") {
+                const headlineContainer = document.getElementById('headline-container');
+                const headlineText = document.getElementById('headline-text');
+                headlineText.innerText = product.headLine;
+                headlineContainer.classList.remove('hidden');
+            }
+
+            // Product Text Details
+            document.getElementById('product-name').innerText = product.productName;
+            document.getElementById('product-description').innerText = product.productDescription;
+
+            // Pricing & Discount Calculation
+            updatePricingDisplay();
+
+            // Images Gallery Setup
+            setupImageGallery(product.productImage || []);
+
+            // Variants Setup
+            setupVariants(product.variants || []);
+
+            // Scroll to order button action
+            document.getElementById('scroll-to-order').addEventListener('click', () => {
+                document.getElementById('order-form-section').scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
+        function updatePricingDisplay() {
+            if (!currentProductData) return;
+            let basePrice = Number(currentProductData.price) || 0;
+            let extraPriceTotal = 0;
+
+            // Calculate extra prices from selected variants
+            for (let vName in selectedVariantState) {
+                extraPriceTotal += Number(selectedVariantState[vName].extraPrice) || 0;
+            }
+
+            let finalPrice = basePrice + extraPriceTotal;
+
+            document.getElementById('current-price').innerText = `৳ ${finalPrice.toLocaleString('en-BD')}`;
+            document.getElementById('summary-base-price').innerText = `৳ ${basePrice.toLocaleString('en-BD')}`;
+
+            const variantRow = document.getElementById('summary-variant-row');
+            if (extraPriceTotal > 0) {
+                document.getElementById('summary-variant-price').innerText = `৳ ${extraPriceTotal.toLocaleString('en-BD')}`;
+                variantRow.classList.remove('hidden');
+            } else {
+                variantRow.classList.add('hidden');
+            }
+
+            document.getElementById('summary-total-price').innerText = `৳ ${finalPrice.toLocaleString('en-BD')}`;
+
+            // Old Price & Discount Badge
+            const oldPriceEl = document.getElementById('old-price');
+            const discountBadgeEl = document.getElementById('discount-badge');
+            
+            if (currentProductData.oldPrice && Number(currentProductData.oldPrice) > basePrice) {
+                let oldP = Number(currentProductData.oldPrice);
+                oldPriceEl.innerText = `৳ ${oldP.toLocaleString('en-BD')}`;
+                oldPriceEl.classList.remove('hidden');
+
+                let discountPercent = Math.round(((oldP - basePrice) / oldP) * 100);
+                discountBadgeEl.innerText = `${discountPercent}% OFF`;
+                discountBadgeEl.classList.remove('hidden');
+            } else {
+                oldPriceEl.classList.add('hidden');
+                discountBadgeEl.classList.add('hidden');
+            }
+        }
+
+        function setupImageGallery(images) {
+            const mainImg = document.getElementById('main-product-image');
+            const thumbContainer = document.getElementById('thumbnail-container');
+            const prevBtn = document.getElementById('prev-img');
+            const nextBtn = document.getElementById('next-img');
+
+            if (!images || images.length === 0) return;
+
+            mainImg.src = images[0];
+
+            if (images.length > 1) {
+                prevBtn.classList.remove('hidden');
+                nextBtn.classList.remove('hidden');
+
+                images.forEach((imgUrl, index) => {
+                    const thumb = document.createElement('img');
+                    thumb.src = imgUrl;
+                    thumb.className = `w-16 h-16 object-cover rounded-xl border-2 cursor-pointer transition ${index === 0 ? 'border-ghotiorange' : 'border-ghotiborder opacity-60'}`;
+                    thumb.addEventListener('click', () => {
+                        activeImageIndex = index;
+                        updateActiveImage(images);
+                    });
+                    thumbContainer.appendChild(thumb);
+                });
+
+                prevBtn.addEventListener('click', () => {
+                    activeImageIndex = (activeImageIndex - 1 + images.length) % images.length;
+                    updateActiveImage(images);
+                });
+
+                nextBtn.addEventListener('click', () => {
+                    activeImageIndex = (activeImageIndex + 1) % images.length;
+                    updateActiveImage(images);
+                });
+
+                // Auto swipe every 4 seconds
+                setInterval(() => {
+                    activeImageIndex = (activeImageIndex + 1) % images.length;
+                    updateActiveImage(images);
+                }, 4000);
+            }
+        }
+
+        function updateActiveImage(images) {
+            document.getElementById('main-product-image').src = images[activeImageIndex];
+            const thumbs = document.getElementById('thumbnail-container').children;
+            for (let i = 0; i < thumbs.length; i++) {
+                if (i === activeImageIndex) {
+                    thumbs[i].classList.add('border-ghotiorange');
+                    thumbs[i].classList.remove('border-ghotiborder', 'opacity-60');
+                } else {
+                    thumbs[i].classList.remove('border-ghotiorange');
+                    thumbs[i].classList.add('border-ghotiborder', 'opacity-60');
+                }
+            }
+        }
+
+        function setupVariants(variants) {
+            const wrapper = document.getElementById('variants-wrapper');
+            wrapper.innerHTML = '';
+
+            if (!variants || variants.length === 0) return;
+
+            variants.forEach(variant => {
+                const variantGroup = document.createElement('div');
+                variantGroup.className = 'space-y-2';
+
+                const label = document.createElement('label');
+                label.className = 'block text-sm font-semibold text-gray-300';
+                label.innerText = variant.name;
+                variantGroup.appendChild(label);
+
+                const valuesContainer = document.createElement('div');
+                valuesContainer.className = 'flex flex-wrap gap-2';
+
+                variant.values.forEach((valObj, idx) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    let extraText = valObj.extraPrice > 0 ? ` (+৳${valObj.extraPrice})` : '';
+                    btn.innerText = `${valObj.value}${extraText}`;
+                    btn.className = `px-4 py-2 rounded-xl text-sm font-medium border transition duration-200 ${idx === 0 ? 'bg-ghotiorange text-black border-ghotiorange' : 'bg-black text-gray-300 border-ghotiborder hover:border-ghotiorange'}`;
+                    
+                    // Default select first item
+                    if (idx === 0) {
+                        selectedVariantState[variant.name] = {
+                            name: variant.name,
+                            value: valObj.value,
+                            extraPrice: Number(valObj.extraPrice) || 0
+                        };
+                    }
+
+                    btn.addEventListener('click', () => {
+                        // Remove active class from sibling buttons
+                        Array.from(valuesContainer.children).forEach(b => {
+                            b.className = 'px-4 py-2 rounded-xl text-sm font-medium border bg-black text-gray-300 border-ghotiborder hover:border-ghotiorange';
+                        });
+                        btn.className = 'px-4 py-2 rounded-xl text-sm font-medium border bg-ghotiorange text-black border-ghotiorange';
+
+                        selectedVariantState[variant.name] = {
+                            name: variant.name,
+                            value: valObj.value,
+                            extraPrice: Number(valObj.extraPrice) || 0
+                        };
+
+                        updatePricingDisplay();
+                    });
+
+                    valuesContainer.appendChild(btn);
+                });
+
+                variantGroup.appendChild(valuesContainer);
+                wrapper.appendChild(variantGroup);
+            });
+
+            updatePricingDisplay();
+        }
+
+        // Order Form Submission Handler
+        document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!currentProductData) return;
+
+            // Validate Variants Selection
+            if (currentProductData.variants && currentProductData.variants.length > 0) {
+                for (let v of currentProductData.variants) {
+                    if (!selectedVariantState[v.name]) {
+                        alert(`দয়া করে "${v.name}" অপশনটি নির্বাচন করুন।`);
+                        return;
+                    }
+                }
+            }
+
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+            const vibag = document.getElementById('cust-vibag').value.trim();
+            const jela = document.getElementById('cust-jela').value.trim();
+            const thanaUpajela = document.getElementById('cust-thana').value.trim();
+            const fullAddress = document.getElementById('cust-address').value.trim();
+            const orderNote = document.getElementById('cust-note').value.trim();
+
+            if (!name || !phone || !vibag || !jela || !thanaUpajela) {
+                alert("দয়া করে প্রয়োজনীয় সকল তথ্য পূরণ করুন।");
+                return;
+            }
+
+            // Calculate final prices securely on submission
+            let basePrice = Number(currentProductData.price) || 0;
+            let variantExtraPrice = 0;
+            let selectedVariantsArr = [];
+
+            for (let vName in selectedVariantState) {
+                variantExtraPrice += Number(selectedVariantState[vName].extraPrice) || 0;
+                selectedVariantsArr.push(selectedVariantState[vName]);
+            }
+
+            let totalPrice = basePrice + variantExtraPrice;
+
+            // UI Loading state
+            const submitBtn = document.getElementById('submit-order-btn');
+            const btnText = document.getElementById('btn-text');
+            const btnSpinner = document.getElementById('btn-spinner');
+
+            submitBtn.disabled = true;
+            btnText.innerText = "অর্ডার করা হচ্ছে...";
+            btnSpinner.classList.remove('hidden');
+
+            try {
+                // Construct Order Document as required
+                const orderPayload = {
+                    name: name,
+                    phone: phone,
+                    thanaUpajela: thanaUpajela,
+                    vibag: vibag,
+                    jela: jela,
+                    fullAddress: fullAddress || "",
+                    orderNote: orderNote || "",
+                    productName: currentProductData.productName,
+                    productSlug: currentProductData.productSlug,
+                    productImage: currentProductData.productImage || [],
+                    selectedVariants: selectedVariantsArr,
+                    price: basePrice,
+                    variantExtraPrice: variantExtraPrice,
+                    totalPrice: totalPrice,
+                    landingUserId: currentProductData.uid,
+                    landingUserEmail: currentProductData.email,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                // Save to landing_order collection
+                await db.collection('landing_order').add(orderPayload);
+
+                alert("অর্ডার সফলভাবে সম্পন্ন হয়েছে! আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে।");
+
+                // Redirect to ghotimarket.com after successful submission
+                window.location.href = "https://ghotimarket.com";
+
+            } catch (error) {
+                console.error("Order submission error:", error);
+                alert("অর্ডার সাবমিট করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।");
+                submitBtn.disabled = false;
+                btnText.innerText = "অর্ডার কনফার্ম করুন";
+                btnSpinner.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
