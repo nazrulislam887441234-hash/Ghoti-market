@@ -275,7 +275,7 @@
 
         .hero-badge {
             display: inline-flex;
-            align-items: center.center;
+            align-items: center;
             gap: 0.4rem;
             background: rgba(255, 107, 0, 0.1);
             color: var(--accent-orange);
@@ -462,7 +462,6 @@
             position: relative;
         }
 
-        /* Animated strike-through line for old price */
         .old-price::after {
             content: '';
             position: absolute;
@@ -921,6 +920,124 @@
             height: 32px;
         }
 
+        /* ==========================================
+           CUSTOM SUCCESS POPUP & ANIMATION STYLES
+           ========================================== */
+        .order-success-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .order-success-modal.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .order-success-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(6px);
+        }
+
+        .order-success-card {
+            position: relative;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 107, 0, 0.3);
+            width: min(420px, calc(100% - 32px));
+            border-radius: 24px;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 107, 0, 0.15);
+            transform: scale(0.92) translateY(20px);
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
+        }
+
+        .order-success-modal.active .order-success-card {
+            transform: scale(1) translateY(0);
+        }
+
+        .success-icon-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .success-icon {
+            width: 72px;
+            height: 72px;
+            background: rgba(255, 107, 0, 0.12);
+            border: 2px solid var(--accent-orange);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-orange);
+            font-size: 36px;
+            font-weight: 800;
+            animation: successPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s both;
+        }
+
+        @keyframes successPop {
+            0% { transform: scale(0); opacity: 0; }
+            70% { transform: scale(1.15); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .order-success-card h2 {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .success-message {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .redirect-message {
+            color: var(--accent-orange);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .success-countdown {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto;
+            background: var(--bg-deep);
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--accent-orange);
+            animation: countPulse 1s infinite ease-in-out;
+        }
+
+        @keyframes countPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
         /* Professional Footer */
         footer {
             border-top: 1px solid var(--border-color);
@@ -1176,13 +1293,297 @@
         <button id="sticky-order-btn" class="sticky-btn">অর্ডার করুন</button>
     </div>
 
-    <!-- Professional Footer -->
-    <footer>
-        <div class="footer-content">
-            <span id="footer-brand-name" class="footer-brand">Product Website</span>
-            <p class="copyright-text">&copy; 2026 All rights reserved.</p>
+    <!-- Custom Success Popup HTML Modal -->
+    <div id="order-success-modal" class="order-success-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="success-title">
+        <div class="order-success-overlay"></div>
+        <div class="order-success-card">
+            <div class="success-icon-wrapper">
+                <div class="success-icon">
+                    <span>✓</span>
+                </div>
+            </div>
+            <h2 id="success-title">অর্ডার সফল হয়েছে! 🎉</h2>
+            <p class="success-message">আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।</p>
+            <p class="redirect-message">আপনাকে GHOTI MARKET-এ নিয়ে যাওয়া হচ্ছে...</p>
+            <div class="success-countdown" id="success-countdown">৩</div>
         </div>
-    </footer>
+    </div>
+
+ <!-- Footer Section Start -->
+<footer class="site-footer">
+    <div class="footer-container">
+
+        <!-- Footer Navigation -->
+        <nav class="footer-nav" aria-label="Footer Navigation">
+            <a href="https://ghotimarket.com" class="footer-link">
+                Home
+            </a>
+
+            <a href="https://ghotimarket.com/support" class="footer-link">
+                Contact
+            </a>
+
+            <a href="https://ghotimarket.com/termsandcondition" class="footer-link">
+                Terms
+            </a>
+
+            <a href="https://ghotimarket.com/privacy-policy" class="footer-link">
+                Privacy Policy
+            </a>
+        </nav>
+
+        <!-- Powered By Watermark -->
+        <div class="footer-watermark">
+            <span class="powered-by-text">Powered by</span>
+
+            <a
+                href="https://ghotimarket.com"
+                class="watermark-link"
+                aria-label="Powered by Ghoti Market"
+            >
+                <img
+                    src="https://www.ghotimarket.com/watermark.png"
+                    alt="Ghoti Market"
+                    class="watermark-image"
+                    loading="lazy"
+                >
+            </a>
+        </div>
+
+        <!-- Copyright -->
+        <div class="footer-copyright">
+            &copy;
+            <span id="footer-year">2026</span>
+            GHOTI MARKET. All rights reserved.
+        </div>
+
+    </div>
+</footer>
+
+<style>
+/* =========================================
+   GHOTI MARKET - FOOTER
+   ========================================= */
+
+.site-footer {
+    width: 100%;
+    background: #FF6B00;
+    color: #ffffff;
+    padding: 2.5rem 1rem;
+    margin-top: 3rem;
+    overflow: hidden;
+}
+
+.footer-container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+/* Footer Navigation */
+.footer-nav {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+
+    margin-bottom: 1.6rem;
+}
+
+.footer-link {
+    color: #ffffff;
+    text-decoration: none;
+
+    font-family: Inter, "Noto Sans Bengali", sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+
+    padding: 0.25rem 0;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.footer-link:hover {
+    opacity: 0.8;
+    transform: translateY(-1px);
+}
+
+.footer-link:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+
+/* =========================================
+   POWERED BY
+   ========================================= */
+
+.footer-watermark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-wrap: wrap;
+    gap: 0.45rem;
+
+    margin-bottom: 1.2rem;
+
+    font-family: Inter, "Noto Sans Bengali", sans-serif;
+}
+
+.powered-by-text {
+    color: rgba(255, 255, 255, 0.92);
+
+    font-size: 0.82rem;
+    font-weight: 500;
+
+    white-space: nowrap;
+}
+
+.watermark-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+
+    transition:
+        transform 0.25s ease,
+        opacity 0.25s ease;
+}
+
+.watermark-link:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.watermark-link:active {
+    transform: scale(0.96);
+}
+
+.watermark-link:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 4px;
+    border-radius: 6px;
+}
+
+.watermark-image {
+    display: block;
+
+    width: auto;
+    max-width: 150px;
+    height: 28px;
+
+    object-fit: contain;
+}
+
+
+/* =========================================
+   COPYRIGHT
+   ========================================= */
+
+.footer-copyright {
+    color: rgba(255, 255, 255, 0.88);
+
+    font-family: Inter, "Noto Sans Bengali", sans-serif;
+    font-size: 0.78rem;
+    font-weight: 400;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    .site-footer {
+        padding: 2.2rem 1rem;
+        margin-top: 2.5rem;
+    }
+
+    .footer-nav {
+        gap: 0.4rem 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .footer-link {
+        font-size: 0.84rem;
+    }
+
+    .footer-watermark {
+        margin-bottom: 1rem;
+    }
+
+    .powered-by-text {
+        font-size: 0.78rem;
+    }
+
+    .watermark-image {
+        max-width: 135px;
+        height: 25px;
+    }
+
+    .footer-copyright {
+        font-size: 0.72rem;
+    }
+}
+
+
+/* =========================================
+   VERY SMALL DEVICES
+   ========================================= */
+
+@media (max-width: 360px) {
+
+    .site-footer {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .footer-nav {
+        gap: 0.35rem 0.75rem;
+    }
+
+    .footer-link {
+        font-size: 0.8rem;
+    }
+
+    .watermark-image {
+        max-width: 120px;
+        height: 23px;
+    }
+}
+</style>
+
+<script>
+/* Dynamic Copyright Year */
+document.addEventListener("DOMContentLoaded", function () {
+    const yearElement = document.getElementById("footer-year");
+
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+    }
+});
+</script>
+<!-- Footer Section End -->
+
 
     <!-- Firebase SDK Compat Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -1213,8 +1614,9 @@
         let activeImageIndex = 0;
         let currentDeliveryCharge = 0;
         let autoSlideInterval = null;
+        let successRedirectStarted = false; // Double redirect / multiple timer protection flag
 
-        // Robust URL Slug Parser (Ignoring tracking parameters)
+        // Robust URL Slug Parser
         function extractProductSlug() {
             const searchStr = window.location.search;
             if (!searchStr) return null;
@@ -1255,7 +1657,6 @@
                 const doc = snapshot.docs[0];
                 currentProductData = doc.data();
 
-                // Active Check
                 if (currentProductData.active !== true) {
                     showErrorScreen("পণ্যটি অনুপলব্ধ", "এই পণ্যটি বর্তমানে বিক্রির জন্য সক্রিয় নয়।");
                     return;
@@ -1288,7 +1689,6 @@
 
             const productName = product.productName || "Product";
 
-            // SEO Dynamic Setup
             const pageTitle = `${productName} | Official Store`;
             document.getElementById('page-title').innerText = pageTitle;
             document.getElementById('meta-description').content = product.productDescription || '';
@@ -1301,7 +1701,6 @@
                 document.getElementById('og-image').content = product.productImage[0];
             }
 
-            // Structured Data JSON-LD injection
             const jsonLd = {
                 "@context": "https://schema.org",
                 "@type": "Product",
@@ -1317,41 +1716,26 @@
             };
             document.getElementById('json-ld-container').text = JSON.stringify(jsonLd);
 
-            // Header Elements
             document.getElementById('header-product-title').innerText = productName;
-            document.getElementById('footer-brand-name').innerText = productName;
 
-            // Headline Bar Announcement
             if (product.headLine && product.headLine.trim() !== "") {
                 const headlineContainer = document.getElementById('headline-container');
                 document.getElementById('headline-text').innerText = product.headLine;
                 headlineContainer.classList.remove('hidden');
             }
 
-            // Hero Typing Animation Setup
             startTypingAnimation(productName);
 
-            // Product Text Information
             document.getElementById('product-name').innerText = productName;
             document.getElementById('product-description').innerText = product.productDescription || '';
             document.getElementById('editorial-description-text').innerText = product.productDescription || '';
 
-            // Gallery Setup
             setupImageGallery(product.productImage || []);
-
-            // Variants Setup
             setupVariants(product.variants || []);
-
-            // Contact Section Setup
             setupContactButtons(product);
-
-            // Delivery Location Radio Logic
             setupDeliveryLocationListeners();
-
-            // Price calculation and render
             updatePricingDisplay();
 
-            // Scroll action for buttons
             const scrollToOrderHandler = () => {
                 document.getElementById('order-form-section').scrollIntoView({ behavior: 'smooth' });
             };
@@ -1360,7 +1744,6 @@
             document.getElementById('header-order-btn').addEventListener('click', scrollToOrderHandler);
         }
 
-        // Hero Typing Animation Logic
         function startTypingAnimation(productName) {
             const target = document.getElementById('typed-text');
             const fullText = `আপনার পছন্দের পণ্য ${productName} এখনই অর্ডার করুন`;
@@ -1374,7 +1757,7 @@
                     charIndex++;
                     if (charIndex === fullText.length) {
                         isDeleting = true;
-                        typingSpeed = 2000; // Pause at the end
+                        typingSpeed = 2000;
                     } else {
                         typingSpeed = 70;
                     }
@@ -1383,7 +1766,7 @@
                     charIndex--;
                     if (charIndex === 0) {
                         isDeleting = false;
-                        typingSpeed = 500; // Pause before re-typing
+                        typingSpeed = 500;
                     } else {
                         typingSpeed = 40;
                     }
@@ -1403,7 +1786,6 @@
 
             mainImg.src = images[0];
 
-            // Lightbox trigger on main image click
             mainImg.addEventListener('click', () => {
                 openLightbox(images[activeImageIndex]);
             });
@@ -1437,10 +1819,8 @@
                     resetAutoSlide(images);
                 });
 
-                // Auto Image Swipe
                 startAutoSlide(images);
 
-                // Touch Swipe Support for Mobile Gallery
                 let touchStartX = 0;
                 let touchEndX = 0;
                 const galleryBox = document.getElementById('main-gallery-box');
@@ -1456,13 +1836,11 @@
 
                 function handleSwipe(imgs) {
                     if (touchEndX < touchStartX - 50) {
-                        // Swipe Left -> Next
                         activeImageIndex = (activeImageIndex + 1) % imgs.length;
                         updateActiveImage(imgs);
                         resetAutoSlide(imgs);
                     }
                     if (touchEndX > touchStartX + 50) {
-                        // Swipe Right -> Prev
                         activeImageIndex = (activeImageIndex - 1 + imgs.length) % imgs.length;
                         updateActiveImage(imgs);
                         resetAutoSlide(imgs);
@@ -1618,7 +1996,6 @@
             document.getElementById('sticky-price-text').innerText = `৳ ${grandTotal.toLocaleString('en-BD')}`;
             document.getElementById('summary-total-price').innerText = `৳ ${grandTotal.toLocaleString('en-BD')}`;
 
-            // Old Price & Discount calculation
             const oldPriceEl = document.getElementById('old-price');
             const discountBadgeEl = document.getElementById('discount-badge');
 
@@ -1672,13 +2049,45 @@
             }
         }
 
+        // ==========================================
+        // CUSTOM SUCCESS POPUP & COUNTDOWN FUNCTION
+        // ==========================================
+        function showOrderSuccessPopup() {
+            if (successRedirectStarted) return;
+            successRedirectStarted = true;
+
+            const modal = document.getElementById('order-success-modal');
+            const countdownEl = document.getElementById('success-countdown');
+            
+            // Show modal & lock background scrolling
+            modal.classList.add('active');
+            document.body.style.overflow = "hidden";
+
+            let timeLeft = 3;
+            countdownEl.innerText = timeLeft;
+
+            const countdownInterval = setInterval(() => {
+                timeLeft--;
+                if (timeLeft > 0) {
+                    countdownEl.innerText = timeLeft;
+                } else if (timeLeft === 0) {
+                    countdownEl.innerText = "✓";
+                    clearInterval(countdownInterval);
+                }
+            }, 1000);
+
+            // Total 3 seconds delay before redirecting to ghotimarket.com
+            setTimeout(() => {
+                window.location.href = "https://ghotimarket.com";
+            }, 3000);
+        }
+
         // Order Form Submission Handler
         document.getElementById('checkout-form').addEventListener('submit', async (e) => {
             e.preventDefault();
 
             if (!currentProductData) return;
 
-            // Variant check
             if (currentProductData.variants && currentProductData.variants.length > 0) {
                 for (let v of currentProductData.variants) {
                     if (!selectedVariantState[v.name]) {
@@ -1719,17 +2128,16 @@
 
             let totalPrice = basePrice + variantExtraPrice + currentDeliveryCharge;
 
-            // Prevent double submission & show loader
             const submitBtn = document.getElementById('submit-order-btn');
             const btnText = document.getElementById('btn-text');
             const btnSpinner = document.getElementById('btn-spinner');
 
             submitBtn.disabled = true;
-            btnText.innerText = "অর্ডার করা হচ্ছে...";
+            btnText.innerText = "অর্ডার প্রসেস হচ্ছে...";
             btnSpinner.style.display = "inline-block";
 
             try {
-                // Strict Order Payload Structure
+                // Strict Order Payload Structure (Preserved as requested)
                 const orderPayload = {
                     name: name,
                     phone: phone,
@@ -1752,10 +2160,11 @@
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
 
+                // Save to Firestore 'landing_order' collection
                 await db.collection("landing_order").add(orderPayload);
 
-                alert("অর্ডার সফলভাবে সম্পন্ন হয়েছে!\nআপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।");
-                window.location.reload();
+                // Success! Trigger custom popup and countdown flow (No browser alert, no page reload)
+                showOrderSuccessPopup();
 
             } catch (err) {
                 console.error("Order submission error:", err);
