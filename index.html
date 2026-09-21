@@ -57,7 +57,7 @@
     <meta property="og:url" content="https://ghotimarket.com">
     <meta property="og:title" content="Ghoti Market | বাংলাদেশের শ্রেষ্ঠ অনলাইন মার্কেটপ্লেস">
     <meta property="og:description" content="ঘোটি মার্কেট -সেরা দামে সেরা পণ্য কিনুন এবং ফাস্ট ডেলিভারি পান, ফ্যাশন, ইলেকট্রিকস, গ্যাজেটস সহ সবকিছু একজায়গায়।">
-    <meta property="og:image" content="https://ghotimarket.com/facebook.png">
+    <meta property="og:image" content="https://www.ghotimarket.com/facebook.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="Ghoti Market">
@@ -68,7 +68,7 @@
     <meta property="twitter:url" content="https://ghotimarket.com">
     <meta property="twitter:title" content="Ghoti Market | বাংলাদেশের শ্রেষ্ঠ অনলাইন মার্কেটপ্লেস">
     <meta property="twitter:description" content="ঘোটি ঘোটি মার্কেট -সেরা দামে সেরা পণ্য কিনুন এবং ফাস্ট ডেলিভারি পান, ফ্যাশন, ইলেকট্রিকস, গ্যাজেটস সহ সবকিছু একজায়গায়।">
-    <meta property="twitter:image" content="https://ghotimarket.com/twitter.png">
+    <meta property="twitter:image" content="https://www.ghotimarket.com/twitter.png">
 
     <!-- Google Analytics (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-P25N2WYNED"></script>
@@ -131,14 +131,14 @@
             text-rendering: optimizeSpeed;
         }
 
-        /* --- Header --- */
+        /* --- Header & Professional Navigation Fix --- */
         header { 
             background: var(--glass); 
             position: sticky; 
             top: 0; 
             z-index: 1000; 
             border-bottom: 1px solid var(--glass-border); 
-            padding: 8px 0; 
+            padding: 10px 0; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.02);
         }
 
@@ -148,21 +148,34 @@
             justify-content: space-between; 
             max-width: 1400px; 
             margin: 0 auto; 
-            padding: 0 12px; 
-            gap: 10px; 
+            padding: 0 16px; 
+            gap: 12px; 
         }
 
         .logo { 
-            height: 38px; 
+            height: 54px; 
             width: auto; 
+            max-width: 210px; 
             object-fit: contain; 
             flex-shrink: 0; 
         }
 
+        /* --- Sub-header Search Bar (Below Header) --- */
+        .sub-header-search {
+            background: var(--glass);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 8px 16px;
+            position: sticky;
+            top: 61px; /* হেডার স্টিকি পজিশনের নিচে ফিক্সড থাকবে */
+            z-index: 999;
+            backdrop-filter: blur(8px);
+        }
+
         .search-wrapper { 
-            flex-grow: 1; 
             position: relative; 
-            min-width: 0;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
         }
 
         .search-bar { 
@@ -185,7 +198,7 @@
 
         #search-results { 
             position: absolute; 
-            top: 50px; 
+            top: 48px; 
             left: 0; 
             width: 100%; 
             background: #fff; 
@@ -234,6 +247,49 @@
             border-radius: 6px; 
             object-fit: cover; 
             flex-shrink: 0; 
+        }
+
+        /* --- Desktop Navigation Links (Visible on Large Screens) --- */
+        .desktop-nav {
+            display: none;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .desktop-nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .desktop-nav a i {
+            color: var(--primary);
+            font-size: 14px;
+        }
+
+        .desktop-nav a:hover {
+            color: var(--primary);
+        }
+
+        @media (min-width: 1024px) {
+            .desktop-nav {
+                display: flex;
+            }
+            .menu-btn {
+                display: none !important;
+            }
+            body {
+                padding-bottom: 0 !important;
+            }
+            .bottom-nav {
+                display: none !important;
+            }
         }
 
         /* --- Header Actions --- */
@@ -619,6 +675,41 @@
             }
         }
 
+        /* --- Load More Button Styling --- */
+        #popular-load-more-box {
+            display: flex;
+            justify-content: center;
+            padding: 22px 12px 8px;
+        }
+
+        #popular-load-more-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-width: 150px;
+            padding: 11px 22px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #FF6B35, #FFA500);
+            color: #fff;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255,107,53,.20);
+            transition: transform .15s ease, opacity .15s ease;
+        }
+
+        #popular-load-more-btn:active {
+            transform: scale(.97);
+        }
+
+        #popular-load-more-btn:disabled {
+            opacity: .65;
+            cursor: wait;
+        }
+
         /* --- Buttons --- */
         .all-shops-box { 
             max-width: 380px; 
@@ -720,12 +811,17 @@
             margin-top: 30px; 
         }
 
+        @media (min-width: 1024px) {
+            footer {
+                padding-bottom: 35px;
+            }
+        }
+
         .footer-brand { 
             text-align: center; 
             margin-bottom: 20px; 
         }
 
-        /* Watermark image larger styling */
         .footer-logo-img { 
             max-width: 220px; 
             height: auto; 
@@ -810,11 +906,8 @@
             font-size: 11px; 
         }
 
-        /* --- Side Drawer Menu --- */
+        /* --- Side Drawer Menu (Mobile Only) --- */
         .menu-btn {
-            position: fixed;
-            top: 10px;
-            left: 10px;
             width: 38px;
             height: 38px;
             border: none;
@@ -823,11 +916,11 @@
             color: #fff;
             font-size: 18px;
             cursor: pointer;
-            z-index: 2001;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 10px rgba(255,107,53,0.3);
+            flex-shrink: 0;
         }
 
         .side-menu {
@@ -911,18 +1004,13 @@
 </head>
 <body>
 
-    <!-- Drawer Navigation Button -->
-    <button class="menu-btn" onclick="toggleMenu()" aria-label="Toggle Navigation Menu">
-        <i class="fas fa-bars"></i>
-    </button>
-
     <!-- Side Menu Overlay -->
     <div class="menu-overlay" onclick="toggleMenu()"></div>
 
-    <!-- Side Navigation Menu -->
+    <!-- Side Navigation Menu (Mobile View) -->
     <div class="side-menu" id="sideMenu">
         <div class="menu-header">
-            <img src="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png" width="45" alt="Ghoti Market Logo">
+            <img src="https://ghotimarket.com/logo.png" width="45" alt="Ghoti Market Logo">
             <h3 style="margin-top:4px; font-size:15px;">GHOTI MARKET</h3>
         </div>
         <a href="https://ghotimarket.com"><i class="fas fa-home"></i> Home</a>
@@ -930,9 +1018,7 @@
         <a href="https://ghotimarket.com/shops"><i class="fas fa-store"></i> All Shops</a>
         <a href="https://ghotimarket.com/all-product"><i class="fas fa-box"></i> All Products</a>
         <a href="https://ghotimarket.com/cart"><i class="fa-solid fa-cart-shopping"></i> Shopping Cart</a>
-       <a href="https://ghotimarket.com/profile">
-    <i class="fa-solid fa-user"></i> My Profile
-</a>  
+        <a href="profile.html"><i class="fa-solid fa-user"></i> My Profile</a>  
         <a href="https://ghotimarket.com/Affiliate/register"><i class="fas fa-handshake"></i> Affiliate Account</a>
         <a href="https://seller.ghotimarket.com"><i class="fas fa-shop"></i> Seller Account</a>
         <a href="https://reseller.ghotimarket.com" target="_blank" rel="noopener noreferrer"><i class="fas fa-user-plus"></i> RESELLER ACCOUNT খুলুন</a>
@@ -949,14 +1035,23 @@
     <!-- Header -->
     <header>
         <div class="header-container">
+            <!-- Mobile Menu Button -->
+            <button class="menu-btn" onclick="toggleMenu()" aria-label="Toggle Navigation Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+
             <a href="https://ghotimarket.com">
-                <img src="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png" class="logo" alt="Ghoti Market Logo">
+                <img src="https://ghotimarket.com/watermark.png" class="logo" alt="Ghoti Market Logo">
             </a>
 
-            <div class="search-wrapper">
-                <input type="text" class="search-bar" id="smartSearch" placeholder="পণ্য, শপ বা ক্যাটাগরি খুঁজুন..." aria-label="Search Products">
-                <div id="search-results"></div>
-            </div>
+            <!-- Desktop Professional Nav Links -->
+            <nav class="desktop-nav">
+                <a href="https://ghotimarket.com"><i class="fas fa-home"></i> হোম</a>
+                <a href="https://ghotimarket.com/categories"><i class="fas fa-th-large"></i> ক্যাটাগরি</a>
+                <a href="https://ghotimarket.com/shops"><i class="fas fa-store"></i> সব শপ</a>
+                <a href="https://ghotimarket.com/all-product"><i class="fas fa-box"></i> পণ্যসমূহ</a>
+                <a href="https://seller.ghotimarket.com"><i class="fas fa-shop"></i> সেলার অ্যাকাউন্ট</a>
+            </nav>
 
             <div class="header-actions">
                 <!-- Profile Icon linking to profile.html -->
@@ -976,6 +1071,14 @@
             </div>
         </div>
     </header>
+
+    <!-- Sub-header Search Bar Section (Placed directly below header) -->
+    <div class="sub-header-search">
+        <div class="search-wrapper">
+            <input type="text" class="search-bar" id="smartSearch" placeholder="পণ্য, শপ বা ক্যাটাগরি খুঁজুন..." aria-label="Search Products">
+            <div id="search-results"></div>
+        </div>
+    </div>
 
     <!-- Banner Section -->
     <div class="banner-section">
@@ -998,6 +1101,14 @@
         <a href="https://ghotimarket.com/all-product.html">সব পণ্য দেখুন</a>
     </div>
     <div class="product-grid-home" id="latest-products"></div>
+
+    <!-- Load More Button Section -->
+    <div id="popular-load-more-box">
+        <button id="popular-load-more-btn" type="button">
+            <i class="fa-solid fa-chevron-down"></i>
+            <span>আরও দেখুন</span>
+        </button>
+    </div>
 
     <!-- All Shops Button Section -->
     <div class="all-shops-box">
@@ -1054,7 +1165,7 @@
         </div>
     </footer>
 
-    <!-- Bottom Navigation Bar -->
+    <!-- Bottom Navigation Bar (Mobile Only) -->
     <nav class="bottom-nav">
         <a href="https://ghotimarket.com" class="nav-item active"><i data-lucide="home"></i><span>Home</span></a>
         <a href="https://ghotimarket.com/categories" class="nav-item"><i data-lucide="grid"></i><span>Categories</span></a>
@@ -1083,7 +1194,7 @@
     <!-- Firebase Application Module -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, where, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, query, where, limit, startAfter } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         // Firebase Configuration
@@ -1266,9 +1377,14 @@
             }
         ];
 
-        // Global State
+        // Global State & Pagination Variables
         let swiperInstance = null;
         let globalSearchIndex = { categories: [], products: [] };
+        
+        const PRODUCTS_PER_PAGE = 20;
+        let lastPopularDoc = null;
+        let isLoadingPopular = false;
+        let hasMorePopular = true;
 
         // Security Utilities
         function escapeHTML(str) {
@@ -1370,16 +1486,18 @@
             attachImageErrorHandlers(catGrid);
         }
 
-        function renderProducts(products) {
+        function renderProducts(products, append = false) {
             const productBox = document.getElementById("latest-products");
             if (!productBox) return;
 
             if (!products || !products.length) {
-                productBox.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#64748b; padding:20px;">'popular' কালেকশনে কোনো পণ্য পাওয়া যায়নি।</p>`;
+                if (!append) {
+                    productBox.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#64748b; padding:20px;">'popular' কালেকশনে কোনো পণ্য পাওয়া যায়নি।</p>`;
+                }
                 return;
             }
 
-            productBox.innerHTML = products.map((p, index) => {
+            const htmlContent = products.map((p, index) => {
                 let discount = "";
                 const price = Number(p.price) || 0;
                 const oldPrice = Number(p.oldPrice) || 0;
@@ -1393,7 +1511,7 @@
                 const productName = escapeHTML(p.Name || p.name || "Unnamed Product");
                 const productSlug = escapeHTML(p.slug || p.id || '');
                 const productLink = `https://ghotimarket.com/product.html?${productSlug}`;
-                const loadingAttr = index < 4 ? 'loading="eager"' : 'loading="lazy"';
+                const loadingAttr = (!append && index < 4) ? 'loading="eager"' : 'loading="lazy"';
 
                 return `
                 <a class="home-product-card" href="${productLink}">
@@ -1418,26 +1536,82 @@
                 `;
             }).join("");
 
+            if (append) {
+                productBox.insertAdjacentHTML('beforeend', htmlContent);
+            } else {
+                productBox.innerHTML = htmlContent;
+            }
+
             attachImageErrorHandlers(productBox);
         }
 
-        // Fetch Products directly from Firestore Collection "popular"
-        async function loadPopularProducts() {
-            const productBox = document.getElementById("latest-products");
-            try {
-                const q = query(collection(db, "popular"), limit(20));
-                const snap = await getDocs(q);
-                
-                const products = snap.docs
-                    .map(d => ({ id: d.id, ...d.data() }))
-                    .filter(p => p.active !== false);
+        // Fetch Products with Pagination Support
+        async function loadPopularProducts(isLoadMore = false) {
+            if (isLoadingPopular || (!hasMorePopular && isLoadMore)) return;
+            isLoadingPopular = true;
 
-                renderProducts(products);
-                buildSearchIndexProducts(products);
+            const loadMoreBtn = document.getElementById("popular-load-more-btn");
+            if (loadMoreBtn) {
+                loadMoreBtn.disabled = true;
+                loadMoreBtn.querySelector("span").textContent = "লোড হচ্ছে...";
+            }
+
+            const productBox = document.getElementById("latest-products");
+            const loadMoreBox = document.getElementById("popular-load-more-box");
+
+            try {
+                let q;
+                if (isLoadMore && lastPopularDoc) {
+                    q = query(
+                        collection(db, "popular"),
+                        startAfter(lastPopularDoc),
+                        limit(PRODUCTS_PER_PAGE)
+                    );
+                } else {
+                    q = query(
+                        collection(db, "popular"),
+                        limit(PRODUCTS_PER_PAGE)
+                    );
+                }
+
+                const snap = await getDocs(q);
+
+                if (snap.empty) {
+                    hasMorePopular = false;
+                    if (loadMoreBox) loadMoreBox.style.display = "none";
+                    isLoadingPopular = false;
+                    if (loadMoreBtn) {
+                        loadMoreBtn.disabled = false;
+                        loadMoreBtn.querySelector("span").textContent = "আরও দেখুন";
+                    }
+                    return;
+                }
+
+                // Update cursor for next batch
+                lastPopularDoc = snap.docs[snap.docs.length - 1];
+
+                const allFetchedDocs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                const activeProducts = allFetchedDocs.filter(p => p.active !== false);
+
+                renderProducts(activeProducts, isLoadMore);
+                buildSearchIndexProducts(allFetchedDocs);
+
+                // If fetched documents are less than limit, no more pages exist
+                if (snap.docs.length < PRODUCTS_PER_PAGE) {
+                    hasMorePopular = false;
+                    if (loadMoreBox) loadMoreBox.style.display = "none";
+                }
+
             } catch (err) {
                 console.error("Popular Products Fetch Error:", err);
-                if (productBox) {
+                if (!isLoadMore && productBox) {
                     productBox.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#e11d48; padding:20px;">পণ্য লোড করতে ব্যর্থ হয়েছে। ফায়ারবেস কালেকশন নাম 'popular' চেক করুন।</p>`;
+                }
+            } finally {
+                isLoadingPopular = false;
+                if (loadMoreBtn) {
+                    loadMoreBtn.disabled = false;
+                    loadMoreBtn.querySelector("span").textContent = "আরও দেখুন";
                 }
             }
         }
@@ -1449,7 +1623,6 @@
 
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
-                    // User is logged in -> fetch cart items from 'carts' where uid == user.uid
                     try {
                         const cartQuery = query(collection(db, "carts"), where("uid", "==", user.uid));
                         const cartSnap = await getDocs(cartQuery);
@@ -1471,7 +1644,6 @@
                         cartBadge.style.display = 'none';
                     }
                 } else {
-                    // User is NOT logged in -> do not show cart count badge
                     cartBadge.style.display = 'none';
                 }
             });
@@ -1490,7 +1662,7 @@
 
         function buildSearchIndexProducts(products) {
             if (!products) return;
-            globalSearchIndex.products = products.map(p => {
+            const newMappedProducts = products.map(p => {
                 const prodName = p.Name || p.name || '';
                 return {
                     id: p.id,
@@ -1499,6 +1671,15 @@
                     image: p.images?.[0] || p.image || '',
                     searchKey: (prodName + " " + (p.description || '') + " " + (Array.isArray(p.keywords) ? p.keywords.join(" ") : (p.keywords || ''))).toLowerCase()
                 };
+            });
+
+            // Merge with existing index without duplicates by id
+            const existingIds = new Set(globalSearchIndex.products.map(p => p.id));
+            newMappedProducts.forEach(np => {
+                if (!existingIds.has(np.id)) {
+                    globalSearchIndex.products.push(np);
+                    existingIds.add(np.id);
+                }
             });
         }
 
@@ -1552,7 +1733,7 @@
             searchInput.addEventListener('input', (e) => executeSearch(e.target.value));
 
             document.addEventListener('click', (e) => {
-                if (!e.target.closest('.search-wrapper')) {
+                if (!e.target.closest('.sub-header-search')) {
                     resultsBox.style.display = 'none';
                 }
             });
@@ -1576,18 +1757,21 @@
             const yearEl = document.getElementById('year');
             if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-            // 1. Render Banners & Categories Instant from Local Arrays
             renderBanners(BANNERS);
             renderCategories(CATEGORIES);
             buildSearchIndexCategories(CATEGORIES);
 
-            // 2. Initialize Search, Network Monitor & Cart Badge
             initSearch();
             initNetworkMonitoring();
             initCartBadgeListener();
 
-            // 3. Fetch Products directly from Firestore 'popular' collection
-            loadPopularProducts();
+            loadPopularProducts(false);
+
+            // Bind Load More button click event
+            const loadMoreBtn = document.getElementById("popular-load-more-btn");
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener("click", () => loadPopularProducts(true));
+            }
         }
 
         if (document.readyState === 'loading') {
