@@ -19,13 +19,16 @@ import {
 
 // --- Firebase Configuration ---
 const firebaseConfig = {
-    apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
-    authDomain: "ghotimarket.firebaseapp.com",
-    projectId: "ghotimarket",
-    storageBucket: "ghotimarket.firebasestorage.app",
-    messagingSenderId: "481257644093",
-    appId: "1:481257644093:web:0dfc3699d6b3c86afeca54"
+  apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+  authDomain: "ghotimarket.firebaseapp.com",
+  databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+  projectId: "ghotimarket",
+  storageBucket: "ghotimarket.firebasestorage.app",
+  messagingSenderId: "481257644093",
+  appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+  measurementId: "G-4SR8V2EKC1"
 };
+
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
