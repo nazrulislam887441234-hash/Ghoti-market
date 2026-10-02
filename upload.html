@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ghoti Image Tester</title>
+<style>
+  body{font-family:system-ui; background:#f5f7fb; display:flex; justify-content:center; padding:20px;}
+ .card{background:#fff; width:100%; max-width:420px; padding:22px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.08);}
+  h2{margin:0 0 12px; text-align:center;}
+ .drop{border:2px dashed #6c5ce7; border-radius:12px; padding:22px; text-align:center; cursor:pointer; background:#f8f7ff;}
+ .drop.dragover{background:#eee9ff;}
+  #preview{width:100%; border-radius:10px; margin-top:14px; display:none;}
+  #linkBox{display:none; margin-top:14px; background:#f1f2f6; padding:12px; border-radius:10px; word-break:break-all;}
+ .btn{width:100%; padding:12px; border:none; border-radius:10px; background:#6c5ce7; color:#fff; font-weight:700; cursor:pointer; margin-top:10px;}
+ .btn:disabled{opacity:.6}
+ .btn.copy{background:#00b894; margin-top:8px;}
+  #status{margin-top:10px; text-align:center; font-size:14px; color:#636e72;}
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>🐟 Ghoti Image Upload</h2>
+  <div class="drop" id="drop">
+    <p>📸 ছবিতে ক্লিক করুন বা Drag & Drop করুন</p>
+    <input type="file" id="fileInput" accept="image/*" hidden>
+  </div>
+  <div id="status">Ready to upload</div>
+  <img id="preview" />
+  <div id="linkBox"></div>
+  <button class="btn copy" id="copyBtn" style="display:none;">🔗 লিংক কপি করুন</button>
+  <button class="btn" id="openBtn" style="display:none; background:#0984e3;">🌐 ব্রাউজারে খুলুন</button>
+</div>
+
+<script>
+const ENDPOINT = "https://image.ghotimarket.com/upload";
+const drop = document.getElementById('drop');
+const input = document.getElementById('fileInput');
+const status = document.getElementById('status');
+const preview = document.getElementById('preview');
+const linkBox = document.getElementById('linkBox');
+const copyBtn = document.getElementById('copyBtn');
+const openBtn = document.getElementById('openBtn');
+
+let finalUrl = "";
+
+drop.onclick = () => input.click();
+
+drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('dragover'); });
+drop.addEventListener('dragleave', () => drop.classList.remove('dragover'));
+drop.addEventListener('drop', e => {
+  e.preventDefault(); drop.classList.remove('dragover');
+  if(e.dataTransfer.files[0]) uploadFile(e.dataTransfer.files[0]);
+});
+
+input.addEventListener('change', () => {
+  if(input.files[0]) uploadFile(input.files[0]);
+});
+
+async function uploadFile(file){
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = "block";
+  status.textContent = "Uploading... ⏳ " + file.name;
+  linkBox.style.display = "none";
+  copyBtn.style.display = "none";
+  openBtn.style.display = "none";
+
+  const fd = new FormData();
+  fd.append('file', file);
+
+  try{
+    const res = await fetch(ENDPOINT, { method: 'POST', body: fd });
+    const data = await res.json();
+
+    if(data.url){
+      finalUrl = data.url;
+      status.textContent = "✅ Upload Success!";
+      linkBox.textContent = finalUrl;
+      linkBox.style.display = "block";
+      copyBtn.style.display = "block";
+      openBtn.style.display = "block";
+    } else {
+      status.textContent = "❌ Failed: " + (data.error || JSON.stringify(data));
+    }
+  } catch(err){
+    status.textContent = "❌ Error: " + err.message;
+  }
+}
+
+copyBtn.onclick = async () => {
+  try{
+    await navigator.clipboard.writeText(finalUrl);
+    copyBtn.textContent = "✅ Copied!";
+    setTimeout(()=> copyBtn.textContent = "🔗 লিংক কপি করুন", 1500);
+  } catch{
+    // fallback
+    const t = document.createElement('textarea');
+    t.value = finalUrl; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove();
+    copyBtn.textContent = "✅ Copied!";
+  }
+};
+
+openBtn.onclick = () => window.open(finalUrl, '_blank');
+</script>
+</body>
+</html>
