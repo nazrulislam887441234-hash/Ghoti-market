@@ -1,0 +1,1514 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FF6A00">
+<meta name="color-scheme" content="light">
+<meta name="description" content="Ghoti Market — আপনার কেনা-বেচার বিশ্বস্ত ঠিকানা। পণ্য দেখুন এবং সহজেই অর্ডার করুন।">
+<meta name="robots" content="noindex, follow">
+<title>Product | Ghoti Market</title>
+<link rel="icon" href="https://ghotimarket.com/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --orange:#FF6A00;
+  --orange2:#FF8A00;
+  --orange-light:#FFF0E5;
+  --orange-soft:#FFF8F2;
+  --dark:#191919;
+  --muted:#777984;
+  --border:#EEE8E2;
+  --white:#fff;
+  --green:#138A53;
+  --bg:#FAF9F7;
+  --shadow:0 12px 40px rgba(36,24,12,.07);
+  --shadow-orange:0 12px 28px rgba(255,106,0,.24);
+  --radius:22px;
+  --ease:all .3s cubic-bezier(.2,.7,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:100px}
+body{
+  background:var(--bg);color:var(--dark);line-height:1.65;
+  font-family:"Hind Siliguri","Inter",sans-serif;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
+  outline:3px solid #FFB477;outline-offset:3px
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button:disabled{opacity:.65;cursor:not-allowed}
+.hidden{display:none!important}
+.container{width:min(1200px,calc(100% - 36px));margin:auto}
+.english{font-family:Inter,sans-serif}
+.muted{color:var(--muted)}
+/* Loading: no text, only the requested GIF */
+#loadingScreen{
+  position:fixed;inset:0;z-index:99999;background:#fff;
+  display:flex;align-items:center;justify-content:center;
+}
+#loadingScreen img{width:100px;height:100px;object-fit:contain}
+#loadingScreen.done{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s,visibility .3s}
+/* Header */
+.top-strip{
+  background:linear-gradient(100deg,#E95500,#FF8A00);
+  color:white;text-align:center;padding:7px 12px;font-size:13px;font-weight:600
+}
+.header{
+  position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.94);
+  backdrop-filter:blur(18px);border-bottom:1px solid rgba(238,232,226,.85)
+}
+.header-inner{
+  width:min(1280px,calc(100% - 36px));margin:auto;min-height:76px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px
+}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.brand img{width:48px;height:48px;object-fit:contain}
+.brand-name{font:900 20px Inter,sans-serif;letter-spacing:-.8px;color:var(--dark)}
+.brand-name span{color:var(--orange)}
+.brand-tagline{display:block;color:#858585;font-size:11px;line-height:1.4}
+.header-actions{display:flex;align-items:center;gap:12px}
+.header-trust{font-size:12px;color:var(--muted);font-weight:600}
+.btn{
+  border:0;border-radius:13px;padding:13px 21px;display:inline-flex;
+  justify-content:center;align-items:center;gap:9px;font-weight:700;
+  transition:var(--ease);text-align:center;line-height:1.4
+}
+.btn-primary{
+  background:linear-gradient(120deg,var(--orange),var(--orange2));
+  color:white;box-shadow:var(--shadow-orange)
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 30px rgba(255,106,0,.3)}
+.btn-outline{border:1px solid var(--border);background:white;color:var(--dark)}
+.btn-outline:hover{border-color:var(--orange);color:var(--orange)}
+.btn svg{width:19px;height:19px;flex-shrink:0}
+.btn-order{white-space:nowrap}
+/* Announcement */
+.announcement{
+  background:#211D19;color:#fff;overflow:hidden;padding:9px 0;
+  font-size:13px;font-weight:500
+}
+.announcement-track{display:flex;width:max-content;animation:marquee 30s linear infinite}
+.announcement-item{padding:0 36px;white-space:nowrap}
+.announcement-item b{color:#FFAB70}
+.announcement:hover .announcement-track{animation-play-state:paused}
+@keyframes marquee{to{transform:translateX(-50%)}}
+/* Breadcrumb */
+.breadcrumb{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--muted);padding:20px 0}
+.breadcrumb a:hover{color:var(--orange)}
+/* Hero */
+.hero{
+  position:relative;display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;gap:56px;padding:24px 0 60px
+}
+.hero:before{
+  content:"";position:absolute;width:440px;height:440px;right:-150px;top:0;
+  background:radial-gradient(circle,rgba(255,138,0,.11),transparent 70%);
+  pointer-events:none;z-index:-1
+}
+.hero-gallery{min-width:0;position:relative}
+.gallery-card{
+  background:linear-gradient(145deg,#fff,#FFF5EC);
+  border:1px solid #F1E5DA;border-radius:28px;padding:18px;
+  box-shadow:var(--shadow);position:relative;overflow:hidden
+}
+.gallery-card:before{
+  content:"";position:absolute;top:-100px;right:-100px;width:240px;height:240px;
+  background:radial-gradient(circle,rgba(255,106,0,.13),transparent 70%)
+}
+.main-image-container{
+  height:450px;position:relative;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;border-radius:20px;background:#fff
+}
+.main-image-container>img{
+  width:100%;height:100%;object-fit:contain;cursor:zoom-in;
+  transition:transform .6s cubic-bezier(.2,.7,.2,1);
+  position:relative;z-index:1
+}
+.main-image-container:hover>img{transform:scale(1.045)}
+.image-label{
+  position:absolute;z-index:3;left:16px;top:16px;padding:8px 13px;
+  background:rgba(255,255,255,.94);border:1px solid var(--border);
+  border-radius:50px;font-size:12px;font-weight:700
+}
+.slider-btn{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:4;
+  width:43px;height:43px;border-radius:50%;border:1px solid var(--border);
+  background:rgba(255,255,255,.95);color:var(--dark);display:grid;place-items:center;
+  font-size:19px;transition:var(--ease);box-shadow:0 5px 15px #0000000c
+}
+.slider-btn:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.prev-btn{left:12px}.next-btn{right:12px}
+.gallery-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 3px 2px}
+.gallery-count{font-size:12px;color:var(--muted);font-family:Inter,sans-serif}
+.thumbnail-container{display:flex;gap:10px;overflow-x:auto;padding:14px 2px 5px;scrollbar-width:thin}
+.thumbnail{
+  width:67px;height:67px;object-fit:contain;flex-shrink:0;background:white;
+  border:2px solid #EDE6E0;border-radius:12px;cursor:pointer;padding:3px;
+  transition:var(--ease)
+}
+.thumbnail:hover{transform:translateY(-2px)}
+.thumbnail.active{border-color:var(--orange);box-shadow:0 3px 12px #ff6a0024}
+.visual-collage{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px
+}
+.visual-tile{
+  position:relative;height:105px;overflow:hidden;background:#fff;
+  border:1px solid var(--border);border-radius:16px;padding:7px;
+  animation:tileIn .6s both;transition:var(--ease)
+}
+.visual-tile:nth-child(2){animation-delay:.1s}
+.visual-tile:nth-child(3){animation-delay:.2s}
+.visual-tile img{width:100%;height:100%;object-fit:contain;transition:transform .45s}
+.visual-tile:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.visual-tile:hover img{transform:scale(1.1)}
+@keyframes tileIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.gallery-caption{font-size:12px;text-align:center;color:var(--muted);margin-top:10px}
+/* Product information */
+.product-info{min-width:0;position:relative;z-index:1}
+.product-topline{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:18px}
+.pill{
+  display:inline-flex;align-items:center;gap:6px;padding:7px 11px;
+  border-radius:50px;font-size:12px;font-weight:700
+}
+.pill-orange{color:#D95700;background:#FFF0E5}
+.pill-green{color:#117A49;background:#EAF8F0}
+.live-dot{width:7px;height:7px;background:#19A05D;border-radius:50%;box-shadow:0 0 0 4px #19A05D1C}
+.dynamic-headline{font-size:14px;color:var(--orange);font-weight:700;margin-bottom:9px}
+.product-title{font-size:clamp(28px,3.2vw,43px);font-weight:800;line-height:1.32;letter-spacing:-.5px;margin-bottom:19px;overflow-wrap:anywhere}
+.price-box{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.current-price{font:900 clamp(29px,3vw,39px) Inter,sans-serif;color:var(--orange);letter-spacing:-1.3px}
+.old-price{font:500 17px Inter,sans-serif;color:#929292;text-decoration:line-through}
+.discount-badge{background:#FFF0E5;color:#D95500;border-radius:9px;padding:6px 10px;font-size:12px;font-weight:800}
+.price-note{font-size:12px;color:var(--muted);margin-bottom:20px}
+.top-order-btn{width:100%;font-size:17px;padding:16px;margin:0 0 22px}
+.trust-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:20px 0 22px}
+.trust-item{
+  background:#fff;border:1px solid var(--border);border-radius:14px;padding:13px 8px;
+  display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px
+}
+.trust-icon{width:35px;height:35px;border-radius:11px;background:var(--orange-light);color:var(--orange);display:grid;place-items:center}
+.trust-icon svg{width:19px;height:19px}
+.trust-item strong{font-size:12px}
+.trust-item span:last-child{font-size:10px;color:var(--muted)}
+.description-heading{font-size:17px;font-weight:800;margin:7px 0 9px}
+.description-box{
+  background:#fff;border:1px solid var(--border);border-radius:15px;
+  padding:18px;white-space:pre-line;color:#5E5E63;font-size:15px;
+  line-height:1.9;overflow-wrap:anywhere
+}
+.description-box:empty{display:none}
+.description-box img{max-width:100%}
+.variant-section{margin:24px 0}
+.variant-group{margin-bottom:19px}
+.variant-title{font-size:14px;font-weight:800;margin-bottom:10px}
+.variant-options{display:flex;gap:9px;flex-wrap:wrap}
+.variant-btn{
+  min-width:46px;background:white;border:1.5px solid var(--border);border-radius:11px;
+  padding:10px 15px;font-size:13px;font-weight:700;transition:var(--ease)
+}
+.variant-btn:hover{border-color:#FFB37F}
+.variant-btn.selected{background:var(--orange-light);border-color:var(--orange);color:#D95700;box-shadow:0 3px 10px #ff6a0010}
+.quantity-control{display:flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:12px;width:max-content;overflow:hidden;background:#fff}
+.quantity-control button{border:0;background:#fff;width:43px;height:43px;font-size:21px}
+.quantity-control button:hover{background:var(--orange-light);color:var(--orange)}
+.quantity-control span{width:40px;text-align:center;font:700 15px Inter,sans-serif}
+.product-cta{display:grid;grid-template-columns:1fr auto;gap:11px;margin:23px 0 12px}
+.product-cta .btn-primary{font-size:16px;padding:16px 12px}
+.product-cta .btn-outline{width:54px;height:54px;padding:0}
+.secure-note{text-align:center;font-size:12px;color:var(--muted)}
+/* Feature band */
+.feature-band{
+  background:linear-gradient(120deg,#211B16,#33241A);color:white;
+  border-radius:22px;padding:25px 28px;display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:0 0 60px
+}
+.feature{display:flex;align-items:center;gap:13px}
+.feature-icon{width:44px;height:44px;flex-shrink:0;border-radius:14px;background:#FF6A0028;color:#FF9A5C;display:grid;place-items:center}
+.feature-icon svg{width:23px;height:23px}
+.feature strong{font-size:14px;display:block}
+.feature span{font-size:12px;color:#D5C9BF;display:block}
+/* Main order section */
+.order-section{padding:0 0 70px;scroll-margin-top:105px}
+.section-header{text-align:center;margin-bottom:30px}
+.section-eyebrow{color:var(--orange);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.section-title{font-size:clamp(25px,3vw,35px);font-weight:800;line-height:1.35;margin:6px 0 7px}
+.section-subtitle{font-size:14px;color:var(--muted)}
+.order-layout{display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:25px;align-items:start}
+.form-card,.summary-card{
+  background:#fff;border:1px solid var(--border);border-radius:22px;padding:28px;
+  box-shadow:0 5px 22px rgba(30,20,10,.035)
+}
+.form-card-title{font-size:19px;font-weight:800;margin-bottom:5px}
+.form-card-subtitle{font-size:13px;color:var(--muted);margin-bottom:25px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}
+.form-group{min-width:0}
+.form-group.full-width{grid-column:1/-1}
+.form-label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+.required{color:#E35428}
+.form-input,.form-textarea{
+  width:100%;min-width:0;border:1.5px solid #E8E3DD;background:#FCFBFA;
+  border-radius:11px;padding:13px 14px;font-size:14px;color:var(--dark);
+  outline:none;transition:var(--ease)
+}
+.form-input:focus,.form-textarea:focus{background:#fff;border-color:var(--orange);box-shadow:0 0 0 4px #ff6a0010}
+.form-input::placeholder,.form-textarea::placeholder{color:#AAA7A3}
+.form-textarea{resize:vertical;min-height:95px}
+.delivery-options{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:9px}
+.delivery-card{
+  background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:15px;
+  display:flex;align-items:center;gap:10px;justify-content:space-between;
+  cursor:pointer;transition:var(--ease)
+}
+.delivery-card:hover{border-color:#FFB17D}
+.delivery-card.selected{border-color:var(--orange);background:#FFF7F1;box-shadow:0 4px 14px #ff6a0010}
+.delivery-left{display:flex;align-items:center;gap:9px;min-width:0}
+.delivery-radio{width:17px;height:17px;border:1.5px solid #CFC8C0;border-radius:50%;flex-shrink:0;display:grid;place-items:center}
+.delivery-card.selected .delivery-radio{border-color:var(--orange)}
+.delivery-card.selected .delivery-radio:after{content:"";width:9px;height:9px;border-radius:50%;background:var(--orange)}
+.delivery-card-title{font-size:13px;font-weight:700;display:block}
+.delivery-card small{font-size:11px;color:var(--muted);display:block}
+.delivery-card-price{font:800 14px Inter,sans-serif;color:var(--orange);white-space:nowrap}
+.summary-card{position:sticky;top:105px;background:linear-gradient(145deg,#fff,#FFFCF8)}
+.summary-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:20px}
+.summary-head h3{font-size:18px;font-weight:800}
+.summary-tag{font-size:10px;font-weight:800;color:#18804E;background:#EAF8F0;border-radius:20px;padding:5px 9px}
+.summary-product{display:flex;align-items:center;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--border);margin-bottom:17px}
+.summary-product img{width:68px;height:68px;object-fit:contain;background:#fff;border:1px solid var(--border);border-radius:12px;padding:4px}
+.summary-product-name{font-size:13px;font-weight:700;line-height:1.5;overflow-wrap:anywhere}
+.summary-product-price{font:800 13px Inter,sans-serif;color:var(--orange);margin-top:4px}
+.summary-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:13px;font-size:13px;color:#68645F}
+.summary-row span:last-child{font-weight:700;color:#333;text-align:right;overflow-wrap:anywhere}
+.summary-row.total{border-top:1px dashed #DCD2C7;margin-top:18px;padding-top:18px;font-size:15px;font-weight:800;color:var(--dark)}
+.summary-row.total span:last-child{font:900 23px Inter,sans-serif;color:var(--orange)}
+.summary-variants{font-size:11px;color:var(--muted);margin-top:4px}
+.summary-submit{width:100%;font-size:15px;margin-top:12px;padding:16px}
+.summary-security{text-align:center;color:var(--muted);font-size:11px;margin-top:12px}
+.cod-note{margin-top:18px;border:1px solid #D8EFE2;background:#F1FAF5;padding:13px;border-radius:12px;display:flex;gap:10px;align-items:center}
+.cod-note svg{width:22px;height:22px;flex-shrink:0;color:#17834D}
+.cod-note strong{font-size:12px;display:block;color:#176A43}
+.cod-note span{font-size:11px;color:#537363;display:block}
+/* Below product */
+.bottom-banner{
+  margin:0 0 60px;border-radius:24px;padding:35px;
+  background:linear-gradient(115deg,#FFF0E5,#FFF9F3);
+  border:1px solid #F3DCC9;display:flex;align-items:center;
+  justify-content:space-between;gap:25px
+}
+.bottom-banner h2{font-size:24px;font-weight:800;line-height:1.4}
+.bottom-banner p{font-size:14px;color:var(--muted);margin-top:5px}
+.bottom-banner .btn{flex-shrink:0}
+/* Footer */
+.footer{background:#211D19;color:white;padding:36px 0 25px}
+.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:25px}
+.footer-brand{display:flex;align-items:center;gap:11px}
+.footer-brand img{width:42px;height:42px;object-fit:contain;background:white;border-radius:10px;padding:4px}
+.footer-brand strong{font:800 16px Inter,sans-serif}
+.footer-brand p{font-size:12px;color:#BDB2A8}
+.footer-links{display:flex;gap:19px;flex-wrap:wrap;font-size:12px;color:#DDD2C7}
+.footer-links a:hover{color:#FF9A5C}
+.copyright{border-top:1px solid #FFFFFF15;margin-top:25px;padding-top:17px;text-align:center;color:#B7ABA1;font-size:11px}
+/* Modal */
+.modal-overlay{
+  position:fixed;inset:0;z-index:5000;background:#17110DD9;backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  opacity:0;visibility:hidden;transition:var(--ease)
+}
+.modal-overlay.active{opacity:1;visibility:visible}
+.modal-box{
+  background:white;border-radius:24px;width:100%;max-width:410px;padding:30px;
+  text-align:center;transform:translateY(15px) scale(.97);transition:var(--ease);
+  box-shadow:0 30px 90px #0003
+}
+.modal-overlay.active .modal-box{transform:translateY(0) scale(1)}
+.modal-icon{width:64px;height:64px;border-radius:50%;margin:0 auto 17px;background:#EAF8F0;color:#18814D;display:grid;place-items:center}
+.modal-icon.error{background:#FFF0E5;color:var(--orange)}
+.modal-icon svg{width:30px;height:30px}
+.modal-title{font-size:22px;font-weight:800;line-height:1.4}
+.modal-desc{font-size:14px;color:var(--muted);margin:10px 0 23px;overflow-wrap:anywhere}
+.modal-btn{width:100%}
+/* Lightbox */
+.lightbox{
+  position:fixed;inset:0;z-index:6000;background:#100D0CF2;
+  display:flex;align-items:center;justify-content:center;padding:60px 20px;
+  opacity:0;visibility:hidden;transition:var(--ease)
+}
+.lightbox.active{opacity:1;visibility:visible}
+.lightbox img{max-width:95%;max-height:85%;object-fit:contain;border-radius:10px;transition:transform .3s}
+.lightbox-close{
+  position:absolute;top:18px;right:18px;border:0;border-radius:50%;
+  width:45px;height:45px;background:white;color:#222;font-size:26px
+}
+.lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);width:43px;height:43px;border-radius:50%;background:white;border:0;font-size:21px}
+.lightbox-prev{left:15px}.lightbox-next{right:15px}
+/* Error screen */
+.state-screen{width:min(550px,calc(100% - 36px));margin:70px auto;padding:40px 25px;text-align:center;background:#fff;border:1px solid var(--border);border-radius:24px;box-shadow:var(--shadow)}
+.state-screen img{width:85px;height:85px;object-fit:contain;margin:0 auto 20px}
+.state-screen h2{font-size:23px;font-weight:800;margin-bottom:10px}
+.state-screen p{font-size:14px;color:var(--muted);margin-bottom:20px}
+/* Sticky mobile order bar */
+.mobile-order-bar{
+  display:none;position:fixed;z-index:900;bottom:0;left:0;right:0;
+  background:rgba(255,255,255,.97);backdrop-filter:blur(14px);
+  padding:11px 15px calc(11px + env(safe-area-inset-bottom));
+  border-top:1px solid var(--border);box-shadow:0 -6px 25px #0000000b
+}
+.mobile-order-inner{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.mobile-price-label{font-size:10px;color:var(--muted);line-height:1.3}
+.mobile-price{font:900 19px Inter,sans-serif;color:var(--orange)}
+.mobile-order-bar .btn{padding:13px 17px;min-width:145px;font-size:14px}
+/* Reveal animations */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .65s,transform .65s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+  .reveal{opacity:1;transform:none}
+}
+/* Tablet */
+@media(max-width:950px){
+  .hero{gap:30px}
+  .main-image-container{height:370px}
+  .order-layout{grid-template-columns:minmax(0,1fr) 320px;gap:16px}
+  .form-card,.summary-card{padding:22px}
+  .feature-band{padding:22px;gap:13px}
+}
+/* Mobile */
+@media(max-width:700px){
+  body{padding-bottom:85px}
+  .container{width:calc(100% - 28px)}
+  .top-strip{font-size:11px;padding:6px}
+  .header-inner{width:calc(100% - 26px);min-height:64px;gap:8px}
+  .brand{gap:7px}
+  .brand img{width:39px;height:39px}
+  .brand-name{font-size:16px}
+  .brand-tagline{font-size:9px}
+  .header-trust{display:none}
+  .header-actions{gap:0}
+  .header-actions .btn{padding:10px 12px;font-size:12px;border-radius:10px}
+  .announcement{font-size:11px;padding:7px 0}
+  .breadcrumb{padding:13px 0;font-size:11px}
+  .hero{grid-template-columns:1fr;gap:23px;padding:5px 0 35px}
+  .hero:before{width:250px;height:250px;right:-80px}
+  .gallery-card{padding:10px;border-radius:20px}
+  .main-image-container{height:clamp(260px,83vw,390px);border-radius:15px}
+  .slider-btn{width:35px;height:35px;font-size:15px}
+  .thumbnail-container{gap:8px;padding-top:11px}
+  .thumbnail{width:56px;height:56px;border-radius:10px}
+  .gallery-bottom{padding:10px 2px 0}
+  .visual-collage{gap:8px;margin-top:10px}
+  .visual-tile{height:85px;border-radius:12px;padding:5px}
+  .gallery-caption{font-size:10px}
+  .product-topline{margin-bottom:12px}
+  .product-title{font-size:27px;margin-bottom:13px}
+  .dynamic-headline{font-size:13px}
+  .current-price{font-size:29px}
+  .old-price{font-size:14px}
+  .price-note{margin-bottom:14px}
+  .top-order-btn{padding:15px;font-size:16px;margin-bottom:15px}
+  .trust-row{gap:7px;margin:15px 0}
+  .trust-item{padding:10px 4px;border-radius:12px}
+  .trust-icon{width:30px;height:30px}
+  .trust-item strong{font-size:11px}
+  .trust-item span:last-child{font-size:9px}
+  .description-heading{font-size:15px}
+  .description-box{padding:14px;font-size:14px;border-radius:12px}
+  .variant-section{margin:19px 0}
+  .product-cta{margin:17px 0 10px}
+  .feature-band{grid-template-columns:1fr;padding:19px;gap:16px;margin-bottom:42px;border-radius:18px}
+  .feature{gap:12px}
+  .feature-icon{width:40px;height:40px}
+  .order-section{padding-bottom:40px}
+  .section-header{margin-bottom:22px}
+  .section-title{font-size:25px}
+  .section-subtitle{font-size:12px}
+  .order-layout{grid-template-columns:1fr;gap:17px}
+  .form-card,.summary-card{padding:19px;border-radius:18px}
+  .form-card-title{font-size:17px}
+  .form-card-subtitle{font-size:12px;margin-bottom:20px}
+  .form-grid{gap:14px}
+  .form-label{font-size:12px}
+  .form-input,.form-textarea{padding:12px;font-size:13px}
+  .delivery-options{gap:8px}
+  .delivery-card{padding:11px 9px;gap:6px}
+  .delivery-left{gap:6px}
+  .delivery-card-title{font-size:11px}
+  .delivery-card small{font-size:9px}
+  .delivery-card-price{font-size:12px}
+  .summary-card{position:static}
+  .summary-product img{width:58px;height:58px}
+  .summary-row{font-size:12px}
+  .summary-row.total span:last-child{font-size:21px}
+  .bottom-banner{padding:23px 19px;margin-bottom:40px;border-radius:18px;align-items:flex-start;flex-direction:column;gap:16px}
+  .bottom-banner h2{font-size:21px}
+  .bottom-banner p{font-size:12px}
+  .bottom-banner .btn{width:100%}
+  .footer{padding:27px 0 18px}
+  .footer-inner{flex-direction:column;align-items:flex-start;gap:20px}
+  .footer-links{gap:13px}
+  .copyright{margin-top:20px}
+  .mobile-order-bar{display:block}
+  .state-screen{margin:45px auto;padding:30px 20px}
+}
+@media(max-width:380px){
+  .brand-name{font-size:14px}
+  .brand-tagline{font-size:8px}
+  .header-actions .btn{padding:9px 9px;font-size:11px}
+  .form-grid{grid-template-columns:1fr}
+  .form-group.full-width{grid-column:auto}
+  .delivery-card{align-items:flex-start;flex-direction:column}
+  .delivery-left{align-items:center}
+  .delivery-card-price{padding-left:23px}
+  .mobile-order-bar .btn{min-width:130px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- Full-screen GIF loader; no loading message -->
+<div id="loadingScreen">
+  <img src="https://ghotimarket.com/loading.gif" alt="">
+</div>
+
+<div id="appContent" class="hidden">
+
+  <div class="top-strip">
+    Ghoti Market — আপনার কেনা-বেচার বিশ্বস্ত ঠিকানা
+  </div>
+
+  <header class="header">
+    <div class="header-inner">
+      <a href="https://ghotimarket.com" class="brand" aria-label="Ghoti Market Home">
+        <img src="https://ghotimarket.com/logo.png" alt="Ghoti Market Logo">
+        <div>
+          <div class="brand-name">Ghoti <span>Market</span></div>
+          <span class="brand-tagline">আপনার কেনা-বেচার বিশ্বস্ত ঠিকানা</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <span class="header-trust">বিশ্বস্ত অনলাইন শপিং</span>
+        <button class="btn btn-primary btn-order" type="button" data-order>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 3h2l2.5 12.5a2 2 0 002 1.5h8a2 2 0 002-1.5L22 7H6"/>
+            <circle cx="10" cy="21" r="1"/><circle cx="18" cy="21" r="1"/>
+          </svg>
+          অর্ডার করুন
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="announcementBar" class="announcement hidden">
+    <div id="announcementTrack" class="announcement-track"></div>
+  </div>
+
+  <main class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="https://ghotimarket.com">হোম</a>
+      <span>/</span>
+      <span>প্রোডাক্ট</span>
+      <span>/</span>
+      <span id="breadcrumbName">পণ্যের বিবরণ</span>
+    </nav>
+
+    <!-- Premium product hero -->
+    <section class="hero">
+
+      <div class="hero-gallery reveal">
+        <div class="gallery-card">
+          <div class="main-image-container" id="mainImageContainer">
+            <span class="image-label">GHOTI MARKET EXCLUSIVE</span>
+            <button class="slider-btn prev-btn" id="prevImgBtn" type="button" aria-label="Previous image">‹</button>
+            <img id="mainProductImage" src="" alt="Product">
+            <button class="slider-btn next-btn" id="nextImgBtn" type="button" aria-label="Next image">›</button>
+          </div>
+
+          <div class="gallery-bottom">
+            <span class="muted" style="font-size:12px">পণ্যের ছবি দেখুন</span>
+            <span class="gallery-count" id="galleryCount">01 / 01</span>
+          </div>
+
+          <div class="thumbnail-container" id="thumbnailContainer"></div>
+        </div>
+
+        <!-- Reuse product photos in an animated image strip -->
+        <div class="visual-collage" id="visualCollage"></div>
+        <p class="gallery-caption">পণ্যের বিভিন্ন ছবি দেখতে ছবিতে ট্যাপ করুন</p>
+      </div>
+
+      <div class="product-info reveal">
+        <div class="product-topline">
+          <span class="pill pill-orange">GHOTI MARKET</span>
+          <span class="pill pill-green"><span class="live-dot"></span> অর্ডার গ্রহণ চলছে</span>
+        </div>
+
+        <p id="dynamicHeadline" class="dynamic-headline">আপনার পছন্দের পণ্য</p>
+        <h1 id="productTitle" class="product-title">প্রোডাক্ট</h1>
+
+        <div class="price-box">
+          <span id="currentPrice" class="current-price">৳0</span>
+          <span id="oldPrice" class="old-price hidden"></span>
+          <span id="discountBadge" class="discount-badge hidden"></span>
+        </div>
+
+        <p class="price-note">পণ্যের মূল্য ও ডেলিভারি চার্জ অর্ডার করার আগে দেখে নিন।</p>
+
+        <!-- Order button BEFORE the description -->
+        <button type="button" class="btn btn-primary top-order-btn" data-order>
+          এখনই অর্ডার করুন
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+
+        <div class="trust-row">
+          <div class="trust-item">
+            <span class="trust-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h11v11H3zM14 11h4l3 3v4h-7z"/><circle cx="7.5" cy="19" r="2"/><circle cx="17.5" cy="19" r="2"/></svg>
+            </span>
+            <strong>হোম ডেলিভারি</strong>
+            <span>সারা বাংলাদেশে</span>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg>
+            </span>
+            <strong>ক্যাশ অন ডেলিভারি</strong>
+            <span>পণ্য পেয়ে মূল্য দিন</span>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><path d="m9 12 2 2 4-4"/></svg>
+            </span>
+            <strong>নিরাপদ অর্ডার</strong>
+            <span>সহজ অর্ডার প্রক্রিয়া</span>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <h2 class="description-heading">পণ্যের বিস্তারিত বিবরণ</h2>
+        <div id="productDescription" class="description-box"></div>
+
+        <!-- Variants -->
+        <div id="variantsContainer" class="variant-section"></div>
+
+        <div class="form-group">
+          <label class="form-label">পরিমাণ নির্বাচন করুন</label>
+          <div class="quantity-control">
+            <button type="button" id="qtyMinus" aria-label="Decrease quantity">−</button>
+            <span id="quantityValue">1</span>
+            <button type="button" id="qtyPlus" aria-label="Increase quantity">+</button>
+          </div>
+        </div>
+
+        <div class="product-cta">
+          <button type="button" class="btn btn-primary" data-order>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 3h2l2.5 12.5a2 2 0 002 1.5h8a2 2 0 002-1.5L22 7H6"/>
+              <circle cx="10" cy="21" r="1"/><circle cx="18" cy="21" r="1"/>
+            </svg>
+            অর্ডার করুন
+          </button>
+          <a class="btn btn-outline" href="https://ghotimarket.com/contact" aria-label="Contact Ghoti Market">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M21 11.5a8.4 8.4 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.4 8.4 0 013.8-.9h.5a8.5 8.5 0 018 8z"/>
+            </svg>
+          </a>
+        </div>
+        <p class="secure-note">আপনার তথ্য সঠিকভাবে পূরণ করে অর্ডার সম্পন্ন করুন।</p>
+      </div>
+    </section>
+
+    <!-- Benefits band -->
+    <section class="feature-band reveal">
+      <div class="feature">
+        <span class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h11v11H3zM14 11h4l3 3v4h-7z"/><circle cx="7.5" cy="19" r="2"/><circle cx="17.5" cy="19" r="2"/></svg>
+        </span>
+        <div><strong>সুবিধাজনক ডেলিভারি</strong><span>আপনার ঠিকানায় পণ্য গ্রহণ করুন</span></div>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg>
+        </span>
+        <div><strong>ক্যাশ অন ডেলিভারি</strong><span>ডেলিভারির সময় পেমেন্ট করুন</span></div>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><path d="m9 12 2 2 4-4"/></svg>
+        </span>
+        <div><strong>Ghoti Market</strong><span>আপনার কেনা-বেচার বিশ্বস্ত ঠিকানা</span></div>
+      </div>
+    </section>
+
+    <!-- Order form -->
+    <section class="order-section" id="orderSection">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">COMPLETE YOUR ORDER</span>
+        <h2 class="section-title">আপনার অর্ডারটি সম্পন্ন করুন</h2>
+        <p class="section-subtitle">সঠিক তথ্য দিন, আমরা আপনার অর্ডার গ্রহণ করব।</p>
+      </div>
+
+      <div class="order-layout">
+        <div class="form-card reveal">
+          <h3 class="form-card-title">ডেলিভারি ও যোগাযোগের তথ্য</h3>
+          <p class="form-card-subtitle">(*) চিহ্নিত ঘরগুলো পূরণ করা বাধ্যতামূলক।</p>
+
+          <form id="orderForm">
+            <div class="form-grid">
+              <div class="form-group full-width">
+                <label class="form-label" for="name">আপনার পূর্ণ নাম <span class="required">*</span></label>
+                <input class="form-input" id="name" name="name" type="text" maxlength="100" autocomplete="name" placeholder="আপনার সম্পূর্ণ নাম লিখুন" required>
+              </div>
+
+              <div class="form-group full-width">
+                <label class="form-label" for="phone">মোবাইল নাম্বার <span class="required">*</span></label>
+                <input class="form-input" id="phone" name="phone" type="tel" inputmode="tel" maxlength="14" autocomplete="tel" placeholder="01XXXXXXXXX" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="vibag">বিভাগ <span class="required">*</span></label>
+                <input class="form-input" id="vibag" name="vibag" type="text" maxlength="80" autocomplete="address-level1" placeholder="যেমন: সিলেট" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="jela">জেলা <span class="required">*</span></label>
+                <input class="form-input" id="jela" name="jela" type="text" maxlength="80" autocomplete="address-level2" placeholder="যেমন: সুনামগঞ্জ" required>
+              </div>
+
+              <div class="form-group full-width">
+                <label class="form-label" for="upojela">উপজেলা / থানা / সম্পূর্ণ ঠিকানা <span class="required">*</span></label>
+                <input class="form-input" id="upojela" name="upojela" type="text" maxlength="250" autocomplete="street-address" placeholder="উপজেলা, থানা, এলাকা ও বাড়ির ঠিকানা" required>
+              </div>
+
+              <div class="form-group full-width">
+                <label class="form-label">ডেলিভারি এলাকা নির্বাচন করুন <span class="required">*</span></label>
+                <div class="delivery-options">
+                  <button type="button" class="delivery-card" data-location="inside_dhaka" data-charge="70">
+                    <span class="delivery-left">
+                      <span class="delivery-radio"></span>
+                      <span><span class="delivery-card-title">ঢাকার ভেতরে</span><small>Inside Dhaka</small></span>
+                    </span>
+                    <span class="delivery-card-price">৳70</span>
+                  </button>
+
+                  <button type="button" class="delivery-card" data-location="outside_dhaka" data-charge="130">
+                    <span class="delivery-left">
+                      <span class="delivery-radio"></span>
+                      <span><span class="delivery-card-title">ঢাকার বাইরে</span><small>Outside Dhaka</small></span>
+                    </span>
+                    <span class="delivery-card-price">৳130</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group full-width">
+                <label class="form-label" for="note">অর্ডার সম্পর্কিত নোট (ঐচ্ছিক)</label>
+                <textarea class="form-textarea" id="note" name="note" maxlength="500" placeholder="বিশেষ কোনো নির্দেশনা থাকলে লিখুন"></textarea>
+              </div>
+            </div>
+
+            <button class="btn btn-primary summary-submit" id="submitOrderBtn" type="submit">
+              অর্ডার কনফার্ম করুন
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </form>
+        </div>
+
+        <aside class="summary-card reveal">
+          <div class="summary-head">
+            <h3>অর্ডার সামারি</h3>
+            <span class="summary-tag">ORDER SUMMARY</span>
+          </div>
+
+          <div class="summary-product">
+            <img id="summaryProductImage" src="https://ghotimarket.com/logo.png" alt="">
+            <div>
+              <div id="summaryProductName" class="summary-product-name">প্রোডাক্ট</div>
+              <div id="summaryProductPrice" class="summary-product-price">৳0</div>
+              <div id="summaryVariantText" class="summary-variants"></div>
+            </div>
+          </div>
+
+          <div class="summary-row">
+            <span>পণ্যের মূল্য</span>
+            <span id="summaryBasePrice">৳0</span>
+          </div>
+          <div class="summary-row">
+            <span>ভ্যারিয়েন্ট অতিরিক্ত মূল্য</span>
+            <span id="summaryVariantPrice">৳0</span>
+          </div>
+          <div class="summary-row">
+            <span>পরিমাণ</span>
+            <span id="summaryQuantity">1 টি</span>
+          </div>
+          <div class="summary-row">
+            <span>ডেলিভারি চার্জ</span>
+            <span id="summaryDeliveryCharge">৳0</span>
+          </div>
+          <div class="summary-row total">
+            <span>সর্বমোট</span>
+            <span id="summaryGrandTotal">৳0</span>
+          </div>
+
+          <button type="button" class="btn btn-primary summary-submit" data-order>
+            অর্ডার করতে এগিয়ে যান
+          </button>
+
+          <div class="cod-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><path d="m9 12 2 2 4-4"/></svg>
+            <div><strong>ক্যাশ অন ডেলিভারি</strong><span>অর্ডার কনফার্ম করার আগে মোট মূল্য যাচাই করুন।</span></div>
+          </div>
+          <p class="summary-security">আপনার তথ্য সঠিকভাবে প্রদান করুন।</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="bottom-banner reveal">
+      <div>
+        <h2>পণ্যটি পছন্দ হয়েছে?</h2>
+        <p>আর দেরি না করে আপনার অর্ডারটি সম্পন্ন করুন।</p>
+      </div>
+      <button type="button" class="btn btn-primary" data-order>
+        এখনই অর্ডার করুন
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <a href="https://ghotimarket.com" class="footer-brand">
+          <img src="https://ghotimarket.com/logo.png" alt="Ghoti Market">
+          <div><strong>Ghoti Market</strong><p>আপনার কেনা-বেচার বিশ্বস্ত ঠিকানা</p></div>
+        </a>
+        <nav class="footer-links">
+          <a href="https://ghotimarket.com">হোম</a>
+          <a href="https://ghotimarket.com/contact">যোগাযোগ</a>
+          <a href="https://ghotimarket.com/return-policy">রিটার্ন পলিসি</a>
+        </nav>
+      </div>
+      <div class="copyright">
+        © <span id="currentYear"></span> Ghoti Market. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile sticky order CTA -->
+  <div class="mobile-order-bar">
+    <div class="mobile-order-inner">
+      <div>
+        <div class="mobile-price-label">সর্বমোট পণ্যের মূল্য</div>
+        <div id="mobilePrice" class="mobile-price">৳0</div>
+      </div>
+      <button type="button" class="btn btn-primary" data-order>
+        অর্ডার করুন →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Error state -->
+<div id="errorScreen" class="state-screen hidden">
+  <img src="https://ghotimarket.com/logo.png" alt="Ghoti Market">
+  <h2 id="errorTitle">পণ্যটি পাওয়া যায়নি</h2>
+  <p id="errorDesc">পণ্যের লিংকটি সঠিক কি না যাচাই করুন।</p>
+  <a class="btn btn-primary" href="https://ghotimarket.com">Ghoti Market-এ ফিরে যান</a>
+</div>
+
+<!-- Modal -->
+<div id="customModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-box">
+    <div id="modalIcon" class="modal-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg>
+    </div>
+    <h3 id="modalTitle" class="modal-title">সফল হয়েছে</h3>
+    <p id="modalDesc" class="modal-desc">আপনার অর্ডার গ্রহণ করা হয়েছে।</p>
+    <button type="button" class="btn btn-primary modal-btn" id="modalCloseBtn">ঠিক আছে</button>
+  </div>
+</div>
+
+<!-- Image lightbox -->
+<div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Product image viewer">
+  <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Close">&times;</button>
+  <button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="Previous image">‹</button>
+  <img id="lightboxImg" src="" alt="Product preview">
+  <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="Next image">›</button>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+"use strict";
+
+/* =========================================
+   FIREBASE CONFIGURATION
+   ========================================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+  authDomain: "ghotimarket.firebaseapp.com",
+  projectId: "ghotimarket",
+  storageBucket: "ghotimarket.firebasestorage.app",
+  messagingSenderId: "481257644093",
+  appId: "1:481257644093:web:0dfc3699d6b3c86afeca54"
+};
+
+const db = (() => {
+  try {
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    return firebase.firestore();
+  } catch (error) {
+    console.error("Firebase initialization failed:", error);
+    return null;
+  }
+})();
+
+/* =========================================
+   APP STATE
+   ========================================= */
+let currentProduct = null;
+let firestoreDocId = null;
+let selectedImages = [];
+let currentImageIndex = 0;
+let selectedVariantsState = {};
+let selectedDeliveryLocation = null;
+let deliveryChargeAmount = 0;
+let quantity = 1;
+let isSubmitting = false;
+let galleryListenersAttached = false;
+
+const REDIRECT_URL = "https://play.google.com/store/apps/details?id=com.ghotimarket.app";
+const $ = id => document.getElementById(id);
+const money = value => "৳" + (Number(value) || 0).toLocaleString("en-BD");
+const validNumber = value => Number.isFinite(Number(value)) ? Number(value) : 0;
+
+$("currentYear").textContent = new Date().getFullYear();
+
+/* =========================================
+   LOADER / PAGE STATES
+   ========================================= */
+function hideLoader() {
+  $("loadingScreen").classList.add("done");
+  $("appContent").classList.remove("hidden");
+}
+
+function showErrorScreen(title, description) {
+  $("loadingScreen").classList.add("done");
+  $("appContent").classList.add("hidden");
+  $("errorTitle").textContent = title;
+  $("errorDesc").textContent = description;
+  $("errorScreen").classList.remove("hidden");
+}
+
+/* =========================================
+   SLUG EXTRACTION
+   Supports ?slug=abc and ?abc
+   ========================================= */
+function extractSlug() {
+  const params = new URLSearchParams(location.search);
+  const knownKeys = ["slug", "product", "productSlug", "product_slug"];
+
+  for (const key of knownKeys) {
+    const value = params.get(key);
+    if (value && value.trim()) return value.trim();
+  }
+
+  for (const key of params.keys()) {
+    if (["fbclid", "gclid", "utm_source", "utm_medium",
+         "utm_campaign", "ref"].includes(key)) continue;
+
+    const value = params.get(key);
+
+    // If a query parameter has a value, the value is the slug.
+    // For legacy links like ?my-product, the key is the slug.
+    return value && value.trim() ? value.trim() : key;
+  }
+
+  // Optional pathname format: /product/my-product
+  const pathParts = location.pathname.split("/").filter(Boolean);
+  if (pathParts.length >= 2 && pathParts[pathParts.length - 2] === "product") {
+    return decodeURIComponent(pathParts[pathParts.length - 1]);
+  }
+
+  return null;
+}
+
+/* =========================================
+   PRODUCT LOADING
+   ========================================= */
+async function loadProductData() {
+  const slug = extractSlug();
+
+  if (!slug) {
+    showErrorScreen("পণ্যের লিংক সঠিক নয়", "সঠিক প্রোডাক্ট লিংক দিয়ে আবার চেষ্টা করুন।");
+    return;
+  }
+
+  if (!db) {
+    showErrorScreen("সংযোগ স্থাপন করা যায়নি", "এই মুহূর্তে পণ্য লোড করা সম্ভব হয়নি। পরে আবার চেষ্টা করুন।");
+    return;
+  }
+
+  try {
+    const snapshot = await db.collection("products")
+      .where("slug", "==", slug)
+      .limit(1)
+      .get();
+
+    if (snapshot.empty) {
+      showErrorScreen("পণ্যটি পাওয়া যায়নি", "এই লিংকে কোনো পণ্য পাওয়া যায়নি অথবা লিংকটি ভুল।");
+      return;
+    }
+
+    const doc = snapshot.docs[0];
+    const product = doc.data();
+
+    if (product.active !== true) {
+      showErrorScreen("পণ্যটি বর্তমানে উপলভ্য নয়", "এই পণ্যটির অর্ডার বর্তমানে গ্রহণ করা হচ্ছে না।");
+      return;
+    }
+
+    firestoreDocId = doc.id;
+    currentProduct = product;
+
+    renderProductPage();
+    hideLoader();
+    setupRevealAnimations();
+
+  } catch (error) {
+    console.error("Product load error:", error);
+    showErrorScreen("পণ্য লোড করা যায়নি", "ইন্টারনেট সংযোগ পরীক্ষা করে কিছুক্ষণ পর আবার চেষ্টা করুন।");
+  }
+}
+
+/* =========================================
+   PRODUCT RENDERING
+   ========================================= */
+function renderProductPage() {
+  const p = currentProduct;
+  const name = String(p.name || "প্রোডাক্ট");
+  const description = String(p.description || "");
+  const price = Math.max(0, validNumber(p.price));
+  const oldPrice = Math.max(0, validNumber(p.oldPrice));
+
+  document.title = name + " | Ghoti Market";
+  $("productTitle").textContent = name;
+  $("dynamicHeadline").textContent = "আপনার পছন্দের পণ্য অর্ডার করুন এখনই!";
+  $("breadcrumbName").textContent = name;
+  $("productDescription").textContent = description;
+  $("currentPrice").textContent = money(price);
+
+  if (oldPrice > price && oldPrice > 0) {
+    $("oldPrice").textContent = money(oldPrice);
+    $("oldPrice").classList.remove("hidden");
+    $("discountBadge").textContent =
+      Math.round(((oldPrice - price) / oldPrice) * 100) + "% ছাড়";
+    $("discountBadge").classList.remove("hidden");
+  } else {
+    $("oldPrice").classList.add("hidden");
+    $("discountBadge").classList.add("hidden");
+  }
+
+  // Product images
+  const validImages = Array.isArray(p.images)
+    ? p.images.filter(url =>
+        typeof url === "string" && /^https?:\/\//i.test(url)
+      )
+    : [];
+
+  selectedImages = [...new Set(validImages)];
+
+  if (!selectedImages.length) {
+    selectedImages = ["https://ghotimarket.com/logo.png"];
+  }
+
+  currentImageIndex = 0;
+
+  // Announcement bar
+  if (description.trim()) {
+    const announcement = description.trim().slice(0, 140);
+    const item = `<span class="announcement-item"><b>GHOTI MARKET</b> &nbsp; ${escapeHTML(announcement)}</span>`;
+    $("announcementTrack").innerHTML = item + item + item + item;
+    $("announcementBar").classList.remove("hidden");
+  }
+
+  setupGallery();
+  setupVariants();
+  updateOrderSummary();
+}
+
+/* Safely escape dynamic text inserted into HTML */
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;",
+    '"':"&quot;", "'":"&#39;"
+  })[char]);
+}
+
+/* =========================================
+   PRODUCT GALLERY + IMAGE ANIMATIONS
+   ========================================= */
+function setupGallery() {
+  const mainImg = $("mainProductImage");
+  const thumbs = $("thumbnailContainer");
+  const collage = $("visualCollage");
+
+  thumbs.replaceChildren();
+  collage.replaceChildren();
+
+  selectedImages.forEach((url, index) => {
+    const thumb = document.createElement("img");
+    thumb.src = url;
+    thumb.alt = (currentProduct.name || "Product") + " image " + (index + 1);
+    thumb.loading = index === 0 ? "eager" : "lazy";
+    thumb.className = "thumbnail" + (index === 0 ? " active" : "");
+    thumb.addEventListener("click", () => changeImage(index));
+    thumbs.appendChild(thumb);
+  });
+
+  // Reuse the same product photos in a second visual layout.
+  selectedImages.slice(0, 3).forEach((url, index) => {
+    const tile = document.createElement("div");
+    tile.className = "visual-tile";
+    const img = document.createElement("img");
+    img.src = url;
+    img.alt = "Product view " + (index + 1);
+    img.loading = "lazy";
+    tile.appendChild(img);
+    tile.addEventListener("click", () => changeImage(index));
+    tile.setAttribute("role", "button");
+    tile.setAttribute("tabindex", "0");
+    tile.setAttribute("aria-label", "ছবি " + (index + 1) + " দেখুন");
+    tile.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        changeImage(index);
+      }
+    });
+    collage.appendChild(tile);
+  });
+
+  mainImg.onerror = () => {
+    mainImg.onerror = null;
+    mainImg.src = "https://ghotimarket.com/logo.png";
+  };
+
+  updateMainImage();
+
+  if (!galleryListenersAttached) {
+    $("prevImgBtn").addEventListener("click", () => {
+      changeImage((currentImageIndex - 1 + selectedImages.length) % selectedImages.length);
+    });
+
+    $("nextImgBtn").addEventListener("click", () => {
+      changeImage((currentImageIndex + 1) % selectedImages.length);
+    });
+
+    mainImg.addEventListener("click", openLightbox);
+    $("lightboxClose").addEventListener("click", closeLightbox);
+    $("lightboxPrev").addEventListener("click", () => {
+      changeImage((currentImageIndex - 1 + selectedImages.length) % selectedImages.length);
+      $("lightboxImg").src = selectedImages[currentImageIndex];
+    });
+    $("lightboxNext").addEventListener("click", () => {
+      changeImage((currentImageIndex + 1) % selectedImages.length);
+      $("lightboxImg").src = selectedImages[currentImageIndex];
+    });
+
+    $("lightbox").addEventListener("click", e => {
+      if (e.target === $("lightbox")) closeLightbox();
+    });
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") closeLightbox();
+      if (!$("lightbox").classList.contains("active")) return;
+
+      if (e.key === "ArrowLeft") {
+        changeImage((currentImageIndex - 1 + selectedImages.length) % selectedImages.length);
+        $("lightboxImg").src = selectedImages[currentImageIndex];
+      }
+      if (e.key === "ArrowRight") {
+        changeImage((currentImageIndex + 1) % selectedImages.length);
+        $("lightboxImg").src = selectedImages[currentImageIndex];
+      }
+    });
+
+    galleryListenersAttached = true;
+  }
+}
+
+function changeImage(index) {
+  if (!selectedImages.length) return;
+  currentImageIndex = Math.max(0, Math.min(index, selectedImages.length - 1));
+  updateMainImage();
+}
+
+function updateMainImage() {
+  const url = selectedImages[currentImageIndex];
+  $("mainProductImage").src = url;
+  $("mainProductImage").alt = (currentProduct?.name || "Product") + " image";
+  $("galleryCount").textContent =
+    String(currentImageIndex + 1).padStart(2, "0") + " / " +
+    String(selectedImages.length).padStart(2, "0");
+
+  document.querySelectorAll(".thumbnail").forEach((thumb, index) => {
+    thumb.classList.toggle("active", index === currentImageIndex);
+  });
+}
+
+function openLightbox() {
+  $("lightboxImg").src = selectedImages[currentImageIndex];
+  $("lightbox").classList.add("active");
+}
+
+function closeLightbox() {
+  $("lightbox").classList.remove("active");
+}
+
+/* =========================================
+   PRODUCT VARIANTS
+   ========================================= */
+function setupVariants() {
+  const container = $("variantsContainer");
+  container.replaceChildren();
+  selectedVariantsState = {};
+
+  if (!Array.isArray(currentProduct.variants)) return;
+
+  currentProduct.variants.forEach((group, groupIndex) => {
+    if (!group || !Array.isArray(group.values) || !group.values.length) return;
+
+    const validValues = group.values.filter(v => v && v.value !== undefined);
+    if (!validValues.length) return;
+
+    const groupDiv = document.createElement("div");
+    groupDiv.className = "variant-group";
+
+    const title = document.createElement("div");
+    title.className = "variant-title";
+    title.textContent = group.name || "অপশন";
+    groupDiv.appendChild(title);
+
+    const options = document.createElement("div");
+    options.className = "variant-options";
+
+    validValues.forEach((item, index) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "variant-btn" + (index === 0 ? " selected" : "");
+
+      const extraPrice = Math.max(0, validNumber(item.extraPrice));
+      btn.textContent = String(item.value) + (extraPrice ? " (+" + money(extraPrice) + ")" : "");
+
+      if (index === 0) {
+        selectedVariantsState[group.name || ("option_" + groupIndex)] = {
+          name: group.name || "অপশন",
+          value: item.value,
+          extraPrice
+        };
+      }
+
+      btn.addEventListener("click", () => {
+        options.querySelectorAll(".variant-btn").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+
+        selectedVariantsState[group.name || ("option_" + groupIndex)] = {
+          name: group.name || "অপশন",
+          value: item.value,
+          extraPrice
+        };
+
+        updateOrderSummary();
+      });
+
+      options.appendChild(btn);
+    });
+
+    groupDiv.appendChild(options);
+    container.appendChild(groupDiv);
+  });
+}
+
+/* =========================================
+   QUANTITY / DELIVERY
+   ========================================= */
+$("qtyMinus").addEventListener("click", () => {
+  quantity = Math.max(1, quantity - 1);
+  $("quantityValue").textContent = quantity;
+  updateOrderSummary();
+});
+
+$("qtyPlus").addEventListener("click", () => {
+  quantity = Math.min(99, quantity + 1);
+  $("quantityValue").textContent = quantity;
+  updateOrderSummary();
+});
+
+document.querySelectorAll(".delivery-card").forEach(card => {
+  card.addEventListener("click", () => {
+    document.querySelectorAll(".delivery-card").forEach(c => {
+      c.classList.remove("selected");
+      c.setAttribute("aria-pressed", "false");
+    });
+
+    card.classList.add("selected");
+    card.setAttribute("aria-pressed", "true");
+
+    selectedDeliveryLocation = card.dataset.location;
+    deliveryChargeAmount = Math.max(0, validNumber(card.dataset.charge));
+    updateOrderSummary();
+  });
+});
+
+/* =========================================
+   LIVE PRICE CALCULATION
+   ========================================= */
+function calculatePrices() {
+  const basePrice = Math.max(0, validNumber(currentProduct?.price));
+  const variantExtraPrice = Object.values(selectedVariantsState)
+    .reduce((sum, v) => sum + Math.max(0, validNumber(v.extraPrice)), 0);
+
+  const unitPrice = basePrice + variantExtraPrice;
+  const subtotal = unitPrice * quantity;
+  const delivery = deliveryChargeAmount;
+  const grandTotal = subtotal + delivery;
+
+  return { basePrice, variantExtraPrice, unitPrice, subtotal, delivery, grandTotal };
+}
+
+function updateOrderSummary() {
+  if (!currentProduct) return;
+
+  const p = calculatePrices();
+  const variants = Object.values(selectedVariantsState);
+
+  $("summaryProductName").textContent = currentProduct.name || "প্রোডাক্ট";
+  $("summaryProductPrice").textContent = money(p.unitPrice);
+  $("summaryProductImage").src = selectedImages[currentImageIndex] || "https://ghotimarket.com/logo.png";
+  $("summaryBasePrice").textContent = money(p.basePrice * quantity);
+  $("summaryVariantPrice").textContent = money(p.variantExtraPrice * quantity);
+  $("summaryQuantity").textContent = quantity + " টি";
+  $("summaryDeliveryCharge").textContent = money(p.delivery);
+  $("summaryGrandTotal").textContent = money(p.grandTotal);
+  $("mobilePrice").textContent = money(p.grandTotal);
+
+  $("summaryVariantText").textContent = variants.length
+    ? variants.map(v => v.name + ": " + v.value).join(" • ")
+    : "";
+}
+
+/* =========================================
+   ORDER CTA NAVIGATION
+   ========================================= */
+document.querySelectorAll("[data-order]").forEach(button => {
+  button.addEventListener("click", () => {
+    $("orderSection").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
+
+/* =========================================
+   MODAL
+   ========================================= */
+function showCustomModal(title, description, success = false) {
+  $("modalTitle").textContent = title;
+  $("modalDesc").textContent = description;
+
+  $("modalIcon").className = "modal-icon" + (success ? "" : " error");
+  $("modalIcon").innerHTML = success
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>';
+
+  $("customModal").classList.add("active");
+  $("modalCloseBtn").focus();
+}
+
+function closeModal() {
+  $("customModal").classList.remove("active");
+}
+
+$("modalCloseBtn").addEventListener("click", closeModal);
+
+$("customModal").addEventListener("click", e => {
+  if (e.target === $("customModal")) closeModal();
+});
+
+/* =========================================
+   FIRESTORE ORDER SUBMISSION
+   ========================================= */
+$("orderForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  if (isSubmitting) return;
+
+  if (!db ||!currentProduct ||!firestoreDocId) {
+    showCustomModal("অর্ডার করা যাচ্ছে না", "পণ্যের তথ্য পাওয়া যায়নি। পেজটি রিফ্রেশ করে আবার চেষ্টা করুন।");
+    return;
+  }
+
+  if (!selectedDeliveryLocation) {
+    showCustomModal("ডেলিভারি এলাকা নির্বাচন করুন", "অর্ডার করার আগে ঢাকার ভেতরে অথবা ঢাকার বাইরে নির্বাচন করুন।");
+    document.querySelector(".delivery-options").scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+
+  const name = $("name").value.trim();
+  const phone = $("phone").value.trim().replace(/[\s-]/g, "");
+  const vibag = $("vibag").value.trim();
+  const jela = $("jela").value.trim();
+  const upojela = $("upojela").value.trim();
+  const note = $("note").value.trim();
+
+  if (!name ||!phone ||!vibag ||!jela ||!upojela) {
+    showCustomModal("অসম্পূর্ণ তথ্য", "সকল প্রয়োজনীয় ঘর সঠিকভাবে পূরণ করুন।");
+    return;
+  }
+
+  if (name.length < 2) {
+    showCustomModal("নাম সঠিক নয়", "অনুগ্রহ করে আপনার পূর্ণ নাম লিখুন।");
+    $("name").focus();
+    return;
+  }
+
+  const phoneRegex = /^(?:\+?88)?01[3-9]\d{8}$/;
+  if (!phoneRegex.test(phone)) {
+    showCustomModal("মোবাইল নাম্বার সঠিক নয়", "বাংলাদেশের সঠিক মোবাইল নাম্বার লিখুন, যেমন 017XXXXXXXX।");
+    $("phone").focus();
+    return;
+  }
+
+  if (quantity < 1 || quantity > 99) {
+    showCustomModal("পরিমাণ সঠিক নয়", "১ থেকে ৯৯-এর মধ্যে পণ্যের পরিমাণ নির্বাচন করুন।");
+    return;
+  }
+
+  isSubmitting = true;
+  const submitBtn = $("submitOrderBtn");
+  const previousButtonText = submitBtn.innerHTML;
+  submitBtn.disabled = true;
+  submitBtn.textContent = "অর্ডার প্রসেস হচ্ছে...";
+
+  try {
+    const productRef = db.collection("products").doc(firestoreDocId);
+    const productSnap = await productRef.get();
+
+    if (!productSnap.exists || productSnap.data().active!== true) {
+      throw new Error("PRODUCT_UNAVAILABLE");
+    }
+
+    const liveProduct = productSnap.data();
+    const livePrice = Math.max(0, validNumber(liveProduct.price));
+
+    if (livePrice!== Math.max(0, validNumber(currentProduct.price))) {
+      currentProduct.price = livePrice;
+      $("currentPrice").textContent = money(livePrice);
+      updateOrderSummary();
+      showCustomModal("পণ্যের মূল্য আপডেট হয়েছে", "নতুন মূল্য অনুযায়ী অর্ডার সামারি যাচাই করে আবার অর্ডার করুন।");
+      return;
+    }
+
+    const prices = calculatePrices();
+    const variantsArr = Object.values(selectedVariantsState).map(v => ({
+      name: String(v.name),
+      value: String(v.value),
+      extraPrice: Math.max(0, validNumber(v.extraPrice))
+    }));
+
+    const orderData = {
+      name, phone, vibag, jela, upojela, note: note || "",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      status: "pending",
+      productName: String(liveProduct.name || ""),
+      productId: firestoreDocId,
+      productImage: Array.isArray(liveProduct.images) && liveProduct.images.length? String(liveProduct.images[0]) : "",
+      variants: variantsArr,
+      quantity,
+      deliverySite: selectedDeliveryLocation,
+      sellerId: String(liveProduct.sellerId || ""),
+      productPrice: livePrice,
+      variantPrice: prices.variantExtraPrice,
+      subtotal: prices.subtotal,
+      deliveryCharge: prices.delivery,
+      total: prices.grandTotal
+    };
+
+    const orderRef = await db.collection("seller_landing_orders").add(orderData);
+
+    showCustomModal(
+      "আপনার অর্ডার গ্রহণ করা হয়েছে!",
+      "আপনার অর্ডার নম্বর: " + orderRef.id + "। ২ সেকেন্ড পর আপনাকে Play Store এ নিয়ে যাওয়া হচ্ছে...",
+      true
+    );
+
+    setTimeout(() => {
+      window.location.href = REDIRECT_URL;
+    }, 2000);
+
+    $("orderForm").reset();
+    quantity = 1;
+    $("quantityValue").textContent = "1";
+    selectedDeliveryLocation = null;
+    deliveryChargeAmount = 0;
+    document.querySelectorAll(".delivery-card").forEach(c => {
+      c.classList.remove("selected");
+      c.setAttribute("aria-pressed", "false");
+    });
+    updateOrderSummary();
+
+  } catch (error) {
+    console.error("Order submission error:", error);
+    if (error.message === "PRODUCT_UNAVAILABLE") {
+      showCustomModal("পণ্যটি বর্তমানে উপলভ্য নয়", "দুঃখিত, এই পণ্যটির অর্ডার বর্তমানে গ্রহণ করা হচ্ছে না।");
+    } else {
+      showCustomModal("অর্ডার সম্পন্ন হয়নি", "আপনার অর্ডারটি সংরক্ষণ করা যায়নি। ইন্টারনেট সংযোগ যাচাই করে আবার চেষ্টা করুন।");
+    }
+  } finally {
+    isSubmitting = false;
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = previousButtonText;
+  }
+});
+/* =========================================
+   SCROLL REVEAL ANIMATIONS
+   ========================================= */
+function setupRevealAnimations() {
+  const elements = document.querySelectorAll(".reveal");
+
+  if (!("IntersectionObserver" in window)) {
+    elements.forEach(el => el.classList.add("visible"));
+    return;
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  elements.forEach(el => observer.observe(el));
+}
+
+/* =========================================
+   START APP
+   ========================================= */
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", loadProductData, { once: true });
+} else {
+  loadProductData();
+}
+</script>
+</body>
+</html>
