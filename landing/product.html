@@ -1,2058 +1,503 @@
-
 <!DOCTYPE html>
 <html lang="bn" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Product Landing</title>
-    <!-- Dynamic Meta & SEO -->
-    <meta id="meta-description" name="description" content="Professional Product Website">
-    <link id="canonical-url" rel="canonical" href="">
-    
-    <!-- Open Graph Tags -->
-    <meta property="og:title" id="og-title" content="Product Website">
-    <meta property="og:description" id="og-desc" content="Professional Product Selling Website">
-    <meta property="og:image" id="og-image" content="">
-    <meta property="og:url" id="og-url" content="">
-    
-    <!-- Product JSON-LD Structured Data Container -->
-    <script type="application/ld+json" id="json-ld-container">
-    {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        "name": "Product",
-        "image": [""],
-        "description": "Professional Product",
-        "offers": {
-            "@type": "Offer",
-            "priceCurrency": "BDT",
-            "price": "0",
-            "availability": "https://schema.org/InStock"
-        }
-    }
-    </script>
-
-    <!-- Google Fonts Inter & Noto Sans Bengali -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Pure CSS Styling -->
-    <style>
-/* ==========================================================================
-   GHOTI MARKET - PREMIUM ORANGE-ACCENTED E-COMMERCE DESIGN SYSTEM
-   Replacement CSS stylesheet for both existing <style> blocks.
-   ================================================================---------- */
-
-:root {
-    /* Sophisticated Orange-Accent Design System */
-    --primary-orange: #FF6A00;
-    --orange-hover: #E85D00;
-    --soft-orange-bg: #FFF3E8;
-    --page-bg: #F7F8FA;
-    --card-bg: #FFFFFF;
-    --text-main: #171717;
-    --text-muted: #656B73;
-    --border-color: #E8EAF0;
-    --subtle-shadow: 0 4px 20px rgba(20, 20, 20, 0.06);
-    --stronger-shadow: 0 10px 30px rgba(20, 20, 20, 0.12);
-    --whatsapp-color: #075E54;
-    --success-color: #16803D;
-    --error-color: #C62828;
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: 'Inter', 'Noto Sans Bengali', sans-serif;
-    background-color: var(--page-bg);
-    color: var(--text-main);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    overflow-x: hidden;
-    padding-bottom: 80px;
-}
-
-@media(min-width: 992px) {
-    body { padding-bottom: 0; }
-}
-
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 50% 15%, rgba(255, 106, 0, 0.03) 0%, transparent 65%);
-    pointer-events: none;
-    z-index: 0;
-}
-
-main {
-    position: relative;
-    z-index: 1;
-    flex-grow: 1;
-}
-
-.hidden { display: none !important; }
-.flex { display: flex; }
-.grid { display: grid; }
-.items-center { align-items: center; }
-.justify-between { justify-content: space-between; }
-.flex-col { flex-direction: column; }
-
-/* 3D Text Effect (Subtle & Professional) */
-.text-3d {
-    text-shadow: none;
-}
-
-/* Banner Slider Styles */
-.promo-slider-container {
-    max-width: 981px;
-    width: 100%;
-    margin: 1.5rem auto;
-    aspect-ratio: 981 / 363;
-    position: relative;
-    overflow: hidden;
-    border-radius: 1rem;
-    box-shadow: var(--subtle-shadow);
-    border: 1px solid var(--border-color);
-    background-color: var(--card-bg);
-}
-
-.promo-slides-wrapper {
-    display: flex;
-    width: 300%;
-    height: 100%;
-    transition: transform 0.5s ease-in-out;
-}
-
-.promo-slide {
-    width: 33.333%;
-    height: 100%;
-    flex-shrink: 0;
-    display: block;
-}
-
-.promo-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.promo-slide.disabled-click {
-    pointer-events: none;
-}
-
-.slider-dots {
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 8px;
-    z-index: 10;
-}
-
-.slider-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.6);
-    cursor: pointer;
-    transition: all 0.3s;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-}
-
-.slider-dot.active {
-    background: var(--primary-orange);
-    transform: scale(1.25);
-    border-color: transparent;
-}
-
-/* Announcement Marquee Bar */
-#headline-container {
-    background-color: var(--soft-orange-bg);
-    color: var(--primary-orange);
-    font-weight: 700;
-    font-size: 0.95rem;
-    padding: 0.6rem 0;
-    overflow: hidden;
-    white-space: nowrap;
-    position: relative;
-    z-index: 50;
-    border-bottom: 1px solid rgba(255, 106, 0, 0.15);
-    box-shadow: 0 2px 8px rgba(255, 106, 0, 0.05);
-}
-
-.animate-marquee {
-    display: inline-block;
-    white-space: nowrap;
-    animation: marquee 28s linear infinite;
-}
-
-.animate-marquee:hover {
-    animation-play-state: paused;
-}
-
-@keyframes marquee {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
-}
-
-/* Sticky Product Header */
-header {
-    background-color: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border-color);
-    position: sticky;
-    top: 0;
-    z-index: 40;
-    padding: 0.85rem 1.5rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-}
-
-.header-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.header-product-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text-main);
-    letter-spacing: -0.01em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 65%;
-}
-
-.header-cta-btn {
-    background-color: var(--primary-orange);
-    color: #FFFFFF;
-    font-weight: 700;
-    font-size: 0.85rem;
-    padding: 0.55rem 1.2rem;
-    border-radius: 0.5rem;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-    box-shadow: 0 2px 8px rgba(255, 106, 0, 0.25);
-}
-
-.header-cta-btn:hover {
-    background-color: var(--orange-hover);
-}
-
-/* Loading & Error Screens */
-.screen-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 70vh;
-    padding: 2rem;
-    text-align: center;
-}
-
-.spinner {
-    width: 44px;
-    height: 44px;
-    border: 3px solid var(--border-color);
-    border-top-color: var(--primary-orange);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin-bottom: 1rem;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-.error-card {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    padding: 2.5rem;
-    border-radius: 1.25rem;
-    max-width: 420px;
-    width: 100%;
-    box-shadow: var(--stronger-shadow);
-}
-
-.error-card svg {
-    width: 48px;
-    height: 48px;
-    color: var(--primary-orange);
-    margin-bottom: 1rem;
-}
-
-.error-card h2 {
-    font-size: 1.3rem;
-    margin-bottom: 0.75rem;
-    color: var(--text-main);
-}
-
-.error-card p {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    margin-bottom: 1.5rem;
-}
-
-.btn-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    background-color: var(--primary-orange);
-    color: #FFFFFF;
-    font-weight: 700;
-    padding: 1rem 1.5rem;
-    border-radius: 0.75rem;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 15px rgba(255, 106, 0, 0.25);
-    width: 100%;
-    font-size: 1rem;
-}
-
-.btn-primary:hover {
-    background-color: var(--orange-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(255, 106, 0, 0.35);
-}
-
-/* Hero Section & Product Showcase */
-.product-main-wrapper {
-    max-width: 1200px;
-    margin: 2.5rem auto;
-    padding: 0 1.25rem;
-    animation: fadeIn 0.4s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.hero-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    margin-bottom: 2.5rem;
-    text-align: center;
-}
-
-.hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    background: var(--soft-orange-bg);
-    color: var(--primary-orange);
-    border: 1px solid rgba(255, 106, 0, 0.25);
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 0.35rem 0.9rem;
-    border-radius: 2rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin: 0 auto;
-}
-
-.hero-typing-headline {
-    font-size: 1.5rem;
-    font-weight: 800;
-    line-height: 1.35;
-    color: var(--text-main);
-    min-height: 2.7em;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.typing-cursor {
-    display: inline-block;
-    background-color: var(--primary-orange);
-    width: 3px;
-    height: 1.2em;
-    vertical-align: middle;
-    animation: blink 0.8s infinite;
-    margin-left: 2px;
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-}
-
-@media(min-width: 768px) {
-    .hero-typing-headline { font-size: 2.2rem; }
-}
-
-.product-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-}
-
-@media(min-width: 992px) {
-    .product-grid {
-        grid-template-columns: 1.1fr 0.9fr;
-        gap: 3rem;
-        align-items: start;
-    }
-}
-
-.gallery-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.gallery-container {
-    position: relative;
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 1.25rem;
-    overflow: hidden;
-    aspect-ratio: 1 / 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--subtle-shadow);
-}
-
-.gallery-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    padding: 1rem;
-}
-
-.gallery-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.9);
-    color: var(--text-main);
-    border: 1px solid var(--border-color);
-    padding: 0.6rem;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 5;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.gallery-btn:hover {
-    background: var(--primary-orange);
-    color: #FFFFFF;
-    border-color: var(--primary-orange);
-}
-
-.gallery-btn.prev { left: 1rem; }
-.gallery-btn.next { right: 1rem; }
-
-.thumbnail-container {
-    display: flex;
-    gap: 0.75rem;
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
-    scrollbar-width: thin;
-}
-
-.thumbnail-container img {
-    width: 75px;
-    height: 75px;
-    object-fit: cover;
-    border-radius: 0.65rem;
-    border: 2px solid var(--border-color);
-    cursor: pointer;
-    opacity: 0.6;
-    transition: all 0.2s;
-    flex-shrink: 0;
-    background-color: var(--card-bg);
-}
-
-.thumbnail-container img.active {
-    border-color: var(--primary-orange);
-    opacity: 1;
-    transform: scale(1.03);
-}
-
-.product-info-box {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    padding: 2rem;
-    border-radius: 1.25rem;
-    box-shadow: var(--subtle-shadow);
-    text-align: left;
-}
-
-.product-title {
-    font-size: 1.6rem;
-    font-weight: 800;
-    line-height: 1.3;
-    color: var(--text-main);
-}
-
-@media(min-width: 768px) {
-    .product-title { font-size: 2rem; }
-}
-
-.price-row {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.current-price {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--primary-orange);
-}
-
-.old-price {
-    font-size: 1.2rem;
-    color: var(--text-muted);
-    text-decoration: line-through;
-}
-
-.discount-badge {
-    background-color: var(--soft-orange-bg);
-    color: var(--primary-orange);
-    border: 1px solid rgba(255, 106, 0, 0.3);
-    font-size: 0.8rem;
-    font-weight: 700;
-    padding: 0.3rem 0.75rem;
-    border-radius: 2rem;
-}
-
-.product-desc {
-    color: var(--text-muted);
-    line-height: 1.7;
-    font-size: 0.95rem;
-    white-space: pre-line;
-    border-top: 1px solid var(--border-color);
-    border-bottom: 1px solid var(--border-color);
-    padding: 1.25rem 0;
-}
-
-.variants-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1.1rem;
-}
-
-.variant-group-title {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text-main);
-    margin-bottom: 0.5rem;
-}
-
-.variant-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-}
-
-.variant-btn {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    color: var(--text-main);
-    padding: 0.6rem 1.1rem;
-    border-radius: 0.65rem;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.variant-btn:hover {
-    border-color: var(--primary-orange);
-}
-
-.variant-btn.active {
-    background-color: var(--soft-orange-bg);
-    color: var(--primary-orange);
-    border-color: var(--primary-orange);
-    font-weight: 700;
-}
-
-.editorial-section {
-    max-width: 1200px;
-    margin: 3rem auto 0 auto;
-}
-
-.editorial-card {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 1.25rem;
-    padding: 2.5rem;
-    box-shadow: var(--subtle-shadow);
-}
-
-.editorial-card h3 {
-    font-size: 1.35rem;
-    font-weight: 700;
-    margin-bottom: 1.2rem;
-    color: var(--text-main);
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-}
-
-.editorial-card h3 svg {
-    color: var(--primary-orange);
-}
-
-.editorial-content {
-    color: var(--text-muted);
-    line-height: 1.8;
-    font-size: 1rem;
-    white-space: pre-line;
-}
-
-.trust-grid {
-    max-width: 1200px;
-    margin: 2.5rem auto 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.25rem;
-}
-
-.trust-item {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    padding: 1.5rem;
-    border-radius: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    box-shadow: var(--subtle-shadow);
-}
-
-.trust-item svg {
-    width: 28px;
-    height: 28px;
-    color: var(--primary-orange);
-    flex-shrink: 0;
-}
-
-.trust-item span {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--text-main);
-}
-
-.contact-section-wrapper {
-    max-width: 1200px;
-    margin: 2.5rem auto 0 auto;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-}
-
-@media(min-width: 576px) {
-    .contact-section-wrapper {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-.contact-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    padding: 1.1rem;
-    border-radius: 0.75rem;
-    font-weight: 700;
-    text-decoration: none;
-    font-size: 1rem;
-    border: 1px solid var(--border-color);
-    box-shadow: var(--subtle-shadow);
-    transition: all 0.2s;
-}
-
-.contact-btn.phone {
-    background-color: var(--card-bg);
-    color: var(--text-main);
-}
-
-.contact-btn.phone svg {
-    color: var(--primary-orange);
-}
-
-.contact-btn.phone:hover {
-    border-color: var(--primary-orange);
-}
-
-.contact-btn.whatsapp {
-    background-color: var(--whatsapp-color);
-    color: #fff;
-    border-color: var(--whatsapp-color);
-}
-
-.contact-btn.whatsapp:hover {
-    opacity: 0.95;
-}
-
-.order-section-wrapper {
-    max-width: 850px;
-    margin: 3.5rem auto 0 auto;
-}
-
-.order-form-card {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 1.5rem;
-    padding: 2.5rem;
-    box-shadow: var(--stronger-shadow);
-}
-
-.order-header {
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 1.25rem;
-    margin-bottom: 1.8rem;
-    text-align: left;
-}
-
-.order-header h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    color: var(--text-main);
-}
-
-.order-header h2 svg {
-    color: var(--primary-orange);
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-    text-align: left;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.form-group label {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text-main);
-}
-
-.form-control {
-    background-color: #FFFFFF;
-    border: 1px solid var(--border-color);
-    color: var(--text-main);
-    padding: 0.95rem 1rem;
-    border-radius: 0.75rem;
-    font-size: 0.95rem;
-    font-family: inherit;
-    transition: all 0.2s;
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: var(--primary-orange);
-    box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.15);
-}
-
-textarea.form-control {
-    resize: vertical;
-    min-height: 90px;
-}
-
-.location-options {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    margin-top: 0.3rem;
-}
-
-@media(min-width: 576px) {
-    .location-options { grid-template-columns: 1fr 1fr; }
-}
-
-.location-card {
-    background-color: #FFFFFF;
-    border: 1px solid var(--border-color);
-    border-radius: 0.75rem;
-    padding: 1.15rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    transition: all 0.2s;
-}
-
-.location-card input[type="radio"] {
-    accent-color: var(--primary-orange);
-    width: 18px;
-    height: 18px;
-}
-
-.location-card.selected {
-    border-color: var(--primary-orange);
-    background-color: var(--soft-orange-bg);
-}
-
-.location-info .loc-title {
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: var(--text-main);
-}
-
-.location-info .loc-charge {
-    font-size: 0.85rem;
-    color: var(--primary-orange);
-    font-weight: 700;
-    margin-top: 0.15rem;
-}
-
-.order-summary-box {
-    background-color: var(--page-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    margin: 1.8rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-}
-
-.summary-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.95rem;
-    color: var(--text-muted);
-}
-
-.summary-total {
-    border-top: 1px solid var(--border-color);
-    padding-top: 1.1rem;
-    display: flex;
-    justify-content: space-between;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-main);
-}
-
-.summary-total span:last-child {
-    color: var(--primary-orange);
-}
-
-.sticky-mobile-cta {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(12px);
-    border-top: 1px solid var(--border-color);
-    padding: 0.85rem 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 99;
-    box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.08);
-}
-
-@media(min-width: 992px) {
-    .sticky-mobile-cta { display: none; }
-}
-
-.sticky-price {
-    font-size: 1.35rem;
-    font-weight: 800;
-    color: var(--primary-orange);
-}
-
-.sticky-btn {
-    background-color: var(--primary-orange);
-    color: #FFFFFF;
-    font-weight: 700;
-    padding: 0.75rem 1.75rem;
-    border-radius: 0.75rem;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    box-shadow: 0 2px 8px rgba(255, 106, 0, 0.25);
-}
-
-.lightbox-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.85);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-}
-
-.lightbox-content {
-    position: relative;
-    max-width: 90%;
-    max-height: 90vh;
-}
-
-.lightbox-content img {
-    max-width: 100%;
-    max-height: 90vh;
-    object-fit: contain;
-    border-radius: 0.75rem;
-}
-
-.lightbox-close {
-    position: absolute;
-    top: -45px;
-    right: 0;
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    padding: 0.5rem;
-}
-
-.order-success-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 99999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.order-success-modal.active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-
-.order-success-overlay {
-    position: absolute;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(6px);
-}
-
-.order-success-card {
-    position: relative;
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    width: min(420px, calc(100% - 32px));
-    border-radius: 24px;
-    padding: 32px 24px;
-    text-align: center;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-    transform: scale(0.92) translateY(20px);
-    transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 2;
-}
-
-.order-success-modal.active .order-success-card {
-    transform: scale(1) translateY(0);
-}
-
-.success-icon-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-.success-icon {
-    width: 72px;
-    height: 72px;
-    background: var(--soft-orange-bg);
-    border: 2px solid var(--primary-orange);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--primary-orange);
-    font-size: 36px;
-    font-weight: 800;
-}
-
-.order-success-card h2 {
-    font-size: 1.45rem;
-    font-weight: 800;
-    color: var(--text-main);
-    margin-bottom: 12px;
-}
-
-.success-message {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 16px;
-}
-
-.redirect-message {
-    color: var(--text-main);
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-.success-countdown {
-    width: 50px;
-    height: 50px;
-    margin: 0 auto;
-    background: var(--primary-orange);
-    border: 2px solid var(--border-color);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-    font-weight: 800;
-    color: #FFFFFF;
-}
-
-.site-footer {
-    width: 100%;
-    background: #1A1A1A;
-    color: #ffffff;
-    padding: 3rem 1rem 2.5rem 1rem;
-    margin-top: 4rem;
-    overflow: hidden;
-    border-top: 1px solid var(--border-color);
-}
-
-.footer-container {
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.footer-nav {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.5rem;
-    margin-bottom: 1.6rem;
-}
-
-.footer-link {
-    color: rgba(255, 255, 255, 0.85);
-    text-decoration: none;
-    font-size: 0.92rem;
-    font-weight: 600;
-    transition: color 0.2s ease;
-}
-
-.footer-link:hover { color: var(--primary-orange); }
-
-.footer-watermark {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.45rem;
-    margin-bottom: 1.2rem;
-}
-
-.powered-by-text {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.82rem;
-    font-weight: 500;
-}
-
-.watermark-image {
-    display: block;
-    width: auto;
-    max-width: 150px;
-    height: 28px;
-    object-fit: contain;
-    filter: brightness(0) invert(1);
-}
-
-.footer-copyright {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.78rem;
-}
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title id="page-title">GHOTI MARKET | Product</title>
+<meta id="meta-description" name="description" content="GHOTI MARKET product landing page">
+<link id="canonical-url" rel="canonical" href="https://www.ghotimarket.com/">
+<meta property="og:title" id="og-title" content="GHOTI MARKET">
+<meta property="og:description" id="og-desc" content="অর্ডার করুন GHOTI MARKET থেকে">
+<meta property="og:image" id="og-image" content="https://www.ghotimarket.com/logo.png">
+<meta property="og:url" id="og-url" content="https://www.ghotimarket.com/">
+<meta name="theme-color" content="#ff6a00">
+<script type="application/ld+json" id="json-ld-container">{"@context":"https://schema.org","@type":"Product","name":"GHOTI MARKET Product","image":["https://www.ghotimarket.com/logo.png"],"description":"GHOTI MARKET product","offers":{"@type":"Offer","priceCurrency":"BDT","price":"0","availability":"https://schema.org/InStock"}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--orange:#ff6a00;--orange-dark:#df5900;--soft:#fff3e8;--bg:#f6f7f9;--card:#fff;--ink:#191919;--muted:#68707a;--line:#e7e9ee;--green:#075e54;--shadow:0 8px 28px rgba(20,20,20,.07)}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth;scroll-padding-top:90px}body{font-family:Inter,"Noto Sans Bengali",sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden;padding-bottom:82px}button,input,textarea{font:inherit}button{cursor:pointer}img{max-width:100%}.hidden{display:none!important}
+.promo{max-width:981px;width:calc(100% - 24px);aspect-ratio:981/363;position:relative;overflow:hidden;margin:16px auto;border-radius:16px;background:#fff;box-shadow:var(--shadow)}.slides{display:flex;width:300%;height:100%;transition:transform .45s ease}.slide{width:33.3333%;height:100%;flex-shrink:0;display:block}.slide img{width:100%;height:100%;object-fit:cover;display:block}.dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:8px}.dot{width:9px;height:9px;border:1px solid #777;border-radius:50%;background:#ffffffaa}.dot.active{background:var(--orange);border-color:var(--orange);transform:scale(1.2)}
+#headline-container{background:var(--soft);color:var(--orange-dark);font-weight:700;padding:10px 0;white-space:nowrap;overflow:hidden}.marquee{display:inline-block;animation:marquee 26s linear infinite}.marquee:hover{animation-play-state:paused}@keyframes marquee{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+header{position:sticky;top:0;z-index:40;background:#ffffffed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:12px 18px}.header-inner{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}.header-title{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.btn{border:0;border-radius:11px;background:var(--orange);color:white;font-weight:800;padding:12px 18px;box-shadow:0 5px 14px #ff6a0030;transition:.2s}.btn:hover{background:var(--orange-dark);transform:translateY(-1px)}.btn:disabled{opacity:.65;cursor:wait;transform:none}
+main{max-width:1200px;margin:auto;padding:0 18px}.screen{min-height:55vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px}.spinner{width:42px;height:42px;border:4px solid var(--line);border-top-color:var(--orange);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:14px}@keyframes spin{to{transform:rotate(360deg)}}.error-card{background:#fff;padding:30px;border:1px solid var(--line);border-radius:18px;max-width:440px;box-shadow:var(--shadow)}.error-card h2{margin:10px 0}.error-card p{color:var(--muted);margin-bottom:20px}
+.product-wrap{padding:32px 0;animation:fade .35s ease}@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.hero{text-align:center;margin:6px auto 30px}.badge{display:inline-block;background:var(--soft);border:1px solid #ff6a0040;color:var(--orange-dark);padding:7px 14px;border-radius:40px;font-size:.78rem;font-weight:800;letter-spacing:.04em;margin-bottom:14px}.hero h1{font-size:clamp(1.35rem,4vw,2.4rem);line-height:1.4;max-width:850px;margin:auto;font-weight:800}.cursor{display:inline-block;width:3px;height:1em;background:var(--orange);vertical-align:middle;animation:blink .8s infinite}@keyframes blink{50%{opacity:0}}
+.product-grid{display:grid;grid-template-columns:1fr;gap:24px}@media(min-width:900px){.product-grid{grid-template-columns:1.08fr .92fr;gap:32px;align-items:start}}
+.gallery{display:flex;flex-direction:column;gap:12px}.main-image{aspect-ratio:1/1;background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}.main-image img{width:100%;height:100%;object-fit:contain;padding:18px;cursor:zoom-in}.gallery-btn{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border:1px solid var(--line);background:#ffffffed;border-radius:50%;font-size:24px;z-index:2}.gallery-btn.prev{left:12px}.gallery-btn.next{right:12px}.thumbs{display:flex;gap:9px;overflow:auto;padding:2px 0 7px}.thumbs img{width:72px;height:72px;object-fit:cover;border-radius:10px;border:2px solid var(--line);opacity:.7;flex-shrink:0;cursor:pointer;background:#fff}.thumbs img.active{border-color:var(--orange);opacity:1}
+.info,.editorial,.order-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:clamp(18px,3vw,30px);box-shadow:var(--shadow)}.info{display:flex;flex-direction:column;gap:20px}.product-title{font-size:clamp(1.45rem,3vw,2rem);line-height:1.4;font-weight:800}.price-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}.current-price{font-size:2rem;font-weight:800;color:var(--orange-dark)}.old-price{color:#858b93;text-decoration:line-through;font-size:1.1rem}.discount{background:var(--soft);color:var(--orange-dark);border-radius:20px;padding:5px 10px;font-weight:800;font-size:.8rem}.description{color:var(--muted);line-height:1.85;white-space:pre-line;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0}
+.quantity-box{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:15px;border:1px solid var(--line);border-radius:14px;background:#fff}.quantity-label{font-weight:800}.quantity-control{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}.quantity-control button{width:44px;height:42px;border:0;background:#f7f7f7;font-size:22px;font-weight:800;color:var(--orange-dark)}.quantity-control button:disabled{opacity:.35;cursor:not-allowed}.quantity-control output{min-width:48px;text-align:center;font-weight:800;font-size:1.05rem}
+.variants{display:flex;flex-direction:column;gap:16px}.variant-title{font-weight:800;margin-bottom:8px}.variant-options{display:flex;gap:8px;flex-wrap:wrap}.variant-btn{padding:9px 13px;border-radius:10px;background:#fff;border:1px solid var(--line);font-weight:600}.variant-btn.active{border-color:var(--orange);background:var(--soft);color:var(--orange-dark);font-weight:800}.primary-wide{width:100%;padding:15px;font-size:1rem}.trust{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:24px}.trust-item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px;display:flex;gap:12px;align-items:center;font-weight:700}.trust-icon{width:34px;height:34px;border-radius:10px;background:var(--soft);color:var(--orange-dark);display:grid;place-items:center;flex-shrink:0}
+.editorial{margin-top:24px}.editorial h3,.order-head h2{font-size:1.25rem;margin-bottom:14px}.editorial p{color:var(--muted);line-height:1.85;white-space:pre-line}.contact{display:grid;grid-template-columns:1fr;gap:12px;margin-top:24px}@media(min-width:600px){.contact{grid-template-columns:1fr 1fr}}.contact a{display:flex;justify-content:center;align-items:center;gap:10px;text-decoration:none;border-radius:12px;padding:15px;font-weight:800;border:1px solid var(--line);color:var(--ink);background:#fff}.contact a.wa{background:var(--green);color:#fff;border-color:var(--green)}
+.order-section{max-width:850px;margin:34px auto 0;scroll-margin-top:95px}.order-head{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:22px}.order-head p{color:var(--muted);font-size:.9rem;margin-top:6px}.form-grid{display:grid;grid-template-columns:1fr;gap:16px}@media(min-width:620px){.two-col{grid-template-columns:1fr 1fr}.three-col{grid-template-columns:repeat(3,1fr)}}.field{display:flex;flex-direction:column;gap:7px}.field label{font-size:.9rem;font-weight:800}.control{width:100%;border:1px solid #dfe2e8;border-radius:11px;padding:13px 14px;background:#fff;outline:none;min-width:0}.control:focus{border-color:var(--orange);box-shadow:0 0 0 3px #ff6a001c}.control:invalid:not(:placeholder-shown){border-color:#e7a1a1}textarea.control{min-height:90px;resize:vertical}.location-options{display:grid;grid-template-columns:1fr;gap:10px}@media(min-width:560px){.location-options{grid-template-columns:1fr 1fr}}.location-card{display:flex;gap:11px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:12px;cursor:pointer}.location-card.selected{border-color:var(--orange);background:var(--soft)}.location-card input{accent-color:var(--orange);width:18px;height:18px}.loc-title{font-weight:800;display:block}.loc-charge{color:var(--orange-dark);font-weight:800;font-size:.9rem}
+.summary{background:#f8f9fb;border:1px solid var(--line);border-radius:14px;padding:17px;display:flex;flex-direction:column;gap:12px;margin:4px 0 2px}.summary-row,.summary-total{display:flex;justify-content:space-between;gap:12px}.summary-row{color:var(--muted);font-size:.94rem}.summary-row span:last-child{color:var(--ink);font-weight:700;text-align:right}.summary-total{border-top:1px solid var(--line);padding-top:13px;font-size:1.15rem;font-weight:800}.summary-total span:last-child{color:var(--orange-dark)}
+.sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -5px 24px #0000000b}.sticky-price{font-size:1.2rem;font-weight:800;color:var(--orange-dark)}@media(min-width:992px){body{padding-bottom:0}.sticky-cta{display:none}}
+.success-modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:18px;background:#000b;opacity:0;visibility:hidden;pointer-events:none;transition:.25s}.success-modal.active{opacity:1;visibility:visible;pointer-events:auto}.success-card{width:min(430px,100%);background:#fff;border-radius:22px;padding:30px 24px;text-align:center;box-shadow:0 20px 60px #0003}.success-icon{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;background:var(--soft);border:2px solid var(--orange);color:var(--orange-dark);font-size:35px;font-weight:800;margin:0 auto 18px}.success-card h2{font-size:1.4rem;margin-bottom:10px}.success-card p{color:var(--muted);line-height:1.7;margin-bottom:14px}.countdown{width:44px;height:44px;border-radius:50%;background:var(--orange);color:white;display:grid;place-items:center;font-weight:800;font-size:1.2rem;margin:14px auto 0}
+.lightbox{position:fixed;inset:0;background:#000e;z-index:1100;display:flex;align-items:center;justify-content:center;padding:20px}.lightbox img{max-width:95vw;max-height:88vh;object-fit:contain}.lightbox-close{position:absolute;top:15px;right:18px;color:#fff;background:none;border:0;font-size:34px}
+footer{background:#d45800;color:#fff;text-align:center;margin-top:40px;padding:32px 16px}.footer-nav{display:flex;justify-content:center;flex-wrap:wrap;gap:12px 22px;margin-bottom:20px}.footer-nav a{color:#fff;text-decoration:none;font-weight:700;font-size:.9rem}.watermark{display:flex;justify-content:center;align-items:center;gap:7px;margin-bottom:14px;font-size:.8rem}.watermark img{max-width:140px;height:26px;object-fit:contain}.copyright{font-size:.78rem;color:#ffffffdf}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
 </head>
 <body>
-
-    <!-- 3 Banner Slider Section (981x363) -->
-    <div class="promo-slider-container" id="promoSliderContainer">
-        <div class="promo-slides-wrapper" id="promoSlidesWrapper">
-            <!-- Banner 1: No Action / Disabled Click -->
-            <div class="promo-slide disabled-click">
-                <img src="https://i.ibb.co.com/9H5DKbqr/file-00000000a37c8208981ba4aea20acf68.png" alt="Banner 1">
-            </div>
-            <!-- Banner 2: Goes to /all-product -->
-            <a href="https://www.ghotimarket.com/all-product" class="promo-slide">
-                <img src="https://i.ibb.co.com/hFh1CWgN/file-000000003f0482089099e6f283a3ab4b.png" alt="Banner 2">
-            </a>
-            <!-- Banner 3: Goes to /categories -->
-            <a href="https://www.ghotimarket.com/categories" class="promo-slide">
-                <img src="https://i.ibb.co.com/ZRxPpDmF/file-00000000bf4c8208bf7307562980ab87.png" alt="Banner 3">
-            </a>
-        </div>
-        <div class="slider-dots" id="sliderDots">
-            <span class="slider-dot active" data-index="0"></span>
-            <span class="slider-dot" data-index="1"></span>
-            <span class="slider-dot" data-index="2"></span>
-        </div>
+<section class="promo" id="promoSliderContainer" aria-label="Promotional banners">
+ <div class="slides" id="promoSlidesWrapper">
+  <div class="slide"><img src="https://i.ibb.co.com/9H5DKbqr/file-00000000a37c8208981ba4aea20acf68.png" alt="GHOTI MARKET banner 1"></div>
+  <a class="slide" href="https://www.ghotimarket.com/all-product"><img src="https://i.ibb.co.com/hFh1CWgN/file-000000003f0482089099e6f283a3ab4b.png" alt="সব পণ্য দেখুন"></a>
+  <a class="slide" href="https://www.ghotimarket.com/categories"><img src="https://i.ibb.co.com/ZRxPpDmF/file-00000000bf4c8208bf7307562980ab87.png" alt="পণ্যের ক্যাটাগরি"></a>
+ </div>
+ <div class="dots" id="sliderDots"><button class="dot active" aria-label="Banner 1" data-index="0"></button><button class="dot" aria-label="Banner 2" data-index="1"></button><button class="dot" aria-label="Banner 3" data-index="2"></button></div>
+</section>
+<div id="headline-container" class="hidden"><div id="headline-text" class="marquee"></div></div>
+<header><div class="header-inner"><span id="header-product-title" class="header-title">পণ্য লোড হচ্ছে...</span><button id="header-order-btn" class="btn">অর্ডার করুন</button></div></header>
+<main>
+ <section id="loading-screen" class="screen"><div class="spinner"></div><p>প্রোডাক্ট লোড হচ্ছে...</p></section>
+ <section id="message-screen" class="screen hidden"><div class="error-card"><h2 id="error-title">পণ্যটি খুঁজে পাওয়া যায়নি</h2><p id="error-desc">এই পণ্যটি বর্তমানে উপলভ্য নয়।</p><a class="btn" href="https://www.ghotimarket.com" style="display:inline-block;text-decoration:none">মূল ওয়েবসাইটে ফিরে যান</a></div></section>
+ <section id="product-section" class="product-wrap hidden">
+  <div class="hero"><span class="badge">★ PREMIUM PRODUCT</span><h1><span id="typed-text"></span><span class="cursor"></span></h1></div>
+  <div class="product-grid">
+   <div class="gallery"><div class="main-image" id="main-gallery-box"><img id="main-product-image" src="" alt="পণ্যের ছবি"><button id="prev-img" class="gallery-btn prev hidden" aria-label="আগের ছবি">‹</button><button id="next-img" class="gallery-btn next hidden" aria-label="পরের ছবি">›</button></div><div id="thumbnail-container" class="thumbs"></div></div>
+   <div class="info">
+    <div><h2 id="product-name" class="product-title"></h2><div class="price-row"><span id="current-price" class="current-price">৳ 0</span><span id="old-price" class="old-price hidden"></span><span id="discount-badge" class="discount hidden"></span></div></div>
+    <div id="product-description" class="description"></div>
+    <div id="variants-wrapper" class="variants"></div>
+    <div class="quantity-box"><span class="quantity-label">পরিমাণ (Quantity)</span><div class="quantity-control"><button type="button" id="quantity-minus" aria-label="পরিমাণ কমান">−</button><output id="quantity-value" aria-live="polite">1</output><button type="button" id="quantity-plus" aria-label="পরিমাণ বাড়ান">+</button></div></div>
+    <button id="scroll-to-order" class="btn primary-wide">🛒 এখনই অর্ডার করুন</button>
+  </div></div>
+  <section class="editorial" id="editorial-desc-wrapper"><h3>ⓘ পণ্যটি সম্পর্কে বিস্তারিত</h3><p id="editorial-description-text"></p></section>
+  <div class="trust"><div class="trust-item"><span class="trust-icon">✓</span><span>সহজ অর্ডার প্রক্রিয়া</span></div><div class="trust-item"><span class="trust-icon">⚡</span><span>দ্রুত যোগাযোগ ও সাপোর্ট</span></div><div class="trust-item"><span class="trust-icon">✓</span><span>নিরাপদ অর্ডার ও ক্যাশ অন ডেলিভারি</span></div></div>
+  <div id="contact-buttons-wrapper" class="contact hidden"></div>
+  <section class="order-section" id="order-form-section"><div class="order-card">
+   <div class="order-head"><h2>✓ অর্ডার করতে আপনার তথ্য দিন</h2><p>সঠিক তথ্য দিয়ে ফর্মটি পূরণ করুন। অর্ডার নিশ্চিত করতে আপনার সঙ্গে যোগাযোগ করা হতে পারে।</p></div>
+   <form id="checkout-form" class="form-grid">
+    <div class="form-grid two-col"><div class="field"><label for="cust-name">আপনার নাম *</label><input class="control" id="cust-name" required maxlength="120" autocomplete="name" placeholder="আপনার পূর্ণ নাম"></div><div class="field"><label for="cust-phone">মোবাইল নাম্বার *</label><input class="control" id="cust-phone" required type="tel" inputmode="tel" maxlength="20" autocomplete="tel" placeholder="01XXXXXXXXX"></div></div>
+    <div class="form-grid three-col"><div class="field"><label for="cust-vibag">বিভাগ *</label><input class="control" id="cust-vibag" required placeholder="যেমন: ঢাকা"></div><div class="field"><label for="cust-jela">জেলা *</label><input class="control" id="cust-jela" required placeholder="যেমন: ঢাকা"></div><div class="field"><label for="cust-thana">থানা / উপজেলা *</label><input class="control" id="cust-thana" required placeholder="যেমন: সাভার"></div></div>
+    <div class="field"><label>ডেলিভারি লোকেশন *</label><div class="location-options"><label class="location-card" id="loc-inside-label"><input type="radio" name="deliveryLocation" value="ঢাকার ভেতরে" required><span><span class="loc-title">ঢাকার শহরের ভিতরে</span><span class="loc-charge">৳ ৬০</span></span></label><label class="location-card" id="loc-outside-label"><input type="radio" name="deliveryLocation" value="ঢাকার বাইরে" required><span><span class="loc-title">ঢাকার বাইরে</span><span class="loc-charge">৳ ১২০</span></span></label></div></div>
+    <div class="field"><label for="cust-address">সম্পূর্ণ ঠিকানা (ঐচ্ছিক)</label><input class="control" id="cust-address" autocomplete="street-address" placeholder="বাসা নম্বর, রোড, এলাকা"></div>
+    <div class="field"><label for="cust-note">অর্ডার নোট (ঐচ্ছিক)</label><textarea class="control" id="cust-note" placeholder="কোনো বিশেষ নির্দেশনা থাকলে লিখুন"></textarea></div>
+    <div class="quantity-box"><span class="quantity-label">অর্ডারের পরিমাণ</span><div class="quantity-control"><button type="button" id="quantity-minus-form" aria-label="পরিমাণ কমান">−</button><output id="quantity-value-form">1</output><button type="button" id="quantity-plus-form" aria-label="পরিমাণ বাড়ান">+</button></div></div>
+    <div class="summary">
+     <div class="summary-row"><span>প্রতি পণ্যের মূল্য:</span><span id="summary-unit-price">৳ 0</span></div>
+     <div class="summary-row"><span>পরিমাণ:</span><span id="summary-quantity">1 টি</span></div>
+     <div class="summary-row"><span>পণ্যের মোট মূল্য:</span><span id="summary-base-price">৳ 0</span></div>
+     <div id="summary-variant-row" class="summary-row hidden"><span>ভ্যারিয়েন্ট অতিরিক্ত মূল্য:</span><span id="summary-variant-price">৳ 0</span></div>
+     <div class="summary-row"><span>ডেলিভারি চার্জ:</span><span id="summary-delivery-charge">৳ 0</span></div>
+     <div class="summary-total"><span>সর্বমোট মূল্য:</span><span id="summary-total-price">৳ 0</span></div>
     </div>
+    <button type="submit" id="submit-order-btn" class="btn primary-wide"><span id="btn-text">অর্ডার কনফার্ম করুন</span> <span id="btn-spinner" class="spinner hidden" style="width:19px;height:19px;border-width:2px;margin:0;display:inline-block;vertical-align:middle"></span></button>
+    <p style="font-size:.78rem;color:var(--muted);line-height:1.6">আপনার দেওয়া তথ্য অর্ডার প্রক্রিয়াকরণের জন্য ব্যবহার করা হবে।</p>
+   </form>
+  </div></section>
+ </section>
+</main>
+<div id="sticky-mobile-cta" class="sticky-cta hidden"><span id="sticky-price-text" class="sticky-price">৳ 0</span><button id="sticky-order-btn" class="btn">অর্ডার করুন</button></div>
+<div id="order-success-modal" class="success-modal" aria-hidden="true" role="dialog" aria-modal="true"><div class="success-card"><div class="success-icon">✓</div><h2 id="success-title">অর্ডার সফল হয়েছে! 🎉</h2><p>আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। ধন্যবাদ GHOTI MARKET-এর সঙ্গে থাকার জন্য।</p><p id="redirect-message">আপনাকে Google Play Store-এ Ghoti Market অ্যাপে নিয়ে যাওয়া হচ্ছে...</p><div id="success-countdown" class="countdown">3</div><p style="font-size:.8rem;margin-top:14px">অ্যাপ না খুললে Play Store পেজে যেতে নিচের লিংকে চাপ দিন।</p><a id="play-store-fallback" href="https://play.google.com/store/apps/details?id=com.ghotimarket.app" class="btn" style="display:inline-block;text-decoration:none">Ghoti Market অ্যাপ খুলুন</a></div></div>
+<footer><nav class="footer-nav" aria-label="Footer Navigation"><a href="https://www.ghotimarket.com">Home</a><a href="https://www.ghotimarket.com/contact">Contact</a><a href="https://www.ghotimarket.com/termsandcondition.html">Terms</a><a href="https://www.ghotimarket.com/privacy-policy.html">Privacy Policy</a></nav><div class="watermark"><span>Powered by</span><a href="https://www.ghotimarket.com" aria-label="Ghoti Market"><img src="https://www.ghotimarket.com/watermark.png" alt="Ghoti Market" loading="lazy"></a></div><div class="copyright">© <span id="footer-year">2026</span> GHOTI MARKET. All rights reserved.</div></footer>
+<div id="lightbox" class="lightbox hidden" role="dialog" aria-label="Product image preview"><button class="lightbox-close" id="lightbox-close" aria-label="Close image">×</button><img id="lightbox-image" src="" alt="Product image enlarged"></div>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+"use strict";
 
-    <!-- Top Announcement Marquee Bar -->
-    <div id="headline-container" class="hidden">
-        <div id="headline-text" class="animate-marquee px-4"></div>
-    </div>
+/* Firebase web config is public by design; secure Firestore with proper rules
+   and preferably validate orders with a trusted backend/Cloud Function. */
+const firebaseConfig = {
+  apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+  authDomain: "ghotimarket.firebaseapp.com",
+  databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+  projectId: "ghotimarket",
+  storageBucket: "ghotimarket.firebasestorage.app",
+  messagingSenderId: "481257644093",
+  appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+  measurementId: "G-4SR8V2EKC1"
+};
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.ghotimarket.app";
+const MAX_QUANTITY = 99;
+let currentProductData = null;
+let selectedVariantState = {};
+let activeImageIndex = 0;
+let productImages = [];
+let quantity = 1;
+let currentDeliveryCharge = 0;
+let galleryInterval = null;
+let successRedirectStarted = false;
 
-    <!-- Sticky Product Header -->
-    <header>
-        <div class="header-container">
-            <span id="header-product-title" class="header-product-title">Loading Product...</span>
-            <button id="header-order-btn" class="header-cta-btn">অর্ডার করুন</button>
-        </div>
-    </header>
+const $ = id => document.getElementById(id);
+const money = value => "৳ " + (Number(value) || 0).toLocaleString("en-BD", {maximumFractionDigits:2});
+const safeNumber = value => {
+  const n = Number(value);
+  return Number.isFinite(n) && n > 0 ? n : 0;
+};
 
-    <!-- Main Content Container -->
-    <main>
-        <!-- Loading Screen -->
-        <div id="loading-screen" class="screen-container">
-            <div class="spinner"></div>
-            <p style="color: var(--text-muted);">প্রোডাক্ট লোড হচ্ছে...</p>
-        </div>
+function extractProductSlug() {
+  const params = new URLSearchParams(window.location.search);
+  const knownTracking = new Set(["fbclid","gclid","dclid","msclkid","utm_source","utm_medium","utm_campaign","utm_term","utm_content","ref","source"]);
+  // Support both ?product-slug and ?slug=product-slug / ?Id=product-slug.
+  for (const key of ["slug","Id","id","productSlug"]) {
+    const value = params.get(key);
+    if (value && value.trim()) return value.trim();
+  }
+  const first = window.location.search.slice(1).split("&")[0];
+  if (!first || first.includes("=")) return null;
+  let candidate;
+  try { candidate = decodeURIComponent(first).trim(); } catch { return null; }
+  if (!candidate || knownTracking.has(candidate.toLowerCase())) return null;
+  return candidate;
+}
 
-        <!-- Error / Unavailable Screen -->
-        <div id="message-screen" class="screen-container hidden">
-            <div class="error-card">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                <h2 id="error-title">পণ্যটি খুঁজে পাওয়া যায়নি</h2>
-                <p id="error-desc">এই পণ্যটি বর্তমানে উপলভ্য নয়।</p>
-                <a href="https://ghotimarket.com" class="btn-primary" style="width: auto; padding: 0.75rem 1.5rem; background: #fff; color: #FF6B00;">মূল ওয়েবসাইটে ফিরে যান</a>
-            </div>
-        </div>
+document.addEventListener("DOMContentLoaded", () => {
+  $("footer-year").textContent = new Date().getFullYear();
+  setupBannerSlider();
+  setupQuantityControls();
+  setupDeliveryLocationListeners();
+  $("header-order-btn").addEventListener("click", scrollToOrder);
+  $("scroll-to-order").addEventListener("click", scrollToOrder);
+  $("sticky-order-btn").addEventListener("click", scrollToOrder);
+  $("lightbox-close").addEventListener("click", closeLightbox);
+  $("lightbox").addEventListener("click", e => { if (e.target === $("lightbox")) closeLightbox(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeLightbox(); });
+  $("checkout-form").addEventListener("submit", submitOrder);
+  loadProduct();
+});
 
-        <!-- Product Details Section -->
-        <div id="product-section" class="product-main-wrapper hidden">
-            
-            <!-- Hero Section -->
-            <div class="hero-section">
-                <div class="hero-badge">
-                    <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <span>PREMIUM PRODUCT</span>
-                </div>
-                <h1 id="hero-typing-headline" class="hero-typing-headline text-3d">
-                    <span id="typed-text"></span><span class="typing-cursor"></span>
-                </h1>
-            </div>
+function setupBannerSlider() {
+  const wrapper = $("promoSlidesWrapper"), dots = [...document.querySelectorAll(".dot")], container = $("promoSliderContainer");
+  let index = 0, timer = null, startX = 0;
+  function update(next) {
+    index = (next + 3) % 3;
+    wrapper.style.transform = `translateX(-${index * (100/3)}%)`;
+    dots.forEach((d,i) => d.classList.toggle("active", i === index));
+  }
+  function start() { clearInterval(timer); timer = setInterval(() => update(index + 1), 4000); }
+  dots.forEach(dot => dot.addEventListener("click", () => { update(Number(dot.dataset.index)); start(); }));
+  container.addEventListener("touchstart", e => { startX = e.changedTouches[0].screenX; }, {passive:true});
+  container.addEventListener("touchend", e => {
+    const delta = e.changedTouches[0].screenX - startX;
+    if (Math.abs(delta) > 50) { update(index + (delta < 0 ? 1 : -1)); start(); }
+  }, {passive:true});
+  start();
+}
 
-            <div class="product-grid">
-                
-                <!-- Left: Product Image Gallery -->
-                <div class="gallery-wrapper">
-                    <div class="gallery-container" id="main-gallery-box">
-                        <img id="main-product-image" src="" alt="Product Image">
-                        <button id="prev-img" class="gallery-btn prev hidden">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                        </button>
-                        <button id="next-img" class="gallery-btn next hidden">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                        </button>
-                    </div>
-                    <div id="thumbnail-container" class="thumbnail-container"></div>
-                </div>
+async function loadProduct() {
+  const slug = extractProductSlug();
+  if (!slug) return showErrorScreen("পণ্যটি খুঁজে পাওয়া যায়নি", "সঠিক প্রোডাক্ট লিংক দিয়ে আবার চেষ্টা করুন।");
+  try {
+    const snapshot = await db.collection("landing_product").where("productSlug", "==", slug).limit(1).get();
+    if (snapshot.empty) return showErrorScreen("পণ্যটি খুঁজে পাওয়া যায়নি", "এই পণ্যটি বর্তমানে উপলভ্য নয়।");
+    currentProductData = snapshot.docs[0].data();
+    if (currentProductData.active !== true) return showErrorScreen("পণ্যটি অনুপলব্ধ", "এই পণ্যটি বর্তমানে বিক্রির জন্য সক্রিয় নয়।");
+    renderProductPage(currentProductData);
+  } catch (error) {
+    console.error("Firestore product load error:", error);
+    showErrorScreen("পণ্যটি লোড করতে সমস্যা হয়েছে", "ইন্টারনেট সংযোগ পরীক্ষা করে কিছুক্ষণ পর আবার চেষ্টা করুন।");
+  }
+}
 
-                <!-- Right: Product Information & Action -->
-                <div class="product-info-box">
-                    <div>
-                        <h2 id="product-name" class="product-title text-3d"></h2>
-                        <div class="price-row" style="margin-top: 1.1rem;">
-                            <span id="current-price" class="current-price text-3d"></span>
-                            <span id="old-price" class="old-price hidden"></span>
-                            <span id="discount-badge" class="discount-badge hidden"></span>
-                        </div>
-                    </div>
+function showErrorScreen(title, desc) {
+  $("loading-screen").classList.add("hidden");
+  $("product-section").classList.add("hidden");
+  $("headline-container").classList.add("hidden");
+  $("sticky-mobile-cta").classList.add("hidden");
+  $("promoSliderContainer").classList.add("hidden");
+  $("error-title").textContent = title;
+  $("error-desc").textContent = desc;
+  $("message-screen").classList.remove("hidden");
+}
 
-                    <div id="product-description" class="product-desc"></div>
+function renderProductPage(product) {
+  $("loading-screen").classList.add("hidden");
+  $("message-screen").classList.add("hidden");
+  $("product-section").classList.remove("hidden");
+  $("sticky-mobile-cta").classList.remove("hidden");
+  const name = String(product.productName || "Product");
+  const description = String(product.productDescription || "");
+  const pageTitle = `${name} | GHOTI MARKET`;
+  document.title = pageTitle;
+  $("page-title").textContent = pageTitle;
+  $("meta-description").content = description.slice(0, 300);
+  $("og-title").content = pageTitle;
+  $("og-desc").content = description.slice(0, 300);
+  $("og-url").content = window.location.href;
+  $("canonical-url").href = window.location.href;
+  productImages = Array.isArray(product.productImage) ? product.productImage.filter(x => typeof x === "string" && x.trim()) : [];
+  if (productImages[0]) $("og-image").content = productImages[0];
+  const ld = {
+    "@context":"https://schema.org","@type":"Product","name":name,
+    "image":productImages.length ? productImages : ["https://www.ghotimarket.com/logo.png"],
+    "description":description,
+    "offers":{"@type":"Offer","priceCurrency":"BDT","price":String(safeNumber(product.price)),"availability":product.active ? "https://schema.org/InStock" : "https://schema.org/OutOfStock","url":window.location.href}
+  };
+  $("json-ld-container").textContent = JSON.stringify(ld);
+  $("header-product-title").textContent = name;
+  $("product-name").textContent = name;
+  $("product-description").textContent = description;
+  $("editorial-description-text").textContent = description;
+  if (product.headLine && String(product.headLine).trim()) {
+    $("headline-text").textContent = String(product.headLine);
+    $("headline-container").classList.remove("hidden");
+  }
+  startTypingAnimation(name);
+  setupImageGallery(productImages);
+  setupVariants(Array.isArray(product.variants) ? product.variants : []);
+  setupContactButtons(product);
+  updatePricingDisplay();
+}
 
-                    <div id="variants-wrapper" class="variants-section"></div>
+function startTypingAnimation(name) {
+  const target = $("typed-text");
+  const text = `আপনার পছন্দের পণ্য ${name} এখনই অর্ডার করুন`;
+  let i = 0, deleting = false, timer;
+  function tick() {
+    target.textContent = text.slice(0, i);
+    if (!deleting && i < text.length) { i++; timer = setTimeout(tick, 65); }
+    else if (!deleting) { deleting = true; timer = setTimeout(tick, 1800); }
+    else if (i > 0) { i--; timer = setTimeout(tick, 30); }
+    else { deleting = false; timer = setTimeout(tick, 450); }
+  }
+  timer = setTimeout(tick, 350);
+}
 
-                    <div>
-                        <button id="scroll-to-order" class="btn-primary" style="padding: 1.15rem; font-size: 1.05rem;">
-                            <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                            <span>এখনই অর্ডার করুন</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
+function setupImageGallery(images) {
+  const main = $("main-product-image"), thumbs = $("thumbnail-container");
+  thumbs.replaceChildren();
+  clearInterval(galleryInterval);
+  activeImageIndex = 0;
+  if (!images.length) {
+    main.removeAttribute("src");
+    main.alt = "পণ্যের ছবি পাওয়া যায়নি";
+    $("prev-img").classList.add("hidden");
+    $("next-img").classList.add("hidden");
+    return;
+  }
+  main.src = images[0];
+  main.addEventListener("click", openCurrentLightbox);
+  if (images.length > 1) {
+    $("prev-img").classList.remove("hidden");
+    $("next-img").classList.remove("hidden");
+    images.forEach((url, idx) => {
+      const img = document.createElement("img");
+      img.src = url; img.alt = `পণ্যের ছবি ${idx + 1}`; img.loading = "lazy";
+      img.classList.toggle("active", idx === 0);
+      img.addEventListener("click", () => { activeImageIndex = idx; updateActiveImage(); restartGallery(); });
+      thumbs.appendChild(img);
+    });
+    $("prev-img").onclick = () => { activeImageIndex = (activeImageIndex - 1 + images.length) % images.length; updateActiveImage(); restartGallery(); };
+    $("next-img").onclick = () => { activeImageIndex = (activeImageIndex + 1) % images.length; updateActiveImage(); restartGallery(); };
+    galleryInterval = setInterval(() => { activeImageIndex = (activeImageIndex + 1) % images.length; updateActiveImage(); }, 4500);
+  } else {
+    $("prev-img").classList.add("hidden");
+    $("next-img").classList.add("hidden");
+  }
+}
+function updateActiveImage() {
+  $("main-product-image").src = productImages[activeImageIndex];
+  [...$("thumbnail-container").children].forEach((img,i) => img.classList.toggle("active", i === activeImageIndex));
+}
+function restartGallery() {
+  clearInterval(galleryInterval);
+  if (productImages.length > 1) galleryInterval = setInterval(() => { activeImageIndex = (activeImageIndex + 1) % productImages.length; updateActiveImage(); }, 4500);
+}
+function openCurrentLightbox() {
+  if (!productImages[activeImageIndex]) return;
+  $("lightbox-image").src = productImages[activeImageIndex];
+  $("lightbox").classList.remove("hidden");
+}
+function closeLightbox() { $("lightbox").classList.add("hidden"); $("lightbox-image").removeAttribute("src"); }
 
-            <!-- Detailed Product Description Editorial Section -->
-            <div class="editorial-section" id="editorial-desc-wrapper">
-                <div class="editorial-card">
-                    <h3>
-                        <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        পণ্যটি সম্পর্কে বিস্তারিত
-                    </h3>
-                    <div id="editorial-description-text" class="editorial-content"></div>
-                </div>
-            </div>
+function setupVariants(variants) {
+  const wrapper = $("variants-wrapper");
+  wrapper.replaceChildren();
+  selectedVariantState = {};
+  variants.forEach(variant => {
+    if (!variant || !variant.name || !Array.isArray(variant.values) || !variant.values.length) return;
+    const group = document.createElement("div");
+    const title = document.createElement("div");
+    title.className = "variant-title"; title.textContent = variant.name;
+    const options = document.createElement("div"); options.className = "variant-options";
+    variant.values.forEach((valueObj, idx) => {
+      const value = valueObj && valueObj.value != null ? String(valueObj.value) : "";
+      const extraPrice = Number(valueObj && valueObj.extraPrice) || 0;
+      const btn = document.createElement("button");
+      btn.type = "button"; btn.className = "variant-btn" + (idx === 0 ? " active" : "");
+      btn.textContent = value + (extraPrice > 0 ? ` (+${money(extraPrice)})` : "");
+      if (idx === 0) selectedVariantState[variant.name] = {name:variant.name,value,extraPrice};
+      btn.addEventListener("click", () => {
+        [...options.children].forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedVariantState[variant.name] = {name:variant.name,value,extraPrice};
+        updatePricingDisplay();
+      });
+      options.appendChild(btn);
+    });
+    group.append(title, options); wrapper.appendChild(group);
+  });
+}
 
-            <!-- Trust / Benefits Section -->
-            <div class="trust-grid">
-                <div class="trust-item">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                    <span>সহজ অর্ডার প্রক্রিয়া</span>
-                </div>
-                <div class="trust-item">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                    <span>দ্রুত যোগাযোগ ও সাপোর্ট</span>
-                </div>
-                <div class="trust-item">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                    <span>নিরাপদ অর্ডার ও ক্যাশ অন ডেলিভারি</span>
-                </div>
-            </div>
+function setupQuantityControls() {
+  const ids = [
+    ["quantity-minus","quantity-plus","quantity-value"],
+    ["quantity-minus-form","quantity-plus-form","quantity-value-form"]
+  ];
+  ids.forEach(([minus,plus,output]) => {
+    $(minus).addEventListener("click", () => setQuantity(quantity - 1));
+    $(plus).addEventListener("click", () => setQuantity(quantity + 1));
+  });
+  setQuantity(1);
+}
+function setQuantity(value) {
+  quantity = Math.max(1, Math.min(MAX_QUANTITY, Math.floor(Number(value) || 1)));
+  ["quantity-value","quantity-value-form"].forEach(id => $(id).textContent = String(quantity));
+  ["quantity-minus","quantity-minus-form"].forEach(id => $(id).disabled = quantity <= 1);
+  ["quantity-plus","quantity-plus-form"].forEach(id => $(id).disabled = quantity >= MAX_QUANTITY);
+  updatePricingDisplay();
+}
+function setupDeliveryLocationListeners() {
+  document.querySelectorAll('input[name="deliveryLocation"]').forEach(radio => {
+    radio.addEventListener("change", e => {
+      document.querySelectorAll(".location-card").forEach(card => card.classList.remove("selected"));
+      e.target.closest(".location-card").classList.add("selected");
+      currentDeliveryCharge = e.target.value === "ঢাকার ভেতরে" ? 60 : 120;
+      updatePricingDisplay();
+    });
+  });
+}
+function calculateTotals() {
+  const unitPrice = safeNumber(currentProductData && currentProductData.price);
+  const variantExtraPerUnit = Object.values(selectedVariantState).reduce((sum,v) => sum + (Number(v.extraPrice) || 0), 0);
+  const unitWithVariants = unitPrice + variantExtraPerUnit;
+  const productTotal = unitWithVariants * quantity;
+  const baseTotal = unitPrice * quantity;
+  const variantTotal = variantExtraPerUnit * quantity;
+  const total = productTotal + currentDeliveryCharge;
+  return {unitPrice,variantExtraPerUnit,unitWithVariants,productTotal,baseTotal,variantTotal,total};
+}
+function updatePricingDisplay() {
+  if (!currentProductData) return;
+  const t = calculateTotals();
+  $("current-price").textContent = money(t.unitWithVariants);
+  $("sticky-price-text").textContent = money(t.total);
+  $("summary-unit-price").textContent = money(t.unitWithVariants);
+  $("summary-quantity").textContent = `${quantity} টি`;
+  $("summary-base-price").textContent = money(t.baseTotal);
+  $("summary-variant-price").textContent = money(t.variantTotal);
+  $("summary-delivery-charge").textContent = money(currentDeliveryCharge);
+  $("summary-total-price").textContent = money(t.total);
+  $("summary-variant-row").classList.toggle("hidden", t.variantTotal <= 0);
+  const oldPrice = safeNumber(currentProductData.oldPrice);
+  if (oldPrice > t.unitPrice) {
+    $("old-price").textContent = money(oldPrice);
+    $("old-price").classList.remove("hidden");
+    $("discount-badge").textContent = `${Math.round((oldPrice - t.unitPrice) / oldPrice * 100)}% OFF`;
+    $("discount-badge").classList.remove("hidden");
+  } else {
+    $("old-price").classList.add("hidden");
+    $("discount-badge").classList.add("hidden");
+  }
+}
+function setupContactButtons(product) {
+  const wrapper = $("contact-buttons-wrapper");
+  wrapper.replaceChildren();
+  let any = false;
+  if (product.phone) {
+    const a = document.createElement("a");
+    a.href = "tel:" + String(product.phone).replace(/[^\d+]/g,"");
+    a.textContent = "☎ ফোন করুন"; wrapper.appendChild(a); any = true;
+  }
+  if (product.whatsApp) {
+    const a = document.createElement("a");
+    a.href = String(product.whatsApp); a.target = "_blank"; a.rel = "noopener noreferrer";
+    a.className = "wa"; a.textContent = "WhatsApp-এ যোগাযোগ করুন"; wrapper.appendChild(a); any = true;
+  }
+  wrapper.classList.toggle("hidden", !any);
+}
+function scrollToOrder() {
+  $("order-form-section").scrollIntoView({behavior:"smooth",block:"start"});
+}
 
-            <!-- Contact Buttons Section -->
-            <div id="contact-buttons-wrapper" class="contact-section-wrapper hidden"></div>
-
-            <!-- Order Form Section -->
-            <div class="order-section-wrapper" id="order-form-section">
-                <div class="order-form-card">
-                    <div class="order-header">
-                        <h2 class="text-3d">
-                            <svg width="24" height="24" style="color: #fff;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            অর্ডার করতে আপনার তথ্য দিন
-                        </h2>
-                        <p style="color: var(--text-muted); margin-top: 0.35rem; font-size: 0.9rem;">সঠিক তথ্য দিয়ে ফর্মটি পূরণ করুন</p>
-                    </div>
-
-                    <form id="checkout-form" class="form-grid">
-                        <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); display: grid; gap: 1.25rem;">
-                            <div class="form-group">
-                                <label>নাম *</label>
-                                <input type="text" id="cust-name" required placeholder="আপনার পূর্ণ নাম লিখুন" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>মোবাইল নাম্বার *</label>
-                                <input type="tel" id="cust-phone" required placeholder="01XXXXXXXXX" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); display: grid; gap: 1.25rem;">
-                            <div class="form-group">
-                                <label>বিভাগ *</label>
-                                <input type="text" id="cust-vibag" required placeholder="যেমন: ঢাকা" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>জেলা *</label>
-                                <input type="text" id="cust-jela" required placeholder="যেমন: ঢাকা" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>থানা / উপজেলা *</label>
-                                <input type="text" id="cust-thana" required placeholder="যেমন: সাভার" class="form-control">
-                            </div>
-                        </div>
-
-                        <!-- Delivery Location Selection -->
-                        <div class="form-group" style="margin-top: 0.2rem;">
-                            <label>ডেলিভারি লোকেশন *</label>
-                            <div class="location-options">
-                                <label class="location-card" id="loc-inside-label">
-                                    <input type="radio" name="deliveryLocation" value="ঢাকার ভেতরে" required>
-                                    <div class="location-info">
-                                        <span class="loc-title">ঢাকার শহরের ভিতরে</span>
-                                        <span class="loc-charge">৳ ৬০</span>
-                                    </div>
-                                </label>
-                                <label class="location-card" id="loc-outside-label">
-                                    <input type="radio" name="deliveryLocation" value="ঢাকার বাইরে" required>
-                                    <div class="location-info">
-                                        <span class="loc-title">ঢাকার বাইরে</span>
-                                        <span class="loc-charge">৳ ১২০</span>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>সম্পূর্ণ ঠিকানা (অপশনাল)</label>
-                            <input type="text" id="cust-address" placeholder="বাসা নম্বর, রোড, এলাকা ইত্যাদি" class="form-control">
-                        </div>
-
-                        <div class="form-group">
-                            <label>অর্ডার নোট (অপশনাল)</label>
-                            <textarea id="cust-note" placeholder="কোনো বিশেষ নির্দেশনা থাকলে এখানে লিখুন" class="form-control"></textarea>
-                        </div>
-
-                        <!-- Order Summary Box -->
-                        <div class="order-summary-box">
-                            <div class="summary-row">
-                                <span>পণ্যের মূল্য:</span>
-                                <span id="summary-base-price">৳ 0</span>
-                            </div>
-                            <div id="summary-variant-row" class="summary-row hidden">
-                                <span>ভ্যারিয়েন্ট অতিরিক্ত মূল্য:</span>
-                                <span id="summary-variant-price">৳ 0</span>
-                            </div>
-                            <div class="summary-row">
-                                <span>ডেলিভারি চার্জ:</span>
-                                <span id="summary-delivery-charge">৳ 0</span>
-                            </div>
-                            <div class="summary-total">
-                                <span>সর্বমোট মূল্য:</span>
-                                <span id="summary-total-price">৳ 0</span>
-                            </div>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <button type="submit" id="submit-order-btn" class="btn-primary" style="padding: 1.15rem; font-size: 1.1rem;">
-                            <span id="btn-text">এখনই অর্ডার করুন</span>
-                            <div id="btn-spinner" class="spinner" style="width: 20px; height: 20px; border-width: 2px; margin: 0; display: none;"></div>
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-        </div>
-    </main>
-
-    <!-- Sticky Mobile CTA Bar -->
-    <div id="sticky-mobile-cta" class="sticky-mobile-cta hidden">
-        <span id="sticky-price-text" class="sticky-price text-3d">৳ 0</span>
-        <button id="sticky-order-btn" class="sticky-btn">অর্ডার করুন</button>
-    </div>
-
-    <!-- Custom Success Popup HTML Modal -->
-    <div id="order-success-modal" class="order-success-modal" aria-hidden="true" role="dialog">
-        <div class="order-success-overlay"></div>
-        <div class="order-success-card">
-            <div class="success-icon-wrapper">
-                <div class="success-icon">
-                    <span>✓</span>
-                </div>
-            </div>
-            <h2 id="success-title" class="text-3d">অর্ডার সফল হয়েছে! 🎉</h2>
-            <p class="success-message">আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।</p>
-            <p class="redirect-message">আপনাকে GHOTI MARKET-এ নিয়ে যাওয়া হচ্ছে...</p>
-            <div class="success-countdown" id="success-countdown">৩</div>
-        </div>
-    </div>
-
-    <!-- Footer Section Start -->
-    <footer class="site-footer">
-        <div class="footer-container">
-            <nav class="footer-nav" aria-label="Footer Navigation">
-                <a href="https://ghotimarket.com" class="footer-link">Home</a>
-                <a href="https://ghotimarket.com/support" class="footer-link">Contact</a>
-                <a href="https://ghotimarket.com/termsandcondition" class="footer-link">Terms</a>
-                <a href="https://ghotimarket.com/privacy-policy" class="footer-link">Privacy Policy</a>
-            </nav>
-            <div class="footer-watermark">
-                <span class="powered-by-text">Powered by</span>
-                <a href="https://ghotimarket.com" class="watermark-link" aria-label="Powered by Ghoti Market">
-                    <img src="https://www.ghotimarket.com/watermark.png" alt="Ghoti Market" class="watermark-image" loading="lazy">
-                </a>
-            </div>
-            <div class="footer-copyright">
-                &copy; <span id="footer-year">2026</span> GHOTI MARKET. All rights reserved.
-            </div>
-        </div>
-    </footer>
-
-    <style>
-    .site-footer {
-        width: 100%;
-        background: #D45800;
-        color: #ffffff;
-        padding: 2.5rem 1rem;
-        margin-top: 3rem;
-        overflow: hidden;
-        border-top: 1px solid var(--border-color);
+async function submitOrder(event) {
+  event.preventDefault();
+  if (!currentProductData || successRedirectStarted) return;
+  const variants = Array.isArray(currentProductData.variants) ? currentProductData.variants : [];
+  for (const variant of variants) {
+    if (variant && variant.name && !selectedVariantState[variant.name]) {
+      alert(`দয়া করে "${variant.name}" অপশনটি নির্বাচন করুন।`);
+      return;
     }
-    .footer-container {
-        width: 100%;
-        max-width: 1100px;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-    }
-    .footer-nav {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 0.5rem 1.5rem;
-        margin-bottom: 1.6rem;
-    }
-    .footer-link {
-        color: #ffffff;
-        text-decoration: none;
-        font-size: 0.92rem;
-        font-weight: 600;
-        transition: opacity 0.2s ease;
-    }
-    .footer-link:hover { opacity: 0.8; }
-    .footer-watermark {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.45rem;
-        margin-bottom: 1.2rem;
-    }
-    .powered-by-text {
-        color: rgba(255, 255, 255, 0.92);
-        font-size: 0.82rem;
-        font-weight: 500;
-    }
-    .watermark-image {
-        display: block;
-        width: auto;
-        max-width: 150px;
-        height: 28px;
-        object-fit: contain;
-    }
-    .footer-copyright {
-        color: rgba(255, 255, 255, 0.88);
-        font-size: 0.78rem;
-    }
-    </style>
-
-    <!-- Firebase SDK Compat Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
-    <script>
-        // Banner Slider Logic (Auto & Manual Swipe)
-        document.addEventListener('DOMContentLoaded', () => {
-            const wrapper = document.getElementById('promoSlidesWrapper');
-            const dots = document.querySelectorAll('.slider-dot');
-            const container = document.getElementById('promoSliderContainer');
-            let currentIndex = 0;
-            const totalSlides = 3;
-            let slideInterval;
-
-            function updateSlider(index) {
-                currentIndex = index;
-                wrapper.style.transform = `translateX(-${currentIndex * 33.333}%)`;
-                dots.forEach((dot, idx) => {
-                    if (idx === currentIndex) {
-                        dot.classList.add('active');
-                    } else {
-                        dot.classList.remove('active');
-                    }
-                });
-            }
-
-            function nextSlide() {
-                currentIndex = (currentIndex + 1) % totalSlides;
-                updateSlider(currentIndex);
-            }
-
-            function startAutoSlide() {
-                slideInterval = setInterval(nextSlide, 4000);
-            }
-
-            function resetAutoSlide() {
-                clearInterval(slideInterval);
-                startAutoSlide();
-            }
-
-            dots.forEach(dot => {
-                dot.addEventListener('click', (e) => {
-                    const idx = parseInt(e.target.getAttribute('data-index'));
-                    updateSlider(idx);
-                    resetAutoSlide();
-                });
-            });
-
-            // Touch / Swipe support for banner
-            let touchStartX = 0;
-            let touchEndX = 0;
-
-            container.addEventListener('touchstart', e => {
-                touchStartX = e.changedTouches[0].screenX;
-            }, {passive: true});
-
-            container.addEventListener('touchend', e => {
-                touchEndX = e.changedTouches[0].screenX;
-                if (touchEndX < touchStartX - 50) {
-                    currentIndex = (currentIndex + 1) % totalSlides;
-                    updateSlider(currentIndex);
-                    resetAutoSlide();
-                } else if (touchEndX > touchStartX + 50) {
-                    currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-                    updateSlider(currentIndex);
-                    resetAutoSlide();
-                }
-            }, {passive: true});
-
-            startAutoSlide();
-
-            // Footer year update
-            const yearElement = document.getElementById("footer-year");
-            if (yearElement) {
-                yearElement.textContent = new Date().getFullYear();
-            }
-        });
-
-        // ==========================================
-        // FIREBASE CONFIGURATION & LANDING SCRIPT
-        // ==========================================
-        const firebaseConfig = {
-            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
-            authDomain: "ghotimarket.firebaseapp.com",
-            databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
-            projectId: "ghotimarket",
-            storageBucket: "ghotimarket.firebasestorage.app",
-            messagingSenderId: "481257644093",
-            appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
-            measurementId: "G-4SR8V2EKC1"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        let currentProductData = null;
-        let selectedVariantState = {};
-        let activeImageIndex = 0;
-        let currentDeliveryCharge = 0;
-        let autoSlideInterval = null;
-        let successRedirectStarted = false;
-
-        function extractProductSlug() {
-            const searchStr = window.location.search;
-            if (!searchStr) return null;
-            let cleanQuery = searchStr.substring(1);
-            let parts = cleanQuery.split(/[?&]/);
-            if (parts.length > 0 && parts[0]) {
-                let candidate = decodeURIComponent(parts[0].trim());
-                const trackingKeys = ['fbclid', 'gclid', 'dclid', 'msclkid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'ref', 'source'];
-                if (trackingKeys.includes(candidate.split('=')[0])) {
-                    return null;
-                }
-                return candidate.split('=')[0];
-            }
-            return null;
-        }
-
-        document.addEventListener('DOMContentLoaded', async () => {
-            const slug = extractProductSlug();
-            if (!slug) {
-                showErrorScreen("পণ্যটি খুঁজে পাওয়া যায়নি", "এই পণ্যটি বর্তমানে উপলভ্য নয়।");
-                return;
-            }
-
-            try {
-                const snapshot = await db.collection("landing_product")
-                    .where("productSlug", "==", slug)
-                    .limit(1)
-                    .get();
-
-                if (snapshot.empty) {
-                    showErrorScreen("পণ্যটি খুঁজে পাওয়া যায়নি", "এই পণ্যটি বর্তমানে উপলভ্য নয়।");
-                    return;
-                }
-
-                const doc = snapshot.docs[0];
-                currentProductData = doc.data();
-
-                if (currentProductData.active !== true) {
-                    showErrorScreen("পণ্যটি অনুপলব্ধ", "এই পণ্যটি বর্তমানে বিক্রির জন্য সক্রিয় নয়।");
-                    return;
-                }
-
-                renderProductPage(currentProductData);
-
-            } catch (err) {
-                console.error("Firestore error:", err);
-                showErrorScreen("পণ্যটি লোড করতে সমস্যা হয়েছে", "দয়া করে কিছুক্ষণ পর আবার চেষ্টা করুন।");
-            }
-        });
-
-        function showErrorScreen(title, desc) {
-            document.getElementById('loading-screen').classList.add('hidden');
-            document.getElementById('product-section').classList.add('hidden');
-            document.getElementById('headline-container').classList.add('hidden');
-            document.getElementById('sticky-mobile-cta').classList.add('hidden');
-            document.getElementById('promoSliderContainer').classList.add('hidden');
-
-            document.getElementById('error-title').innerText = title;
-            document.getElementById('error-desc').innerText = desc;
-            document.getElementById('message-screen').classList.remove('hidden');
-        }
-
-        function renderProductPage(product) {
-            document.getElementById('loading-screen').classList.add('hidden');
-            document.getElementById('message-screen').classList.add('hidden');
-            document.getElementById('product-section').classList.remove('hidden');
-            document.getElementById('sticky-mobile-cta').classList.remove('hidden');
-
-            const productName = product.productName || "Product";
-            const pageTitle = `${productName} | Official Store`;
-            document.getElementById('page-title').innerText = pageTitle;
-            document.getElementById('meta-description').content = product.productDescription || '';
-            document.getElementById('og-title').content = pageTitle;
-            document.getElementById('og-desc').content = product.productDescription || '';
-            document.getElementById('og-url').content = window.location.href;
-            document.getElementById('canonical-url').href = window.location.href;
-
-            if (product.productImage && product.productImage.length > 0) {
-                document.getElementById('og-image').content = product.productImage[0];
-            }
-
-            document.getElementById('header-product-title').innerText = productName;
-
-            if (product.headLine && product.headLine.trim() !== "") {
-                const headlineContainer = document.getElementById('headline-container');
-                document.getElementById('headline-text').innerText = product.headLine;
-                headlineContainer.classList.remove('hidden');
-            }
-
-            startTypingAnimation(productName);
-
-            document.getElementById('product-name').innerText = productName;
-            document.getElementById('product-description').innerText = product.productDescription || '';
-            document.getElementById('editorial-description-text').innerText = product.productDescription || '';
-
-            setupImageGallery(product.productImage || []);
-            setupVariants(product.variants || []);
-            setupContactButtons(product);
-            setupDeliveryLocationListeners();
-            updatePricingDisplay();
-
-            const scrollToOrderHandler = () => {
-                document.getElementById('order-form-section').scrollIntoView({ behavior: 'smooth' });
-            };
-            document.getElementById('scroll-to-order').addEventListener('click', scrollToOrderHandler);
-            document.getElementById('sticky-order-btn').addEventListener('click', scrollToOrderHandler);
-            document.getElementById('header-order-btn').addEventListener('click', scrollToOrderHandler);
-        }
-
-        function startTypingAnimation(productName) {
-            const target = document.getElementById('typed-text');
-            const fullText = `আপনার পছন্দের পণ্য ${productName} এখনই অর্ডার করুন`;
-            let charIndex = 0;
-            let isDeleting = false;
-            let typingSpeed = 70;
-
-            function type() {
-                if (!isDeleting) {
-                    target.innerText = fullText.substring(0, charIndex + 1);
-                    charIndex++;
-                    if (charIndex === fullText.length) {
-                        isDeleting = true;
-                        typingSpeed = 2000;
-                    } else {
-                        typingSpeed = 70;
-                    }
-                } else {
-                    target.innerText = fullText.substring(0, charIndex - 1);
-                    charIndex--;
-                    if (charIndex === 0) {
-                        isDeleting = false;
-                        typingSpeed = 500;
-                    } else {
-                        typingSpeed = 40;
-                    }
-                }
-                setTimeout(type, typingSpeed);
-            }
-            setTimeout(type, 500);
-        }
-
-        function setupImageGallery(images) {
-            const mainImg = document.getElementById('main-product-image');
-            const thumbContainer = document.getElementById('thumbnail-container');
-            const prevBtn = document.getElementById('prev-img');
-            const nextBtn = document.getElementById('next-img');
-
-            if (!images || images.length === 0) return;
-
-            mainImg.src = images[0];
-            mainImg.addEventListener('click', () => { openLightbox(images[activeImageIndex]); });
-
-            if (images.length > 1) {
-                prevBtn.classList.remove('hidden');
-                nextBtn.classList.remove('hidden');
-
-                images.forEach((imgUrl, idx) => {
-                    const thumb = document.createElement('img');
-                    thumb.src = imgUrl;
-                    thumb.alt = "Thumbnail";
-                    if (idx === 0) thumb.className = "active";
-                    thumb.addEventListener('click', () => {
-                        activeImageIndex = idx;
-                        updateActiveImage(images);
-                        resetAutoSlideGallery(images);
-                    });
-                    thumbContainer.appendChild(thumb);
-                });
-
-                prevBtn.addEventListener('click', () => {
-                    activeImageIndex = (activeImageIndex - 1 + images.length) % images.length;
-                    updateActiveImage(images);
-                    resetAutoSlideGallery(images);
-                });
-
-                nextBtn.addEventListener('click', () => {
-                    activeImageIndex = (activeImageIndex + 1) % images.length;
-                    updateActiveImage(images);
-                    resetAutoSlideGallery(images);
-                });
-
-                startAutoSlideGallery(images);
-            }
-        }
-
-        function startAutoSlideGallery(images) {
-            autoSlideInterval = setInterval(() => {
-                activeImageIndex = (activeImageIndex + 1) % images.length;
-                updateActiveImage(images);
-            }, 4500);
-        }
-
-        function resetAutoSlideGallery(images) {
-            clearInterval(autoSlideInterval);
-            startAutoSlideGallery(images);
-        }
-
-        function updateActiveImage(images) {
-            document.getElementById('main-product-image').src = images[activeImageIndex];
-            const thumbs = document.getElementById('thumbnail-container').children;
-            for (let i = 0; i < thumbs.length; i++) {
-                if (i === activeImageIndex) {
-                    thumbs[i].classList.add('active');
-                } else {
-                    thumbs[i].classList.remove('active');
-                }
-            }
-        }
-
-        function openLightbox(imgSrc) {
-            const modal = document.createElement('div');
-            modal.className = 'lightbox-modal';
-            modal.innerHTML = `
-                <div class="lightbox-content">
-                    <button class="lightbox-close">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="32" height="32"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                    </button>
-                    <img src="${imgSrc}" alt="Fullscreen Preview">
-                </div>
-            `;
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal || e.target.closest('.lightbox-close')) {
-                    document.body.removeChild(modal);
-                }
-            });
-            document.body.appendChild(modal);
-        }
-
-        function setupVariants(variants) {
-            const wrapper = document.getElementById('variants-wrapper');
-            wrapper.innerHTML = '';
-            if (!variants || variants.length === 0) return;
-
-            variants.forEach(variant => {
-                const group = document.createElement('div');
-                const title = document.createElement('div');
-                title.className = 'variant-group-title';
-                title.innerText = variant.name;
-                group.appendChild(title);
-
-                const optionsContainer = document.createElement('div');
-                optionsContainer.className = 'variant-options';
-
-                variant.values.forEach((valObj, idx) => {
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    let extraLabel = valObj.extraPrice > 0 ? ` (+৳${valObj.extraPrice})` : '';
-                    btn.innerText = `${valObj.value}${extraLabel}`;
-                    btn.className = `variant-btn ${idx === 0 ? 'active' : ''}`;
-
-                    if (idx === 0) {
-                        selectedVariantState[variant.name] = {
-                            name: variant.name,
-                            value: valObj.value,
-                            extraPrice: Number(valObj.extraPrice) || 0
-                        };
-                    }
-
-                    btn.addEventListener('click', () => {
-                        Array.from(optionsContainer.children).forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                        selectedVariantState[variant.name] = {
-                            name: variant.name,
-                            value: valObj.value,
-                            extraPrice: Number(valObj.extraPrice) || 0
-                        };
-                        updatePricingDisplay();
-                    });
-
-                    optionsContainer.appendChild(btn);
-                });
-                group.appendChild(optionsContainer);
-                wrapper.appendChild(group);
-            });
-        }
-
-        function setupDeliveryLocationListeners() {
-            const radios = document.querySelectorAll('input[name="deliveryLocation"]');
-            radios.forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    document.querySelectorAll('.location-card').forEach(card => card.classList.remove('selected'));
-                    e.target.closest('.location-card').classList.add('selected');
-
-                    if (e.target.value === "ঢাকার ভেতরে") {
-                        currentDeliveryCharge = 60;
-                    } else if (e.target.value === "ঢাকার বাইরে") {
-                        currentDeliveryCharge = 120;
-                    }
-                    updatePricingDisplay();
-                });
-            });
-        }
-
-        function updatePricingDisplay() {
-            if (!currentProductData) return;
-            let basePrice = Number(currentProductData.price) || 0;
-            let extraTotal = 0;
-
-            for (let key in selectedVariantState) {
-                extraTotal += Number(selectedVariantState[key].extraPrice) || 0;
-            }
-
-            let grandTotal = basePrice + extraTotal + currentDeliveryCharge;
-
-            document.getElementById('summary-base-price').innerText = `৳ ${basePrice.toLocaleString('en-BD')}`;
-            document.getElementById('summary-delivery-charge').innerText = `৳ ${currentDeliveryCharge.toLocaleString('en-BD')}`;
-
-            const variantRow = document.getElementById('summary-variant-row');
-            if (extraTotal > 0) {
-                document.getElementById('summary-variant-price').innerText = `৳ ${extraTotal.toLocaleString('en-BD')}`;
-                variantRow.classList.remove('hidden');
-            } else {
-                variantRow.classList.add('hidden');
-            }
-
-            let calculatedFinalForHeader = basePrice + extraTotal;
-            document.getElementById('current-price').innerText = `৳ ${calculatedFinalForHeader.toLocaleString('en-BD')}`;
-            document.getElementById('sticky-price-text').innerText = `৳ ${grandTotal.toLocaleString('en-BD')}`;
-            document.getElementById('summary-total-price').innerText = `৳ ${grandTotal.toLocaleString('en-BD')}`;
-
-            const oldPriceEl = document.getElementById('old-price');
-            const discountBadgeEl = document.getElementById('discount-badge');
-
-            if (currentProductData.oldPrice && Number(currentProductData.oldPrice) > basePrice) {
-                let oldP = Number(currentProductData.oldPrice);
-                oldPriceEl.innerText = `৳ ${oldP.toLocaleString('en-BD')}`;
-                oldPriceEl.classList.remove('hidden');
-
-                let discountPercent = Math.round(((oldP - basePrice) / oldP) * 100);
-                discountBadgeEl.innerText = `${discountPercent}% OFF`;
-                discountBadgeEl.classList.remove('hidden');
-            } else {
-                oldPriceEl.classList.add('hidden');
-                discountBadgeEl.classList.add('hidden');
-            }
-        }
-
-        function setupContactButtons(product) {
-            const wrapper = document.getElementById('contact-buttons-wrapper');
-            wrapper.innerHTML = '';
-            let hasContact = false;
-
-            if (product.phone) {
-                hasContact = true;
-                const phoneBtn = document.createElement('a');
-                phoneBtn.href = `tel:${product.phone}`;
-                phoneBtn.className = 'contact-btn phone';
-                phoneBtn.innerHTML = `
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="22" height="22"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                    <span>ফোন করুন</span>
-                `;
-                wrapper.appendChild(phoneBtn);
-            }
-
-            if (product.whatsApp) {
-                hasContact = true;
-                const waBtn = document.createElement('a');
-                waBtn.href = product.whatsApp;
-                waBtn.target = "_blank";
-                waBtn.rel = "noopener noreferrer";
-                waBtn.className = 'contact-btn whatsapp';
-                waBtn.innerHTML = `
-                    <svg fill="currentColor" viewBox="0 0 24 24" width="22" height="22"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.124-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-                    <span>WhatsApp</span>
-                `;
-                wrapper.appendChild(waBtn);
-            }
-
-            if (hasContact) {
-                wrapper.classList.remove('hidden');
-            }
-        }
-
-        function showOrderSuccessPopup() {
-            if (successRedirectStarted) return;
-            successRedirectStarted = true;
-
-            const modal = document.getElementById('order-success-modal');
-            const countdownEl = document.getElementById('success-countdown');
-            modal.classList.add('active');
-            document.body.style.overflow = "hidden";
-
-            let timeLeft = 3;
-            countdownEl.innerText = timeLeft;
-
-            const countdownInterval = setInterval(() => {
-                timeLeft--;
-                if (timeLeft > 0) {
-                    countdownEl.innerText = timeLeft;
-                } else if (timeLeft === 0) {
-                    countdownEl.innerText = "✓";
-                    clearInterval(countdownInterval);
-                }
-            }, 1000);
-
-            setTimeout(() => {
-                window.location.href = "https://ghotimarket.com";
-            }, 3000);
-        }
-
-        document.getElementById('checkout-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!currentProductData) return;
-
-            if (currentProductData.variants && currentProductData.variants.length > 0) {
-                for (let v of currentProductData.variants) {
-                    if (!selectedVariantState[v.name]) {
-                        alert(`দয়া করে "${v.name}" অপশনটি নির্বাচন করুন।`);
-                        return;
-                    }
-                }
-            }
-
-            const selectedLocationRadio = document.querySelector('input[name="deliveryLocation"]:checked');
-            if (!selectedLocationRadio) {
-                alert("দয়া করে ডেলিভারি লোকেশন নির্বাচন করুন।");
-                return;
-            }
-
-            const name = document.getElementById('cust-name').value.trim();
-            const phone = document.getElementById('cust-phone').value.trim();
-            const vibag = document.getElementById('cust-vibag').value.trim();
-            const jela = document.getElementById('cust-jela').value.trim();
-            const thanaUpajela = document.getElementById('cust-thana').value.trim();
-            const deliveryLocation = selectedLocationRadio.value;
-            const fullAddress = document.getElementById('cust-address').value.trim();
-            const orderNote = document.getElementById('cust-note').value.trim();
-
-            if (!name || !phone || !vibag || !jela || !thanaUpajela) {
-                alert("দয়া করে প্রয়োজনীয় সকল তথ্য পূরণ করুন।");
-                return;
-            }
-
-            let basePrice = Number(currentProductData.price) || 0;
-            let variantExtraPrice = 0;
-            let selectedVariantsArr = [];
-
-            for (let key in selectedVariantState) {
-                variantExtraPrice += Number(selectedVariantState[key].extraPrice) || 0;
-                selectedVariantsArr.push(selectedVariantState[key]);
-            }
-
-            let totalPrice = basePrice + variantExtraPrice + currentDeliveryCharge;
-
-            const submitBtn = document.getElementById('submit-order-btn');
-            const btnText = document.getElementById('btn-text');
-            const btnSpinner = document.getElementById('btn-spinner');
-
-            submitBtn.disabled = true;
-            btnText.innerText = "অর্ডার প্রসেস হচ্ছে...";
-            btnSpinner.style.display = "inline-block";
-
-            try {
-                const orderPayload = {
-                    name: name,
-                    phone: phone,
-                    thanaUpajela: thanaUpajela,
-                    vibag: vibag,
-                    jela: jela,
-                    deliveryLocation: deliveryLocation,
-                    deliveryCharge: currentDeliveryCharge,
-                    fullAddress: fullAddress || "",
-                    orderNote: orderNote || "",
-                    productName: currentProductData.productName,
-                    productSlug: currentProductData.productSlug,
-                    productImage: currentProductData.productImage || [],
-                    selectedVariants: selectedVariantsArr,
-                    price: basePrice,
-                    variantExtraPrice: variantExtraPrice,
-                    status: "pending",
-                    totalPrice: totalPrice,
-                    landingUserId: currentProductData.uid,
-                    landingUserEmail: currentProductData.email,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-
-                await db.collection("landing_order").add(orderPayload);
-                showOrderSuccessPopup();
-
-            } catch (err) {
-                console.error("Order submission error:", err);
-                alert("অর্ডার সাবমিট করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।");
-                submitBtn.disabled = false;
-                btnText.innerText = "এখনই অর্ডার করুন";
-                btnSpinner.style.display = "none";
-            }
-        });
-    </script>
+  }
+  const selectedRadio = document.querySelector('input[name="deliveryLocation"]:checked');
+  if (!selectedRadio) { alert("দয়া করে ডেলিভারি লোকেশন নির্বাচন করুন।"); return; }
+  const name = $("cust-name").value.trim();
+  const phone = $("cust-phone").value.trim();
+  const vibag = $("cust-vibag").value.trim();
+  const jela = $("cust-jela").value.trim();
+  const thanaUpajela = $("cust-thana").value.trim();
+  if (!name || !phone || !vibag || !jela || !thanaUpajela) {
+    alert("দয়া করে প্রয়োজনীয় সকল তথ্য পূরণ করুন।"); return;
+  }
+  if (!/^[0-9+\s()-]{8,20}$/.test(phone)) {
+    alert("দয়া করে সঠিক মোবাইল নাম্বার লিখুন।"); $("cust-phone").focus(); return;
+  }
+  const t = calculateTotals();
+  const selectedVariantsArr = Object.values(selectedVariantState).map(v => ({...v}));
+  const submitBtn = $("submit-order-btn");
+  const btnText = $("btn-text");
+  const btnSpinner = $("btn-spinner");
+  submitBtn.disabled = true;
+  btnText.textContent = "অর্ডার প্রসেস হচ্ছে...";
+  btnSpinner.classList.remove("hidden");
+  try {
+    const orderPayload = {
+      name, phone, thanaUpajela, vibag, jela,
+      deliveryLocation: selectedRadio.value,
+      deliveryCharge: currentDeliveryCharge,
+      fullAddress: $("cust-address").value.trim(),
+      orderNote: $("cust-note").value.trim(),
+      productName: String(currentProductData.productName || "Product"),
+      productSlug: String(currentProductData.productSlug || ""),
+      productImage: productImages,
+      selectedVariants: selectedVariantsArr,
+      quantity: quantity,
+      unitPrice: t.unitPrice,
+      price: t.baseTotal,
+      variantExtraPricePerUnit: t.variantExtraPerUnit,
+      variantExtraPrice: t.variantTotal,
+      subtotal: t.productTotal,
+      status: "pending",
+      totalPrice: t.total,
+      landingUserId: currentProductData.uid || "",
+      landingUserEmail: currentProductData.email || "",
+      currency: "BDT",
+      source: "product_landing_page",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    await db.collection("landing_order").add(orderPayload);
+    showOrderSuccessPopup();
+  } catch (error) {
+    console.error("Order submission error:", error);
+    alert("অর্ডার সাবমিট করতে সমস্যা হয়েছে। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।");
+    submitBtn.disabled = false;
+    btnText.textContent = "অর্ডার কনফার্ম করুন";
+    btnSpinner.classList.add("hidden");
+  }
+}
+
+function showOrderSuccessPopup() {
+  if (successRedirectStarted) return;
+  successRedirectStarted = true;
+  const modal = $("order-success-modal");
+  const countdown = $("success-countdown");
+  modal.classList.add("active");
+  modal.setAttribute("aria-hidden","false");
+  document.body.style.overflow = "hidden";
+  let left = 3;
+  countdown.textContent = String(left);
+  const interval = setInterval(() => {
+    left -= 1;
+    if (left > 0) countdown.textContent = String(left);
+    else { countdown.textContent = "✓"; clearInterval(interval); }
+  },1000);
+  // Android may offer the installed app through its market link; otherwise Play Store opens.
+  setTimeout(() => { window.location.href = PLAY_STORE_URL; }, 3000);
+}
+</script>
 </body>
 </html>
