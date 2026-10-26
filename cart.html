@@ -364,6 +364,30 @@
         .nav-item.active {
             color: var(--primary);
         }
+.cart-item-img-wrap {
+    position: relative;
+    width: 75px;
+    height: 75px;
+    flex-shrink: 0;
+}
+.badge-free-delivery {
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #00b894;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 20px;
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    z-index: 2;
+}
     </style>
 </head>
 <body>
@@ -507,26 +531,31 @@
                     }
                 }
 
-                itemsHTML += `
-                    <div class="cart-item-card">
-                        <img src="${escapeHtml(item.image) || 'https://via.placeholder.com/80'}" alt="${escapeHtml(item.name)}" class="cart-item-img" onerror="this.src='https://via.placeholder.com/80?text=GHOTI'">
-                        <div class="cart-item-details">
-                            <div class="cart-item-name">${escapeHtml(item.name)}</div>
-                            ${variantsStr ? `<div class="cart-item-variants">${escapeHtml(variantsStr)}</div>` : ''}
-                            <div class="cart-item-price">৳ ${item.price}</div>
-                            <div class="cart-item-actions">
-                                <div class="qty-control">
-                                    <button class="qty-btn" onclick="updateQty('${item.cartDocId}', -1)">-</button>
-                                    <span class="qty-val">${item.quantity || 1}</span>
-                                    <button class="qty-btn" onclick="updateQty('${item.cartDocId}', 1)">+</button>
-                                </div>
-                                <button class="remove-btn" onclick="removeItem('${item.cartDocId}')" title="ডিলিট করুন">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                let freeDeliveryBadge = item.freeDelivery === true ? `<div class="badge-free-delivery"><i class="fa-solid fa-truck-fast"></i> ফ্রি ডেলিভারি</div>` : '';
+
+itemsHTML += `
+    <div class="cart-item-card">
+        <div class="cart-item-img-wrap">
+            <img src="${escapeHtml(item.image) || 'https://via.placeholder.com/80'}" alt="${escapeHtml(item.name)}" class="cart-item-img" onerror="this.src='https://via.placeholder.com/80?text=GHOTI'">
+            ${freeDeliveryBadge}
+        </div>
+        <div class="cart-item-details">
+            <div class="cart-item-name">${escapeHtml(item.name)}</div>
+            ${variantsStr ? `<div class="cart-item-variants">${escapeHtml(variantsStr)}</div>` : ''}
+            <div class="cart-item-price">৳ ${item.price}</div>
+            <div class="cart-item-actions">
+                <div class="qty-control">
+                    <button class="qty-btn" onclick="updateQty('${item.cartDocId}', -1)">-</button>
+                    <span class="qty-val">${item.quantity || 1}</span>
+                    <button class="qty-btn" onclick="updateQty('${item.cartDocId}', 1)">+</button>
+                </div>
+                <button class="remove-btn" onclick="removeItem('${item.cartDocId}')" title="ডিলিট করুন">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+`;
             });
 
             container.innerHTML = `
