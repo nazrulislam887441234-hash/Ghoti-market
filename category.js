@@ -383,7 +383,7 @@ function createProductCard(product) {
 
     const inCart = isProductInCart(product.id);
 
-
+    const freeDeliveryBadge = product.freeDelivery === true ? `<div class="free-delivery-badge"><i data-lucide="truck" style="width:12px;height:12px;"></i> ফ্রি ডেলিভারি</div>` : '';
     let priceBoxHTML =
         `<span class="current-price">৳ ${price}</span>`;
 
@@ -436,13 +436,9 @@ function createProductCard(product) {
 
     card.innerHTML = `
 
-        <a
-            href="${cardUrl}"
-            style="text-decoration:none;color:inherit;display:block;"
-        >
-
-            <img
-                src="${firstImg}"
+      <a href="${cardUrl}" style="text-decoration:none;color:inherit;display:block; position:relative;">
+    ${freeDeliveryBadge}
+    <img src="${firstImg}"
                 class="product-img"
                 alt="${safeName}"
                 loading="lazy"
@@ -1076,7 +1072,7 @@ async function addProductToCart(
         sellerId:
             product.sellerId ||
             '',
-
+       freeDelivery: product.freeDelivery === true ? true : false,
         affiliate:
             product.affiliate === "on"
                 ? "on"
