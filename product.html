@@ -4,18 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GHOTI MARKET - পণ্যের বিস্তারিত</title>
-    <meta name="description" content="GHOTI MARKET থেকে সেরা দামে পণ্য কিনুন">
-    <link rel="canonical" href="https://ghotimarket.com/product.html">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <meta property="og:title" content="GHOTI MARKET">
-    <meta property="og:description" content="সেরা দামে পণ্য কিনুন">
-    <meta property="og:image" content="https://ghotimarket.com/assets/logo.png">
-    <meta property="og:url" content="https://ghotimarket.com/product.html">
-    <meta property="og:type" content="product">
-    <link rel="stylesheet" href="style.css">
+    <title id="seoTitle">GHOTI MARKET</title>
+    <meta name="description" id="seoDesc" content="GHOTI MARKET থেকে সেরা দামে পণ্য কিনুন">
+    <link rel="canonical" id="seoCanonical" href="https://ghotimarket.com/product.html">
     
+    <!-- Preload -->
+    <link rel="stylesheet" href="product.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Dynamic Schema will be injected by JS -->
+    <script type="application/ld+json" id="productSchema"></script>
 </head>
 <body>
     <!-- Top Nav Bar -->
@@ -81,7 +79,9 @@
                 <span class="discount-badge" id="discountBadge"></span>
                 <span class="affiliate-badge" id="affiliateBadge"><i class="fas fa-handshake"></i> Affiliate On</span>
             </div>
-
+            <div id="freeDeliveryBadge" class="free-delivery-badge" style="display:none;">
+             <i class="fas fa-truck"></i> ফ্রি ডেলিভারি!
+            </div>
             <!-- Variants Selector Section -->
             <div id="variantsContainer" class="variants-container"></div>
 
@@ -743,72 +743,111 @@
             return basePrice + totalExtra;
         };
 
-        const renderProduct = (p) => {
-            const name = safeText(p.name, 'Product');
-            const desc = safeText(p.description, '');
-            const images = Array.isArray(p.images) ? p.images : [];
-            const basePrice = safeNumber(p.price, 0);
-            const oldPrice = safeNumber(p.oldPrice, 0);
+       const renderProduct = (p) => {
+    const name = safeText(p.name, 'Product');
+    const desc = safeText(p.description, '');
+    const images = Array.isArray(p.images) ? p.images : [];
+    const basePrice = safeNumber(p.price, 0);
+    const oldPrice = safeNumber(p.oldPrice, 0);
+    const finalSlug = p.slug || currentSlug || '';
 
-            document.title = `${name} - ৳${basePrice} | GHOTI MARKET`;
+    document.title = `${name} - ৳${basePrice} | GHOTI MARKET`;
 
-            getEl("pName").innerText = name;
-            getEl("pPrice").innerText = `৳ ${basePrice}`;
+    // SEO FIX - 100% Correct
+    const seoTitleEl = document.getElementById("seoTitle");
+    if(seoTitleEl) seoTitleEl.innerText = `${name} - ৳${basePrice} | GHOTI MARKET`;
+    
+    const seoDescEl = document.getElementById("seoDesc");
+    if(seoDescEl) seoDescEl.setAttribute("content", `${name} - ${desc.substring(0, 120)} - GHOTI MARKET এ সেরা দামে কিনুন`);
+    
+    const seoCanonicalEl = document.getElementById("seoCanonical");
+    if(seoCanonicalEl) seoCanonicalEl.href = `https://ghotimarket.com/product?${finalSlug}`;
 
-            const descriptionEl = getEl("pDesc");
-            if (descriptionEl) {
-                descriptionEl.innerHTML = DOMPurify.sanitize(marked.parse(desc || 'কোন বিবরণ নেই'));
-            }
+    // Product Schema for Google
+    const schemaData = {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": name,
+      "image": images,
+      "description": desc.substring(0, 200),
+      "sku": p.docId,
+      "brand": { "@type": "Brand", "name": "GHOTI MARKET" },
+      "offers": {
+        "@type": "Offer",
+        "url": `https://ghotimarket.com/product?${finalSlug}`,
+        "priceCurrency": "BDT",
+        "price": basePrice,
+        "availability": "https://schema.org/InStock",
+        "seller": { "@type": "Organization", "name": "GHOTI MARKET" }
+      }
+    };
+    const schemaEl = document.getElementById("productSchema");
+    if(schemaEl) schemaEl.textContent = JSON.stringify(schemaData);
+    // FREE DELIVERY BADGE LOGIC
+const freeBadgeEl = getEl("freeDeliveryBadge");
+if(freeBadgeEl){
+    if(p.freeDelivery === true || p.freeDelivery === "true"){
+        showElement(freeBadgeEl, 'inline-flex');
+    } else {
+        hideElement(freeBadgeEl);
+    }
+}
+    getEl("pName").innerText = name;
+    getEl("pPrice").innerText = `৳ ${basePrice}`;
 
-            const oldPriceEl = getEl("oldPrice");
-            const discountBadgeEl = getEl("discountBadge");
-            const affiliateBadgeEl = getEl("affiliateBadge");
+    const descriptionEl = getEl("pDesc");
+    if (descriptionEl) {
+        descriptionEl.innerHTML = DOMPurify.sanitize(marked.parse(desc || 'কোন বিবরণ নেই'));
+    }
 
-            if (oldPrice > basePrice && basePrice > 0) {
-                const diff = oldPrice - basePrice;
-                const pct = Math.round((diff / oldPrice) * 100);
-                if (oldPriceEl) { oldPriceEl.innerText = `৳ ${oldPrice}`; showElement(oldPriceEl, 'inline'); }
-                if (discountBadgeEl) { discountBadgeEl.innerText = `৳${diff} ছাড় (${pct}% OFF)`; showElement(discountBadgeEl, 'inline-block'); }
-            } else {
-                hideElement(oldPriceEl);
-                hideElement(discountBadgeEl);
-            }
+    const oldPriceEl = getEl("oldPrice");
+    const discountBadgeEl = getEl("discountBadge");
+    const affiliateBadgeEl = getEl("affiliateBadge");
 
-            if (p.affiliate === "on") {
-                if (affiliateBadgeEl) showElement(affiliateBadgeEl, 'inline-flex');
-            } else {
-                if (affiliateBadgeEl) hideElement(affiliateBadgeEl);
-            }
+    if (oldPrice > basePrice && basePrice > 0) {
+        const diff = oldPrice - basePrice;
+        const pct = Math.round((diff / oldPrice) * 100);
+        if (oldPriceEl) { oldPriceEl.innerText = `৳ ${oldPrice}`; showElement(oldPriceEl, 'inline'); }
+        if (discountBadgeEl) { discountBadgeEl.innerText = `৳${diff} ছাড় (${pct}% OFF)`; showElement(discountBadgeEl, 'inline-block'); }
+    } else {
+        hideElement(oldPriceEl);
+        hideElement(discountBadgeEl);
+    }
 
-            renderVariants(p.variants);
+    if (p.affiliate === "on") {
+        if (affiliateBadgeEl) showElement(affiliateBadgeEl, 'inline-flex');
+    } else {
+        if (affiliateBadgeEl) hideElement(affiliateBadgeEl);
+    }
 
-            const shopNameEl = getEl("pShopName");
-            if (shopNameEl) shopNameEl.innerText = safeText(p.shopName, "Unknown Shop");
+    renderVariants(p.variants);
 
-            const slider = getEl("imgSlider");
-            const prevBtn = getEl("sliderPrevBtn");
-            const nextBtn = getEl("sliderNextBtn");
+    const shopNameEl = getEl("pShopName");
+    if (shopNameEl) shopNameEl.innerText = safeText(p.shopName, "Unknown Shop");
 
-            if (images.length > 0) {
-                slider.innerHTML = images.map(iUrl => `<img src="${iUrl}" alt="${name}" onerror="this.src='${PLACEHOLDER_IMAGE}'">`).join("");
-                getEl("imgCounter").innerText = `ছবি ${images.length} টি`;
-                if (images.length > 1) {
-                    showElement(prevBtn, 'flex');
-                    showElement(nextBtn, 'flex');
-                } else {
-                    hideElement(prevBtn);
-                    hideElement(nextBtn);
-                }
-            } else {
-                slider.innerHTML = `<img src="${PLACEHOLDER_IMAGE}" alt="No Image">`;
-                getEl("imgCounter").innerText = `ছবি 0 টি`;
-                hideElement(prevBtn);
-                hideElement(nextBtn);
-            }
+    const slider = getEl("imgSlider");
+    const prevBtn = getEl("sliderPrevBtn");
+    const nextBtn = getEl("sliderNextBtn");
 
-            updateCartBadge();
-        };
+    if (images.length > 0) {
+        slider.innerHTML = images.map(iUrl => `<img src="${iUrl}" alt="${name}" onerror="this.src='${PLACEHOLDER_IMAGE}'">`).join("");
+        getEl("imgCounter").innerText = `ছবি ${images.length} টি`;
+        if (images.length > 1) {
+            showElement(prevBtn, 'flex');
+            showElement(nextBtn, 'flex');
+        } else {
+            hideElement(prevBtn);
+            hideElement(nextBtn);
+        }
+    } else {
+        slider.innerHTML = `<img src="${PLACEHOLDER_IMAGE}" alt="No Image">`;
+        getEl("imgCounter").innerText = `ছবি 0 টি`;
+        hideElement(prevBtn);
+        hideElement(nextBtn);
+    }
 
+    updateCartBadge();
+};
         const handleAddToCart = async (redirect = false) => {
             if (!currentUser) {
                 pendingCartAction = redirect;
@@ -875,7 +914,8 @@
                     sellerId: currentProductCache.sellerId || "",
                     shopName: currentProductCache.shopName || "",
                     slug: currentProductCache.slug,
-                    uid: currentUser.uid
+                    uid: currentUser.uid,
+                   freeDelivery: currentProductCache.freeDelivery === true ? true : false
                 };
 
                 if (affiliateStatus === "on") {
