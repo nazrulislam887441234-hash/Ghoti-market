@@ -164,6 +164,89 @@ header{
 .current-price{font-size:clamp(1.6rem,6vw,2rem);font-weight:800;color:var(--orange-dark);overflow-wrap:anywhere}
 .old-price{font-size:1rem;color:#9298a0;text-decoration:line-through}
 .discount{background:var(--soft);color:var(--orange-dark);border-radius:20px;padding:5px 9px;font-weight:800;font-size:.78rem}
+
+/* Offer Countdown Banner Styling */
+.offer-countdown-banner{
+  background:linear-gradient(135deg,#fff6ee 0%,#ffeada 100%);
+  border:1.5px solid var(--orange);
+  border-radius:14px;
+  padding:12px 14px;
+  text-align:center;
+  box-shadow:0 4px 14px rgba(255,106,0,.1);
+}
+.countdown-title{
+  font-size:.92rem;
+  font-weight:800;
+  color:var(--orange-dark);
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+.countdown-boxes{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+.countdown-box{
+  min-width:52px;
+  background:#fff;
+  border:1px solid #ffd8bc;
+  border-radius:10px;
+  padding:6px 4px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  box-shadow:0 2px 5px rgba(0,0,0,.04);
+}
+.countdown-box span:first-child{
+  font-size:1.22rem;
+  font-weight:800;
+  color:var(--orange-dark);
+  line-height:1.1;
+  font-family:monospace,Inter,sans-serif;
+}
+.cd-label{
+  font-size:.7rem;
+  font-weight:700;
+  color:var(--muted);
+  margin-top:2px;
+}
+.countdown-sep{
+  font-size:1.15rem;
+  font-weight:800;
+  color:var(--orange-dark);
+  padding-bottom:12px;
+}
+
+/* Free Delivery Banner Styling */
+.free-delivery-banner{
+  margin-top:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:linear-gradient(135deg,#fff8f2 0%,#eefaf2 100%);
+  border:1.5px solid #087a43;
+  border-radius:14px;
+  padding:12px 16px;
+  color:#087a43;
+  font-weight:800;
+  font-size:1rem;
+  box-shadow:0 4px 14px rgba(8,122,67,.08);
+}
+.free-delivery-banner .fd-icon{
+  font-size:1.45rem;
+  flex-shrink:0;
+  display:inline-block;
+  line-height:1;
+}
+.free-delivery-banner .fd-text{
+  line-height:1.4;
+  overflow-wrap:anywhere;
+}
+
 .description{
   color:var(--muted);line-height:1.9;white-space:pre-line;
   overflow-wrap:anywhere;border-top:1px solid var(--line);
@@ -312,6 +395,10 @@ footer{background:#d45800;color:#fff;text-align:center;margin-top:35px;padding:2
   .quantity-control button{width:35px}
   .thumbs img{flex-basis:64px;width:64px;height:64px}
   .sticky-cta{padding-inline:10px}
+  .countdown-box{min-width:44px;padding:4px 2px}
+  .countdown-box span:first-child{font-size:1.1rem}
+  .cd-label{font-size:0.65rem}
+  .free-delivery-banner{font-size:0.88rem;padding:9px 12px}
 }
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
@@ -385,12 +472,32 @@ footer{background:#d45800;color:#fff;text-align:center;margin-top:35px;padding:2
       </div>
 
       <div class="info">
+        <!-- Dynamic Offer Countdown Banner -->
+        <div id="offer-countdown-banner" class="offer-countdown-banner hidden">
+          <div class="countdown-title">⚡ এই প্রোডাক্টের অফার শেষ হবে</div>
+          <div class="countdown-boxes">
+            <div class="countdown-box"><span id="cd-days">00</span><span class="cd-label">দিন</span></div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-box"><span id="cd-hours">00</span><span class="cd-label">ঘণ্টা</span></div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-box"><span id="cd-mins">00</span><span class="cd-label">মিনিট</span></div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-box"><span id="cd-secs">00</span><span class="cd-label">সেকেন্ড</span></div>
+          </div>
+        </div>
+
         <div>
           <h2 id="product-name" class="product-title"></h2>
           <div class="price-row">
             <span id="current-price" class="current-price">৳ 0</span>
             <span id="old-price" class="old-price hidden"></span>
             <span id="discount-badge" class="discount hidden"></span>
+          </div>
+
+          <!-- Free Delivery Banner -->
+          <div id="free-delivery-banner" class="free-delivery-banner hidden">
+            <span class="fd-icon">🚚</span>
+            <span class="fd-text">এই প্রোডাক্ট ফ্রিতেই ডেলিভারি নিতে পারবেন!</span>
           </div>
         </div>
 
@@ -582,9 +689,9 @@ let productImages = [];
 let quantity = 1;
 let currentDeliveryCharge = 0;
 let currentDeliveryLocation = "";
-let galleryInterval = null;
 let successRedirectStarted = false;
 let isSubmitting = false;
+let countdownInterval = null;
 
 // address.js লোড বা এক্সপোর্ট চেক এবং পূর্ণাঙ্গ বাংলাদেশের অ্যাড্রেস ডাটাবেজ ফলব্যাক
 const DEFAULT_BD_ADDRESS_DATA = {
@@ -686,7 +793,12 @@ const safeNumber = value => {
   return Number.isFinite(number) && number > 0 ? number : 0;
 };
 
-// numeric delivery charge পার্সিং: ০ হলে ০-ই থাকবে (ফ্রি ডেলিভারি), অবৈধ বা অনুপস্থিত থাকলে ডিফল্ট
+// ফ্রি ডেলিভারি চেক: product.freeDelivery === true
+function isFreeDeliveryActive() {
+  return Boolean(currentProductData && currentProductData.freeDelivery === true);
+}
+
+// numeric delivery charge পার্সিং
 function parseDeliveryCharge(val, defaultVal) {
   if (val !== undefined && val !== null && val !== "") {
     const num = Number(val);
@@ -838,7 +950,6 @@ function initializeAddressSystem() {
   });
 }
 
-// address.js থেকে গ্লোবাল অবজেক্ট/ফাংশন সনাক্তকরণ
 function getExternalAddressData() {
   const candidates = [
     window.bangladeshAddress,
@@ -866,7 +977,6 @@ function getExternalAddressData() {
   return null;
 }
 
-// বিভিন্ন ফরম্যাটকে স্ট্যান্ডার্ড অবজেক্ট {বিভাগ: {জেলা: [উপজেলা]}} স্ট্রাকচারে রূপান্তর
 function normalizeAddressDataStructure(raw) {
   if (!raw) return null;
 
@@ -911,10 +1021,11 @@ function populateDivisions() {
   });
 }
 
-// বিভাগ ও জেলা নির্বাচনের ওপর স্বয়ংক্রিয় চার্জ ও লোকেশন নির্ধারণ
+// বিভাগ ও জেলা নির্বাচনের ওপর স্বয়ংক্রিয় চার্জ ও লোকেশন নির্ধারণ (Free Delivery লজিক সহ)
 function updateDeliveryLocationAndCharge() {
   const vibagVal = $("cust-vibag").value.trim();
   const jelaVal = $("cust-jela").value.trim();
+  const isFree = isFreeDeliveryActive();
 
   if (!vibagVal) {
     currentDeliveryLocation = "";
@@ -922,7 +1033,7 @@ function updateDeliveryLocationAndCharge() {
   } else if (!jelaVal) {
     if (!isDhakaText(vibagVal)) {
       currentDeliveryLocation = "ঢাকার বাইরে";
-      currentDeliveryCharge = getOutsideDhakaCharge(currentProductData);
+      currentDeliveryCharge = isFree ? 0 : getOutsideDhakaCharge(currentProductData);
     } else {
       currentDeliveryLocation = "";
       currentDeliveryCharge = 0;
@@ -930,10 +1041,10 @@ function updateDeliveryLocationAndCharge() {
   } else {
     if (isDhakaText(vibagVal) && isDhakaText(jelaVal)) {
       currentDeliveryLocation = "ঢাকার ভেতরে";
-      currentDeliveryCharge = getInsideDhakaCharge(currentProductData);
+      currentDeliveryCharge = isFree ? 0 : getInsideDhakaCharge(currentProductData);
     } else {
       currentDeliveryLocation = "ঢাকার বাইরে";
-      currentDeliveryCharge = getOutsideDhakaCharge(currentProductData);
+      currentDeliveryCharge = isFree ? 0 : getOutsideDhakaCharge(currentProductData);
     }
   }
 
@@ -1027,6 +1138,11 @@ async function loadProduct() {
 }
 
 function showErrorScreen(title, description) {
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
+    countdownInterval = null;
+  }
+
   $("loading-screen").classList.add("hidden");
   $("product-section").classList.add("hidden");
   $("headline-container").classList.add("hidden");
@@ -1091,19 +1207,87 @@ function renderProductPage(product) {
     $("headline-container").classList.add("hidden");
   }
 
+  // Free Delivery Banner Display
+  if (product.freeDelivery === true) {
+    $("free-delivery-banner").classList.remove("hidden");
+  } else {
+    $("free-delivery-banner").classList.add("hidden");
+  }
+
+  // Offer Countdown Setup
+  setupOfferCountdown(product);
+
+  // Gallery Setup (অটো-স্লাইড ছাড়া)
   setupImageGallery(productImages);
   setupVariants(Array.isArray(product.variants) ? product.variants : []);
   setupContactButtons(product);
   updateDeliveryLocationAndCharge();
 }
 
-// গ্যালারি সিস্টেম ও অ্যাক্টিভ ইমেজ ট্র্যাকিং
+// অফার কাউন্টডাউন সেটআপ (Milliseconds Timestamp)
+function setupOfferCountdown(product) {
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
+    countdownInterval = null;
+  }
+
+  const banner = $("offer-countdown-banner");
+  if (!banner) return;
+
+  if (!product || product.offerTime === undefined || product.offerTime === null || product.offerTime === "") {
+    banner.classList.add("hidden");
+    return;
+  }
+
+  const targetTime = Number(product.offerTime);
+  if (!Number.isFinite(targetTime) || targetTime <= 0) {
+    banner.classList.add("hidden");
+    return;
+  }
+
+  function updateCountdown() {
+    const now = Date.now();
+    const diff = targetTime - now;
+
+    if (diff <= 0) {
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
+      banner.classList.add("hidden");
+      return;
+    }
+
+    const totalSeconds = Math.floor(diff / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    $("cd-days").textContent = String(days).padStart(2, "0");
+    $("cd-hours").textContent = String(hours).padStart(2, "0");
+    $("cd-mins").textContent = String(minutes).padStart(2, "0");
+    $("cd-secs").textContent = String(seconds).padStart(2, "0");
+
+    banner.classList.remove("hidden");
+  }
+
+  const initialDiff = targetTime - Date.now();
+  if (initialDiff <= 0) {
+    banner.classList.add("hidden");
+    return;
+  }
+
+  updateCountdown();
+  countdownInterval = setInterval(updateCountdown, 1000);
+}
+
+// গ্যালারি সিস্টেম: অটো-স্লাইড সম্পূর্ণ নিষ্ক্রিয়, শুধু ম্যানুয়াল কন্ট্রোল সক্রিয়
 function setupImageGallery(images) {
   const main = $("main-product-image");
   const thumbs = $("thumbnail-container");
 
   thumbs.replaceChildren();
-  clearInterval(galleryInterval);
   activeImageIndex = 0;
 
   if (!images.length) {
@@ -1129,28 +1313,26 @@ function setupImageGallery(images) {
       image.loading = "lazy";
       image.classList.toggle("active", index === 0);
 
+      // থাম্বনেইল ক্লিক করলে ছবি পরিবর্তন হবে
       image.addEventListener("click", () => {
         activeImageIndex = index;
         updateActiveImage();
-        restartGallery();
       });
 
       thumbs.appendChild(image);
     });
 
+    // Previous বাটন ক্লিক
     $("prev-img").onclick = () => {
       activeImageIndex = (activeImageIndex - 1 + images.length) % images.length;
       updateActiveImage();
-      restartGallery();
     };
 
+    // Next বাটন ক্লিক
     $("next-img").onclick = () => {
       activeImageIndex = (activeImageIndex + 1) % images.length;
       updateActiveImage();
-      restartGallery();
     };
-
-    restartGallery();
   } else {
     $("prev-img").classList.add("hidden");
     $("next-img").classList.add("hidden");
@@ -1166,17 +1348,6 @@ function updateActiveImage() {
   [...$("thumbnail-container").children].forEach((image, index) => {
     image.classList.toggle("active", index === activeImageIndex);
   });
-}
-
-function restartGallery() {
-  clearInterval(galleryInterval);
-
-  if (productImages.length > 1) {
-    galleryInterval = setInterval(() => {
-      activeImageIndex = (activeImageIndex + 1) % productImages.length;
-      updateActiveImage();
-    }, 4500);
-  }
 }
 
 function openCurrentLightbox() {
@@ -1297,7 +1468,9 @@ function calculateTotals() {
   const baseTotal = unitPrice * quantity;
   const variantTotal = variantExtraPerUnit * quantity;
   const productTotal = (unitPrice + variantExtraPerUnit) * quantity;
-  const total = productTotal + currentDeliveryCharge;
+  
+  const deliveryFee = isFreeDeliveryActive() ? 0 : currentDeliveryCharge;
+  const total = productTotal + deliveryFee;
 
   return {
     unitPrice,
@@ -1306,6 +1479,7 @@ function calculateTotals() {
     baseTotal,
     variantTotal,
     productTotal,
+    deliveryFee,
     total
   };
 }
@@ -1322,7 +1496,10 @@ function updatePricingDisplay() {
   $("summary-base-price").textContent = money(totals.baseTotal);
   $("summary-variant-price").textContent = money(totals.variantTotal);
   
-  if (currentDeliveryLocation) {
+  // Free Delivery বনাম Normal Delivery চার্জ ডিসপ্লে
+  if (isFreeDeliveryActive()) {
+    $("summary-delivery-charge").textContent = "৳ 0 (ফ্রি ডেলিভারি)";
+  } else if (currentDeliveryLocation) {
     $("summary-delivery-charge").textContent = `${money(currentDeliveryCharge)} (${currentDeliveryLocation})`;
   } else {
     $("summary-delivery-charge").textContent = money(currentDeliveryCharge);
@@ -1421,13 +1598,20 @@ async function submitOrder(event) {
     return;
   }
 
+  const isFreeDelivery = isFreeDeliveryActive();
+
   // ডেলিভারি লোকেশন ও চার্জ পুনরায় সুরক্ষিতভাবে যাচাই
   let finalLocation = "ঢাকার বাইরে";
-  let finalCharge = getOutsideDhakaCharge(currentProductData);
+  let finalCharge = 0;
 
   if (isDhakaText(vibag) && isDhakaText(jela)) {
     finalLocation = "ঢাকার ভেতরে";
-    finalCharge = getInsideDhakaCharge(currentProductData);
+  }
+
+  if (!isFreeDelivery) {
+    finalCharge = (finalLocation === "ঢাকার ভেতরে")
+      ? getInsideDhakaCharge(currentProductData)
+      : getOutsideDhakaCharge(currentProductData);
   }
 
   currentDeliveryLocation = finalLocation;
@@ -1452,7 +1636,7 @@ async function submitOrder(event) {
   try {
     const selectedVariantsArr = Object.values(selectedVariantState).map(variant => ({...variant}));
     
-    // কাস্টমারের সর্বশেষ সিলেক্ট করা ছবি নেওয়া হচ্ছে
+    // কাস্টমারের সর্বশেষ সিলেক্ট করা ছবি
     const selectedImageUrl = productImages[activeImageIndex] || (productImages[0] || "");
 
     const orderPayload = {
@@ -1465,6 +1649,7 @@ async function submitOrder(event) {
 
       deliveryLocation: finalLocation,
       deliveryCharge: finalCharge,
+      freeDelivery: isFreeDelivery,
 
       fullAddress: $("cust-address").value.trim(),
       orderNote: $("cust-note").value.trim(),
