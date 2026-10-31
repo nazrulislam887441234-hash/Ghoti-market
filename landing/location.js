@@ -276,4 +276,3 @@
   };
 
 })(typeof window !== "undefined" ? window : this);
-বস দেখেন তো এখানে সকল থানা/জেলা/বিভাগ আছে কিনা
