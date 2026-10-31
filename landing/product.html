@@ -41,12 +41,12 @@ body{
   color:var(--ink);background:var(--bg);
   min-height:100vh;overflow-x:clip;padding-bottom:85px;
 }
-button,input,textarea{font:inherit}
+button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 img{display:block;max-width:100%}
 a{color:inherit}
 .hidden{display:none!important}
-button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
   outline:3px solid #ff6a0060;outline-offset:3px
 }
 .container{width:100%;max-width:1180px;margin:auto;padding-inline:16px}
@@ -233,17 +233,22 @@ header{
   background:#fff;outline:none;color:var(--ink);
 }
 .control:focus{border-color:var(--orange);box-shadow:0 0 0 3px #ff6a001c}
-textarea.control{min-height:90px;resize:vertical}
-.location-options{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
-@media(min-width:500px){.location-options{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.location-card{
-  display:flex;align-items:center;gap:10px;padding:13px;
-  border:1px solid var(--line);border-radius:12px;cursor:pointer;min-width:0;
+select.control{
+  cursor:pointer;
+  appearance:none;
+  -webkit-appearance:none;
+  background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath fill='%2369717d' d='M7 9L0 1.5 1.5 0 7 5.8 12.5 0 14 1.5z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  background-size:11px;
+  padding-right:36px;
 }
-.location-card.selected{border-color:var(--orange);background:var(--soft)}
-.location-card input{accent-color:var(--orange);width:18px;height:18px;flex-shrink:0}
-.loc-title{display:block;font-weight:800;line-height:1.6}
-.loc-charge{color:var(--orange-dark);font-weight:800;font-size:.9rem}
+select.control:disabled{
+  background-color:#f4f5f8;
+  color:#9ea5b0;
+  cursor:not-allowed;
+}
+textarea.control{min-height:90px;resize:vertical}
 .summary{
   display:flex;flex-direction:column;gap:12px;padding:16px;
   border:1px solid var(--line);border-radius:14px;background:#f8f9fb;
@@ -389,7 +394,6 @@ footer{background:#d45800;color:#fff;text-align:center;margin-top:35px;padding:2
           </div>
         </div>
 
-        <!-- পণ্যের বিবরণ একবারই দেখানো হবে -->
         <div id="product-description" class="description"></div>
 
         <div id="variants-wrapper" class="variants"></div>
@@ -437,29 +441,21 @@ footer{background:#d45800;color:#fff;text-align:center;margin-top:35px;padding:2
           <div class="form-grid three-col">
             <div class="field">
               <label for="cust-vibag">বিভাগ *</label>
-              <input class="control" id="cust-vibag" required maxlength="100" placeholder="যেমন: ঢাকা">
+              <select class="control" id="cust-vibag" required>
+                <option value="">বিভাগ নির্বাচন করুন</option>
+              </select>
             </div>
             <div class="field">
               <label for="cust-jela">জেলা *</label>
-              <input class="control" id="cust-jela" required maxlength="100" placeholder="যেমন: ঢাকা">
+              <select class="control" id="cust-jela" required disabled>
+                <option value="">জেলা নির্বাচন করুন</option>
+              </select>
             </div>
             <div class="field">
               <label for="cust-thana">থানা / উপজেলা *</label>
-              <input class="control" id="cust-thana" required maxlength="100" placeholder="যেমন: সাভার">
-            </div>
-          </div>
-
-          <div class="field">
-            <label>ডেলিভারি লোকেশন *</label>
-            <div class="location-options">
-              <label class="location-card" id="loc-inside-label">
-                <input type="radio" name="deliveryLocation" value="ঢাকার ভেতরে" required>
-                <span><span class="loc-title">ঢাকার শহরের ভিতরে</span><span class="loc-charge">৳ ৬০</span></span>
-              </label>
-              <label class="location-card" id="loc-outside-label">
-                <input type="radio" name="deliveryLocation" value="ঢাকার বাইরে" required>
-                <span><span class="loc-title">ঢাকার বাইরে</span><span class="loc-charge">৳ ১২০</span></span>
-              </label>
+              <select class="control" id="cust-thana" required disabled>
+                <option value="">উপজেলা নির্বাচন করুন</option>
+              </select>
             </div>
           </div>
 
@@ -546,14 +542,17 @@ footer{background:#d45800;color:#fff;text-align:center;margin-top:35px;padding:2
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
+<!-- address.js অন্তর্ভুক্ত করা হয়েছে মূল স্ক্রিপ্টের পূর্বে -->
+<script src="address.js"></script>
+
 <script>
 "use strict";
 
 /*
   Firebase Web Config:
-  এটি public client configuration।
-  Firestore Security Rules দিয়ে ডেটা সুরক্ষিত রাখুন।
-  Production order validation-এর জন্য trusted backend/Cloud Function ব্যবহার করা উত্তম।
+  Security Note: Client-side Price Calculation এবং ড্রপডাউন ভ্যালিডেশনের পাশাপাশি 
+  Production সুরক্ষার জন্য Firestore Security Rules ও Trusted Backend (Cloud Function)
+  দিয়ে মূল্যের সঠিকতা নিশ্চিত করা উত্তম।
 */
 
 const firebaseConfig = {
@@ -573,14 +572,105 @@ const db = firebase.firestore();
 const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.ghotimarket.app";
 const MAX_QUANTITY = 99;
 
+const DEFAULT_INSIDE_DHAKA_CHARGE = 60;
+const DEFAULT_OUTSIDE_DHAKA_CHARGE = 120;
+
 let currentProductData = null;
 let selectedVariantState = {};
 let activeImageIndex = 0;
 let productImages = [];
 let quantity = 1;
 let currentDeliveryCharge = 0;
+let currentDeliveryLocation = "";
 let galleryInterval = null;
 let successRedirectStarted = false;
+let isSubmitting = false;
+
+// address.js লোড বা এক্সপোর্ট চেক এবং পূর্ণাঙ্গ বাংলাদেশের অ্যাড্রেস ডাটাবেজ ফলব্যাক
+const DEFAULT_BD_ADDRESS_DATA = {
+  "ঢাকা": {
+    "ঢাকা": ["ধানমন্ডি", "মিরপুর", "গুলশান", "উত্তরা", "মোহাম্মদপুর", "সাভার", "ধামরাই", "কেরানীগঞ্জ", "নবাবগঞ্জ", "দোহার", "বাড্ডা", "খিলগাঁও", "মতিঝিল", "পল্টন", "তেজগাঁও", "যাত্রাবাড়ী", "কদমতলী", "ডেমরা", "রামপুরা", "শাহবাগ", "লালবাগ", "বংশাল", "কোতোয়ালী", "সূত্রাপুর", "পল্লবী", "কাফরুল", "রূপনগর", "ভাটারা", "বনানী", "খিলক্ষেত", "দারুস সালাম", "শাহ আলী", "সবুজবাগ", "কামরাঙ্গীরচর"],
+    "গাজীপুর": ["গাজীপুর সদর", "কালিয়াকৈর", "শ্রীপুর", "কাপাসিয়া", "কালীগঞ্জ"],
+    "নারায়ণগঞ্জ": ["নারায়ণগঞ্জ সদর", "বন্দর", "আড়াইহাজার", "রূপগঞ্জ", "সোনারগাঁও"],
+    "নরসিংদী": ["নরসিংদী সদর", "বেলাবো", "মনোহরদী", "পলাশ", "রায়পুরা", "শিবপুর"],
+    "মানিকগঞ্জ": ["মানিকগঞ্জ সদর", "সিংগাইর", "শিবালয়", "সাটুরিয়া", "হরিরামপুর", "ঘিওর", "দৌলতপুর"],
+    "মুন্সীগঞ্জ": ["মুন্সীগঞ্জ সদর", "টংগিবাড়ী", "সিরাজদিখান", "লৌহজং", "শ্রীনগর", "গজারিয়া"],
+    "টাঙ্গাইল": ["টাঙ্গাইল সদর", "মির্জাপুর", "দেলদুয়ার", "ঘাটাইল", "কালিহাতী", "সখিপুর", "ভূঞাপুর", "গোপালপুর", "নাগরপুর", "মধুপুর", "বাসাইল", "ধনবাড়ী"],
+    "কিশোরগঞ্জ": ["কিশোরগঞ্জ সদর", "ভৈরব", "বাজিতপুর", "করিমগঞ্জ", "কটিয়াদী", "কুলিয়ারচর", "তাড়াইল", "হোসেনপুর", "নিকলী", "অষ্টগ্রাম", "মিঠামইন", "ইটনা", "পাকুন্দিয়া"],
+    "ফরিদপুর": ["ফরিদপুর সদর", "বোয়ালমারী", "আলফাডাঙ্গা", "মধুখালী", "ভাঙ্গা", "নগরকান্দা", "চরভদ্রাসন", "সদরপুর", "সালথা"],
+    "মাদারীপুর": ["মাদারীপুর সদর", "শিবচর", "কালকিনি", "রাজৈর", "ডাসার"],
+    "গোপালগঞ্জ": ["গোপালগঞ্জ সদর", "কাশিয়ানী", "কোটালীপাড়া", "মুকসুদপুর", "টুঙ্গিপাড়া"],
+    "রাজবাড়ী": ["রাজবাড়ী সদর", "গোয়ালন্দ", "পাংশা", "বালিয়াকান্দি", "কালুখালী"],
+    "শরীয়তপুর": ["শরীয়তপুর সদর", "জাজিরা", "নড়িয়া", "ভেদরগঞ্জ", "ডামুড্যা", "গোসাইরহাট"]
+  },
+  "চট্টগ্রাম": {
+    "চট্টগ্রাম": ["কোতোয়ালী", "পাঁচলাইশ", "পাহাড়তলী", "হালিশহর", "খুলশী", "বাকলিয়া", "বায়জিদ", "চান্দগাঁও", "ডবলমুরিং", "পতেঙ্গা", "কর্ণফুলী", "আনোয়ারা", "বাঁশখালী", "বোয়ালখালী", "চন্দনাইশ", "ফটিকছড়ি", "হাটহাজারী", "লোহাগাড়া", "মীরসরাই", "পটিয়া", "রাঙ্গুনিয়া", "রাউজান", "সন্দ্বীপ", "সাতকানিয়া", "সীতাকুণ্ড"],
+    "কক্সবাজার": ["কক্সবাজার সদর", "চকোরিয়া", "মহেশখালী", "টেকনাফ", "উখিয়া", "পেকুয়া", "কুতুবদিয়া", "রামু", "ঈদগাঁও"],
+    "কুমিল্লা": ["কুমিল্লা আদর্শ সদর", "কুমিল্লা সদর দক্ষিণ", "দাউদকান্দি", "চান্দিনা", "মুরাদনগর", "দেবিদ্বার", "হোমনা", "ব্রাহ্মণপাড়া", "বুড়িচং", "চৌদ্দগ্রাম", "লাকসাম", "বরুড়া", "নাঙ্গলকোট", "মেঘনা", "তিতাস", "মনোহরগঞ্জ", "লালমাই"],
+    "ফেনী": ["ফেনী সদর", "দাগনভূঞা", "ছাগলনাইয়া", "সোনাগাজী", "পরশুরাম", "ফুলগাজী"],
+    "ব্রাহ্মণবাড়িয়া": ["ব্রাহ্মণবাড়িয়া সদর", "কসবা", "নবীনগর", "সরাইল", "আশুগঞ্জ", "আখাউড়া", "নাসিরনগর", "বাঞ্ছারামপুর", "বিজয় নগর"],
+    "নোয়াখালী": ["নোয়াখালী সদর", "বেগমগঞ্জ", "চাটখিল", "কোম্পানীগঞ্জ", "হাতিয়া", "সেনবাগ", "সোনাইমুড়ী", "সুবর্ণচর", "কবিরহাট"],
+    "চাঁদপুর": ["চাঁদপুর সদর", "ফরিদগঞ্জ", "হাজীগঞ্জ", "মতলব উত্তর", "মতলব দক্ষিণ", "শাহরাস্তি", "কচুয়া", "হাইমচর"],
+    "লক্ষ্মীপুর": ["লক্ষ্মীপুর সদর", "রায়পুর", "রামগঞ্জ", "রামগতি", "কমলনগর"],
+    "রাঙ্গামাটি": ["রাঙ্গামাটি সদর", "কাপ্তাই", "কাউখালী", "বাঘাইছড়ি", "বরকল", "লংগদু", "রাজস্থলী", "জুরাছড়ি", "নানিয়ারচর", "বিলাইছড়ি"],
+    "বান্দরবান": ["বান্দরবান সদর", "রুমা", "থানচি", "রোয়াংছড়ি", "লামা", "আলীকদম", "নাইক্ষ্যংছড়ি"],
+    "খাগড়াছড়ি": ["খাগড়াছড়ি সদর", "দীঘিনালা", "পানছড়ি", "মহালছড়ি", "মাটিরাঙ্গা", "মানিকছড়ি", "রামগড়", "গুইমারা", "লক্ষ্মীছড়ি"]
+  },
+  "রাজশাহী": {
+    "রাজশাহী": ["বোয়ালিয়া", "মতিহার", "রাজপাড়া", "শাহ মখদুম", "পবা", "গোদাগাড়ী", "তানোর", "মোহনপুর", "বাগমারা", "দুর্গাপুর", "পুঠিয়া", "চারঘাট", "বাঘা"],
+    "বগুড়া": ["বগুড়া সদর", "শিবগঞ্জ", "সোনাতলা", "গাবতলী", "সারিয়াকান্দি", "আদমদীঘি", "দুপচাঁচিয়া", "কাহালু", "নন্দীগ্রাম", "শেরপুর", "ধুনট", "শাজাহানপুর"],
+    "পাবনা": ["পাবনা সদর", "ঈশ্বরদী", "আটঘরিয়া", "চাটমোহর", "ভাঙ্গুড়া", "ফরিদপুর", "সুজানগর", "বেড়া", "সাঁথিয়া"],
+    "সিরাজগঞ্জ": ["সিরাজগঞ্জ সদর", "শাহজাদপুর", "উল্লাপাড়া", "বেলকুচি", "রায়গঞ্জ", "তাড়াশ", "কাজিপুর", "কামারখন্দ", "চৌহালী"],
+    "নওগাঁ": ["নওগাঁ সদর", "মহাদেবপুর", "বদলগাছী", "পত্নীতলা", "ধামইরহাট", "নিয়ামdelimiterপুর", "মান্দা", "আত্রাই", "রানীনগর", "সাপাহার", "পোরশা"],
+    "নাটোর": ["নাটোর সদর", "সিংড়া", "বড়াইগ্রাম", "গুরুদাসপুর", "লালপুর", "বাগাতিপাড়া", "নলডাঙ্গা"],
+    "চাঁপাইনবাবগঞ্জ": ["চাঁপাইনবাবগঞ্জ সদর", "শিবগঞ্জ", "গোমস্তাপুর", "নাচোল", "ভোলাহাট"],
+    "জয়পুরহাট": ["জয়পুরহাট সদর", "পাঁচবিবি", "কালাই", "ক্ষেতলাল", "আক্কেলপুর"]
+  },
+  "খুলনা": {
+    "খুলনা": ["খুলনা সদর", "সোনাডাঙ্গা", "খালিশপুর", "দৌলতপুর", "খানজাহান আলী", "বটিয়াঘাটা", "দাকোপ", "ডুমুরিয়া", "দিঘলিয়া", "কয়রা", "পাইকগাছা", "ফুলতলা", "রূপসা", "তেরখাদা"],
+    "যশোর": ["যশোর সদর", "শার্শা", "ঝিকরগাছা", "চৌগাছা", "অভয়নগর", "বাঘারপাড়া", "মণিরামপুর", "কেশবপুর"],
+    "সাতক্ষীরা": ["সাতক্ষীরা সদর", "কলারোয়া", "তালা", "কালীগঞ্জ", "শ্যামনগর", "আশাশুনি", "দেবহাটা"],
+    "ঝিনাইদহ": ["ঝিনাইদহ সদর", "শৈলকুপা", "হরিণাকুণ্ডু", "কালীগঞ্জ", "কোটচাঁদপুর", "মহেশপুর"],
+    "কুষ্টিয়া": ["কুষ্টিয়া সদর", "কুমারখালী", "খোকসা", "মিরপুর", "ভেড়ামারা", "দৌলতপুর"],
+    "বাগেরহাট": ["বাগেরহাট সদর", "ফকিরহাট", "মোল্লাহাট", "কচুয়া", "রামপাল", "মোংলা", "মোরেলগঞ্জ", "শরণখোলা", "চিতলমারী"],
+    "মাগুরা": ["মাগুরা সদর", "শ্রীপুর", "শালিখা", "মহম্মদপুর"],
+    "মেহেরপুর": ["মেহেরপুর সদর", "গাংনী", "মুজিবনগর"],
+    "নড়াইল": ["নড়াইল সদর", "লোহাগড়া", "কালিয়া"],
+    "চুয়াডাঙ্গা": ["চুয়াডাঙ্গা সদর", "আলমডাঙ্গা", "দামুড়হুদা", "জীবননগর"]
+  },
+  "বরিশাল": {
+    "বরিশাল": ["বরিশাল সদর", "বাবুগঞ্জ", "উজিরপুর", "বাকেরগঞ্জ", "গৌরনদী", "আগৈলঝাড়া", "বানারীপাড়া", "মুলাদী", "মেহেন্দীগঞ্জ", "হিজলা"],
+    "পটুয়াখালী": ["পটুয়াখালী সদর", "বাউফল", "গলাচিপা", "দশমিনা", "কলাপাড়া", "মির্জাগঞ্জ", "দুমকি", "রাঙ্গাবালী"],
+    "ভোলা": ["ভোলা সদর", "দৌলতখান", "বোরহানউদ্দিন", "তজুমদ্দিন", "লালমোহন", "চরফ্যাশন", "মনপুরা"],
+    "পিরোজপুর": ["পিরোজপুর সদর", "ভাণ্ডারিয়া", "মঠবাড়িয়া", "নাজিরপুর", "নেছারাবাদ (স্বরূপকাঠি)", "কাউখালী", "ইন্দুরকানী"],
+    "বরগুনা": ["বরগুনা সদর", "আমতলী", "পাথরঘাটা", "বেতাগী", "বামনা", "তালতলী"],
+    "ঝালকাঠি": ["ঝালকাঠি সদর", "নলছিটি", "রাজাপুর", "কাঁঠালিয়া"]
+  },
+  "সিলেট": {
+    "সিলেট": ["সিলেট সদর", "দক্ষিণ সুরমা", "গোলাপগঞ্জ", "বিয়ানীবাজার", "বিশ্বনাথ", "ফেঞ্চুগঞ্জ", "বালাগঞ্জ", "জৈন্তাপুর", "গোয়াইনঘাট", "কানাইঘাট", "কোম্পানীগঞ্জ", "জকiganj", "ওসমানীনগর"],
+    "মৌলভীবাজার": ["মৌলভীবাজার সদর", "শ্রীমঙ্গল", "কমলগঞ্জ", "কুলাউড়া", "বড়লেখা", "রাজনগর", "জুড়ী"],
+    "হবিগঞ্জ": ["হবিগঞ্জ সদর", "নবীগঞ্জ", "বাহুবল", "মাধবপুর", "চুনারুঘাট", "বানিয়াচং", "আজমিরীগঞ্জ", "লাখাই", "শায়েস্তাগঞ্জ"],
+    "সুনামগঞ্জ": ["সুনামগঞ্জ সদর", "ছাতক", "জগন্নাথপুর", "দোয়ারাবাজার", "তাহিরপুর", "ধর্মপাশা", "জামালগঞ্জ", "শাল্লা", "দিরাই", "বিশ্বম্ভরপুর", "শান্তিগঞ্জ", "মধ্যনগর"]
+  },
+  "রংপুর": {
+    "রংপুর": ["রংপুর সদর", "গঙ্গাচড়া", "তারাগঞ্জ", "বদরগঞ্জ", "পীরগাছা", "কাউনিয়া", "পীরগঞ্জ", "মিঠাপুকুর"],
+    "দিনাজপুর": ["দিনাজপুর সদর", "বিরামপুর", "বীরগঞ্জ", "বোচাগঞ্জ", "ফুলবাড়ী", "চিরিরবন্দর", "ঘোড়াঘাট", "হাকিমপুর", "কাহারোল", "খানসামা", "নবাবগঞ্জ", "পার্বতীপুর", "সেতাবগঞ্জ"],
+    "গাইবান্ধা": ["গাইবান্ধা সদর", "গোবিন্দগঞ্জ", "সুন্দরগঞ্জ", "সাঘাটা", "পলাশবাড়ী", "সাদুল্লাপুর", "ফুলছড়ি"],
+    "কুড়িগ্রাম": ["কুড়িগ্রাম সদর", "নাগেশ্বরী", "ভুরুঙ্গামারী", "উলিপুর", "চিলমারী", "রৌমারী", "রাজিবপুর", "ফুলবাড়ী", "রাজারহাট"],
+    "নীলফামারী": ["নীলফামারী সদর", "সৈয়দপুর", "ডোমার", "ডিমলা", "জলঢাকা", "কিশোরগঞ্জ"],
+    "পঞ্চগড়": ["পঞ্চগড় সদর", "বোদা", "দেবীগঞ্জ", "তেঁতুলিয়া", "আটোয়ারী"],
+    "লালমনিরহাট": ["লালমনিরহাট সদর", "হাতীবান্ধা", "পাটগ্রাম", "কালীগঞ্জ", "আদিতমারী"],
+    "ঠাকুরগাঁও": ["ঠাকুরগাঁও সদর", "পীরগঞ্জ", "বালিয়াডাঙ্গী", "রাণীশংকৈল", "হরিপুর"]
+  },
+  "ময়মনসিংহ": {
+    "ময়মনসিংহ": ["ময়মনসিংহ সদর", "মুক্তাগাছা", "ত্রিশাল", "ফুলবাড়িয়া", "ভালুকা", "গফরগাঁও", "ঈশ্বরগঞ্জ", "নান্দাইল", "হালুয়াঘাট", "ধোবাউড়া", "ফুলপুর", "তারাকান্দা", "গৌরীপুর"],
+    "জামালপুর": ["জামালপুর সদর", "মেলান্দহ", "ইসলামপুর", "দেওয়ানগঞ্জ", "সরিষাবাড়ী", "মাদারগঞ্জ", "বকশীগঞ্জ"],
+    "নেত্রকোণা": ["নেত্রকোণা সদর", "কেন্দুয়া", "পূর্বধলা", "দুর্গাপুর", "কলমাকান্দা", "বারহাট্টা", "মদন", "মোহনগঞ্জ", "খালিয়াজুড়ি", "আটপাড়া"],
+    "শেরপুর": ["শেরপুর সদর", "নকলা", "নালিতাবাড়ী", "শ্রীবরদী", "ঝিনাইগাতী"]
+  }
+};
+
+let activeAddressDatabase = DEFAULT_BD_ADDRESS_DATA;
 
 const $ = id => document.getElementById(id);
 
@@ -595,6 +685,33 @@ const safeNumber = value => {
   const number = Number(value);
   return Number.isFinite(number) && number > 0 ? number : 0;
 };
+
+// numeric delivery charge পার্সিং: ০ হলে ০-ই থাকবে (ফ্রি ডেলিভারি), অবৈধ বা অনুপস্থিত থাকলে ডিফল্ট
+function parseDeliveryCharge(val, defaultVal) {
+  if (val !== undefined && val !== null && val !== "") {
+    const num = Number(val);
+    if (Number.isFinite(num) && num >= 0) {
+      return num;
+    }
+  }
+  return defaultVal;
+}
+
+function getInsideDhakaCharge(product) {
+  if (!product) return DEFAULT_INSIDE_DHAKA_CHARGE;
+  return parseDeliveryCharge(product.inside_dhaka, DEFAULT_INSIDE_DHAKA_CHARGE);
+}
+
+function getOutsideDhakaCharge(product) {
+  if (!product) return DEFAULT_OUTSIDE_DHAKA_CHARGE;
+  return parseDeliveryCharge(product.outside_dhaka, DEFAULT_OUTSIDE_DHAKA_CHARGE);
+}
+
+function isDhakaText(str) {
+  if (!str) return false;
+  const s = String(str).trim().toLowerCase();
+  return s === "ঢাকা" || s === "dhaka" || s === "dhaka division" || s === "dhaka district";
+}
 
 function extractProductSlug() {
   const params = new URLSearchParams(window.location.search);
@@ -626,9 +743,9 @@ function extractProductSlug() {
 document.addEventListener("DOMContentLoaded", () => {
   $("footer-year").textContent = new Date().getFullYear();
 
+  initializeAddressSystem();
   setupBannerSlider();
   setupQuantityControls();
-  setupDeliveryLocationListeners();
 
   $("header-order-btn").addEventListener("click", scrollToOrder);
   $("scroll-to-order").addEventListener("click", scrollToOrder);
@@ -652,6 +769,186 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadProduct();
 });
+
+// address.js ডাটা পার্সিং ও ড্রপডাউন ইনিশিয়ালাইজেশন
+function initializeAddressSystem() {
+  const externalData = getExternalAddressData();
+  if (externalData && typeof externalData === "object" && Object.keys(externalData).length > 0) {
+    activeAddressDatabase = externalData;
+  }
+
+  populateDivisions();
+
+  const vibagSelect = $("cust-vibag");
+  const jelaSelect = $("cust-jela");
+  const thanaSelect = $("cust-thana");
+
+  vibagSelect.addEventListener("change", () => {
+    const selectedDivision = vibagSelect.value;
+    jelaSelect.innerHTML = '<option value="">জেলা নির্বাচন করুন</option>';
+    thanaSelect.innerHTML = '<option value="">উপজেলা নির্বাচন করুন</option>';
+    thanaSelect.disabled = true;
+
+    if (selectedDivision && activeAddressDatabase[selectedDivision]) {
+      const districts = Object.keys(activeAddressDatabase[selectedDivision]);
+      districts.forEach(district => {
+        const opt = document.createElement("option");
+        opt.value = district;
+        opt.textContent = district;
+        jelaSelect.appendChild(opt);
+      });
+      jelaSelect.disabled = false;
+    } else {
+      jelaSelect.disabled = true;
+    }
+
+    updateDeliveryLocationAndCharge();
+  });
+
+  jelaSelect.addEventListener("change", () => {
+    const selectedDivision = vibagSelect.value;
+    const selectedDistrict = jelaSelect.value;
+
+    thanaSelect.innerHTML = '<option value="">উপজেলা নির্বাচন করুন</option>';
+
+    if (
+      selectedDivision &&
+      selectedDistrict &&
+      activeAddressDatabase[selectedDivision] &&
+      activeAddressDatabase[selectedDivision][selectedDistrict]
+    ) {
+      const upazilas = activeAddressDatabase[selectedDivision][selectedDistrict];
+      upazilas.forEach(thana => {
+        const opt = document.createElement("option");
+        const thanaName = typeof thana === "string" ? thana : (thana.name || thana.bn_name || String(thana));
+        opt.value = thanaName;
+        opt.textContent = thanaName;
+        thanaSelect.appendChild(opt);
+      });
+      thanaSelect.disabled = false;
+    } else {
+      thanaSelect.disabled = true;
+    }
+
+    updateDeliveryLocationAndCharge();
+  });
+
+  thanaSelect.addEventListener("change", () => {
+    // নির্বাচন সম্পূর্ণ হয়েছে
+  });
+}
+
+// address.js থেকে গ্লোবাল অবজেক্ট/ফাংশন সনাক্তকরণ
+function getExternalAddressData() {
+  const candidates = [
+    window.bangladeshAddress,
+    window.addressData,
+    window.divisions,
+    window.bdAddress,
+    window.bangladesh,
+    window.geoData,
+    window.addressList
+  ];
+
+  for (const item of candidates) {
+    if (item && typeof item === "object") {
+      const normalized = normalizeAddressDataStructure(item);
+      if (normalized) return normalized;
+    }
+  }
+
+  if (window.Address && typeof window.Address.getAll === "function") {
+    try {
+      return normalizeAddressDataStructure(window.Address.getAll());
+    } catch {}
+  }
+
+  return null;
+}
+
+// বিভিন্ন ফরম্যাটকে স্ট্যান্ডার্ড অবজেক্ট {বিভাগ: {জেলা: [উপজেলা]}} স্ট্রাকচারে রূপান্তর
+function normalizeAddressDataStructure(raw) {
+  if (!raw) return null;
+
+  if (Array.isArray(raw)) {
+    const result = {};
+    raw.forEach(div => {
+      const divName = div.name || div.division || div.bn_name;
+      if (!divName) return;
+      result[divName] = {};
+
+      const districts = div.districts || div.districtList || [];
+      if (Array.isArray(districts)) {
+        districts.forEach(dist => {
+          const distName = dist.name || dist.district || dist.bn_name;
+          if (!distName) return;
+          const upazilas = dist.upazilas || dist.thanas || dist.sub_districts || [];
+          result[divName][distName] = Array.isArray(upazilas)
+            ? upazilas.map(u => (typeof u === "object" ? (u.bn_name || u.name || String(u)) : String(u)))
+            : [];
+        });
+      }
+    });
+    return Object.keys(result).length ? result : null;
+  }
+
+  if (typeof raw === "object") {
+    return raw;
+  }
+
+  return null;
+}
+
+function populateDivisions() {
+  const vibagSelect = $("cust-vibag");
+  vibagSelect.innerHTML = '<option value="">বিভাগ নির্বাচন করুন</option>';
+
+  Object.keys(activeAddressDatabase).forEach(division => {
+    const opt = document.createElement("option");
+    opt.value = division;
+    opt.textContent = division;
+    vibagSelect.appendChild(opt);
+  });
+}
+
+// বিভাগ ও জেলা নির্বাচনের ওপর স্বয়ংক্রিয় চার্জ ও লোকেশন নির্ধারণ
+function updateDeliveryLocationAndCharge() {
+  const vibagVal = $("cust-vibag").value.trim();
+  const jelaVal = $("cust-jela").value.trim();
+
+  if (!vibagVal) {
+    currentDeliveryLocation = "";
+    currentDeliveryCharge = 0;
+  } else if (!jelaVal) {
+    if (!isDhakaText(vibagVal)) {
+      currentDeliveryLocation = "ঢাকার বাইরে";
+      currentDeliveryCharge = getOutsideDhakaCharge(currentProductData);
+    } else {
+      currentDeliveryLocation = "";
+      currentDeliveryCharge = 0;
+    }
+  } else {
+    if (isDhakaText(vibagVal) && isDhakaText(jelaVal)) {
+      currentDeliveryLocation = "ঢাকার ভেতরে";
+      currentDeliveryCharge = getInsideDhakaCharge(currentProductData);
+    } else {
+      currentDeliveryLocation = "ঢাকার বাইরে";
+      currentDeliveryCharge = getOutsideDhakaCharge(currentProductData);
+    }
+  }
+
+  updatePricingDisplay();
+}
+
+function validateAddressHierarchy(vibag, jela, thana) {
+  if (!activeAddressDatabase[vibag]) return false;
+  if (!activeAddressDatabase[vibag][jela]) return false;
+  const upazilas = activeAddressDatabase[vibag][jela];
+  if (Array.isArray(upazilas) && upazilas.length > 0) {
+    return upazilas.includes(thana);
+  }
+  return true;
+}
 
 function setupBannerSlider() {
   const wrapper = $("promoSlidesWrapper");
@@ -784,7 +1081,6 @@ function renderProductPage(product) {
   $("header-product-title").textContent = name;
   $("product-name").textContent = name;
 
-  // Description শুধু একবার দেখানো হচ্ছে।
   $("product-description").textContent = description;
   $("product-description").classList.toggle("hidden", !description.trim());
 
@@ -798,9 +1094,10 @@ function renderProductPage(product) {
   setupImageGallery(productImages);
   setupVariants(Array.isArray(product.variants) ? product.variants : []);
   setupContactButtons(product);
-  updatePricingDisplay();
+  updateDeliveryLocationAndCharge();
 }
 
+// গ্যালারি সিস্টেম ও অ্যাক্টিভ ইমেজ ট্র্যাকিং
 function setupImageGallery(images) {
   const main = $("main-product-image");
   const thumbs = $("thumbnail-container");
@@ -861,6 +1158,8 @@ function setupImageGallery(images) {
 }
 
 function updateActiveImage() {
+  if (!productImages[activeImageIndex]) return;
+
   $("main-product-image").src = productImages[activeImageIndex];
   $("main-product-image").alt = `পণ্যের ছবি ${activeImageIndex + 1}`;
 
@@ -987,21 +1286,6 @@ function setQuantity(value) {
   updatePricingDisplay();
 }
 
-function setupDeliveryLocationListeners() {
-  document.querySelectorAll('input[name="deliveryLocation"]').forEach(radio => {
-    radio.addEventListener("change", event => {
-      document.querySelectorAll(".location-card").forEach(card => {
-        card.classList.remove("selected");
-      });
-
-      event.target.closest(".location-card").classList.add("selected");
-
-      currentDeliveryCharge = event.target.value === "ঢাকার ভেতরে" ? 60 : 120;
-      updatePricingDisplay();
-    });
-  });
-}
-
 function calculateTotals() {
   const unitPrice = safeNumber(currentProductData && currentProductData.price);
 
@@ -1012,7 +1296,7 @@ function calculateTotals() {
   const unitWithVariants = unitPrice + variantExtraPerUnit;
   const baseTotal = unitPrice * quantity;
   const variantTotal = variantExtraPerUnit * quantity;
-  const productTotal = baseTotal + variantTotal;
+  const productTotal = (unitPrice + variantExtraPerUnit) * quantity;
   const total = productTotal + currentDeliveryCharge;
 
   return {
@@ -1037,7 +1321,13 @@ function updatePricingDisplay() {
   $("summary-quantity").textContent = `${quantity} টি`;
   $("summary-base-price").textContent = money(totals.baseTotal);
   $("summary-variant-price").textContent = money(totals.variantTotal);
-  $("summary-delivery-charge").textContent = money(currentDeliveryCharge);
+  
+  if (currentDeliveryLocation) {
+    $("summary-delivery-charge").textContent = `${money(currentDeliveryCharge)} (${currentDeliveryLocation})`;
+  } else {
+    $("summary-delivery-charge").textContent = money(currentDeliveryCharge);
+  }
+  
   $("summary-total-price").textContent = money(totals.total);
 
   $("summary-variant-row").classList.toggle("hidden", totals.variantTotal <= 0);
@@ -1096,7 +1386,7 @@ function scrollToOrder() {
 async function submitOrder(event) {
   event.preventDefault();
 
-  if (!currentProductData || successRedirectStarted) return;
+  if (!currentProductData || successRedirectStarted || isSubmitting) return;
 
   const variants = Array.isArray(currentProductData.variants)
     ? currentProductData.variants
@@ -1109,13 +1399,6 @@ async function submitOrder(event) {
     }
   }
 
-  const selectedRadio = document.querySelector('input[name="deliveryLocation"]:checked');
-
-  if (!selectedRadio) {
-    alert("দয়া করে ডেলিভারি লোকেশন নির্বাচন করুন।");
-    return;
-  }
-
   const name = $("cust-name").value.trim();
   const phone = $("cust-phone").value.trim();
   const vibag = $("cust-vibag").value.trim();
@@ -1123,7 +1406,7 @@ async function submitOrder(event) {
   const thanaUpajela = $("cust-thana").value.trim();
 
   if (!name || !phone || !vibag || !jela || !thanaUpajela) {
-    alert("দয়া করে প্রয়োজনীয় সকল তথ্য পূরণ করুন।");
+    alert("দয়া করে প্রয়োজনীয় সকল তথ্য (নাম, ফোন, বিভাগ, জেলা ও থানা/উপজেলা) নির্বাচন করুন।");
     return;
   }
 
@@ -1133,50 +1416,86 @@ async function submitOrder(event) {
     return;
   }
 
+  if (!validateAddressHierarchy(vibag, jela, thanaUpajela)) {
+    alert("নির্বাচিত বিভাগ, জেলা বা উপজেলা সঠিক নয়। দয়া করে ড্রপডাউন থেকে পুনরায় সঠিক তথ্য নির্বাচন করুন।");
+    return;
+  }
+
+  // ডেলিভারি লোকেশন ও চার্জ পুনরায় সুরক্ষিতভাবে যাচাই
+  let finalLocation = "ঢাকার বাইরে";
+  let finalCharge = getOutsideDhakaCharge(currentProductData);
+
+  if (isDhakaText(vibag) && isDhakaText(jela)) {
+    finalLocation = "ঢাকার ভেতরে";
+    finalCharge = getInsideDhakaCharge(currentProductData);
+  }
+
+  currentDeliveryLocation = finalLocation;
+  currentDeliveryCharge = finalCharge;
+
   const totals = calculateTotals();
-  const selectedVariantsArr = Object.values(selectedVariantState).map(variant => ({...variant}));
+
+  if (!Number.isFinite(totals.total) || totals.total <= 0) {
+    alert("মূল্য গণনায় সমস্যা হয়েছে। পেজটি রিফ্রেশ করে আবার চেষ্টা করুন।");
+    return;
+  }
 
   const submitButton = $("submit-order-btn");
   const buttonText = $("btn-text");
   const buttonSpinner = $("btn-spinner");
 
+  isSubmitting = true;
   submitButton.disabled = true;
   buttonText.textContent = "অর্ডার প্রসেস হচ্ছে...";
   buttonSpinner.classList.remove("hidden");
 
   try {
+    const selectedVariantsArr = Object.values(selectedVariantState).map(variant => ({...variant}));
+    
+    // কাস্টমারের সর্বশেষ সিলেক্ট করা ছবি নেওয়া হচ্ছে
+    const selectedImageUrl = productImages[activeImageIndex] || (productImages[0] || "");
+
     const orderPayload = {
       name,
       phone,
-      thanaUpajela,
+
       vibag,
       jela,
-      deliveryLocation: selectedRadio.value,
-      deliveryCharge: currentDeliveryCharge,
+      thanaUpajela,
+
+      deliveryLocation: finalLocation,
+      deliveryCharge: finalCharge,
+
       fullAddress: $("cust-address").value.trim(),
       orderNote: $("cust-note").value.trim(),
 
       productName: String(currentProductData.productName || "Product"),
       productSlug: String(currentProductData.productSlug || ""),
-      productImage: productImages,
+
+      productImage: selectedImageUrl,
+      productImages: productImages,
 
       selectedVariants: selectedVariantsArr,
+
       quantity,
 
       unitPrice: totals.unitPrice,
       price: totals.baseTotal,
+
       variantExtraPricePerUnit: totals.variantExtraPerUnit,
       variantExtraPrice: totals.variantTotal,
+
       subtotal: totals.productTotal,
+      totalPrice: totals.total,
 
       status: "pending",
-      totalPrice: totals.total,
 
       landingUserId: currentProductData.uid || "",
       landingUserEmail: currentProductData.email || "",
 
       currency: "BDT",
       source: "product_landing_page",
+
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     };
 
@@ -1185,12 +1504,14 @@ async function submitOrder(event) {
 
   } catch (error) {
     console.error("Order submission error:", error);
-
     alert("অর্ডার সাবমিট করতে সমস্যা হয়েছে। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।");
-
-    submitButton.disabled = false;
-    buttonText.textContent = "অর্ডার কনফার্ম করুন";
-    buttonSpinner.classList.add("hidden");
+  } finally {
+    if (!successRedirectStarted) {
+      isSubmitting = false;
+      submitButton.disabled = false;
+      buttonText.textContent = "অর্ডার কনফার্ম করুন";
+      buttonSpinner.classList.add("hidden");
+    }
   }
 }
 
@@ -1211,8 +1532,6 @@ function closeSuccessModal() {
   modal.classList.remove("active");
   modal.setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
-
-  // অর্ডার সেভ হওয়ার পর গ্রাহক চাইলে নিজে অ্যাপের লিংকে যেতে পারবেন।
 }
 </script>
 </body>
