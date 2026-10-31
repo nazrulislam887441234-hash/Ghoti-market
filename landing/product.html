@@ -648,24 +648,12 @@ footer{background:#d45800;color:#fff;text-align:center;margin-top:35px;padding:2
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
-<!-- address.js অন্তর্ভুক্ত করা হয়েছে মূল স্ক্রিপ্টের পূর্বে -->
-<script src="address.js"></script>
-
 <script>
 "use strict";
-
-/*
-  Firebase Web Config:
-  Security Note: Client-side Price Calculation এবং ড্রপডাউন ভ্যালিডেশনের পাশাপাশি 
-  Production সুরক্ষার জন্য Firestore Security Rules ও Trusted Backend (Cloud Function)
-  দিয়ে মূল্যের সঠিকতা নিশ্চিত করা উত্তম।
-*/
-
 const firebaseConfig = {
   apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
   authDomain: "ghotimarket.firebaseapp.com",
-  databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+  databaseURL: "ghotimarket-default-rtdb.firebaseio.com",
   projectId: "ghotimarket",
   storageBucket: "ghotimarket.firebasestorage.app",
   messagingSenderId: "481257644093",
