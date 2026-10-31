@@ -868,12 +868,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (event.target === $("lightbox")) closeLightbox();
   });
 
-  $("success-close").addEventListener("click", closeSuccessModal);
-
   document.addEventListener("keydown", event => {
     if (event.key === "Escape") {
       closeLightbox();
-      closeSuccessModal();
     }
   });
 
@@ -1710,14 +1707,5 @@ function showOrderSuccessPopup() {
   modal.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
 }
-
-function closeSuccessModal() {
-  const modal = $("order-success-modal");
-
-  modal.classList.remove("active");
-  modal.setAttribute("aria-hidden", "true");
-  document.body.style.overflow = "";
-}
-</script>
 </body>
 </html>
