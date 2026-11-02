@@ -114,8 +114,13 @@ header{
 }
 .hero h1{
   font-size:clamp(1.2rem,4vw,2rem);line-height:1.55;
-  font-weight:800;overflow-wrap:anywhere;
+  font-weight:800;overflow-wrap:anywhere;min-height:1.55em;
 }
+#typed-text::after{
+  content:"";display:inline-block;width:2px;height:1em;margin-left:5px;
+  vertical-align:-.12em;background:var(--orange);animation:typing-caret .8s steps(1) infinite;
+}
+@keyframes typing-caret{50%{opacity:0}}
 .product-grid{
   display:grid;grid-template-columns:minmax(0,1fr);gap:18px;width:100%;
 }
@@ -164,8 +169,6 @@ header{
 .current-price{font-size:clamp(1.6rem,6vw,2rem);font-weight:800;color:var(--orange-dark);overflow-wrap:anywhere}
 .old-price{font-size:1rem;color:#9298a0;text-decoration:line-through}
 .discount{background:var(--soft);color:var(--orange-dark);border-radius:20px;padding:5px 9px;font-weight:800;font-size:.78rem}
-
-/* Offer Countdown Banner Styling */
 .offer-countdown-banner{
   background:linear-gradient(135deg,#fff6ee 0%,#ffeada 100%);
   border:1.5px solid var(--orange);
@@ -220,8 +223,6 @@ header{
   color:var(--orange-dark);
   padding-bottom:12px;
 }
-
-/* Free Delivery Banner Styling */
 .free-delivery-banner{
   margin-top:12px;
   display:flex;
@@ -246,7 +247,6 @@ header{
   line-height:1.4;
   overflow-wrap:anywhere;
 }
-
 .description{
   color:var(--muted);line-height:1.9;white-space:pre-line;
   overflow-wrap:anywhere;border-top:1px solid var(--line);
@@ -291,12 +291,24 @@ header{
   width:32px;height:32px;border-radius:10px;background:var(--soft);
   color:var(--orange-dark);display:grid;place-items:center;flex-shrink:0;
 }
-.contact{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:20px}
+.contact-support{
+  max-width:800px;margin:28px auto 0;padding:clamp(18px,3vw,26px);
+  background:linear-gradient(145deg,#fff 0%,#fff8f2 100%);
+  border:1px solid #ffe0ca;border-radius:22px;box-shadow:0 12px 32px rgba(30,30,30,.06);
+}
+.contact-support-head{text-align:center;margin-bottom:18px}
+.contact-support-kicker{display:inline-block;color:var(--orange-dark);font-size:.7rem;font-weight:800;letter-spacing:1.4px;margin-bottom:7px}
+.contact-support-head h2{font-size:clamp(1.15rem,4vw,1.45rem);font-weight:800}
+.contact-support-head p{margin-top:7px;color:var(--muted);font-size:.88rem;line-height:1.8}
+.contact{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
 @media(min-width:500px){.contact{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .contact a{
-  text-decoration:none;text-align:center;padding:14px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  text-decoration:none;text-align:center;padding:15px 14px;border-radius:13px;
   border:1px solid var(--line);background:#fff;font-weight:800;overflow-wrap:anywhere;
+  transition:transform .2s,box-shadow .2s,border-color .2s;
 }
+.contact a:hover{transform:translateY(-2px);box-shadow:0 7px 18px #0000000c;border-color:#ffc49d}
 .contact a.wa{background:#087a43;color:#fff;border-color:#087a43}
 .order-section{width:100%;max-width:800px;margin:30px auto 0;scroll-margin-top:85px}
 .order-head{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:20px}
@@ -458,7 +470,7 @@ footer{background:#d45800;color:#fff;text-align:center;margin-top:35px;padding:2
   <section id="product-section" class="product-wrap hidden">
     <div class="hero">
       <span class="badge">★ PREMIUM PRODUCT</span>
-      <h1 id="typed-text">আপনার পছন্দের পণ্য</h1>
+      <h1 id="typed-text" aria-live="polite">আপনার পছন্দের পণ্য</h1>
     </div>
 
     <div class="product-grid">
@@ -472,7 +484,6 @@ footer{background:#d45800;color:#fff;text-align:center;margin-top:35px;padding:2
       </div>
 
       <div class="info">
-        <!-- Dynamic Offer Countdown Banner -->
         <div id="offer-countdown-banner" class="offer-countdown-banner hidden">
           <div class="countdown-title">⚡ এই প্রোডাক্টের অফার শেষ হবে</div>
           <div class="countdown-boxes">
@@ -494,7 +505,6 @@ footer{background:#d45800;color:#fff;text-align:center;margin-top:35px;padding:2
             <span id="discount-badge" class="discount hidden"></span>
           </div>
 
-          <!-- Free Delivery Banner -->
           <div id="free-delivery-banner" class="free-delivery-banner hidden">
             <span class="fd-icon">🚚</span>
             <span class="fd-text">এই প্রোডাক্ট ফ্রিতেই ডেলিভারি নিতে পারবেন!</span>
@@ -524,8 +534,6 @@ footer{background:#d45800;color:#fff;text-align:center;margin-top:35px;padding:2
       <div class="trust-item"><span class="trust-icon">✓</span><span>ক্যাশ অন ডেলিভারি</span></div>
     </div>
 
-    <div id="contact-buttons-wrapper" class="contact hidden"></div>
-
     <section class="order-section" id="order-form-section">
       <div class="order-card">
         <div class="order-head">
@@ -545,16 +553,11 @@ footer{background:#d45800;color:#fff;text-align:center;margin-top:35px;padding:2
             </div>
           </div>
 
-          <div class="form-grid three-col">
-            <div class="field">
-              <label for="cust-vibag">বিভাগ *</label>
-              <select class="control" id="cust-vibag" required>
-                <option value="">বিভাগ নির্বাচন করুন</option>
-              </select>
-            </div>
+          <!-- ===== MODIFIED ADDRESS SECTION: জেলা -> উপজেলা, বিভাগ হিডেন ===== -->
+          <div class="form-grid two-col">
             <div class="field">
               <label for="cust-jela">জেলা *</label>
-              <select class="control" id="cust-jela" required disabled>
+              <select class="control" id="cust-jela" required>
                 <option value="">জেলা নির্বাচন করুন</option>
               </select>
             </div>
@@ -564,6 +567,14 @@ footer{background:#d45800;color:#fff;text-align:center;margin-top:35px;padding:2
                 <option value="">উপজেলা নির্বাচন করুন</option>
               </select>
             </div>
+          </div>
+
+          <!-- বিভাগ হিডেন থাকবে, অটো সিলেক্ট হবে -->
+          <div class="field hidden">
+            <label for="cust-vibag">বিভাগ (Auto)</label>
+            <select class="control" id="cust-vibag">
+              <option value="">বিভাগ</option>
+            </select>
           </div>
 
           <div class="field">
@@ -604,6 +615,15 @@ footer{background:#d45800;color:#fff;text-align:center;margin-top:35px;padding:2
           </p>
         </form>
       </div>
+    </section>
+
+    <section id="contact-support-section" class="contact-support hidden" aria-label="যোগাযোগ ও সহায়তা">
+      <div class="contact-support-head">
+        <span class="contact-support-kicker">CUSTOMER SUPPORT</span>
+        <h2>কোনো প্রশ্ন আছে?</h2>
+        <p>অর্ডার বা পণ্য সম্পর্কে জানতে সরাসরি আমাদের সঙ্গে যোগাযোগ করুন।</p>
+      </div>
+      <div id="contact-buttons-wrapper" class="contact"></div>
     </section>
   </section>
 </main>
@@ -648,8 +668,6 @@ footer{background:#d45800;color:#fff;text-align:center;margin-top:35px;padding:2
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
-<!-- address.js অন্তর্ভুক্ত করা হয়েছে মূল স্ক্রিপ্টের পূর্বে -->
 <script src="./location.js"></script>
 
 <script>
@@ -685,7 +703,6 @@ let successRedirectStarted = false;
 let isSubmitting = false;
 let countdownInterval = null;
 
-// address.js লোড বা এক্সপোর্ট চেক এবং পূর্ণাঙ্গ বাংলাদেশের অ্যাড্রেস ডাটাবেজ ফলব্যাক
 const DEFAULT_BD_ADDRESS_DATA = {
   "ঢাকা": {
     "ঢাকা": ["ধানমন্ডি", "মিরপুর", "গুলশান", "উত্তরা", "মোহাম্মদপুর", "সাভার", "ধামরাই", "কেরানীগঞ্জ", "নবাবগঞ্জ", "দোহার", "বাড্ডা", "খিলগাঁও", "মতিঝিল", "পল্টন", "তেজগাঁও", "যাত্রাবাড়ী", "কদমতলী", "ডেমরা", "রামপুরা", "শাহবাগ", "লালবাগ", "বংশাল", "কোতোয়ালী", "সূত্রাপুর", "পল্লবী", "কাফরুল", "রূপনগর", "ভাটারা", "বনানী", "খিলক্ষেত", "দারুস সালাম", "শাহ আলী", "সবুজবাগ", "কামরাঙ্গীরচর"],
@@ -720,7 +737,7 @@ const DEFAULT_BD_ADDRESS_DATA = {
     "বগুড়া": ["বগুড়া সদর", "শিবগঞ্জ", "সোনাতলা", "গাবতলী", "সারিয়াকান্দি", "আদমদীঘি", "দুপচাঁচিয়া", "কাহালু", "নন্দীগ্রাম", "শেরপুর", "ধুনট", "শাজাহানপুর"],
     "পাবনা": ["পাবনা সদর", "ঈশ্বরদী", "আটঘরিয়া", "চাটমোহর", "ভাঙ্গুড়া", "ফরিদপুর", "সুজানগর", "বেড়া", "সাঁথিয়া"],
     "সিরাজগঞ্জ": ["সিরাজগঞ্জ সদর", "শাহজাদপুর", "উল্লাপাড়া", "বেলকুচি", "রায়গঞ্জ", "তাড়াশ", "কাজিপুর", "কামারখন্দ", "চৌহালী"],
-    "নওগাঁ": ["নওগাঁ সদর", "মহাদেবপুর", "বদলগাছী", "পত্নীতলা", "ধামইরহাট", "নিয়ামdelimiterপুর", "মান্দা", "আত্রাই", "রানীনগর", "সাপাহার", "পোরশা"],
+    "নওগাঁ": ["নওগাঁ সদর", "মহাদেবপুর", "বদলগাছী", "পত্নীতলা", "ধামইরহাট", "নিয়ামতপুর", "মান্দা", "আত্রাই", "রানীনগর", "সাপাহার", "পোরশা"],
     "নাটোর": ["নাটোর সদর", "সিংড়া", "বড়াইগ্রাম", "গুরুদাসপুর", "লালপুর", "বাগাতিপাড়া", "নলডাঙ্গা"],
     "চাঁপাইনবাবগঞ্জ": ["চাঁপাইনবাবগঞ্জ সদর", "শিবগঞ্জ", "গোমস্তাপুর", "নাচোল", "ভোলাহাট"],
     "জয়পুরহাট": ["জয়পুরহাট সদর", "পাঁচবিবি", "কালাই", "ক্ষেতলাল", "আক্কেলপুর"]
@@ -770,6 +787,7 @@ const DEFAULT_BD_ADDRESS_DATA = {
 };
 
 let activeAddressDatabase = DEFAULT_BD_ADDRESS_DATA;
+let districtToDivisionMap = {}; // জেলা -> বিভাগ ম্যাপ
 
 const $ = id => document.getElementById(id);
 
@@ -785,12 +803,13 @@ const safeNumber = value => {
   return Number.isFinite(number) && number > 0 ? number : 0;
 };
 
-// ফ্রি ডেলিভারি চেক: product.freeDelivery === true
 function isFreeDeliveryActive() {
-  return Boolean(currentProductData && currentProductData.freeDelivery === true);
+  if (!currentProductData) return false;
+  const value = currentProductData.freeDelivery;
+  return value === true || value === 1 ||
+    (typeof value === "string" && ["true", "1", "yes"].includes(value.trim().toLowerCase()));
 }
 
-// numeric delivery charge পার্সিং
 function parseDeliveryCharge(val, defaultVal) {
   if (val !== undefined && val !== null && val !== "") {
     const num = Number(val);
@@ -819,24 +838,15 @@ function isDhakaText(str) {
 
 function extractProductSlug() {
   const params = new URLSearchParams(window.location.search);
-
   for (const key of ["slug", "Id", "id", "productSlug"]) {
     const value = params.get(key);
     if (value && value.trim()) return value.trim();
   }
-
   const first = window.location.search.slice(1).split("&")[0];
-
   if (!first || first.includes("=")) return null;
-
   try {
     const candidate = decodeURIComponent(first).trim();
-    const tracking = new Set([
-      "fbclid", "gclid", "dclid", "msclkid",
-      "utm_source", "utm_medium", "utm_campaign",
-      "utm_term", "utm_content", "ref", "source"
-    ]);
-
+    const tracking = new Set(["fbclid", "gclid", "dclid", "msclkid","utm_source", "utm_medium", "utm_campaign","utm_term", "utm_content", "ref", "source"]);
     if (!candidate || tracking.has(candidate.toLowerCase())) return null;
     return candidate;
   } catch {
@@ -846,165 +856,103 @@ function extractProductSlug() {
 
 document.addEventListener("DOMContentLoaded", () => {
   $("footer-year").textContent = new Date().getFullYear();
-
   initializeAddressSystem();
   setupBannerSlider();
   setupQuantityControls();
-
   $("header-order-btn").addEventListener("click", scrollToOrder);
   $("scroll-to-order").addEventListener("click", scrollToOrder);
   $("sticky-order-btn").addEventListener("click", scrollToOrder);
-
   $("lightbox-close").addEventListener("click", closeLightbox);
   $("lightbox").addEventListener("click", event => {
     if (event.target === $("lightbox")) closeLightbox();
   });
-
   $("success-close").addEventListener("click", closeSuccessModal);
-
   document.addEventListener("keydown", event => {
     if (event.key === "Escape") {
       closeLightbox();
       closeSuccessModal();
     }
   });
-
   $("checkout-form").addEventListener("submit", submitOrder);
-
   loadProduct();
 });
 
-// address.js ডাটা পার্সিং ও ড্রপডাউন ইনিশিয়ালাইজেশন
+// ===== নতুন অ্যাড্রেস সিস্টেম: জেলা প্রথমে, বিভাগ অটো =====
 function initializeAddressSystem() {
   const externalData = getExternalAddressData();
   if (externalData && typeof externalData === "object" && Object.keys(externalData).length > 0) {
     activeAddressDatabase = externalData;
   }
 
-  populateDivisions();
+  buildDistrictToDivisionMap();
+  populateDistricts();
+  populateDivisionsHidden(); // হিডেন বিভাগ ফিল করার জন্য
 
   const vibagSelect = $("cust-vibag");
   const jelaSelect = $("cust-jela");
   const thanaSelect = $("cust-thana");
 
-  vibagSelect.addEventListener("change", () => {
-    const selectedDivision = vibagSelect.value;
-    jelaSelect.innerHTML = '<option value="">জেলা নির্বাচন করুন</option>';
-    thanaSelect.innerHTML = '<option value="">উপজেলা নির্বাচন করুন</option>';
-    thanaSelect.disabled = true;
-
-    if (selectedDivision && activeAddressDatabase[selectedDivision]) {
-      const districts = Object.keys(activeAddressDatabase[selectedDivision]);
-      districts.forEach(district => {
-        const opt = document.createElement("option");
-        opt.value = district;
-        opt.textContent = district;
-        jelaSelect.appendChild(opt);
-      });
-      jelaSelect.disabled = false;
-    } else {
-      jelaSelect.disabled = true;
-    }
-
-    updateDeliveryLocationAndCharge();
-  });
-
+  // জেলা সিলেক্ট -> বিভাগ অটো + থানা লোড
   jelaSelect.addEventListener("change", () => {
-    const selectedDivision = vibagSelect.value;
-    const selectedDistrict = jelaSelect.value;
-
+    const selectedDistrict = jelaSelect.value.trim();
     thanaSelect.innerHTML = '<option value="">উপজেলা নির্বাচন করুন</option>';
+    
+    if (selectedDistrict && districtToDivisionMap[selectedDistrict]) {
+      const division = districtToDivisionMap[selectedDistrict];
+      // বিভাগ অটো সেট (ইউজার দেখবে না)
+      vibagSelect.value = division;
 
-    if (
-      selectedDivision &&
-      selectedDistrict &&
-      activeAddressDatabase[selectedDivision] &&
-      activeAddressDatabase[selectedDivision][selectedDistrict]
-    ) {
-      const upazilas = activeAddressDatabase[selectedDivision][selectedDistrict];
-      upazilas.forEach(thana => {
-        const opt = document.createElement("option");
-        const thanaName = typeof thana === "string" ? thana : (thana.name || thana.bn_name || String(thana));
-        opt.value = thanaName;
-        opt.textContent = thanaName;
-        thanaSelect.appendChild(opt);
-      });
-      thanaSelect.disabled = false;
+      // থানা লোড
+      const upazilas = activeAddressDatabase[division][selectedDistrict];
+      if (Array.isArray(upazilas)) {
+        upazilas.forEach(thana => {
+          const opt = document.createElement("option");
+          const thanaName = typeof thana === "string" ? thana : (thana.name || thana.bn_name || String(thana));
+          opt.value = thanaName;
+          opt.textContent = thanaName;
+          thanaSelect.appendChild(opt);
+        });
+        thanaSelect.disabled = false;
+      }
     } else {
+      vibagSelect.value = "";
       thanaSelect.disabled = true;
     }
-
     updateDeliveryLocationAndCharge();
   });
 
   thanaSelect.addEventListener("change", () => {
-    // নির্বাচন সম্পূর্ণ হয়েছে
+    // শুধু ডেলিভারি আপডেট
   });
 }
 
-function getExternalAddressData() {
-  const candidates = [
-    window.bangladeshAddress,
-    window.addressData,
-    window.divisions,
-    window.bdAddress,
-    window.bangladesh,
-    window.geoData,
-    window.addressList
-  ];
-
-  for (const item of candidates) {
-    if (item && typeof item === "object") {
-      const normalized = normalizeAddressDataStructure(item);
-      if (normalized) return normalized;
+function buildDistrictToDivisionMap() {
+  districtToDivisionMap = {};
+  Object.keys(activeAddressDatabase).forEach(division => {
+    const districts = activeAddressDatabase[division];
+    if (typeof districts === "object") {
+      Object.keys(districts).forEach(district => {
+        districtToDivisionMap[district] = division;
+      });
     }
-  }
-
-  if (window.Address && typeof window.Address.getAll === "function") {
-    try {
-      return normalizeAddressDataStructure(window.Address.getAll());
-    } catch {}
-  }
-
-  return null;
+  });
 }
 
-function normalizeAddressDataStructure(raw) {
-  if (!raw) return null;
-
-  if (Array.isArray(raw)) {
-    const result = {};
-    raw.forEach(div => {
-      const divName = div.name || div.division || div.bn_name;
-      if (!divName) return;
-      result[divName] = {};
-
-      const districts = div.districts || div.districtList || [];
-      if (Array.isArray(districts)) {
-        districts.forEach(dist => {
-          const distName = dist.name || dist.district || dist.bn_name;
-          if (!distName) return;
-          const upazilas = dist.upazilas || dist.thanas || dist.sub_districts || [];
-          result[divName][distName] = Array.isArray(upazilas)
-            ? upazilas.map(u => (typeof u === "object" ? (u.bn_name || u.name || String(u)) : String(u)))
-            : [];
-        });
-      }
-    });
-    return Object.keys(result).length ? result : null;
-  }
-
-  if (typeof raw === "object") {
-    return raw;
-  }
-
-  return null;
+function populateDistricts() {
+  const jelaSelect = $("cust-jela");
+  jelaSelect.innerHTML = '<option value="">জেলা নির্বাচন করুন</option>';
+  const allDistricts = Object.keys(districtToDivisionMap).sort((a,b)=>a.localeCompare(b,'bn'));
+  allDistricts.forEach(district => {
+    const opt = document.createElement("option");
+    opt.value = district;
+    opt.textContent = district;
+    jelaSelect.appendChild(opt);
+  });
 }
 
-function populateDivisions() {
+function populateDivisionsHidden() {
   const vibagSelect = $("cust-vibag");
-  vibagSelect.innerHTML = '<option value="">বিভাগ নির্বাচন করুন</option>';
-
+  vibagSelect.innerHTML = '<option value="">বিভাগ</option>';
   Object.keys(activeAddressDatabase).forEach(division => {
     const opt = document.createElement("option");
     opt.value = division;
@@ -1013,23 +961,56 @@ function populateDivisions() {
   });
 }
 
-// বিভাগ ও জেলা নির্বাচনের ওপর স্বয়ংক্রিয় চার্জ ও লোকেশন নির্ধারণ (Free Delivery লজিক সহ)
+function getExternalAddressData() {
+  const candidates = [window.bangladeshAddress, window.addressData, window.divisions, window.bdAddress, window.bangladesh, window.geoData, window.addressList];
+  for (const item of candidates) {
+    if (item && typeof item === "object") {
+      const normalized = normalizeAddressDataStructure(item);
+      if (normalized) return normalized;
+    }
+  }
+  if (window.Address && typeof window.Address.getAll === "function") {
+    try { return normalizeAddressDataStructure(window.Address.getAll()); } catch {}
+  }
+  return null;
+}
+
+function normalizeAddressDataStructure(raw) {
+  if (!raw) return null;
+  if (Array.isArray(raw)) {
+    const result = {};
+    raw.forEach(div => {
+      const divName = div.name || div.division || div.bn_name;
+      if (!divName) return;
+      result[divName] = {};
+      const districts = div.districts || div.districtList || [];
+      if (Array.isArray(districts)) {
+        districts.forEach(dist => {
+          const distName = dist.name || dist.district || dist.bn_name;
+          if (!distName) return;
+          const upazilas = dist.upazilas || dist.thanas || dist.sub_districts || [];
+          result[divName][distName] = Array.isArray(upazilas) ? upazilas.map(u => (typeof u === "object" ? (u.bn_name || u.name || String(u)) : String(u))) : [];
+        });
+      }
+    });
+    return Object.keys(result).length ? result : null;
+  }
+  if (typeof raw === "object") return raw;
+  return null;
+}
+
+function populateDivisions() {
+  populateDivisionsHidden();
+}
+
 function updateDeliveryLocationAndCharge() {
   const vibagVal = $("cust-vibag").value.trim();
   const jelaVal = $("cust-jela").value.trim();
   const isFree = isFreeDeliveryActive();
 
-  if (!vibagVal) {
+  if (!jelaVal) {
     currentDeliveryLocation = "";
     currentDeliveryCharge = 0;
-  } else if (!jelaVal) {
-    if (!isDhakaText(vibagVal)) {
-      currentDeliveryLocation = "ঢাকার বাইরে";
-      currentDeliveryCharge = isFree ? 0 : getOutsideDhakaCharge(currentProductData);
-    } else {
-      currentDeliveryLocation = "";
-      currentDeliveryCharge = 0;
-    }
   } else {
     if (isDhakaText(vibagVal) && isDhakaText(jelaVal)) {
       currentDeliveryLocation = "ঢাকার ভেতরে";
@@ -1039,7 +1020,6 @@ function updateDeliveryLocationAndCharge() {
       currentDeliveryCharge = isFree ? 0 : getOutsideDhakaCharge(currentProductData);
     }
   }
-
   updatePricingDisplay();
 }
 
@@ -1057,72 +1037,41 @@ function setupBannerSlider() {
   const wrapper = $("promoSlidesWrapper");
   const dots = [...document.querySelectorAll(".dot")];
   const container = $("promoSliderContainer");
-
   let index = 0;
   let timer = null;
   let startX = 0;
-
   function update(next) {
     index = (next + 3) % 3;
     wrapper.style.transform = `translateX(-${index * (100 / 3)}%)`;
     dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
   }
-
   function start() {
     clearInterval(timer);
     timer = setInterval(() => update(index + 1), 4500);
   }
-
   dots.forEach(dot => {
     dot.addEventListener("click", () => {
       update(Number(dot.dataset.index));
       start();
     });
   });
-
-  container.addEventListener("touchstart", event => {
-    startX = event.changedTouches[0].screenX;
-  }, { passive: true });
-
+  container.addEventListener("touchstart", event => { startX = event.changedTouches[0].screenX; }, { passive: true });
   container.addEventListener("touchend", event => {
     const delta = event.changedTouches[0].screenX - startX;
-    if (Math.abs(delta) > 50) {
-      update(index + (delta < 0 ? 1 : -1));
-      start();
-    }
+    if (Math.abs(delta) > 50) { update(index + (delta < 0 ? 1 : -1)); start(); }
   }, { passive: true });
-
   start();
 }
 
 async function loadProduct() {
   const slug = extractProductSlug();
-
-  if (!slug) {
-    showErrorScreen("পণ্যটি খুঁজে পাওয়া যায়নি", "সঠিক প্রোডাক্ট লিংক দিয়ে আবার চেষ্টা করুন।");
-    return;
-  }
-
+  if (!slug) { showErrorScreen("পণ্যটি খুঁজে পাওয়া যায়নি", "সঠিক প্রোডাক্ট লিংক দিয়ে আবার চেষ্টা করুন।"); return; }
   try {
-    const snapshot = await db.collection("landing_product")
-      .where("productSlug", "==", slug)
-      .limit(1)
-      .get();
-
-    if (snapshot.empty) {
-      showErrorScreen("পণ্যটি খুঁজে পাওয়া যায়নি", "এই পণ্যটি বর্তমানে উপলভ্য নয়।");
-      return;
-    }
-
+    const snapshot = await db.collection("landing_product").where("productSlug", "==", slug).limit(1).get();
+    if (snapshot.empty) { showErrorScreen("পণ্যটি খুঁজে পাওয়া যায়নি", "এই পণ্যটি বর্তমানে উপলভ্য নয়।"); return; }
     currentProductData = snapshot.docs[0].data();
-
-    if (currentProductData.active !== true) {
-      showErrorScreen("পণ্যটি অনুপলব্ধ", "এই পণ্যটি বর্তমানে বিক্রির জন্য সক্রিয় নয়।");
-      return;
-    }
-
+    if (currentProductData.active !== true) { showErrorScreen("পণ্যটি অনুপলব্ধ", "এই পণ্যটি বর্তমানে বিক্রির জন্য সক্রিয় নয়।"); return; }
     renderProductPage(currentProductData);
-
   } catch (error) {
     console.error("Firestore product load error:", error);
     showErrorScreen("পণ্যটি লোড করতে সমস্যা হয়েছে", "ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।");
@@ -1130,20 +1079,40 @@ async function loadProduct() {
 }
 
 function showErrorScreen(title, description) {
-  if (countdownInterval) {
-    clearInterval(countdownInterval);
-    countdownInterval = null;
-  }
-
+  if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
   $("loading-screen").classList.add("hidden");
   $("product-section").classList.add("hidden");
   $("headline-container").classList.add("hidden");
   $("sticky-mobile-cta").classList.add("hidden");
   $("promoSliderContainer").classList.add("hidden");
-
   $("error-title").textContent = title;
   $("error-desc").textContent = description;
   $("message-screen").classList.remove("hidden");
+}
+
+let heroTypingTimer = null;
+
+function animateHeroTitle(productName) {
+  const heading = $("typed-text");
+  const fullText = `আপনার পছন্দের পণ্য ${String(productName || "Product").trim()}`;
+  if (heroTypingTimer) {
+    clearInterval(heroTypingTimer);
+    heroTypingTimer = null;
+  }
+  heading.textContent = "";
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    heading.textContent = fullText;
+    return;
+  }
+  let index = 0;
+  heroTypingTimer = setInterval(() => {
+    heading.textContent = fullText.slice(0, index + 1);
+    index += 1;
+    if (index >= fullText.length) {
+      clearInterval(heroTypingTimer);
+      heroTypingTimer = null;
+    }
+  }, 48);
 }
 
 function renderProductPage(product) {
@@ -1151,11 +1120,9 @@ function renderProductPage(product) {
   $("message-screen").classList.add("hidden");
   $("product-section").classList.remove("hidden");
   $("sticky-mobile-cta").classList.remove("hidden");
-
   const name = String(product.productName || "Product");
   const description = String(product.productDescription || "");
   const pageTitle = `${name} | GHOTI MARKET`;
-
   document.title = pageTitle;
   $("page-title").textContent = pageTitle;
   $("meta-description").content = description.slice(0, 300);
@@ -1163,125 +1130,57 @@ function renderProductPage(product) {
   $("og-desc").content = description.slice(0, 300);
   $("og-url").content = window.location.href;
   $("canonical-url").href = window.location.href;
-
-  productImages = Array.isArray(product.productImage)
-    ? product.productImage.filter(url => typeof url === "string" && url.trim())
-    : [];
-
+  productImages = Array.isArray(product.productImage) ? product.productImage.filter(url => typeof url === "string" && url.trim()) : [];
   if (productImages[0]) $("og-image").content = productImages[0];
-
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": name,
-    "image": productImages.length ? productImages : ["https://www.ghotimarket.com/logo.png"],
-    "description": description,
-    "offers": {
-      "@type": "Offer",
-      "priceCurrency": "BDT",
-      "price": String(safeNumber(product.price)),
-      "availability": "https://schema.org/InStock",
-      "url": window.location.href
-    }
-  };
-
+  const schema = {"@context":"https://schema.org","@type":"Product","name":name,"image":productImages.length ? productImages : ["https://www.ghotimarket.com/logo.png"],"description":description,"offers":{"@type":"Offer","priceCurrency":"BDT","price":String(safeNumber(product.price)),"availability":"https://schema.org/InStock","url":window.location.href}};
   $("json-ld-container").textContent = JSON.stringify(schema);
   $("header-product-title").textContent = name;
+  animateHeroTitle(name);
   $("product-name").textContent = name;
-
   $("product-description").textContent = description;
   $("product-description").classList.toggle("hidden", !description.trim());
-
-  if (product.headLine && String(product.headLine).trim()) {
-    $("headline-text").textContent = String(product.headLine);
-    $("headline-container").classList.remove("hidden");
-  } else {
-    $("headline-container").classList.add("hidden");
-  }
-
-  // Free Delivery Banner Display
-  if (product.freeDelivery === true) {
-    $("free-delivery-banner").classList.remove("hidden");
-  } else {
-    $("free-delivery-banner").classList.add("hidden");
-  }
-
-  // Offer Countdown Setup
+  if (product.headLine && String(product.headLine).trim()) { $("headline-text").textContent = String(product.headLine); $("headline-container").classList.remove("hidden"); } else { $("headline-container").classList.add("hidden"); }
+  $("free-delivery-banner").classList.toggle("hidden", !isFreeDeliveryActive());
   setupOfferCountdown(product);
-
-  // Gallery Setup (অটো-স্লাইড ছাড়া)
   setupImageGallery(productImages);
   setupVariants(Array.isArray(product.variants) ? product.variants : []);
   setupContactButtons(product);
   updateDeliveryLocationAndCharge();
 }
 
-// অফার কাউন্টডাউন সেটআপ (Milliseconds Timestamp)
 function setupOfferCountdown(product) {
-  if (countdownInterval) {
-    clearInterval(countdownInterval);
-    countdownInterval = null;
-  }
-
+  if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
   const banner = $("offer-countdown-banner");
   if (!banner) return;
-
-  if (!product || product.offerTime === undefined || product.offerTime === null || product.offerTime === "") {
-    banner.classList.add("hidden");
-    return;
-  }
-
+  if (!product || product.offerTime === undefined || product.offerTime === null || product.offerTime === "") { banner.classList.add("hidden"); return; }
   const targetTime = Number(product.offerTime);
-  if (!Number.isFinite(targetTime) || targetTime <= 0) {
-    banner.classList.add("hidden");
-    return;
-  }
-
+  if (!Number.isFinite(targetTime) || targetTime <= 0) { banner.classList.add("hidden"); return; }
   function updateCountdown() {
     const now = Date.now();
     const diff = targetTime - now;
-
-    if (diff <= 0) {
-      if (countdownInterval) {
-        clearInterval(countdownInterval);
-        countdownInterval = null;
-      }
-      banner.classList.add("hidden");
-      return;
-    }
-
+    if (diff <= 0) { if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; } banner.classList.add("hidden"); return; }
     const totalSeconds = Math.floor(diff / 1000);
     const days = Math.floor(totalSeconds / 86400);
     const hours = Math.floor((totalSeconds % 86400) / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
-
     $("cd-days").textContent = String(days).padStart(2, "0");
     $("cd-hours").textContent = String(hours).padStart(2, "0");
     $("cd-mins").textContent = String(minutes).padStart(2, "0");
     $("cd-secs").textContent = String(seconds).padStart(2, "0");
-
     banner.classList.remove("hidden");
   }
-
   const initialDiff = targetTime - Date.now();
-  if (initialDiff <= 0) {
-    banner.classList.add("hidden");
-    return;
-  }
-
+  if (initialDiff <= 0) { banner.classList.add("hidden"); return; }
   updateCountdown();
   countdownInterval = setInterval(updateCountdown, 1000);
 }
 
-// গ্যালারি সিস্টেম: অটো-স্লাইড সম্পূর্ণ নিষ্ক্রিয়, শুধু ম্যানুয়াল কন্ট্রোল সক্রিয়
 function setupImageGallery(images) {
   const main = $("main-product-image");
   const thumbs = $("thumbnail-container");
-
   thumbs.replaceChildren();
   activeImageIndex = 0;
-
   if (!images.length) {
     main.removeAttribute("src");
     main.alt = "পণ্যের ছবি পাওয়া যায়নি";
@@ -1289,42 +1188,23 @@ function setupImageGallery(images) {
     $("next-img").classList.add("hidden");
     return;
   }
-
   main.src = images[0];
   main.alt = "পণ্যের ছবি 1";
   main.onclick = openCurrentLightbox;
-
   if (images.length > 1) {
     $("prev-img").classList.remove("hidden");
     $("next-img").classList.remove("hidden");
-
     images.forEach((url, index) => {
       const image = document.createElement("img");
       image.src = url;
       image.alt = `পণ্যের ছবি ${index + 1}`;
       image.loading = "lazy";
       image.classList.toggle("active", index === 0);
-
-      // থাম্বনেইল ক্লিক করলে ছবি পরিবর্তন হবে
-      image.addEventListener("click", () => {
-        activeImageIndex = index;
-        updateActiveImage();
-      });
-
+      image.addEventListener("click", () => { activeImageIndex = index; updateActiveImage(); });
       thumbs.appendChild(image);
     });
-
-    // Previous বাটন ক্লিক
-    $("prev-img").onclick = () => {
-      activeImageIndex = (activeImageIndex - 1 + images.length) % images.length;
-      updateActiveImage();
-    };
-
-    // Next বাটন ক্লিক
-    $("next-img").onclick = () => {
-      activeImageIndex = (activeImageIndex + 1) % images.length;
-      updateActiveImage();
-    };
+    $("prev-img").onclick = () => { activeImageIndex = (activeImageIndex - 1 + images.length) % images.length; updateActiveImage(); };
+    $("next-img").onclick = () => { activeImageIndex = (activeImageIndex + 1) % images.length; updateActiveImage(); };
   } else {
     $("prev-img").classList.add("hidden");
     $("next-img").classList.add("hidden");
@@ -1333,18 +1213,13 @@ function setupImageGallery(images) {
 
 function updateActiveImage() {
   if (!productImages[activeImageIndex]) return;
-
   $("main-product-image").src = productImages[activeImageIndex];
   $("main-product-image").alt = `পণ্যের ছবি ${activeImageIndex + 1}`;
-
-  [...$("thumbnail-container").children].forEach((image, index) => {
-    image.classList.toggle("active", index === activeImageIndex);
-  });
+  [...$("thumbnail-container").children].forEach((image, index) => { image.classList.toggle("active", index === activeImageIndex); });
 }
 
 function openCurrentLightbox() {
   if (!productImages[activeImageIndex]) return;
-
   $("lightbox-image").src = productImages[activeImageIndex];
   $("lightbox").classList.remove("hidden");
 }
@@ -1358,137 +1233,75 @@ function setupVariants(variants) {
   const wrapper = $("variants-wrapper");
   wrapper.replaceChildren();
   selectedVariantState = {};
-
   variants.forEach(variant => {
     if (!variant || !variant.name || !Array.isArray(variant.values) || !variant.values.length) return;
-
     const group = document.createElement("div");
     group.className = "variant-group";
-
     const title = document.createElement("div");
     title.className = "variant-title";
     title.textContent = variant.name;
-
     const options = document.createElement("div");
     options.className = "variant-options";
-
     let firstValid = true;
-
     variant.values.forEach(valueObject => {
       if (!valueObject || valueObject.value == null) return;
-
       const value = String(valueObject.value);
       const extraPrice = Number(valueObject.extraPrice) || 0;
-
       const button = document.createElement("button");
       button.type = "button";
       button.className = "variant-btn" + (firstValid ? " active" : "");
       button.textContent = value + (extraPrice > 0 ? ` (+${money(extraPrice)})` : "");
-
-      if (firstValid) {
-        selectedVariantState[variant.name] = {
-          name: variant.name,
-          value,
-          extraPrice
-        };
-        firstValid = false;
-      }
-
+      if (firstValid) { selectedVariantState[variant.name] = { name: variant.name, value, extraPrice }; firstValid = false; }
       button.addEventListener("click", () => {
         [...options.children].forEach(item => item.classList.remove("active"));
         button.classList.add("active");
-
-        selectedVariantState[variant.name] = {
-          name: variant.name,
-          value,
-          extraPrice
-        };
-
+        selectedVariantState[variant.name] = { name: variant.name, value, extraPrice };
         updatePricingDisplay();
       });
-
       options.appendChild(button);
     });
-
-    if (options.children.length) {
-      group.append(title, options);
-      wrapper.appendChild(group);
-    }
+    if (options.children.length) { group.append(title, options); wrapper.appendChild(group); }
   });
 }
 
 function setupQuantityControls() {
-  const controls = [
-    ["quantity-minus", "quantity-plus"],
-    ["quantity-minus-form", "quantity-plus-form"]
-  ];
-
+  const controls = [["quantity-minus", "quantity-plus"],["quantity-minus-form", "quantity-plus-form"]];
   controls.forEach(([minusId, plusId]) => {
     $(minusId).addEventListener("click", () => setQuantity(quantity - 1));
     $(plusId).addEventListener("click", () => setQuantity(quantity + 1));
   });
-
   setQuantity(1);
 }
 
 function setQuantity(value) {
   quantity = Math.max(1, Math.min(MAX_QUANTITY, Math.floor(Number(value) || 1)));
-
-  ["quantity-value", "quantity-value-form"].forEach(id => {
-    $(id).textContent = String(quantity);
-  });
-
-  ["quantity-minus", "quantity-minus-form"].forEach(id => {
-    $(id).disabled = quantity <= 1;
-  });
-
-  ["quantity-plus", "quantity-plus-form"].forEach(id => {
-    $(id).disabled = quantity >= MAX_QUANTITY;
-  });
-
+  ["quantity-value", "quantity-value-form"].forEach(id => { $(id).textContent = String(quantity); });
+  ["quantity-minus", "quantity-minus-form"].forEach(id => { $(id).disabled = quantity <= 1; });
+  ["quantity-plus", "quantity-plus-form"].forEach(id => { $(id).disabled = quantity >= MAX_QUANTITY; });
   updatePricingDisplay();
 }
 
 function calculateTotals() {
   const unitPrice = safeNumber(currentProductData && currentProductData.price);
-
-  const variantExtraPerUnit = Object.values(selectedVariantState).reduce(
-    (sum, variant) => sum + (Number(variant.extraPrice) || 0), 0
-  );
-
+  const variantExtraPerUnit = Object.values(selectedVariantState).reduce((sum, variant) => sum + (Number(variant.extraPrice) || 0), 0);
   const unitWithVariants = unitPrice + variantExtraPerUnit;
   const baseTotal = unitPrice * quantity;
   const variantTotal = variantExtraPerUnit * quantity;
   const productTotal = (unitPrice + variantExtraPerUnit) * quantity;
-  
   const deliveryFee = isFreeDeliveryActive() ? 0 : currentDeliveryCharge;
   const total = productTotal + deliveryFee;
-
-  return {
-    unitPrice,
-    variantExtraPerUnit,
-    unitWithVariants,
-    baseTotal,
-    variantTotal,
-    productTotal,
-    deliveryFee,
-    total
-  };
+  return { unitPrice, variantExtraPerUnit, unitWithVariants, baseTotal, variantTotal, productTotal, deliveryFee, total };
 }
 
 function updatePricingDisplay() {
   if (!currentProductData) return;
-
   const totals = calculateTotals();
-
   $("current-price").textContent = money(totals.unitWithVariants);
   $("sticky-price-text").textContent = money(totals.total);
   $("summary-unit-price").textContent = money(totals.unitWithVariants);
   $("summary-quantity").textContent = `${quantity} টি`;
   $("summary-base-price").textContent = money(totals.baseTotal);
   $("summary-variant-price").textContent = money(totals.variantTotal);
-  
-  // Free Delivery বনাম Normal Delivery চার্জ ডিসপ্লে
   if (isFreeDeliveryActive()) {
     $("summary-delivery-charge").textContent = "৳ 0 (ফ্রি ডেলিভারি)";
   } else if (currentDeliveryLocation) {
@@ -1496,20 +1309,13 @@ function updatePricingDisplay() {
   } else {
     $("summary-delivery-charge").textContent = money(currentDeliveryCharge);
   }
-  
   $("summary-total-price").textContent = money(totals.total);
-
   $("summary-variant-row").classList.toggle("hidden", totals.variantTotal <= 0);
-
   const oldPrice = safeNumber(currentProductData.oldPrice);
-
   if (oldPrice > totals.unitPrice) {
     $("old-price").textContent = money(oldPrice);
     $("old-price").classList.remove("hidden");
-
-    $("discount-badge").textContent =
-      `${Math.round((oldPrice - totals.unitPrice) / oldPrice * 100)}% OFF`;
-
+    $("discount-badge").textContent = `${Math.round((oldPrice - totals.unitPrice) / oldPrice * 100)}% OFF`;
     $("discount-badge").classList.remove("hidden");
   } else {
     $("old-price").classList.add("hidden");
@@ -1520,9 +1326,7 @@ function updatePricingDisplay() {
 function setupContactButtons(product) {
   const wrapper = $("contact-buttons-wrapper");
   wrapper.replaceChildren();
-
   let any = false;
-
   if (product.phone) {
     const link = document.createElement("a");
     link.href = "tel:" + String(product.phone).replace(/[^\d+]/g, "");
@@ -1530,7 +1334,6 @@ function setupContactButtons(product) {
     wrapper.appendChild(link);
     any = true;
   }
-
   if (product.whatsApp) {
     const link = document.createElement("a");
     link.href = String(product.whatsApp);
@@ -1541,144 +1344,104 @@ function setupContactButtons(product) {
     wrapper.appendChild(link);
     any = true;
   }
-
-  wrapper.classList.toggle("hidden", !any);
+  $("contact-support-section").classList.toggle("hidden", !any);
 }
 
 function scrollToOrder() {
-  $("order-form-section").scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
+  $("order-form-section").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 async function submitOrder(event) {
   event.preventDefault();
-
   if (!currentProductData || successRedirectStarted || isSubmitting) return;
-
-  const variants = Array.isArray(currentProductData.variants)
-    ? currentProductData.variants
-    : [];
-
+  const variants = Array.isArray(currentProductData.variants) ? currentProductData.variants : [];
   for (const variant of variants) {
     if (variant && variant.name && !selectedVariantState[variant.name]) {
       alert(`দয়া করে "${variant.name}" অপশনটি নির্বাচন করুন।`);
       return;
     }
   }
-
   const name = $("cust-name").value.trim();
   const phone = $("cust-phone").value.trim();
-  const vibag = $("cust-vibag").value.trim();
+  const vibag = $("cust-vibag").value.trim(); // অটো সেট হয়েছে
   const jela = $("cust-jela").value.trim();
   const thanaUpajela = $("cust-thana").value.trim();
 
-  if (!name || !phone || !vibag || !jela || !thanaUpajela) {
-    alert("দয়া করে প্রয়োজনীয় সকল তথ্য (নাম, ফোন, বিভাগ, জেলা ও থানা/উপজেলা) নির্বাচন করুন।");
+  if (!name || !phone || !jela || !thanaUpajela) {
+    alert("দয়া করে প্রয়োজনীয় সকল তথ্য (নাম, ফোন, জেলা ও থানা/উপজেলা) নির্বাচন করুন।");
     return;
   }
-
+  if (!vibag) {
+    alert("জেলা সিলেক্ট করুন, বিভাগ অটো সেট হবে।");
+    return;
+  }
   if (!/^[0-9+\s()-]{8,20}$/.test(phone)) {
     alert("দয়া করে সঠিক মোবাইল নাম্বার লিখুন।");
     $("cust-phone").focus();
     return;
   }
-
   if (!validateAddressHierarchy(vibag, jela, thanaUpajela)) {
-    alert("নির্বাচিত বিভাগ, জেলা বা উপজেলা সঠিক নয়। দয়া করে ড্রপডাউন থেকে পুনরায় সঠিক তথ্য নির্বাচন করুন।");
+    alert("নির্বাচিত জেলা বা উপজেলা সঠিক নয়। দয়া করে পুনরায় সঠিক তথ্য নির্বাচন করুন।");
     return;
   }
 
   const isFreeDelivery = isFreeDeliveryActive();
-
-  // ডেলিভারি লোকেশন ও চার্জ পুনরায় সুরক্ষিতভাবে যাচাই
   let finalLocation = "ঢাকার বাইরে";
   let finalCharge = 0;
-
-  if (isDhakaText(vibag) && isDhakaText(jela)) {
-    finalLocation = "ঢাকার ভেতরে";
-  }
-
+  if (isDhakaText(vibag) && isDhakaText(jela)) { finalLocation = "ঢাকার ভেতরে"; }
   if (!isFreeDelivery) {
-    finalCharge = (finalLocation === "ঢাকার ভেতরে")
-      ? getInsideDhakaCharge(currentProductData)
-      : getOutsideDhakaCharge(currentProductData);
+    finalCharge = (finalLocation === "ঢাকার ভেতরে") ? getInsideDhakaCharge(currentProductData) : getOutsideDhakaCharge(currentProductData);
+  } else {
+    finalCharge = 0;
   }
-
   currentDeliveryLocation = finalLocation;
   currentDeliveryCharge = finalCharge;
-
   const totals = calculateTotals();
-
   if (!Number.isFinite(totals.total) || totals.total <= 0) {
     alert("মূল্য গণনায় সমস্যা হয়েছে। পেজটি রিফ্রেশ করে আবার চেষ্টা করুন।");
     return;
   }
-
   const submitButton = $("submit-order-btn");
   const buttonText = $("btn-text");
   const buttonSpinner = $("btn-spinner");
-
   isSubmitting = true;
   submitButton.disabled = true;
   buttonText.textContent = "অর্ডার প্রসেস হচ্ছে...";
   buttonSpinner.classList.remove("hidden");
-
   try {
     const selectedVariantsArr = Object.values(selectedVariantState).map(variant => ({...variant}));
-    
-    // কাস্টমারের সর্বশেষ সিলেক্ট করা ছবি
     const selectedImageUrl = productImages[activeImageIndex] || (productImages[0] || "");
-
     const orderPayload = {
-      name,
-      phone,
-
-      vibag,
+      name, phone,
+      vibag, // অটো সেট হওয়া বিভাগ, ইউজার দেখবে না কিন্তু সেভ হবে
       jela,
       thanaUpajela,
-
       deliveryLocation: finalLocation,
       deliveryCharge: finalCharge,
       freeDelivery: isFreeDelivery,
-
       fullAddress: $("cust-address").value.trim(),
       orderNote: $("cust-note").value.trim(),
-
       productName: String(currentProductData.productName || "Product"),
       productSlug: String(currentProductData.productSlug || ""),
-
       productImage: selectedImageUrl,
       productImages: productImages,
-
       selectedVariants: selectedVariantsArr,
-
       quantity,
-
       unitPrice: totals.unitPrice,
       price: totals.baseTotal,
-
       variantExtraPricePerUnit: totals.variantExtraPerUnit,
       variantExtraPrice: totals.variantTotal,
-
       subtotal: totals.productTotal,
       totalPrice: totals.total,
-
       status: "pending",
-
       landingUserId: currentProductData.uid || "",
       landingUserEmail: currentProductData.email || "",
-
       currency: "BDT",
       source: "product_landing_page",
-
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     };
-
     await db.collection("landing_order").add(orderPayload);
     showOrderSuccessPopup();
-
   } catch (error) {
     console.error("Order submission error:", error);
     alert("অর্ডার সাবমিট করতে সমস্যা হয়েছে। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।");
@@ -1694,9 +1457,7 @@ async function submitOrder(event) {
 
 function showOrderSuccessPopup() {
   if (successRedirectStarted) return;
-
   successRedirectStarted = true;
-
   const modal = $("order-success-modal");
   modal.classList.add("active");
   modal.setAttribute("aria-hidden", "false");
