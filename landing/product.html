@@ -879,40 +879,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ===== নতুন অ্যাড্রেস সিস্টেম: জেলা প্রথমে, বিভাগ অটো =====
 function initializeAddressSystem() {
-  const externalData = getExternalAddressData();
-  if (externalData && typeof externalData === "object" && Object.keys(externalData).length > 0) {
-    activeAddressDatabase = externalData;
-  }
+function initializeAddressSystem() {
+  // বাইরের ফাইল আর লাগবে না, সরাসরি default data use করবো
+  activeAddressDatabase = DEFAULT_BD_ADDRESS_DATA;
 
   buildDistrictToDivisionMap();
   populateDistricts();
-  populateDivisionsHidden(); // হিডেন বিভাগ ফিল করার জন্য
+  populateDivisionsHidden();
 
   const vibagSelect = $("cust-vibag");
   const jelaSelect = $("cust-jela");
   const thanaSelect = $("cust-thana");
 
-  // জেলা সিলেক্ট -> বিভাগ অটো + থানা লোড
+  // জেলা অবশ্যই Enable থাকবে
+  jelaSelect.disabled = false;
+  thanaSelect.disabled = true;
+  thanaSelect.innerHTML = '<option value="">উপজেলা নির্বাচন করুন</option>';
+
   jelaSelect.addEventListener("change", () => {
     const selectedDistrict = jelaSelect.value.trim();
     thanaSelect.innerHTML = '<option value="">উপজেলা নির্বাচন করুন</option>';
     
     if (selectedDistrict && districtToDivisionMap[selectedDistrict]) {
       const division = districtToDivisionMap[selectedDistrict];
-      // বিভাগ অটো সেট (ইউজার দেখবে না)
       vibagSelect.value = division;
 
-      // থানা লোড
       const upazilas = activeAddressDatabase[division][selectedDistrict];
       if (Array.isArray(upazilas)) {
         upazilas.forEach(thana => {
           const opt = document.createElement("option");
-          const thanaName = typeof thana === "string" ? thana : (thana.name || thana.bn_name || String(thana));
-          opt.value = thanaName;
-          opt.textContent = thanaName;
+          opt.value = thana;
+          opt.textContent = thana;
           thanaSelect.appendChild(opt);
         });
-        thanaSelect.disabled = false;
+        thanaSelect.disabled = false; // জেলা সিলেক্ট করলেই থানা খুলবে
       }
     } else {
       vibagSelect.value = "";
@@ -920,12 +920,7 @@ function initializeAddressSystem() {
     }
     updateDeliveryLocationAndCharge();
   });
-
-  thanaSelect.addEventListener("change", () => {
-    // শুধু ডেলিভারি আপডেট
-  });
-}
-
+  }
 function buildDistrictToDivisionMap() {
   districtToDivisionMap = {};
   Object.keys(activeAddressDatabase).forEach(division => {
