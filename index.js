@@ -153,5 +153,36 @@ function initCartBadge() {
 }
 function initNetworkStatus() { const toast = $("offline-toast"); const update = () => { if (toast) toast.style.display = navigator.onLine ? "none" : "block"; }; addEventListener("online", update); addEventListener("offline", update); update(); }
 function initMenu() { $("menuBtn")?.addEventListener("click", () => toggleMenu()); $("menuOverlay")?.addEventListener("click", () => toggleMenu(false)); document.querySelectorAll(".side-menu a").forEach(a => a.addEventListener("click", () => toggleMenu(false))); document.addEventListener("keydown", e => { if (e.key === "Escape") toggleMenu(false); }); }
-function init() { $("year").textContent = new Date().getFullYear(); initMenu(); initSearch(); initNetworkStatus(); initCartBadge(); loadBanners(); loadNextProducts({ initial: true }); initInfiniteScroll(); }
+function init() { $("year").textContent = new Date().getFullYear(); initMenu(); initSearch(); initNetworkStatus(); initCartBadge(); loadBanners(); loadNextProducts({ initial: true }); initInfiniteScroll(); initAppPopup(); }
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true }); else init();
+// --- App Download Popup Logic ---
+function initAppPopup() {
+  const popup = document.getElementById('appDownloadPopup');
+  const closeBtn = document.getElementById('closeAppPopup');
+  if (!popup || !closeBtn) return;
+
+  const lastClosedTime = localStorage.getItem('ghoti_app_popup_closed');
+  const now = new Date().getTime();
+  const cooldownTime = 5 * 60 * 1000; // ৫ মিনিট (মিলি সেকেন্ডে)
+
+  // যদি পপআপ আগে বন্ধ না করা হয়ে থাকে অথবা ৫ মিনিট পার হয়ে গিয়ে থাকে
+  if (!lastClosedTime || (now - lastClosedTime > cooldownTime)) {
+    // ২.৫ সেকেন্ড পর পপআপ শো করবে
+    setTimeout(() => {
+      popup.style.display = 'flex';
+    }, 2500);
+  }
+
+  const closePopup = () => {
+    popup.style.display = 'none';
+    // বন্ধ করার সময় বর্তমান সময় লোকাল স্টোরেজে সেভ করে রাখবে
+    localStorage.setItem('ghoti_app_popup_closed', new Date().getTime());
+  };
+
+  closeBtn.addEventListener('click', closePopup);
+  
+  // ব্যাকগ্রাউন্ডে ক্লিক করলেও পপআপ বন্ধ হবে
+  popup.addEventListener('click', (e) => {
+    if (e.target === popup) closePopup();
+  });
+}
