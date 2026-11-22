@@ -22,7 +22,7 @@
             <i class="fas fa-arrow-left"></i>
             <span>ফিরে যান</span>
         </div>
-        <a href="cart.html" class="nav-cart-right" title="Shopping Cart">
+        <a href="/cart" class="nav-cart-right" title="Shopping Cart">
             <i class="fas fa-shopping-cart"></i>
             <span class="cart-badge-count" id="cartBadgeCount">0</span>
         </a>
@@ -767,19 +767,22 @@
     if(seoCanonicalEl) seoCanonicalEl.href = `https://ghotimarket.com/product?${finalSlug}`;
 
     // Product Schema for Google
+       // Product Schema for Google - FIXED
     const schemaData = {
       "@context": "https://schema.org/",
       "@type": "Product",
       "name": name,
-      "image": images,
-      "description": desc.substring(0, 200),
+      "image": images.length > 0 ? images : [PLACEHOLDER_IMAGE],
+      "description": desc.substring(0, 200) || name,
       "sku": p.docId,
       "brand": { "@type": "Brand", "name": "GHOTI MARKET" },
       "offers": {
         "@type": "Offer",
         "url": `https://ghotimarket.com/product?${finalSlug}`,
         "priceCurrency": "BDT",
-        "price": basePrice,
+        "price": basePrice > 0 ? basePrice : 1,
+        "priceValidUntil": "2027-12-31",
+        "itemCondition": "https://schema.org/NewCondition",
         "availability": "https://schema.org/InStock",
         "seller": { "@type": "Organization", "name": "GHOTI MARKET" }
       }
@@ -1059,6 +1062,19 @@ if(freeBadgeEl){
                 if (total > 0) {
                     const sum = reviews.reduce((acc, curr) => acc + safeNumber(curr.star, 5), 0);
                     const avg = (sum / total).toFixed(1);
+try{
+                      const sEl = document.getElementById("productSchema");
+                      if(sEl && sEl.textContent){
+                        let oldSchema = JSON.parse(sEl.textContent);
+                        oldSchema.aggregateRating = {
+                          "@type": "AggregateRating",
+                          "ratingValue": avg,
+                          "reviewCount": total
+                        };
+                        sEl.textContent = JSON.stringify(oldSchema);
+                      }
+                    }catch(e){}
+                   
                     getEl("avgRating").innerText = avg;
                     getEl("avgStars").innerHTML = renderStarsHTML(Math.round(avg));
                 } else {
